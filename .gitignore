@@ -1,0 +1,13 @@
+*.DS_Store
+.dart_tool/
+**/.dart_tool/
+**/.flutter-plugins-dependencies
+**/build/
+**/Pods/
+**/.gradle/
+**/*.iml
+apex-design.zip
+
+# API credentials — git-д commit хийхгүй
+# Clone хийсний дараа: утгуудыг бөглөнө
+**/apex_api_config.dart

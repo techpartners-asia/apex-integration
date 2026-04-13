@@ -1,0 +1,47 @@
+name: mini_app_sdk
+description: mini app SDK-ийн бүтээгдэхүүн багц.Super app-д handoff хийх үндсэн Flutter package.
+version: 0.1.0
+publish_to: none
+
+environment:
+ sdk: ^3.10.1
+ flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  dio: ^5.9.2
+  dio_cookie_manager: ^3.4.0
+  cookie_jar: ^4.0.9
+  flutter_bloc: ^9.1.1
+  flutter_svg: ^2.2.4
+  flutter_html: ^3.0.0
+  intl: ^0.20.2
+  mini_app_core:
+    path: ../apex_mini_app_core
+  mini_app_ui:
+    path: ../apex_mini_app_ui
+  fl_chart: ^0.69.0
+  cached_network_image: ^3.4.1
+  email_validator: ^3.0.0
+  cupertino_icons: ^1.0.9
+  adaptive_platform_ui: ^0.1.104
+  liquid_glass_widgets: ^0.7.4
+  path_provider: ^2.1.5
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^10.0.0
+  flutter_lints: ^6.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/icons/

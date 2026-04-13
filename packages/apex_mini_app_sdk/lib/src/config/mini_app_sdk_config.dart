@@ -1,0 +1,36 @@
+import 'package:mini_app_ui/mini_app_ui.dart';
+
+import '../payment/mini_app_payment_handler.dart';
+
+class MiniAppSdkConfig {
+  static const Duration defaultPaymentTimeout = Duration(seconds: 45);
+
+  final String? userToken;
+  final MiniAppWalletPaymentHandler walletPaymentHandler;
+  final Duration paymentTimeout;
+  final MiniAppLogger logger;
+
+  const MiniAppSdkConfig({
+    this.userToken,
+    required this.walletPaymentHandler,
+    this.paymentTimeout = defaultPaymentTimeout,
+    this.logger = const DebugMiniAppLogger(),
+  }) : assert(
+         paymentTimeout > Duration.zero,
+         'paymentTimeout must be greater than zero.',
+       );
+
+  MiniAppSdkConfig copyWith({
+    String? userToken,
+    MiniAppWalletPaymentHandler? walletPaymentHandler,
+    Duration? paymentTimeout,
+    MiniAppLogger? logger,
+  }) {
+    return MiniAppSdkConfig(
+      userToken: userToken ?? this.userToken,
+      walletPaymentHandler: walletPaymentHandler ?? this.walletPaymentHandler,
+      paymentTimeout: paymentTimeout ?? this.paymentTimeout,
+      logger: logger ?? this.logger,
+    );
+  }
+}

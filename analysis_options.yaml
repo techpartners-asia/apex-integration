@@ -1,0 +1,10 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    implementation_imports: error
+    use_build_context_synchronously: error
+
+formatter:
+  trailing_commas: preserve
+    

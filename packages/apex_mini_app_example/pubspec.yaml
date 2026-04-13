@@ -1,0 +1,23 @@
+name: mini_app_example
+description: mini app SDK-ийн reference host апп.
+version: 0.1.0
+publish_to: none
+
+environment:
+ sdk: ^3.10.1
+ flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.9
+  mini_app_sdk:
+    path: ../apex_mini_app_sdk
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

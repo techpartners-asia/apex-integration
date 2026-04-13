@@ -1,0 +1,4 @@
+// Ensure CocoaPods settings are loaded; if this include fails, run `pod install` inside the ios/ directory
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
+#include "Generated.xcconfig"
+
