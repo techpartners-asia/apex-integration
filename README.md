@@ -15,20 +15,6 @@ InvestX Mini App is an **investment mini-app** that runs inside a host (super) a
 | `mini_app_sdk` | `packages/apex_mini_app_sdk` | Main SDK: IPS features, networking, BLoC/Cubit state, localization |
 | `mini_app_example` | `packages/apex_mini_app_example` | Reference host app demonstrating SDK integration |
 
-## Scope of Work
-
-### Completed Improvements
-
-| ID | Description | Files Changed |
-|----|-------------|---------------|
-| K.1 #2 | **Pull-to-refresh** on Portfolio and Orders screens | `investx_page_scaffold.dart`, `investx_page_scaffold_body.dart`, `portfolio_screen.dart`, `orders_screen.dart` |
-| K.1 #3 | **Skeleton/shimmer loading** placeholders replacing spinner-only loading states | `investx_skeleton_loader.dart` (new), `portfolio_screen.dart`, `orders_screen.dart`, `widgets.dart` |
-| K.1 #4 | **Step indicator** for SecAcnt wizard flow (progress bar across all wizard screens) | `sec_acnt_step_indicator.dart` (new), `sec_acnt_consent_screen.dart`, `sec_acnt_personal_info_screen.dart`, `sec_acnt_agreement_screen.dart`, `sec_acnt_signature_screen.dart`, `sec_acnt_payment_screen.dart`, `investx_agreement_screen.dart`, `investx_signature_screen.dart` |
-| K.1 #6 | **Bottom nav 3rd tab fix** — action button now opens action sheet instead of invalid tab switch | `bottom_navbar.dart` |
-| K.3 #2 | **Merged ApiResponseGuard into ApiActionResultParser** — single unified API guard with `strictResponseCode` mode | `api_action_result_parser.dart`, `api_response_guard.dart` (deprecated wrapper), `portfolio_dto.dart` |
-| K.3 #4 | **LoadableState convention** — Simple fetch cubits use `LoadableState<T>`; complex multi-action cubits (Orders, Feedback, Contract) use purpose-built state classes | Documented — no migration needed |
-| K.4 | **QA tests** — FeedbackCubit tests (5), FeedbackEntity.fromJson tests (8), ApiActionResultParser tests (13 total) | `feedback_cubit_test.dart` (new), `feedback_entity_test.dart` (new), `api_response_guard_test.dart` (rewritten) |
-
 ### Excluded Scope
 
 - **K.2 API Improvements** — No new backend API endpoints were created or modified. This includes:
@@ -65,19 +51,6 @@ Host App → /splash (bootstrap)
 - **Orders**: Only `pending` orders can be cancelled; concurrent cancel prevented; balance refreshed after cancel
 - **Pull-to-refresh**: Portfolio and Orders screens support swipe-down to reload from API
 - **Wizard step indicator**: SecAcnt flow shows a segmented progress bar that fills based on current step position
-
-## Use Case Summary
-
-| UC | Actor | Flow |
-|----|-------|------|
-| UC-01 | User | Open securities account via wizard (consent → info → agreement → signature → payment) |
-| UC-02 | User | Complete risk questionnaire and select investment pack |
-| UC-03 | User | View portfolio dashboard (holdings, allocation, yield) |
-| UC-04 | User | Place charge/sell order via action sheet |
-| UC-05 | User | Cancel pending order |
-| UC-06 | User | View transaction statements with date filter |
-| UC-07 | User | Submit feedback (title + description → API) |
-| UC-08 | User | View personal info, contact details |
 
 ## Data / Entity Summary
 
@@ -175,39 +148,3 @@ flutter analyze --no-pub
 | `loginSessionBaseUrl` | Config | Base URL for login session endpoint |
 | Admin API | `api.admin.investx.mn` | User profile, feedback, invoices |
 | Broker API | `/api/v1.0/*` | Securities, orders, portfolio, questionnaire |
-
-## Assumptions
-
-- [A1] Host app handles biometric/PIN authentication
-- [A2] Payment gateway integration is via host app's `MiniAppPaymentExecutor`
-- [A3] `admSession` is a JWT token verified server-side
-- [A4] Broker API (`/api/v1.0/*`) connects to MCSD through a third-party broker system
-- [A5] Reward/Achievement feature is static UI, to be connected to backend in future
-- [A6] Feedback list API (`GET /feedback/list`) does not exist yet; in-memory only on client
-- [A7] Complex cubits (Orders, Feedback, etc.) need purpose-built state classes rather than `LoadableState<T>`
-
-## Known Limitations
-
-1. **Feedback list is in-memory** — App restart clears the feedback list (no list API exists)
-2. **No offline caching** — All data is fetched from APIs; no local persistence
-3. **No pagination** — Orders, statements, feedback lists load all items at once
-4. **No push notifications** — Order completion, feedback responses not notified
-5. **Reward screen is static** — No backend data connection
-6. **Statements filter is client-side only** — Filter parameters not sent to API
-7. **`ApiResponseGuard` deprecated but retained** — Old callers compile via backward-compatible wrapper; new code should use `ApiActionResultParser.ensureSuccess()` directly
-
-## Changelog
-
-| Date | Change |
-|------|--------|
-| 2026-04-08 | K.3 #2: Merged `ApiResponseGuard` into `ApiActionResultParser` with `strictResponseCode` flag |
-| 2026-04-08 | K.1 #2: Pull-to-refresh added to Portfolio and Orders screens; `onRefresh` added to `InvestXPageScaffold` |
-| 2026-04-08 | K.1 #4: `SecAcntStepIndicator` added across all wizard screens (consent, info, agreement, signature, payment) |
-| 2026-04-08 | K.1 #3: `InvestXSkeletonLoader` and `InvestXSkeletonListLoader` for shimmer loading placeholders |
-| 2026-04-08 | K.1 #6: Bottom nav 3rd tab now fires `onActionPressed` instead of invalid tab selection |
-| 2026-04-08 | K.4: Added 13 new tests — FeedbackCubit (5), FeedbackEntity (8); 86 total tests passing |
-| 2026-04-08 | K.3 #4: LoadableState convention documented; complex cubits remain with custom state |
-| 2026-04-08 | Comprehensive README created as single source of truth |
-| 2026-04-07 | Feedback feature connected to `POST /api/v1/user/feedback/create` API |
-| 2026-04-07 | `FeedbackEntity`, `FeedbackCubit`, `CreateFeedbackResponseDto` created |
-| 2026-04-07 | Portfolio screen layout fix (mainAxisSize, Expanded wrapping) |
