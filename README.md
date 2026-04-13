@@ -15,14 +15,6 @@ InvestX Mini App is an **investment mini-app** that runs inside a host (super) a
 | `mini_app_sdk` | `packages/apex_mini_app_sdk` | Main SDK: IPS features, networking, BLoC/Cubit state, localization |
 | `mini_app_example` | `packages/apex_mini_app_example` | Reference host app demonstrating SDK integration |
 
-### Excluded Scope
-
-- **K.2 API Improvements** — No new backend API endpoints were created or modified. This includes:
-  - `GET /feedback/list` (feedback list endpoint does not exist)
-  - Pagination support for orders/statements
-  - WebSocket for real-time portfolio updates
-  - Admin/management API changes
-
 ## UI Flow Summary
 
 ```
