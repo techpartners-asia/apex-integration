@@ -190,7 +190,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsHomeRecommendedPackCta => 'Санал болгосон багц';
 
   @override
-  String get ipsHomePortfolioCta => 'Портфель';
+  String get ipsHomePortfolioCta => 'Хөрөнгө оруулалтын багц';
 
   @override
   String get ipsHomeOrdersCta => 'Захиалга';
@@ -525,7 +525,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsContractCreated => 'Гэрээ үүслээ';
 
   @override
-  String get ipsContractOpenPortfolio => 'Портфель нээх';
+  String get ipsContractOpenPortfolio => 'Хөрөнгө оруулалтын багц нээх';
 
   @override
   String get ipsContractId => 'Гэрээний дугаар';
@@ -563,7 +563,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Гэрээ, төлбөрийн хүсэлт, wallet төлбөрийг бэлтгэж байна.';
 
   @override
-  String get ipsPortfolioTitle => 'Портфель';
+  String get ipsPortfolioTitle => 'Хөрөнгө оруулалтын багц';
 
   @override
   String get ipsPortfolioSubtitle =>
@@ -601,10 +601,11 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsPortfolioMissingService =>
-      'Портфелийн service тохируулагдаагүй байна.';
+      'Хөрөнгө оруулалтын багцын service тохируулагдаагүй байна.';
 
   @override
-  String get ipsPortfolioLoading => 'Портфелийн тоймыг ачаалж байна.';
+  String get ipsPortfolioLoading =>
+      'Хөрөнгө оруулалтын багцын тоймыг ачаалж байна.';
 
   @override
   String get ipsPortfolioHoldingQuantity => 'Тоо ширхэг';
@@ -814,7 +815,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsYieldTitle => 'Өгөөж';
 
   @override
-  String get ipsYieldSubtitle => 'Портфелийн өгөөжийн задаргаа.';
+  String get ipsYieldSubtitle => 'Хөрөнгө оруулалтын багцын өгөөжийн задаргаа.';
 
   @override
   String get ipsYieldDetails => 'Өгөөжийн дэлгэрэнгүй';
@@ -1498,7 +1499,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsFeedbackCreateBodyHint => 'Дэлгэрэнгүй тайлбар оруулна уу';
 
   @override
-  String get ipsFeedbackStatusReviewing => 'Илгээрсэн';
+  String get ipsFeedbackStatusReviewing => 'Илгээгдсэн';
 
   @override
   String get ipsFeedbackStatusResolved => 'Шийдвэрлэсэн';
