@@ -1,5 +1,4 @@
-import '../exception/api_exception.dart';
-import 'api_parser.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 /// Unified API response guard that validates `responseCode`, optional `success`
 /// flag, and extracts `message`/`body` fields from raw JSON responses.

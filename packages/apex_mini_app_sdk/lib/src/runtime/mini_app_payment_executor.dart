@@ -1,13 +1,5 @@
-import 'package:mini_app_core/mini_app_core.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
-
-import '../app/investx_api/backend/mini_app_api_repository.dart';
-import '../app/investx_api/models/mini_app_payment.dart' show MiniAppPayment;
-import '../app/investx_api/req/create_invoice_api_req.dart';
-import '../core/exception/api_exception.dart';
-import '../config/mini_app_sdk_config.dart';
-import '../payment/mini_app_payment_handler.dart';
-import '../payment/mini_app_wallet_payment_request.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppPaymentExecutor {
   static const String invoiceCreateFailedMessageKey = 'invoice_create_failed';
@@ -170,6 +162,15 @@ class MiniAppPaymentExecutor {
           failure: result.failure,
           metadata: metadata,
         );
+      case MiniAppPaymentStatus.pending:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case MiniAppPaymentStatus.paid:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case MiniAppPaymentStatus.unknown:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 

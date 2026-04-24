@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/features/ips/feedback/domain/feedback_entity.dart';
+import 'package:mini_app_sdk/src/features/feedback/domain/feedback_entity.dart';
 
 void main() {
   group('FeedbackEntity.fromJson', () {

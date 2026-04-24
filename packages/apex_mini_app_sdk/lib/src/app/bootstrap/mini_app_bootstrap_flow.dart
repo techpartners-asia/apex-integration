@@ -1,7 +1,4 @@
-import '../../routes/mini_app_routes.dart';
-import '../../features/ips/shared/application/bootstrap_state_resolver.dart';
-import '../../features/ips/shared/domain/services/investment_services.dart';
-import '../session/mini_app_session_controller.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppBootstrapRes {
   final AcntBootstrapState bootstrapState;

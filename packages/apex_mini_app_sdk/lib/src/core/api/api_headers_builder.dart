@@ -1,7 +1,4 @@
-import '../token/token_provider.dart';
-
-import 'app_credentials.dart';
-import 'api_header_names.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class ApiHeadersBuilder {
   final AppCredentials credentials;

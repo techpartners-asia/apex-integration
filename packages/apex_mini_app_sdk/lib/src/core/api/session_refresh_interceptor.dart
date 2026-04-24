@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
-import 'api_client.dart';
-import 'api_header_names.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class SessionRefreshInterceptor extends Interceptor {
   final Future<String?> Function() onRefreshSession;

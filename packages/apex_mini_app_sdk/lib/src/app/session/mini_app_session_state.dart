@@ -1,6 +1,4 @@
-import '../investx_api/dto/user_entity_dto.dart';
-
-import 'models/login_session.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppSessionState {
   static const Object _sentinel = Object();

@@ -1,11 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/user_entity_dto.dart';
-import 'package:mini_app_sdk/src/app/session/data/current_user_repository.dart';
-import 'package:mini_app_sdk/src/app/session/data/login_session_repository.dart';
-import 'package:mini_app_sdk/src/app/session/mini_app_session_controller.dart';
-import 'package:mini_app_sdk/src/app/session/mini_app_session_store.dart';
-import 'package:mini_app_sdk/src/app/session/models/login_session.dart';
-import 'package:mini_app_sdk/src/core/token/token_provider.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class _FakeCurrentUserRepository implements CurrentUserRepository {
   int callCount = 0;

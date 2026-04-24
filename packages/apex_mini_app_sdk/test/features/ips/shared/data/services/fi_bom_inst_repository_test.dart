@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/dto/fi_bom_inst_dto.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/services/fi_bom_inst_repository.dart';
+import 'package:mini_app_sdk/src/features/shared/data/dto/fi_bom_inst_dto.dart';
+import 'package:mini_app_sdk/src/features/shared/data/services/fi_bom_inst_repository.dart';
 
 void main() {
   test(

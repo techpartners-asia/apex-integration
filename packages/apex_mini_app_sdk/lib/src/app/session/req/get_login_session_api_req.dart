@@ -1,4 +1,4 @@
-import '../../../core/exception/api_exception.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class GetLoginSessionApiReq {
   final String fiCode;

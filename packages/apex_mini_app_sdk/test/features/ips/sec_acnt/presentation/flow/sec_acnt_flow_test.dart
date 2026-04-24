@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/user_entity_dto.dart';
-import 'package:mini_app_sdk/src/features/ips/sec_acnt/presentation/flow/sec_acnt_flow.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   test(

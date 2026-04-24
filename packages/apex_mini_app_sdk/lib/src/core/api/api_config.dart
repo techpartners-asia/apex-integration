@@ -1,5 +1,4 @@
-import 'app_credentials.dart';
-import 'api_timeouts.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class ApiConfig {
   final String baseUrl;

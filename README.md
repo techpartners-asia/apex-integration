@@ -67,7 +67,7 @@ packages/apex_mini_app_sdk/lib/src/
 │   ├── investx_api/  # MiniAppApiBackend, DTOs, request models
 │   ├── session/      # Session controller, store, login flow
 │   └── bootstrap/    # MiniAppBootstrapFlow, MiniAppBootstrapCubit
-├── features/ips/
+├── features/
 │   ├── di/           # IpsDependencies, IpsServicesFactory
 │   ├── router/       # Route builder, route pages, InvestXFeature
 │   ├── shared/       # Domain models, services, DTOs, shared widgets

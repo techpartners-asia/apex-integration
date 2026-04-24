@@ -1,9 +1,4 @@
-import '../api/api_config.dart';
-import '../api/api_header_names.dart';
-import '../api/api_runtime.dart';
-import '../api/static_api_config.dart';
-import '../api/app_credentials.dart';
-import '../token/token_provider.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class SdkRuntimeConfig {
   final String techInvestXUrl;

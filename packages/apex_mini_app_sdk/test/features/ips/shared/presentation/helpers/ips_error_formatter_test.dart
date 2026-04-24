@@ -3,7 +3,7 @@ import 'package:mini_app_sdk/l10n/sdk_localizations_mn.dart';
 import 'package:mini_app_sdk/src/core/exception/api_business_exception.dart';
 import 'package:mini_app_sdk/src/core/exception/api_network_exception.dart';
 import 'package:mini_app_sdk/src/core/exception/api_unauthorized_exception.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/presentation/helpers/ips_error_formatter.dart';
+import 'package:mini_app_sdk/src/features/shared/presentation/helpers/ips_error_formatter.dart';
 
 void main() {
   final SdkLocalizationsMn l10n = SdkLocalizationsMn();

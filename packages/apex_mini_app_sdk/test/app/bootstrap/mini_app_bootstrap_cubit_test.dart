@@ -1,15 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
-import 'package:mini_app_sdk/src/app/bootstrap/mini_app_bootstrap_cubit.dart';
-import 'package:mini_app_sdk/src/app/bootstrap/mini_app_bootstrap_flow.dart';
-import 'package:mini_app_sdk/src/core/exception/api_exception.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/application/loadable_state.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/dto/get_sec_acnt_list_res_dto.dart';
-import 'package:mini_app_sdk/src/app/session/mini_app_session_controller.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/ips_models.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/services/investment_bootstrap_service.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('en'));

@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_core/mini_app_core.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
-import 'package:mini_app_sdk/src/app/investx_api/backend/mini_app_api_repository.dart';
-import 'package:mini_app_sdk/src/app/investx_api/req/create_invoice_api_req.dart';
-import 'package:mini_app_sdk/src/core/backend/sdk_portfolio_context.dart';
-import 'package:mini_app_sdk/src/features/ips/recharge/application/ips_recharge_cubit.dart';
-import 'package:mini_app_sdk/src/features/ips/recharge/application/ips_recharge_state.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/ips_models.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/services/orders_service.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/services/portfolio_service.dart';
-import 'package:mini_app_sdk/src/payment/mini_app_wallet_payment_request.dart';
-import 'package:mini_app_sdk/src/runtime/mini_app_payment_executor.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   test('loadPricing uses the focused IPS balance path', () async {

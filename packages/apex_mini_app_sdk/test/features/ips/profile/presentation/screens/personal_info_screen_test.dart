@@ -1,21 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/backend/mini_app_api_repository.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/user_entity_dto.dart';
-import 'package:mini_app_sdk/src/app/investx_api/models/mini_app_payment.dart';
-import 'package:mini_app_sdk/src/app/investx_api/req/create_feedback_api_req.dart';
-import 'package:mini_app_sdk/src/app/investx_api/req/create_invoice_api_req.dart';
-import 'package:mini_app_sdk/src/app/investx_api/req/update_profile_api_req.dart';
-import 'package:mini_app_sdk/src/app/investx_api/req/update_target_goal_api_req.dart';
-import 'package:mini_app_sdk/src/features/ips/feedback/domain/feedback_entity.dart';
-import 'package:mini_app_sdk/src/features/ips/feedback/domain/feedback_list_response.dart';
-import 'package:mini_app_sdk/src/features/ips/help/domain/company_info_entities.dart';
-import 'package:mini_app_sdk/src/features/ips/profile/presentation/screens/personal_info_screen.dart';
-import 'package:mini_app_sdk/src/features/ips/sec_acnt/application/sec_acnt_bank_account_lookup_repository.dart';
-import 'package:mini_app_sdk/src/features/ips/sec_acnt/application/sec_acnt_bank_options_repository.dart';
-import 'package:mini_app_sdk/src/features/ips/sec_acnt/presentation/flow/sec_acnt_flow.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/presentation/widgets/investx_text_field.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 import '../../../../../test_helpers/widget_test_app.dart';
 
@@ -84,7 +70,7 @@ void main() {
       );
 
       await tester.enterText(
-        find.widgetWithText(InvestXTextField, 'Цахим шуудан'),
+        find.widgetWithText(CustomTextField, 'Цахим шуудан'),
         'updated@example.com',
       );
       await tester.pump(const Duration(milliseconds: 600));
@@ -203,7 +189,7 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<CompaniesEntity> getCompanyInfo({bool forceRefresh = false}) {
+  Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) {
     throw UnimplementedError();
   }
 

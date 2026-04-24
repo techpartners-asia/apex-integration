@@ -1,21 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/user_entity_dto.dart';
-import 'package:mini_app_sdk/src/app/session/mini_app_session_store.dart';
-import 'package:mini_app_sdk/src/features/ips/overview/application/ips_overview_cubit.dart';
-import 'package:mini_app_sdk/src/features/ips/overview/application/ips_overview_view_data.dart';
-import 'package:mini_app_sdk/src/features/ips/overview/presentation/widgets/overview_dashboard_home_tab.dart';
-import 'package:mini_app_sdk/src/features/ips/overview/presentation/screens/overview_screen.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/dto/get_sec_acnt_list_res_dto.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/application/loadable_state.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/acnt_bootstrap_state.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/portfolio_overview.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/sec_acnt_personal_info_data.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/sec_acnt_request_result.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/services/investment_bootstrap_service.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/presentation/widgets/bottom_navbar.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 
 import '../../../../../test_helpers/widget_test_app.dart';
@@ -98,7 +84,7 @@ void main() {
 
       final MiniAppAdaptivePressable tradingAction = tester
           .widget<MiniAppAdaptivePressable>(
-            find.byKey(InvestXNavbar.tradingActionKey),
+            find.byKey(CustomNavbar.tradingActionKey),
           );
 
       expect(tradingAction.onPressed, isNull);
@@ -128,7 +114,7 @@ void main() {
 
       final MiniAppAdaptivePressable tradingAction = tester
           .widget<MiniAppAdaptivePressable>(
-            find.byKey(InvestXNavbar.tradingActionKey),
+            find.byKey(CustomNavbar.tradingActionKey),
           );
 
       expect(tradingAction.onPressed, isNotNull);

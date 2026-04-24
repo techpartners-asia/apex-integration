@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
-import 'package:mini_app_sdk/src/core/backend/sdk_portfolio_context.dart';
-import 'package:mini_app_sdk/src/features/ips/sell/application/ips_sell_cubit.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/services/investment_services.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('en'));

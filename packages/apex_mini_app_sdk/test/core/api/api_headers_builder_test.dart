@@ -1,8 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/core/api/api_headers_builder.dart';
-import 'package:mini_app_sdk/src/core/api/app_credentials.dart';
-import 'package:mini_app_sdk/src/core/api/api_header_names.dart';
-import 'package:mini_app_sdk/src/core/token/token_provider.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   const credentials = AppCredentials(appId: 'app-id', appSecret: 'app-secret');

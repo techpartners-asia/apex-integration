@@ -1,4 +1,4 @@
-import 'api_action_result_parser.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 /// Thin backward-compatible wrapper that delegates to [ApiActionResultParser]
 /// with `strictResponseCode: true`.

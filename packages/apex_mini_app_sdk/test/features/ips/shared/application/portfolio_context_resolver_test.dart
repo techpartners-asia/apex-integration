@@ -1,9 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/user_entity_dto.dart';
-import 'package:mini_app_sdk/src/core/backend/sdk_portfolio_context.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/application/portfolio_context_resolver.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/dto/get_sec_acnt_list_res_dto.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/acnt_bootstrap_state.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   group('PortfolioContextResolver', () {

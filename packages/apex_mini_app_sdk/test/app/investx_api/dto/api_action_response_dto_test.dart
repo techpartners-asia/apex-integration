@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/api_action_response_dto.dart';
-import 'package:mini_app_sdk/src/core/exception/api_exception.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   group('ApiActionResponseDto.fromJson', () {

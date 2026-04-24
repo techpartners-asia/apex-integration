@@ -1,15 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
-import 'package:mini_app_sdk/src/app/investx_api/backend/mini_app_api_repository.dart';
-import 'package:mini_app_sdk/src/app/investx_api/req/create_feedback_api_req.dart';
-import 'package:mini_app_sdk/src/core/exception/api_exception.dart';
-import 'package:mini_app_sdk/src/features/ips/feedback/application/feedback_cubit.dart';
-import 'package:mini_app_sdk/src/features/ips/feedback/application/feedback_state.dart';
-import 'package:mini_app_sdk/src/features/ips/feedback/domain/feedback_entity.dart';
-import 'package:mini_app_sdk/src/features/ips/feedback/domain/feedback_list_response.dart';
-import 'package:mini_app_sdk/src/features/ips/help/domain/company_info_entities.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('en'));
@@ -200,7 +192,7 @@ class _SuccessApi extends MiniAppApiRepository {
   }
 
   @override
-  Future<CompaniesEntity> getCompanyInfo({bool forceRefresh = false}) {
+  Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) {
     throw UnimplementedError();
   }
 
@@ -238,7 +230,7 @@ class _FailingApi extends MiniAppApiRepository {
   }
 
   @override
-  Future<CompaniesEntity> getCompanyInfo({bool forceRefresh = false}) {
+  Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) {
     throw UnimplementedError();
   }
 

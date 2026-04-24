@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/company_info_response_dto.dart';
-import 'package:mini_app_sdk/src/features/ips/help/domain/company_info_entities.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   group('CompanyInfoResponseDto', () {

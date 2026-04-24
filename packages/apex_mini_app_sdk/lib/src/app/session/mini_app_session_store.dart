@@ -1,8 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../investx_api/dto/user_entity_dto.dart';
-
-import 'mini_app_session_state.dart';
-import 'models/login_session.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppSessionStore extends Cubit<MiniAppSessionState> {
   MiniAppSessionStore({String? initialUserToken}) : super(MiniAppSessionState(userToken: initialUserToken));

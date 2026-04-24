@@ -1,10 +1,4 @@
-import '../../investx_api/dto/user_entity_dto.dart';
-import '../../../core/exception/api_exception.dart';
-
-import '../../../core/api/api_endpoints.dart';
-import '../../../core/api/api_executor.dart';
-import '../../../core/api/req_context.dart';
-import '../req/sign_up_api_req.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class SignUpBackendApi {
   final ApiExecutor? executor;

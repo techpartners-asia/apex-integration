@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/features/ips/portfolio/presentation/models/portfolio_yield_chart_data.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/ips_models.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   group('PortfolioYieldChartDataMapper', () {

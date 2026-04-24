@@ -1,7 +1,4 @@
-import '../../../core/exception/api_exception.dart';
-
-import '../../../core/api/api_parser.dart';
-import '../models/login_session.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class LoginSessionResponseDto {
   final String accessToken;
@@ -17,9 +14,7 @@ class LoginSessionResponseDto {
     if (responseCode != 0) {
       throw ApiBusinessException(
         responseCode: responseCode,
-        message:
-            ApiParser.asNullableString(json['responseDesc']) ??
-            'Login session bootstrap failed.',
+        message: ApiParser.asNullableString(json['responseDesc']) ?? 'Login session bootstrap failed.',
       );
     }
 

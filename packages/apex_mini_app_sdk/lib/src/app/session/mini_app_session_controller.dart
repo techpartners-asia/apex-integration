@@ -1,12 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../investx_api/dto/user_entity_dto.dart';
-import '../../core/exception/api_exception.dart';
-import '../../core/token/token_provider.dart';
-
-import 'mini_app_session_store.dart';
-import 'data/current_user_repository.dart';
-import 'data/login_session_repository.dart';
-import 'models/login_session.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppSessionController {
   const MiniAppSessionController();

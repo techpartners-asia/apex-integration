@@ -1,7 +1,4 @@
-import 'get_login_session_api_req.dart';
-
-import '../../../core/api/static_api_config.dart';
-import '../constants/login_session_contract.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class GetLoginSessionApiReqFactory {
   const GetLoginSessionApiReqFactory._();

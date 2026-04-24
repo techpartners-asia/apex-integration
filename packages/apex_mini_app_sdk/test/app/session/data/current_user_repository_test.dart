@@ -1,10 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/backend/mini_app_api_backend.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/user_entity_dto.dart';
-import 'package:mini_app_sdk/src/app/session/data/current_user_repository.dart';
-import 'package:mini_app_sdk/src/app/session/data/sign_up_backend_api.dart';
-import 'package:mini_app_sdk/src/app/session/req/sign_up_api_req.dart';
-import 'package:mini_app_sdk/src/core/token/token_provider.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class _FakeSignUpBackendApi extends SignUpBackendApi {
   _FakeSignUpBackendApi(this.response) : super(executor: null);

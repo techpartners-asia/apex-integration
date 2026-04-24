@@ -1,10 +1,5 @@
-import '../../investx_api/dto/user_entity_dto.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
-import '../../../core/token/token_provider.dart';
-
-import '../../investx_api/backend/mini_app_api_backend.dart';
-import '../req/sign_up_api_req.dart';
-import 'sign_up_backend_api.dart';
 
 class CurrentUserRepository {
   const CurrentUserRepository();

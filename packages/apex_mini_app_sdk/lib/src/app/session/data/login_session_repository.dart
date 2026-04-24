@@ -1,9 +1,4 @@
-import '../../investx_api/dto/user_entity_dto.dart';
-import '../../../core/backend/sdk_runtime_config.dart';
-import '../models/login_session.dart';
-import '../req/get_login_session_api_req_factory.dart';
-import 'login_session_backend_api.dart';
-import '../dto/login_session_response_dto.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class LoginSessionRepository {
   const LoginSessionRepository();

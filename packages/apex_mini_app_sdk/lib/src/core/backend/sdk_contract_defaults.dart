@@ -1,4 +1,4 @@
-import '../../features/ips/shared/constants/ips_defaults.dart';
+import '../../features/shared/constants/ips_defaults.dart';
 
 class SdkContractDefaults {
   final String? bankCode;

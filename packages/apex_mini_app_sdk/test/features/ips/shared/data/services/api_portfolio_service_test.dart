@@ -1,24 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/user_entity_dto.dart';
-import 'package:mini_app_sdk/src/app/session/mini_app_session_controller.dart';
-import 'package:mini_app_sdk/src/app/session/mini_app_session_store.dart';
-import 'package:mini_app_sdk/src/app/session/models/login_session.dart';
-import 'package:mini_app_sdk/src/core/api/api_client.dart';
-import 'package:mini_app_sdk/src/core/api/api_config.dart';
-import 'package:mini_app_sdk/src/core/api/api_endpoints.dart';
-import 'package:mini_app_sdk/src/core/api/api_executor.dart';
-import 'package:mini_app_sdk/src/core/api/api_headers_builder.dart';
-import 'package:mini_app_sdk/src/core/api/app_credentials.dart';
-import 'package:mini_app_sdk/src/core/api/req_context.dart';
-import 'package:mini_app_sdk/src/core/backend/sdk_backend_config.dart';
-import 'package:mini_app_sdk/src/core/backend/sdk_runtime_config.dart';
-import 'package:mini_app_sdk/src/core/token/token_provider_contract.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/api/ips_backend_api.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/dto/ips_response_dtos.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/services/api_portfolio_service.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/models/ips_models.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/domain/services/investment_bootstrap_service.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   test('getDashboardData does not call the statement endpoint', () async {

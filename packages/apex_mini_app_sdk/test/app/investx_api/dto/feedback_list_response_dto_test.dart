@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/app/investx_api/dto/feedback_list_response_dto.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   group('FeedbackListResponseDto', () {

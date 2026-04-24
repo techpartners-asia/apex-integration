@@ -63,7 +63,7 @@ class LauncherHomePage extends StatelessWidget {
   }
 
   Future<void> launchMiniApp(BuildContext context) async {
-    final MiniAppLaunchRes res = await sdk.launchInvestX(context);
+    final MiniAppLaunchRes res = await sdk.launchRoute(context);
 
     if (!context.mounted || res.status == MiniAppLaunchStatus.success) {
       return;

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/features/ips/questionnaire/application/questionnaire_target_goal_mapper.dart';
+import 'package:mini_app_sdk/src/features/questionnaire/application/questionnaire_target_goal_mapper.dart';
 
 void main() {
   test('maps static questionnaire answers to target goal values', () {

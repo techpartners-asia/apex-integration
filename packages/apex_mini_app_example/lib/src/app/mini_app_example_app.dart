@@ -51,7 +51,7 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
           seedColor: ExampleAppTokens.primary,
           secondary: ExampleAppTokens.secondary,
         ),
-        scaffoldBackgroundColor: InvestXDesignTokens.softSurface,
+        scaffoldBackgroundColor: DesignTokens.softSurface,
         useMaterial3: true,
       ),
     );

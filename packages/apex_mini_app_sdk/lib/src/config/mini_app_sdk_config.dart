@@ -1,6 +1,5 @@
 import 'package:mini_app_ui/mini_app_ui.dart';
-
-import '../payment/mini_app_payment_handler.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppSdkConfig {
   static const Duration defaultPaymentTimeout = Duration(seconds: 45);

@@ -1,11 +1,4 @@
-export 'sdk_bootstrap_context.dart';
-export 'sdk_contract_defaults.dart';
-export 'sdk_portfolio_context.dart';
-
-import 'sdk_bootstrap_context.dart';
-import 'sdk_contract_defaults.dart';
-import 'sdk_portfolio_context.dart';
-import 'sdk_runtime_config.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class SdkBackendConfig {
   final SdkRuntimeConfig runtime;

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/features/ips/shared/data/dto/acnt_name_lookup_dto.dart';
+import 'package:mini_app_sdk/src/features/shared/data/dto/acnt_name_lookup_dto.dart';
 
 void main() {
   test('parses direct acnt lookup payload', () {
