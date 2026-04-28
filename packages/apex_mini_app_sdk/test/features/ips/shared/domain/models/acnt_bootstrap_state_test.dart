@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/features/shared/data/dto/get_sec_acnt_list_res_dto.dart';
-import 'package:mini_app_sdk/src/features/shared/domain/models/acnt_bootstrap_state.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   test(

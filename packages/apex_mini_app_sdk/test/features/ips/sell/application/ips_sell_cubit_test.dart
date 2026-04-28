@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
@@ -68,7 +70,7 @@ void main() {
         ),
       );
 
-      await cubit.loadPricing();
+      cubit.updatePackQty('12');
       await cubit.submit();
 
       expect(ordersService.createSellOrderCallCount, 1);
@@ -76,7 +78,96 @@ void main() {
       expect(cubit.state.errorMessage, isNull);
     },
   );
+
+  test(
+    'refreshPacksAfterSuccess reloads packs once and returns refreshed packs',
+    () async {
+      final _FakeOrdersService ordersService = _FakeOrdersService();
+      final _FakePackService packService = _FakePackService(
+        completer: Completer<List<IpsPack>>(),
+      );
+      final IpsSellCubit cubit = IpsSellCubit(
+        service: ordersService,
+        l10n: l10n,
+        portfolioService: _FakePortfolioService(
+          overview: const PortfolioOverview(
+            currency: 'MNT',
+            packQty: 12,
+            packAmount: 100000,
+          ),
+        ),
+        packService: packService,
+      );
+
+      cubit.updatePackQty('12');
+      await cubit.submit();
+
+      final Future<List<IpsPack>?> firstRefresh = cubit
+          .refreshPacksAfterSuccess();
+      final Future<List<IpsPack>?> secondRefresh = cubit
+          .refreshPacksAfterSuccess();
+
+      expect(packService.getPacksCallCount, 1);
+      expect(packService.lastForceRefresh, isTrue);
+      expect(cubit.state.isRefreshingPacks, isTrue);
+      expect(await secondRefresh, isNull);
+
+      packService.completer!.complete(_testPacks);
+      final List<IpsPack>? refreshedPacks = await firstRefresh;
+
+      expect(refreshedPacks, _testPacks);
+      expect(cubit.state.isRefreshingPacks, isFalse);
+      expect(cubit.state.refreshErrorMessage, isNull);
+    },
+  );
+
+  test(
+    'refreshPacksAfterSuccess keeps success screen usable on pack load error',
+    () async {
+      final _FakePackService packService = _FakePackService(
+        error: const ApiBusinessException(
+          responseCode: 9999,
+          message: 'Pack load failed',
+        ),
+      );
+      final IpsSellCubit cubit = IpsSellCubit(
+        service: _FakeOrdersService(),
+        l10n: l10n,
+        portfolioService: _FakePortfolioService(
+          overview: const PortfolioOverview(
+            currency: 'MNT',
+            packQty: 12,
+            packAmount: 100000,
+          ),
+        ),
+        packService: packService,
+      );
+
+      cubit.updatePackQty('12');
+      await cubit.submit();
+      final List<IpsPack>? refreshedPacks = await cubit
+          .refreshPacksAfterSuccess();
+
+      expect(refreshedPacks, isNull);
+      expect(packService.getPacksCallCount, 1);
+      expect(cubit.state.isSuccess, isTrue);
+      expect(cubit.state.isRefreshingPacks, isFalse);
+      expect(cubit.state.refreshErrorMessage, 'Pack load failed');
+      expect(cubit.state.canCompleteSuccessFlow, isTrue);
+    },
+  );
 }
+
+const List<IpsPack> _testPacks = <IpsPack>[
+  IpsPack(
+    packCode: '1',
+    name: 'Pack 1',
+    isRecommended: 1,
+    bondPercent: 85,
+    stockPercent: 15,
+    assetPercent: 0,
+  ),
+];
 
 class _FakeOrdersService implements OrdersService {
   int createSellOrderCallCount = 0;
@@ -137,5 +228,40 @@ class _FakePortfolioService implements PortfolioService {
     SdkPortfolioContext? context,
   }) {
     throw UnimplementedError();
+  }
+}
+
+class _FakePackService implements PackService {
+  _FakePackService({
+    this.packs = _testPacks,
+    this.error,
+    this.completer,
+  });
+
+  final List<IpsPack> packs;
+  final Object? error;
+  final Completer<List<IpsPack>>? completer;
+  int getPacksCallCount = 0;
+  bool? lastForceRefresh;
+
+  @override
+  Future<List<IpsPack>> getPacks({
+    String? srcFiCode,
+    bool forceRefresh = false,
+  }) async {
+    getPacksCallCount += 1;
+    lastForceRefresh = forceRefresh;
+
+    final Object? resolvedError = error;
+    if (resolvedError != null) {
+      throw resolvedError;
+    }
+
+    final Completer<List<IpsPack>>? pending = completer;
+    if (pending != null) {
+      return pending.future;
+    }
+
+    return packs;
   }
 }

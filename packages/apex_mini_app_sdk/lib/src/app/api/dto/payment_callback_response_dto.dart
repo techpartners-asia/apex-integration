@@ -9,7 +9,10 @@ class PaymentCallbackResponseDto {
   factory PaymentCallbackResponseDto.fromJson(Map<String, Object?> json) {
     final String? body = ApiParser.asNullableString(json['body']);
     if (body == null) {
-      throw ApiParsingException(ApiParser.asNullableString(json['message']) ?? 'paymentCallback returned success without a body payload.');
+      throw ApiParsingException(
+        ApiParser.asNullableString(json['message']) ??
+            'paymentCallback returned success without a body payload.',
+      );
     }
 
     return PaymentCallbackResponseDto(

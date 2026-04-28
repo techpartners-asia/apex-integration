@@ -18,15 +18,16 @@ MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
       );
     }
 
-    final MiniAppPaymentRes? result = await showModalBottomSheet<MiniAppPaymentRes>(
-      context: context,
-      useRootNavigator: true,
-      isScrollControlled: true,
-      backgroundColor: const Color(0xFFF2F4F7),
-      builder: (BuildContext context) {
-        return _ExampleWalletPaymentSheet(request: request);
-      },
-    );
+    final MiniAppPaymentRes? result =
+        await showModalBottomSheet<MiniAppPaymentRes>(
+          context: context,
+          useRootNavigator: true,
+          isScrollControlled: true,
+          backgroundColor: const Color(0xFFF2F4F7),
+          builder: (BuildContext context) {
+            return _ExampleWalletPaymentSheet(request: request);
+          },
+        );
 
     return result ??
         MiniAppPaymentRes.cancelled(
@@ -64,10 +65,7 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     Expanded(
                       child: CustomText(
                         'Host wallet checkout',
-                        variant: MiniAppTextVariant.headline,
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: MiniAppTypography.bold,
-                        ),
+                        variant: MiniAppTextVariant.h8,
                       ),
                     ),
                     MiniAppAdaptiveIconButton(
@@ -82,8 +80,7 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                 const SizedBox(height: 8),
                 CustomText(
                   'The SDK created the invoice. The host app now owns the wallet flow and will return the payment result back to the SDK.',
-                  variant: MiniAppTextVariant.body,
-                  style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+                  variant: MiniAppTextVariant.body2,
                 ),
                 const SizedBox(height: 20),
                 _InfoRow(label: 'Flow', value: _flowLabel(request.flow)),
@@ -100,14 +97,16 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     context,
                     MiniAppPaymentRes.success(
                       message: 'Payment completed in the host wallet.',
-                      transactionId: 'wallet_${DateTime.now().millisecondsSinceEpoch}',
+                      transactionId:
+                          'wallet_${DateTime.now().millisecondsSinceEpoch}',
                       paymentReference: request.invoiceId,
                     ),
                   ),
                   icon: const Icon(Icons.check_circle_outline_rounded),
                   label: const CustomText(
                     'Complete payment',
-                    variant: MiniAppTextVariant.button,
+                    variant: MiniAppTextVariant.buttonMedium,
+                    color: Colors.white,
                   ),
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(52),
@@ -126,9 +125,10 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     ),
                   ),
                   icon: Icon(Icons.error_outline_rounded, color: colors.error),
-                  label: const CustomText(
+                  label: CustomText(
                     'Fail payment',
-                    variant: MiniAppTextVariant.button,
+                    variant: MiniAppTextVariant.buttonMedium,
+                    color: colors.onSecondaryContainer,
                   ),
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(52),
@@ -143,9 +143,10 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     ),
                   ),
                   icon: const Icon(Icons.close_rounded),
-                  label: const CustomText(
+                  label: CustomText(
                     'Cancel payment',
-                    variant: MiniAppTextVariant.button,
+                    variant: MiniAppTextVariant.buttonMedium,
+                    color: colors.primary,
                   ),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(52),
@@ -186,19 +187,14 @@ class _InfoRow extends StatelessWidget {
             width: 96,
             child: CustomText(
               label,
-              variant: MiniAppTextVariant.body,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              variant: MiniAppTextVariant.body2,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           Expanded(
             child: CustomText(
               value,
-              variant: MiniAppTextVariant.body,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: MiniAppTypography.semiBold,
-              ),
+              variant: MiniAppTextVariant.subtitle2,
             ),
           ),
         ],

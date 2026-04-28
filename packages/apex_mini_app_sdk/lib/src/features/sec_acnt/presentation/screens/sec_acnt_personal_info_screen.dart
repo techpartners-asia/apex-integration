@@ -8,7 +8,7 @@ class SecAcntPersonalInfoScreen extends StatefulWidget {
   final AcntBootstrapState? bootstrapState;
   final SecAcntBankOptionsRepository bankOptionsRepository;
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
-  final MiniAppApiRepository appApi;
+  final MiniAppProfileRepository appApi;
   final UserEntityDto? currentUser;
   final SecAcntFlowDraft initialDraft;
 
@@ -23,7 +23,8 @@ class SecAcntPersonalInfoScreen extends StatefulWidget {
   });
 
   @override
-  State<SecAcntPersonalInfoScreen> createState() => _SecAcntPersonalInfoScreenState();
+  State<SecAcntPersonalInfoScreen> createState() =>
+      _SecAcntPersonalInfoScreenState();
 }
 
 class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
@@ -49,7 +50,9 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   void initState() {
     super.initState();
     _mobileController = TextEditingController(text: widget.initialDraft.mobile);
-    _secondaryMobileController = TextEditingController(text: widget.initialDraft.secondaryMobile);
+    _secondaryMobileController = TextEditingController(
+      text: widget.initialDraft.secondaryMobile,
+    );
     _emailController = TextEditingController(text: widget.initialDraft.email);
     _ibanController = TextEditingController(text: widget.initialDraft.iban);
     _selectedBank = widget.initialDraft.selectedBank;
@@ -123,7 +126,8 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       if (bankCode != null && option.id.trim() == bankCode.trim()) {
         return option;
       }
-      if (bankName != null && option.label.trim().toLowerCase() == bankName.trim().toLowerCase()) {
+      if (bankName != null &&
+          option.label.trim().toLowerCase() == bankName.trim().toLowerCase()) {
         return option;
       }
     }
@@ -161,9 +165,21 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
   }
 
+  AutovalidateMode get _autovalidateMode => _didInteractWithPersonalInfo
+      ? AutovalidateMode.always
+      : AutovalidateMode.disabled;
+
+  String? _bankErrorText(BuildContext context) {
+    if (!_didInteractWithPersonalInfo && !_didTouchBankSelector) {
+      return null;
+    }
+    return _validateSelectedBank(context);
+  }
+
   bool _canContinue(BuildContext context) {
     return _validateMobile(context, _mobileController.text) == null &&
-        _validateSecondaryMobile(context, _secondaryMobileController.text) == null &&
+        _validateSecondaryMobile(context, _secondaryMobileController.text) ==
+            null &&
         _validateEmail(context, _emailController.text) == null &&
         _validateIban(context, _ibanController.text) == null &&
         _validateSelectedBank(context) == null;
@@ -174,19 +190,20 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       setState(() => _didTouchBankSelector = true);
     }
 
-    final SecAcntBankOption? selected = await showModalBottomSheet<SecAcntBankOption>(
-      context: context,
-      useSafeArea: false,
-      backgroundColor: MiniAppStateColors.bottomSheetBackground,
-      isScrollControlled: true,
-      showDragHandle: false,
-      builder: (BuildContext context) {
-        return SecAcntBankSelectionSheet(
-          selectedBank: _selectedBank,
-          bankOptionsRepository: widget.bankOptionsRepository,
+    final SecAcntBankOption? selected =
+        await showModalBottomSheet<SecAcntBankOption>(
+          context: context,
+          useSafeArea: false,
+          backgroundColor: MiniAppStateColors.bottomSheetBackground,
+          isScrollControlled: true,
+          showDragHandle: false,
+          builder: (BuildContext context) {
+            return SecAcntBankSelectionSheet(
+              selectedBank: _selectedBank,
+              bankOptionsRepository: widget.bankOptionsRepository,
+            );
+          },
         );
-      },
-    );
 
     if (selected == null || !mounted) {
       return;
@@ -227,7 +244,10 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     });
 
     try {
-      await _profileSubmissionService.submit(UpdateProfileActionType.updateProfile, draft.toPersonalInfoData());
+      await _profileSubmissionService.submit(
+        UpdateProfileActionType.updateProfile,
+        draft.toPersonalInfoData(),
+      );
     } catch (error) {
       if (!mounted) {
         return;
@@ -278,7 +298,11 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final double footerClearance = responsive.dp(24) + responsive.spacing.buttonHeight + 4 + responsive.safeBottom;
+    final double footerClearance =
+        responsive.dp(24) +
+        responsive.spacing.buttonHeight +
+        4 +
+        responsive.safeBottom;
     final SecAcntWizardHeaderData header = buildSecAcntHeader(
       context,
       SecAcntFlowStep.personalInformation,
@@ -299,63 +323,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       appBarBackgroundColor: DesignTokens.softSurface,
       appBarShowBottomBorder: false,
       appBarTitleStyle: buildSecAcntHeaderTitleStyle(context, header),
-      body: Stack(
-        children: <Widget>[
-          SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(
-              responsive.dp(20),
-              responsive.dp(8),
-              responsive.dp(20),
-              responsive.dp(20) + footerClearance,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  SecAcntStepIndicator(
-                    currentStep: SecAcntFlowStep.personalInformation,
-                    bootstrapState: widget.bootstrapState,
-                  ),
-                  SecAcntPersonalInfoStep(
-                    mobileController: _mobileController,
-                    secondaryMobileController: _secondaryMobileController,
-                    emailController: _emailController,
-                    ibanController: _ibanController,
-                    selectedBank: _selectedBank,
-                    onSelectBank: () => _selectBank(context),
-                    isShortFlow: _isShortFlow,
-                    autovalidateMode: _didInteractWithPersonalInfo ? AutovalidateMode.always : AutovalidateMode.disabled,
-                    mobileValidator: (String? value) => _validateMobile(context, value),
-                    secondaryMobileValidator: (String? value) => _validateSecondaryMobile(context, value),
-                    emailValidator: (String? value) => _validateEmail(context, value),
-                    ibanValidator: (String? value) => _validateIban(context, value),
-                    bankErrorText: (_didInteractWithPersonalInfo || _didTouchBankSelector) ? _validateSelectedBank(context) : null,
-                  ),
-                  if (_submitErrorMessage != null && _submitErrorMessage!.trim().isNotEmpty) ...<Widget>[
-                    SizedBox(height: context.responsive.dp(20)),
-                    NoticeBanner(
-                      title: context.l10n.errorsActionFailed,
-                      message: _submitErrorMessage!,
-                      icon: Icons.error_outline_rounded,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          if (_isWarmingBankOptions)
-            BlockingLoadingOverlay(
-              title: context.l10n.commonLoading,
-              message: context.l10n.secAcntBankSelectionTitle,
-            ),
-          if (_isSubmittingProfile)
-            BlockingLoadingOverlay(
-              title: context.l10n.commonLoading,
-              message: context.l10n.secAcntProfileUpdating,
-            ),
-        ],
-      ),
+      body: _buildBody(context, footerClearance),
       bottomNavigationBar: SecAcntWizardFooter(
         buttonLabel: context.l10n.commonContinue,
         onPressed: _submitAndOpenNextStep,
@@ -363,6 +331,71 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       ),
     );
   }
+
+  Widget _buildBody(BuildContext context, double footerClearance) {
+    return Stack(
+      children: <Widget>[
+        _buildScrollableForm(context, footerClearance),
+        if (_isWarmingBankOptions)
+          BlockingLoadingOverlay(
+            title: context.l10n.commonLoading,
+            message: context.l10n.secAcntBankSelectionTitle,
+          ),
+        if (_isSubmittingProfile)
+          BlockingLoadingOverlay(
+            title: context.l10n.commonLoading,
+            message: context.l10n.secAcntProfileUpdating,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildScrollableForm(BuildContext context, double footerClearance) {
+    final responsive = context.responsive;
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(
+        responsive.dp(20),
+        responsive.dp(8),
+        responsive.dp(20),
+        responsive.dp(20) + footerClearance,
+      ),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SecAcntStepIndicator(
+              currentStep: SecAcntFlowStep.personalInformation,
+              bootstrapState: widget.bootstrapState,
+            ),
+            SecAcntPersonalInfoStep(
+              mobileController: _mobileController,
+              secondaryMobileController: _secondaryMobileController,
+              emailController: _emailController,
+              ibanController: _ibanController,
+              selectedBank: _selectedBank,
+              onSelectBank: () => _selectBank(context),
+              isShortFlow: _isShortFlow,
+              autovalidateMode: _autovalidateMode,
+              mobileValidator: (String? value) =>
+                  _validateMobile(context, value),
+              secondaryMobileValidator: (String? value) =>
+                  _validateSecondaryMobile(context, value),
+              emailValidator: (String? value) => _validateEmail(context, value),
+              ibanValidator: (String? value) => _validateIban(context, value),
+              bankErrorText: _bankErrorText(context),
+            ),
+            if (_hasSubmitError)
+              _SubmitErrorBanner(message: _submitErrorMessage!),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool get _hasSubmitError =>
+      _submitErrorMessage != null && _submitErrorMessage!.trim().isNotEmpty;
 
   @override
   void dispose() {
@@ -379,5 +412,23 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       ..removeListener(_refresh)
       ..dispose();
     super.dispose();
+  }
+}
+
+class _SubmitErrorBanner extends StatelessWidget {
+  final String message;
+
+  const _SubmitErrorBanner({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: context.responsive.dp(20)),
+      child: NoticeBanner(
+        title: context.l10n.errorsActionFailed,
+        message: message,
+        icon: Icons.error_outline_rounded,
+      ),
+    );
   }
 }

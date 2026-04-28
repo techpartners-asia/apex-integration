@@ -140,6 +140,8 @@ class _FakePortfolioService implements PortfolioService {
       currency: 'MNT',
       startDate: '',
       endDate: '',
+      pageCount: 0,
+      totalPage: 0,
     );
   }
 }

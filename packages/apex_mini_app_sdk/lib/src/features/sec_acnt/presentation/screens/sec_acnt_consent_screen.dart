@@ -6,7 +6,7 @@ class SecAcntConsentScreen extends StatelessWidget {
   final AcntBootstrapState? bootstrapState;
   final SecAcntBankOptionsRepository bankOptionsRepository;
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
-  final MiniAppApiRepository appApi;
+  final MiniAppProfileRepository appApi;
   final UserEntityDto? currentUser;
   final SecAcntFlowDraft initialDraft;
 
@@ -80,15 +80,11 @@ class SecAcntConsentScreen extends StatelessWidget {
                         height: responsive.dp(120),
                       ),
                       SizedBox(height: responsive.dp(20)),
-                      Text(
+                      CustomText(
                         l10n.tinoConsent,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              color: DesignTokens.ink,
-                              fontWeight: MiniAppTypography.bold,
-                              height: 1.3,
-                            ),
+                        variant: MiniAppTextVariant.subtitle2,
+                        color: DesignTokens.ink,
                       ),
                     ],
                   ),

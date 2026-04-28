@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 
 import '../theme/mini_app_typography.dart';
-import '../theme/mini_app_typography_context.dart';
-
-// display   →    displaySmall   →   36
-// headline  →    headlineSmall  →   24
-// title     →    titleMedium    →   16
-// body      →    bodyMedium     →   14
-// bodySmall →    bodySmall      →   12
-// label     →    labelMedium    →   12
-// caption   →    labelSmall     →   11
-// button    →    labelLarge     →   14
 
 enum MiniAppTextVariant {
-  display,
-  headline,
-  titleSmall,
-  title,
-  titleLarge,
-  body,
-  bodySmall,
-  label,
-  caption,
-  button,
-  labelSmall,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  h7,
+  h8,
+  title1,
+  title2,
+  title3,
+  subtitle1,
+  subtitle2,
+  subtitle3,
+  body1,
+  body2,
+  body3,
+  caption1,
+  caption2,
+  overline1,
+  overline2,
+  overlineSemiBold,
+  buttonLarge,
+  buttonMedium,
+  buttonSmall,
 }
 
 class CustomText extends StatelessWidget {
@@ -43,7 +47,7 @@ class CustomText extends StatelessWidget {
   const CustomText(
     this.text, {
     super.key,
-    this.variant = MiniAppTextVariant.body,
+    this.variant = MiniAppTextVariant.body3,
     this.color,
     this.fontWeight,
     this.textAlign,
@@ -58,19 +62,22 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = context.textTheme;
     final TextStyle fallbackStyle = TextStyle(
       fontFamily: MiniAppTypography.fontFamily,
       package: MiniAppTypography.package,
       fontWeight: MiniAppTypography.regular,
     );
 
-    final TextStyle baseStyle =
-        _resolveBaseStyle(textTheme, variant) ?? fallbackStyle;
+    final TextStyle baseStyle = _resolveBaseStyle(variant) ?? fallbackStyle;
+    final Color resolvedColor =
+        color ??
+        style?.color ??
+        baseStyle.color ??
+        MiniAppTypography.defaultTextColor;
     final TextStyle effectiveStyle = baseStyle
         .merge(style)
         .copyWith(
-          color: color,
+          color: resolvedColor,
           fontWeight: fontWeight,
           decoration: decoration,
           height: height,
@@ -87,22 +94,33 @@ class CustomText extends StatelessWidget {
     );
   }
 
-  TextStyle? _resolveBaseStyle(
-    TextTheme textTheme,
-    MiniAppTextVariant variant,
-  ) {
+  TextStyle? _resolveBaseStyle(MiniAppTextVariant variant) {
     return switch (variant) {
-      MiniAppTextVariant.display => textTheme.displaySmall, // 36
-      MiniAppTextVariant.headline => textTheme.headlineSmall, // 20
-      MiniAppTextVariant.titleSmall => textTheme.titleSmall, // 16
-      MiniAppTextVariant.title => textTheme.titleMedium, // 18
-      MiniAppTextVariant.titleLarge => textTheme.titleLarge, // 22
-      MiniAppTextVariant.body => textTheme.bodyMedium, // 14
-      MiniAppTextVariant.bodySmall => textTheme.bodySmall, // 12
-      MiniAppTextVariant.label => textTheme.labelMedium, // 12
-      MiniAppTextVariant.caption => textTheme.labelSmall, // 10
-      MiniAppTextVariant.button => textTheme.titleSmall, // 16
-      MiniAppTextVariant.labelSmall => textTheme.labelSmall, // 10
+      MiniAppTextVariant.h1 => MiniAppTypography.h1,
+      MiniAppTextVariant.h2 => MiniAppTypography.h2,
+      MiniAppTextVariant.h3 => MiniAppTypography.h3,
+      MiniAppTextVariant.h4 => MiniAppTypography.h4,
+      MiniAppTextVariant.h5 => MiniAppTypography.h5,
+      MiniAppTextVariant.h6 => MiniAppTypography.h6,
+      MiniAppTextVariant.h7 => MiniAppTypography.h7,
+      MiniAppTextVariant.h8 => MiniAppTypography.h8,
+      MiniAppTextVariant.title1 => MiniAppTypography.title1,
+      MiniAppTextVariant.title2 => MiniAppTypography.title2,
+      MiniAppTextVariant.title3 => MiniAppTypography.title3,
+      MiniAppTextVariant.subtitle1 => MiniAppTypography.subtitle1,
+      MiniAppTextVariant.subtitle2 => MiniAppTypography.subtitle2,
+      MiniAppTextVariant.subtitle3 => MiniAppTypography.subtitle3,
+      MiniAppTextVariant.body1 => MiniAppTypography.body1,
+      MiniAppTextVariant.body2 => MiniAppTypography.body2,
+      MiniAppTextVariant.body3 => MiniAppTypography.body3,
+      MiniAppTextVariant.caption1 => MiniAppTypography.caption1,
+      MiniAppTextVariant.caption2 => MiniAppTypography.caption2,
+      MiniAppTextVariant.overline1 => MiniAppTypography.overline1,
+      MiniAppTextVariant.overline2 => MiniAppTypography.overline2,
+      MiniAppTextVariant.overlineSemiBold => MiniAppTypography.overlineSemiBold,
+      MiniAppTextVariant.buttonLarge => MiniAppTypography.buttonLarge,
+      MiniAppTextVariant.buttonMedium => MiniAppTypography.buttonMedium,
+      MiniAppTextVariant.buttonSmall => MiniAppTypography.buttonSmall,
     };
   }
 }

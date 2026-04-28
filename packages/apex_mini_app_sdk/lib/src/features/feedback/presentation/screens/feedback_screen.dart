@@ -31,7 +31,11 @@ class FeedbackScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, FeedbackState state, SdkLocalizations l10n) {
+  Widget _buildBody(
+    BuildContext context,
+    FeedbackState state,
+    SdkLocalizations l10n,
+  ) {
     if (state.isLoading && state.items.isEmpty) {
       return const SkeletonLoader();
     }
@@ -97,10 +101,8 @@ class _FeedbackEmptyState extends StatelessWidget {
           SizedBox(height: responsive.spacing.sectionSpacing),
           CustomText(
             l10n.ipsFeedbackEmptyTitle,
+            variant: MiniAppTextVariant.subtitle2,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: MiniAppTypography.bold,
-            ),
           ),
           SizedBox(height: responsive.spacing.inlineSpacing),
           Padding(
@@ -108,11 +110,8 @@ class _FeedbackEmptyState extends StatelessWidget {
             child: CustomText(
               l10n.ipsFeedbackEmptyBody,
               textAlign: TextAlign.center,
-              variant: MiniAppTextVariant.bodySmall,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: DesignTokens.muted,
-                height: 1.5,
-              ),
+              variant: MiniAppTextVariant.caption1,
+              color: DesignTokens.muted,
             ),
           ),
           SizedBox(height: responsive.spacing.sectionSpacing * 1.5),
@@ -149,7 +148,8 @@ class _FeedbackListState extends StatelessWidget {
         Expanded(
           child: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification notification) {
-              if (notification.metrics.pixels >= notification.metrics.maxScrollExtent - responsive.dp(120)) {
+              if (notification.metrics.pixels >=
+                  notification.metrics.maxScrollExtent - responsive.dp(120)) {
                 onLoadMore();
               }
               return false;
@@ -160,7 +160,8 @@ class _FeedbackListState extends StatelessWidget {
                 vertical: responsive.spacing.sectionSpacing,
               ),
               itemCount: items.length + (state.isLoadingMore ? 1 : 0),
-              separatorBuilder: (_, _) => SizedBox(height: responsive.spacing.cardGap),
+              separatorBuilder: (_, _) =>
+                  SizedBox(height: responsive.spacing.cardGap),
               itemBuilder: (BuildContext context, int index) {
                 if (index >= items.length) {
                   return const Padding(
@@ -217,9 +218,7 @@ class _FeedbackListTile extends StatelessWidget {
                       Expanded(
                         child: CustomText(
                           item.title,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: MiniAppTypography.semiBold,
-                          ),
+                          variant: MiniAppTextVariant.subtitle2,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -231,11 +230,8 @@ class _FeedbackListTile extends StatelessWidget {
                   SizedBox(height: responsive.dp(6)),
                   CustomText(
                     item.description,
-                    variant: MiniAppTextVariant.bodySmall,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: DesignTokens.muted,
-                      height: 1.45,
-                    ),
+                    variant: MiniAppTextVariant.caption1,
+                    color: DesignTokens.muted,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -246,18 +242,15 @@ class _FeedbackListTile extends StatelessWidget {
                     children: <Widget>[
                       CustomText(
                         _formatFeedbackTimestamp(item.createdAt),
-                        variant: MiniAppTextVariant.caption,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: DesignTokens.muted,
-                        ),
+                        variant: MiniAppTextVariant.caption2,
+                        color: DesignTokens.muted,
                       ),
-                      if (item.updatedAt.trim().isNotEmpty && item.updatedAt != item.createdAt)
+                      if (item.updatedAt.trim().isNotEmpty &&
+                          item.updatedAt != item.createdAt)
                         CustomText(
                           '• ${_formatFeedbackTimestamp(item.updatedAt)}',
-                          variant: MiniAppTextVariant.caption,
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: DesignTokens.muted,
-                          ),
+                          variant: MiniAppTextVariant.caption2,
+                          color: DesignTokens.muted,
                         ),
                     ],
                   ),
@@ -307,7 +300,11 @@ class _FeedbackStatusChip extends StatelessWidget {
         DesignTokens.selectionBlue.withValues(alpha: 0.12),
         DesignTokens.selectionBlue,
       ),
-      String() => throw UnimplementedError(),
+      _ => (
+        status.trim().isEmpty ? l10n.errorsGenericTitle : status.trim(),
+        DesignTokens.muted.withValues(alpha: 0.12),
+        DesignTokens.muted,
+      ),
     };
 
     return Container(
@@ -321,12 +318,8 @@ class _FeedbackStatusChip extends StatelessWidget {
       ),
       child: CustomText(
         label,
-        variant: MiniAppTextVariant.caption,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: fg,
-          fontWeight: MiniAppTypography.semiBold,
-          fontSize: responsive.dp(11),
-        ),
+        variant: MiniAppTextVariant.caption1,
+        color: fg,
       ),
     );
   }

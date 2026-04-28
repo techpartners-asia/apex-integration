@@ -22,10 +22,8 @@ Future<bool?> showConfirmationSheet({
           children: <Widget>[
             CustomText(
               message,
-              variant: MiniAppTextVariant.body,
-              style: Theme.of(sheetContext).textTheme.bodyMedium?.copyWith(
-                color: MiniAppStateColors.mutedForeground,
-              ),
+              variant: MiniAppTextVariant.body2,
+              color: MiniAppStateColors.mutedForeground,
             ),
             SizedBox(height: responsive.spacing.sectionSpacing),
             MiniAppAdaptivePressable(
@@ -37,7 +35,7 @@ Future<bool?> showConfirmationSheet({
               onPressed: () => Navigator.pop(sheetContext, true),
               child: CustomText(
                 confirmLabel,
-                variant: MiniAppTextVariant.button,
+                variant: MiniAppTextVariant.buttonMedium,
               ),
             ),
             SizedBox(height: responsive.spacing.inlineSpacing),
@@ -45,7 +43,7 @@ Future<bool?> showConfirmationSheet({
               onPressed: () => Navigator.pop(sheetContext, false),
               child: CustomText(
                 cancelLabel,
-                variant: MiniAppTextVariant.button,
+                variant: MiniAppTextVariant.buttonMedium,
               ),
             ),
           ],

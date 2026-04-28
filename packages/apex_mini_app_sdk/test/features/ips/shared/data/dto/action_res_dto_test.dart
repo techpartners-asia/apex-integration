@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/core/exception/api_exception.dart';
-import 'package:mini_app_sdk/src/features/shared/data/dto/bootstrap_dto.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   group('ActionResDto.fromJson', () {

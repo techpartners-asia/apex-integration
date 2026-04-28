@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/features/shared/data/dto/portfolio_statement_dto.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   test(
@@ -54,17 +54,70 @@ void main() {
 
       expect(dto.startDate, '2026-04-01');
       expect(dto.endDate, '2026-04-09');
-      expect(dto.entries, hasLength(2));
-      expect(dto.entries.first.isCredit, isTrue);
-      expect(dto.entries.first.amount, 150);
-      expect(dto.entries.first.description, 'Recharge');
-      expect(dto.entries.last.isCredit, isFalse);
-      expect(dto.entries.last.amount, 10);
+      expect(dto.stmtList, hasLength(2));
+      expect(dto.stmtList.first.isCredit, isTrue);
+      expect(dto.stmtList.first.amount, 150);
+      expect(dto.stmtList.first.description, 'Recharge');
+      expect(dto.stmtList.last.isCredit, isFalse);
+      expect(dto.stmtList.last.amount, 10);
 
       final domain = dto.toDomain();
       expect(domain.totalCount, 2);
-      expect(domain.entries, hasLength(2));
-      expect(domain.entries.first.description, 'Recharge');
+      expect(domain.stmtList, hasLength(2));
+      expect(domain.stmtList.first.description, 'Recharge');
     },
   );
+
+  test(
+    'throws business exception when statement response code is not success',
+    () {
+      expect(
+        () => CasaStatementResponseDto.fromJson(
+          <String, Object?>{
+            'responseCode': 9999,
+            'responseDesc': 'Системийн алдаа!',
+            'resultValue': null,
+            'casafintxn': null,
+          },
+          fallbackStartDate: '2026-04-01',
+          fallbackEndDate: '2026-04-09',
+        ),
+        throwsA(
+          isA<ApiBusinessException>()
+              .having(
+                (ApiBusinessException error) => error.responseCode,
+                'responseCode',
+                9999,
+              )
+              .having(
+                (ApiBusinessException error) => error.message,
+                'message',
+                'Системийн алдаа!',
+              ),
+        ),
+      );
+    },
+  );
+
+  test('parses success response with null statement list as empty data', () {
+    final CasaStatementResponseDto dto = CasaStatementResponseDto.fromJson(
+      <String, Object?>{
+        'responseCode': 0,
+        'responseDesc': null,
+        'resultValue': null,
+        'casafintxn': null,
+        'pageCount': null,
+        'totalPage': null,
+        'totalCount': null,
+      },
+      fallbackStartDate: '2026-04-01',
+      fallbackEndDate: '2026-04-09',
+    );
+
+    expect(dto.resultValue, isNull);
+    expect(dto.stmtList, isEmpty);
+    expect(dto.pageCount, 0);
+    expect(dto.totalPage, 0);
+    expect(dto.totalCount, 0);
+  });
 }

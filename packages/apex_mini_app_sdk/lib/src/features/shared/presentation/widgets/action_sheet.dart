@@ -80,13 +80,9 @@ class ActionSheet extends StatelessWidget {
                 Expanded(
                   child: CustomText(
                     title,
-                    variant: MiniAppTextVariant.title,
+                    variant: MiniAppTextVariant.subtitle2,
                     textAlign: TextAlign.center,
-                    style:
-                        titleStyle ??
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: MiniAppTypography.bold,
-                        ),
+                    style: titleStyle,
                   ),
                 ),
                 resolvedTrailing,

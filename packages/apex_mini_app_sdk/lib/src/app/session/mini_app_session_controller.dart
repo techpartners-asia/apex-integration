@@ -1,36 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-class MiniAppSessionController {
-  const MiniAppSessionController();
+abstract interface class MiniAppSessionController {
+  MiniAppSessionStore get store;
 
-  MiniAppSessionStore get store => throw UnimplementedError();
+  UserEntityDto? get currentUser;
 
-  UserEntityDto? get currentUser => throw UnimplementedError();
+  LoginSession? get loginSession;
 
-  LoginSession? get loginSession => throw UnimplementedError();
+  String? get userToken;
 
-  String? get userToken => throw UnimplementedError();
+  void prepareLaunch({String? userToken});
 
-  void prepareLaunch({String? userToken}) {
-    throw UnimplementedError();
-  }
+  void cacheCurrentUser(UserEntityDto user);
 
-  void cacheCurrentUser(UserEntityDto user) {
-    throw UnimplementedError();
-  }
+  Future<UserEntityDto> ensureCurrentUser();
 
-  Future<UserEntityDto> ensureCurrentUser() {
-    throw UnimplementedError();
-  }
+  Future<LoginSession> ensureLoginSession();
 
-  Future<LoginSession> ensureLoginSession() {
-    throw UnimplementedError();
-  }
-
-  Future<LoginSession> refreshLoginSession() {
-    throw UnimplementedError();
-  }
+  Future<LoginSession> refreshLoginSession();
 }
 
 class DefaultMiniAppSessionController implements MiniAppSessionController {
@@ -74,7 +62,9 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
 
   @override
   void cacheCurrentUser(UserEntityDto user) {
-    final String? adminSession = _normalizedAdminSession(user) ?? _normalizedAdminSession(sessionStore.currentUser);
+    final String? adminSession =
+        _normalizedAdminSession(user) ??
+        _normalizedAdminSession(sessionStore.currentUser);
     if (adminSession != null) {
       user.admSession = adminSession;
       currentUserTokenProvider.updateAccessToken(adminSession);

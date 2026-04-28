@@ -2,7 +2,6 @@ import 'package:mini_app_core/mini_app_core.dart';
 import 'package:flutter/material.dart';
 
 import '../module/ui_mini_app_module.dart';
-import '../theme/mini_app_state_colors.dart';
 import '../widget/mini_app_host_shell.dart';
 import 'mini_app_animated_page_route.dart';
 import 'mini_app_host_controller.dart';
@@ -43,7 +42,10 @@ class DefaultMiniAppHostController implements MiniAppHostController {
   }
 
   @override
-  Future<MiniAppLaunchRes> launch(BuildContext context, MiniAppLaunchReq req) async {
+  Future<MiniAppLaunchRes> launch(
+    BuildContext context,
+    MiniAppLaunchReq req,
+  ) async {
     ensureNotDisposed();
 
     final ResolvedLaunch? resolved = resolveLaunchReq(req);
@@ -79,7 +81,10 @@ class DefaultMiniAppHostController implements MiniAppHostController {
         ),
       );
 
-      final NavigatorState navigator = Navigator.of(context, rootNavigator: useRootNavigator);
+      final NavigatorState navigator = Navigator.of(
+        context,
+        rootNavigator: useRootNavigator,
+      );
 
       Object? data = await navigator.push<Object?>(
         MiniAppAnimatedPageRoute<Object?>(
@@ -127,7 +132,10 @@ class DefaultMiniAppHostController implements MiniAppHostController {
   }
 
   @override
-  Future<MiniAppLaunchRes> replace(BuildContext context, MiniAppLaunchReq req) async {
+  Future<MiniAppLaunchRes> replace(
+    BuildContext context,
+    MiniAppLaunchReq req,
+  ) async {
     ensureNotDisposed();
 
     final ResolvedLaunch? resolved = resolveLaunchReq(req);
@@ -242,7 +250,8 @@ class DefaultMiniAppHostController implements MiniAppHostController {
       return MiniAppLaunchRes.failure(
         route: req.route,
         errorCode: MiniAppLaunchErrorCode.routeNotFound,
-        errorMessage: 'Route "${req.route}" is not declared in module "${module.displayName}".',
+        errorMessage:
+            'Route "${req.route}" is not declared in module "${module.displayName}".',
       );
     }
 
@@ -255,7 +264,9 @@ class DefaultMiniAppHostController implements MiniAppHostController {
 
   void ensureNotDisposed() {
     if (isDisposed) {
-      throw StateError('DefaultMiniAppHostController has already been disposed.');
+      throw StateError(
+        'DefaultMiniAppHostController has already been disposed.',
+      );
     }
   }
 

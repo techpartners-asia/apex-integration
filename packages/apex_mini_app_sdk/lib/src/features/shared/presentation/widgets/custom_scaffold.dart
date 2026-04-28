@@ -1,14 +1,8 @@
-export 'custom_app_bar.dart';
-
 import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
-
-import '../helpers/design_tokens.dart';
-import 'custom_bottom_navbar.dart';
-import 'custom_app_bar.dart';
-import '../../../shared/presentation/widgets/custom_scaffold_body.dart';
+import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class CustomScaffold extends StatelessWidget {
   final String title;
@@ -17,7 +11,6 @@ class CustomScaffold extends StatelessWidget {
   final Widget? body;
   final Widget? bottomNavigationBar;
   final AdaptiveBottomNavigationBar? adaptiveBottomNavigationBar;
-  final BottomNavigationConfig? bottomNavigation;
   final bool adaptiveUseNativeToolbar;
   final String? subtitle;
   final Widget? trailing;
@@ -49,7 +42,6 @@ class CustomScaffold extends StatelessWidget {
     this.body,
     this.bottomNavigationBar,
     this.adaptiveBottomNavigationBar,
-    this.bottomNavigation,
     this.adaptiveUseNativeToolbar = true,
     this.subtitle,
     this.trailing,
@@ -83,8 +75,7 @@ class CustomScaffold extends StatelessWidget {
           final responsive = context.responsive;
           final double bottomInset = responsive.safeBottom;
           final NavigatorState navigator = Navigator.of(context);
-          final bool effectiveShowBackButton =
-              showBackButton ?? navigator.canPop();
+          final bool effectiveShowBackButton = showBackButton ?? navigator.canPop();
           final EdgeInsets bodyPadding = EdgeInsets.fromLTRB(
             responsive.spacing.financialCardSpacing,
             0,
@@ -121,65 +112,25 @@ class CustomScaffold extends StatelessWidget {
                 refreshIndicatorColor: DesignTokens.rose,
                 children: children,
               );
-          final AdaptiveBottomNavigationBar?
-          resolvedAdaptiveBottomNavigationBar = adaptiveBottomNavigationBar;
-          final Widget? resolvedBottomNavigationBar =
-              bottomNavigation != null
-              ? CustomNavbar(
-                  selectedIndex: bottomNavigation!.selectedIndex,
-                  onSelected: bottomNavigation!.onSelected,
-                  onActionPressed: bottomNavigation!.onActionPressed,
-                  isActionEnabled: bottomNavigation!.isActionEnabled,
-                )
-              : bottomNavigationBar;
-          final bool hasAdaptiveShell =
-              resolvedAdaptiveBottomNavigationBar != null ||
-                  bottomNavigation != null;
-          final bool hasAdaptiveBottomBarOverlay =
-              resolvedBottomNavigationBar != null;
-          final bool resolvedAdaptiveUseNativeToolbar =
-              adaptiveUseNativeToolbar && effectiveAppBar == null;
+          final AdaptiveBottomNavigationBar? resolvedAdaptiveBottomNavigationBar = adaptiveBottomNavigationBar;
+          final Widget? resolvedBottomNavigationBar = bottomNavigationBar;
+          final bool hasAdaptiveShell = resolvedAdaptiveBottomNavigationBar != null;
+          final bool resolvedAdaptiveUseNativeToolbar = adaptiveUseNativeToolbar && effectiveAppBar == null;
 
           if (hasAdaptiveShell) {
-            final Widget adaptiveBody = hasAdaptiveBottomBarOverlay
-                ? Padding(
-                    padding: EdgeInsets.only(
-                      bottom: responsive.dp(96) + bottomInset,
-                    ),
-                    child: effectiveBody,
-                  )
-                : effectiveBody;
-
             return AdaptiveScaffold(
               appBar: effectiveAppBar == null
                   ? null
                   : AdaptiveAppBar(
                       useNativeToolbar: resolvedAdaptiveUseNativeToolbar,
                       appBar: effectiveAppBar,
-                      cupertinoNavigationBar:
-                          effectiveAppBar is ObstructingPreferredSizeWidget
-                          ? effectiveAppBar
-                          : null,
+                      cupertinoNavigationBar: effectiveAppBar is ObstructingPreferredSizeWidget ? effectiveAppBar : null,
                     ),
               body: ColoredBox(
                 color: backgroundColor,
-                child: hasAdaptiveBottomBarOverlay
-                    ? Stack(
-                        children: <Widget>[
-                          Positioned.fill(child: adaptiveBody),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: resolvedBottomNavigationBar,
-                          ),
-                        ],
-                      )
-                    : adaptiveBody,
+                child: effectiveBody,
               ),
-              bottomNavigationBar: hasAdaptiveBottomBarOverlay
-                  ? null
-                  : resolvedAdaptiveBottomNavigationBar,
+              bottomNavigationBar: resolvedAdaptiveBottomNavigationBar,
               floatingActionButton: floatingActionButton,
             );
           }

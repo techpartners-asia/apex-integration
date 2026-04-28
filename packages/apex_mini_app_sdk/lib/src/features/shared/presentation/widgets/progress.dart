@@ -34,18 +34,17 @@ class FlowProgressHeader extends StatelessWidget {
         Column(
           children: <Widget>[
             if (overline != null && overline!.trim().isNotEmpty) ...<Widget>[
-              Text(
+              CustomText(
                 overline!,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: DesignTokens.rose,
-                ),
+                variant: MiniAppTextVariant.overline1,
+                color: DesignTokens.rose,
               ),
               SizedBox(height: responsive.spacing.cardGap),
             ],
-            CustomText(title, variant: MiniAppTextVariant.headline),
+            CustomText(title, variant: MiniAppTextVariant.h8),
             if (subtitle != null && subtitle!.trim().isNotEmpty) ...<Widget>[
               SizedBox(height: responsive.spacing.inlineSpacing),
-              Text(subtitle!, style: Theme.of(context).textTheme.bodyMedium),
+              CustomText(subtitle!, variant: MiniAppTextVariant.body2),
             ],
             if (child != null) ...<Widget>[
               SizedBox(height: responsive.spacing.sectionSpacing),

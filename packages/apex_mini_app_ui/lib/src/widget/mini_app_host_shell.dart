@@ -36,7 +36,7 @@ class MiniAppHostShell extends StatelessWidget {
           );
         }
 
-        return Scaffold(body: content);
+        return content;
       },
     );
   }

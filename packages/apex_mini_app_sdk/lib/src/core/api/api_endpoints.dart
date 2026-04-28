@@ -21,7 +21,6 @@ class ApiEndpoints {
   static const String getQuestionList = '/api/v1.0/getQuestionList';
   static const String calculateScore = '/api/v1.0/calculateScore';
   static const String getPack = '/api/v1.0/getPack';
-  static const String choosePack = '/api/v1.0/choosePack';
   static const String addBkrCustContract = '/api/v1.0/addBkrCustContract';
   static const String getIpsBalance = '/api/v1.0/getIpsBalance';
   static const String getBkrPublicCasaAcntStmt =

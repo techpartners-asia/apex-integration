@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
+class CustomAppBar extends StatelessWidget
+    implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
   final String? title;
   final Widget? trailing;
   final bool showBackButton;
@@ -41,7 +42,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, Obstr
   });
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + (tab != null ? kToolbarHeight : 1.0));
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight + (tab != null ? kToolbarHeight : 1.0));
 
   @override
   bool shouldFullyObstruct(BuildContext context) => backgroundColor.a == 1;
@@ -49,7 +51,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, Obstr
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final ThemeData theme = Theme.of(context);
     final String? trimmedTitle = title?.trim();
     final bool hasTitle = trimmedTitle != null && trimmedTitle.isNotEmpty;
     final double actionButtonSize = responsive.component(
@@ -69,8 +70,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, Obstr
       toolbarHeight: kToolbarHeight,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: centerTitle,
-      titleSpacing: titleSpacing ?? (centerTitle ? responsive.space(AppSpacing.sm) : responsive.dp(20)),
-      leadingWidth: showLeadingSlot ? actionSlotWidth + responsive.space(AppSpacing.md) : 0,
+      titleSpacing:
+          titleSpacing ??
+          (centerTitle ? responsive.space(AppSpacing.sm) : responsive.dp(20)),
+      leadingWidth: showLeadingSlot
+          ? actionSlotWidth + responsive.space(AppSpacing.md)
+          : 0,
       leading: showLeadingSlot
           ? _CustomAppBarActionSlot(
               leftPadding: responsive.space(AppSpacing.md),
@@ -88,15 +93,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, Obstr
       title: hasTitle
           ? CustomText(
               trimmedTitle,
-              variant: MiniAppTextVariant.label,
+              variant: MiniAppTextVariant.caption1,
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style:
                   titleStyle ??
-                  theme.textTheme.titleMedium?.copyWith(
+                  MiniAppTypography.subtitle2.copyWith(
                     color: DesignTokens.ink,
-                    fontWeight: MiniAppTypography.semiBold,
                   ),
             )
           : CustomImage(path: Img.investX, height: responsive.dp(24)),

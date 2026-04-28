@@ -56,7 +56,7 @@ void main() {
   });
 
   test(
-    'getStatements uses the flag 12 account id from getSecuritiesAcntList',
+    'getStatements uses flag 12 account id without replacing explicit statement dates',
     () async {
       final _FakeApiExecutor executor = _FakeApiExecutor();
       final ApiPortfolioService service = ApiPortfolioService(
@@ -96,7 +96,7 @@ void main() {
           ),
         ),
         session: _FakeSessionController(),
-        bootstrapService: _FakeBootstrapService(),
+        bootstrapService: _FakeBootstrapService(statementMaxDay: '60'),
       );
 
       await service.getStatements(
@@ -202,14 +202,14 @@ class _FakeApiExecutor extends ApiExecutor {
   }
 }
 
-class _FakeTokenProvider extends TokenProvider {
+class _FakeTokenProvider implements TokenProvider {
   const _FakeTokenProvider();
 
   @override
   Future<String?> getAccessToken() async => 'token';
 }
 
-class _FakeSessionController extends MiniAppSessionController {
+class _FakeSessionController implements MiniAppSessionController {
   @override
   MiniAppSessionStore get store => MiniAppSessionStore();
 
@@ -222,32 +222,81 @@ class _FakeSessionController extends MiniAppSessionController {
   Future<UserEntityDto> ensureCurrentUser() async {
     return UserEntityDto();
   }
+
+  @override
+  void cacheCurrentUser(UserEntityDto user) {
+    // TODO: implement cacheCurrentUser
+  }
+
+  @override
+  // TODO: implement currentUser
+  UserEntityDto? get currentUser => throw UnimplementedError();
+
+  @override
+  // TODO: implement loginSession
+  LoginSession? get loginSession => throw UnimplementedError();
+
+  @override
+  void prepareLaunch({String? userToken}) {
+    // TODO: implement prepareLaunch
+  }
+
+  @override
+  Future<LoginSession> refreshLoginSession() {
+    // TODO: implement refreshLoginSession
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement userToken
+  String? get userToken => throw UnimplementedError();
 }
 
-class _FakeBootstrapService extends InvestmentBootstrapService {
+class _FakeBootstrapService implements InvestmentBootstrapService {
+  _FakeBootstrapService({this.statementMaxDay});
+
+  final String? statementMaxDay;
+
   @override
   Future<AcntBootstrapState> getSecAcntListState({
     bool forceRefresh = false,
   }) async {
     return AcntBootstrapState(
-      response: const GetSecuritiesAccountListResDto(
-        detail: GetSecAcntListDetailDto(
+      response: GetSecuritiesAccountListResDto(
+        detail: const GetSecAcntListDetailDto(
           hasAcnt: true,
           hasIpsAcnt: true,
         ),
         acnts: <GetSecAcntListAccountDto>[
-          GetSecAcntListAccountDto(
+          const GetSecAcntListAccountDto(
             flag: 11,
             acntId: 11,
           ),
           GetSecAcntListAccountDto(
             flag: 12,
             acntId: 12,
+            statementMaxDay: statementMaxDay,
           ),
         ],
         stlAcnts: <GetSecAcntSettlementAccountDto>[],
         responseCode: 0,
       ),
     );
+  }
+
+  @override
+  Future<SecAcntRequestResult> addSecuritiesAcntReq({
+    SecAcntPersonalInfoData? personalInfo,
+  }) {
+    // TODO: implement addSecuritiesAcntReq
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AcntBootstrapState> getSecAcntBalanceState({
+    required AcntBootstrapState currentState,
+  }) {
+    // TODO: implement getSecAcntBalanceState
+    throw UnimplementedError();
   }
 }

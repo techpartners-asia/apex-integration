@@ -124,46 +124,17 @@ class _FeedbackBodyField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = context.responsive;
-    final TextTheme textTheme = context.textTheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        TextFormField(
-          controller: controller,
-          maxLength: maxLength,
-          maxLines: 6,
-          minLines: 4,
-          onChanged: onChanged,
-          onTapOutside: (_) => FocusScope.of(context).unfocus(),
-          decoration: InputDecoration(
-            labelText: label,
-            hintText: hint,
-            floatingLabelBehavior: FloatingLabelBehavior.auto,
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(responsive.radiusMd),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(responsive.radiusMd),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(responsive.radiusMd),
-              borderSide: const BorderSide(
-                color: DesignTokens.rose,
-                width: 1,
-              ),
-            ),
-            counterStyle: textTheme.bodySmall?.copyWith(
-              color: DesignTokens.muted,
-            ),
-          ),
-        ),
-      ],
+    return CustomTextField(
+      label: label,
+      hintText: hint,
+      controller: controller,
+      maxLength: maxLength,
+      minLines: 4,
+      maxLines: 6,
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.newline,
+      showCounter: true,
+      onChanged: onChanged,
     );
   }
 }

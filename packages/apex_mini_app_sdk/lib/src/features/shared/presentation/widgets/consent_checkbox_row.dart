@@ -50,13 +50,10 @@ class ConsentCheckboxRow extends StatelessWidget {
             ),
             SizedBox(width: responsive.dp(8)),
             Expanded(
-              child: Text(
+              child: CustomText(
                 label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: activeColor,
-                  fontWeight: MiniAppTypography.regular,
-                  height: 1.45,
-                ),
+                variant: MiniAppTextVariant.caption1,
+                color: activeColor,
               ),
             ),
           ],

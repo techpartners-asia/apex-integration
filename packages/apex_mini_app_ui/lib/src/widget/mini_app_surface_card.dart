@@ -39,7 +39,11 @@ class MiniAppSurfaceCard extends StatelessWidget {
         border: Border.all(color: hasBorder ? borderColor : Colors.transparent),
         boxShadow: hasShadow
             ? <BoxShadow>[
-                BoxShadow(color: Color(0x140F172A), blurRadius: 2, offset: Offset(0, 0)),
+                BoxShadow(
+                  color: Color(0x140F172A),
+                  blurRadius: 2,
+                  offset: Offset(0, 0),
+                ),
               ]
             : null,
       ),

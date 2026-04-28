@@ -168,20 +168,15 @@ class _KeypadButton extends StatelessWidget {
               children: <Widget>[
                 CustomText(
                   digit.toString(),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: DesignTokens.ink,
-                    fontWeight: MiniAppTypography.bold,
-                  ),
+                  variant: MiniAppTextVariant.subtitle2,
+                  color: DesignTokens.ink,
                 ),
                 if (label != null) ...<Widget>[
                   SizedBox(height: responsive.spacing.inlineSpacing * 0.25),
                   CustomText(
                     label!,
-                    variant: MiniAppTextVariant.bodySmall,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: DesignTokens.muted,
-                      letterSpacing: 1,
-                    ),
+                    variant: MiniAppTextVariant.overline2,
+                    color: DesignTokens.muted,
                   ),
                 ],
               ],

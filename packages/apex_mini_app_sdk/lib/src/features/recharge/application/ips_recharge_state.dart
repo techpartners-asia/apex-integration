@@ -27,7 +27,8 @@ class IpsRechargeState {
 
   bool get hasPricing => unitPrice > 0;
 
-  double get totalPayable => packQty <= 0 ? 0 : (packQty * unitPrice) + serviceFee;
+  double get totalPayable =>
+      packQty <= 0 ? 0 : (packQty * unitPrice) + serviceFee;
 
   IpsRechargeState copyWith({
     int? packQty,
@@ -45,9 +46,15 @@ class IpsRechargeState {
       serviceFee: serviceFee ?? this.serviceFee,
       currency: currency ?? this.currency,
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      paymentRes: paymentRes == sentinel ? this.paymentRes : paymentRes as MiniAppPaymentRes?,
-      refreshedOverview: refreshedOverview == sentinel ? this.refreshedOverview : refreshedOverview as PortfolioOverview?,
-      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
+      paymentRes: paymentRes == sentinel
+          ? this.paymentRes
+          : paymentRes as MiniAppPaymentRes?,
+      refreshedOverview: refreshedOverview == sentinel
+          ? this.refreshedOverview
+          : refreshedOverview as PortfolioOverview?,
+      errorMessage: errorMessage == sentinel
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 }

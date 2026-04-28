@@ -7,7 +7,7 @@ class SecAcntProfileSubmissionService {
     required this.currentUser,
   });
 
-  final MiniAppApiRepository appApi;
+  final MiniAppProfileRepository appApi;
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
   final UserEntityDto? currentUser;
 
@@ -49,10 +49,11 @@ class SecAcntProfileSubmissionService {
     final String bankCode = _trimToEmpty(personalInfo.bankCode);
     final String accountNumber = _trimToEmpty(personalInfo.iban);
     if (bankCode.isNotEmpty && accountNumber.isNotEmpty) {
-      final SecAcntBankAccountLookupResult lookupResult = await bankAccountLookupRepository.lookupAccountHolder(
-        bankCode: bankCode,
-        accountNumber: accountNumber,
-      );
+      final SecAcntBankAccountLookupResult lookupResult =
+          await bankAccountLookupRepository.lookupAccountHolder(
+            bankCode: bankCode,
+            accountNumber: accountNumber,
+          );
       final String? accountHolderName = lookupResult.accountHolderName;
       final String resolvedName = _trimToEmpty(accountHolderName);
       if (resolvedName.isNotEmpty) {
@@ -65,17 +66,23 @@ class SecAcntProfileSubmissionService {
 
   String _resolveProfilePhone(SecAcntPersonalInfoData personalInfo) {
     final String draftValue = _trimToEmpty(personalInfo.mobile);
-    return draftValue.isNotEmpty ? draftValue : _trimToEmpty(currentUser?.phone);
+    return draftValue.isNotEmpty
+        ? draftValue
+        : _trimToEmpty(currentUser?.phone);
   }
 
   String _resolveProfilePhoneAddition(SecAcntPersonalInfoData personalInfo) {
     final String draftValue = _trimToEmpty(personalInfo.secondaryMobile);
-    return draftValue.isNotEmpty ? draftValue : _trimToEmpty(currentUser?.phoneAddition);
+    return draftValue.isNotEmpty
+        ? draftValue
+        : _trimToEmpty(currentUser?.phoneAddition);
   }
 
   String _resolveProfileEmail(SecAcntPersonalInfoData personalInfo) {
     final String draftValue = _trimToEmpty(personalInfo.email);
-    return draftValue.isNotEmpty ? draftValue : _trimToEmpty(currentUser?.email);
+    return draftValue.isNotEmpty
+        ? draftValue
+        : _trimToEmpty(currentUser?.email);
   }
 
   String _trimToEmpty(String? value) => value?.trim() ?? '';

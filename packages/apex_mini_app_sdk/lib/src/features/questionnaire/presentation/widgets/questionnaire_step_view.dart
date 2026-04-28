@@ -20,21 +20,28 @@ class QuestionnaireStepView extends StatelessWidget {
     final responsive = context.responsive;
     final l10n = context.l10n;
     final bool isStaticQuestion = currentIndex == state.questions.length;
-    final QuestionnaireQuestion? question = isStaticQuestion ? null : state.questions[currentIndex];
+    final QuestionnaireQuestion? question = isStaticQuestion
+        ? null
+        : state.questions[currentIndex];
     final List<_QuestionnaireChoice> options = isStaticQuestion
         ? _buildStaticQuestionChoices(l10n)
         : question!.options
               .asMap()
               .entries
               .map(
-                (MapEntry<int, QuestionnaireOption> entry) => _QuestionnaireChoice(
-                  id: entry.value.id,
-                  label: entry.value.label.trim().isEmpty ? l10n.ipsQuestionnaireOptionPrefix(entry.key + 1) : entry.value.label,
-                  number: entry.key + 1,
-                ),
+                (MapEntry<int, QuestionnaireOption> entry) =>
+                    _QuestionnaireChoice(
+                      id: entry.value.id,
+                      label: entry.value.label.trim().isEmpty
+                          ? l10n.ipsQuestionnaireOptionPrefix(entry.key + 1)
+                          : entry.value.label,
+                      number: entry.key + 1,
+                    ),
               )
               .toList(growable: false);
-    final String? selectedOptionId = isStaticQuestion ? state.staticQuestionAnswerId : state.answers[question!.id];
+    final String? selectedOptionId = isStaticQuestion
+        ? state.staticQuestionAnswerId
+        : state.answers[question!.id];
     final String questionTitle = isStaticQuestion
         ? l10n.ipsQuestionnaireStaticQuestionTitle
         : question!.title.trim().isEmpty
@@ -55,14 +62,14 @@ class QuestionnaireStepView extends StatelessWidget {
           SizedBox(height: responsive.spacing.sectionSpacing),
 
           /// Question
-          CustomText(questionTitle, variant: MiniAppTextVariant.headline),
+          CustomText(questionTitle, variant: MiniAppTextVariant.h8),
 
           /// Sub question
           if (subtitle != null) ...<Widget>[
             SizedBox(height: responsive.spacing.inlineSpacing),
             CustomText(
               subtitle,
-              variant: MiniAppTextVariant.body,
+              variant: MiniAppTextVariant.body3,
               color: DesignTokens.muted,
               height: 1.45,
             ),
@@ -81,7 +88,9 @@ class QuestionnaireStepView extends StatelessWidget {
                 selected: selectedOptionId == option.id,
                 onTap: () {
                   if (isStaticQuestion) {
-                    context.read<IpsQuestionnaireCubit>().selectStaticQuestionAnswer(option.id);
+                    context
+                        .read<IpsQuestionnaireCubit>()
+                        .selectStaticQuestionAnswer(option.id);
                     return;
                   }
 
@@ -93,7 +102,8 @@ class QuestionnaireStepView extends StatelessWidget {
               ),
             ),
           ),
-          if (state.errorMessage != null && state.errorMessage!.trim().isNotEmpty) ...<Widget>[
+          if (state.errorMessage != null &&
+              state.errorMessage!.trim().isNotEmpty) ...<Widget>[
             SizedBox(height: responsive.spacing.sectionSpacing),
             NoticeBanner(
               title: l10n.errorsActionFailed,
@@ -190,12 +200,8 @@ class _QuestionnaireOptionTile extends StatelessWidget {
                     Expanded(
                       child: CustomText(
                         '$number. $label',
-                        variant: MiniAppTextVariant.body,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: selected ? DesignTokens.rose : DesignTokens.ink,
-                          fontWeight: MiniAppTypography.semiBold,
-                          height: 1.25,
-                        ),
+                        variant: MiniAppTextVariant.subtitle2,
+                        color: selected ? DesignTokens.rose : DesignTokens.ink,
                       ),
                     ),
                     SizedBox(width: responsive.spacing.inlineSpacing),
@@ -228,7 +234,9 @@ class _QuestionnaireRadioIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: selected ? DesignTokens.coral : DesignTokens.selectionBlueMuted.withValues(alpha: 0.55),
+          color: selected
+              ? DesignTokens.coral
+              : DesignTokens.selectionBlueMuted.withValues(alpha: 0.55),
           width: responsive.dp(selected ? 1.6 : 1.3),
         ),
         color: Colors.white,

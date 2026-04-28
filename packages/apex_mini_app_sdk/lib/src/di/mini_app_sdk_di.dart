@@ -27,18 +27,60 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
           loadFiBomInst: (req) => ipsApi.getFiBomInst(req),
           fiBomInst: appSession.backendConfig.runtime.defaultFiCode,
         );
-
-  final featureServices = buildIpsFeatureServices(
-    backendConfig: appSession.backendConfig,
-    sessionController: appSession.controller,
-    api: ipsApi,
-    fiBomInstRepository: fiBomInstRepository,
-  );
-
-  final bootstrapService = featureServices.bootstrapService;
+  final InvestmentBootstrapService? bootstrapService =
+      ipsApi == null || fiBomInstRepository == null
+      ? null
+      : ApiInvestmentBootstrapService(
+          api: ipsApi,
+          config: appSession.backendConfig,
+          session: appSession.controller,
+          fiBomInstRepository: fiBomInstRepository,
+        );
+  final QuestionnaireService? questionnaireService = ipsApi == null
+      ? null
+      : ApiQuestionnaireService(
+          api: ipsApi,
+          config: appSession.backendConfig,
+          session: appSession.controller,
+        );
+  final PackService? packService = ipsApi == null
+      ? null
+      : ApiPackService(
+          api: ipsApi,
+          session: appSession.controller,
+        );
+  final ContractService? contractService =
+      ipsApi == null || fiBomInstRepository == null
+      ? null
+      : ApiContractService(
+          api: ipsApi,
+          config: appSession.backendConfig,
+          session: appSession.controller,
+          fiBomInstRepository: fiBomInstRepository,
+        );
+  final PortfolioService? portfolioService = ipsApi == null
+      ? null
+      : ApiPortfolioService(
+          api: ipsApi,
+          config: appSession.backendConfig,
+          session: appSession.controller,
+          bootstrapService: bootstrapService,
+        );
+  final OrdersService? ordersService = ipsApi == null
+      ? null
+      : ApiOrdersService(
+          api: ipsApi,
+          config: appSession.backendConfig,
+          session: appSession.controller,
+        );
 
   final IpsDependencies ipsDependencies = IpsDependencies(
-    services: featureServices,
+    bootstrapService: bootstrapService,
+    questionnaireService: questionnaireService,
+    packService: packService,
+    contractService: contractService,
+    portfolioService: portfolioService,
+    ordersService: ordersService,
     sessionStore: appSession.store,
     sessionController: appSession.controller,
     appApi: appApi,

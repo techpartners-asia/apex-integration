@@ -3,7 +3,7 @@ import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
   final QuestionnaireService service;
-  final MiniAppApiRepository appApi;
+  final MiniAppProfileRepository appApi;
   final InvestmentBootstrapService? bootstrapService;
   final AcntBootstrapState? initialBootstrapState;
   final SdkLocalizations l10n;

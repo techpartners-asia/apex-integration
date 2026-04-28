@@ -33,10 +33,14 @@ class MiniAppLaunchRes {
 
   void validateStatusAndFields() {
     if (status == MiniAppLaunchStatus.failed && errorCode == null) {
-      throw ArgumentError('MiniAppLaunchRes.errorCode is required when status is failed.');
+      throw ArgumentError(
+        'MiniAppLaunchRes.errorCode is required when status is failed.',
+      );
     }
     if (status == MiniAppLaunchStatus.failed && errorMessage == null) {
-      throw ArgumentError('MiniAppLaunchRes.errorMessage is required when status is failed.');
+      throw ArgumentError(
+        'MiniAppLaunchRes.errorMessage is required when status is failed.',
+      );
     }
   }
 }

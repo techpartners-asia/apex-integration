@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 SecAcntWizardHeaderData buildSecAcntHeader(
@@ -134,17 +133,14 @@ TextStyle? buildSecAcntHeaderTitleStyle(
   BuildContext context,
   SecAcntWizardHeaderData header,
 ) {
-  final responsive = context.responsive;
   final Color titleColor = header.highlightBrand
       ? DesignTokens.rose
       : DesignTokens.ink;
+  final TextStyle baseStyle = header.highlightBrand
+      ? MiniAppTypography.title1
+      : MiniAppTypography.subtitle2;
 
-  return Theme.of(context).textTheme.titleMedium?.copyWith(
+  return baseStyle.copyWith(
     color: titleColor,
-    fontWeight: header.highlightBrand
-        ? MiniAppTypography.bold
-        : MiniAppTypography.semiBold,
-    fontSize: responsive.sp(header.highlightBrand ? 18 : 16),
-    letterSpacing: header.highlightBrand ? responsive.dp(0.5) : 0,
   );
 }

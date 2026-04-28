@@ -35,44 +35,28 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                   children: <Widget>[
                     CustomText(
                       l10n.ipsOverviewDashboardGreetingLabel,
-                      variant: MiniAppTextVariant.caption,
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: DesignTokens.muted,
-                        fontWeight: MiniAppTypography.regular,
-                      ),
+                      variant: MiniAppTextVariant.caption1,
+                      color: DesignTokens.muted,
                     ),
                     SizedBox(height: responsive.dp(4)),
                     CustomText(
                       metrics.shortDisplayName,
-                      variant: MiniAppTextVariant.body,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: DesignTokens.ink,
-                            fontWeight: MiniAppTypography.semiBold,
-                          ),
+                      variant: MiniAppTextVariant.h8,
+                      color: DesignTokens.ink,
                     ),
                     SizedBox(height: responsive.dp(10)),
                     CustomText(
                       metrics.totalInvestmentLabel,
-                      variant: MiniAppTextVariant.title,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: DesignTokens.rose,
-                            fontWeight: MiniAppTypography.semiBold,
-                            fontSize: 24,
-                            height: 1,
-                          ),
+                      variant: MiniAppTextVariant.h7,
+                      color: DesignTokens.rose,
                     ),
                     SizedBox(height: responsive.dp(8)),
                     CustomText(
                       l10n.ipsOverviewDashboardProfitMessage(
                         metrics.profitLabel,
                       ),
-                      variant: MiniAppTextVariant.bodySmall,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: metrics.profitTone,
-                        fontWeight: MiniAppTypography.regular,
-                      ),
+                      variant: MiniAppTextVariant.body2,
+                      color: metrics.profitTone,
                     ),
                   ],
                 ),
@@ -89,11 +73,8 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                   SizedBox(height: responsive.dp(10)),
                   CustomText(
                     metrics.profitPercentLabel,
-                    variant: MiniAppTextVariant.caption,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: metrics.profitTone,
-                      fontWeight: MiniAppTypography.regular,
-                    ),
+                    variant: MiniAppTextVariant.body2,
+                    color: metrics.profitTone,
                   ),
                 ],
               ),
@@ -162,8 +143,7 @@ class OverviewDashboardGoalCard extends StatelessWidget {
               Expanded(
                 child: CustomText(
                   l10n.ipsOverviewDashboardGoalTitle,
-                  variant: MiniAppTextVariant.headline,
-                  fontWeight: MiniAppTypography.semiBold,
+                  variant: MiniAppTextVariant.h8,
                 ),
               ),
             ],
@@ -174,19 +154,14 @@ class OverviewDashboardGoalCard extends StatelessWidget {
               Expanded(
                 child: CustomText(
                   l10n.ipsOverviewDashboardGoalProgress,
-                  variant: MiniAppTextVariant.caption,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: DesignTokens.muted,
-                  ),
+                  variant: MiniAppTextVariant.caption2,
+                  color: DesignTokens.muted,
                 ),
               ),
               CustomText(
-                '${metrics.goalCurrentLabel} / ${metrics.goalTargetLabel}',
-                variant: MiniAppTextVariant.caption,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: DesignTokens.ink,
-                  fontWeight: MiniAppTypography.semiBold,
-                ),
+                '${metrics.totalInvestmentLabel} / ${metrics.goalTargetLabel}',
+                variant: MiniAppTextVariant.caption1,
+                color: DesignTokens.ink,
               ),
             ],
           ),
@@ -217,76 +192,185 @@ class OverviewDashboardRewardCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final l10n = context.l10n;
+    final int clampedStreakMonths = streakMonths.clamp(0, 12).toInt();
+    final BorderRadius cardRadius = BorderRadius.circular(responsive.radius(16));
 
     return Container(
-      padding: EdgeInsets.all(responsive.dp(18)),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFBFB),
-        borderRadius: BorderRadius.circular(responsive.radius(16)),
-        border: Border.all(color: const Color(0xFFF5BBC8)),
+        gradient: const LinearGradient(
+          colors: <Color>[
+            DesignTokens.rose,
+            DesignTokens.coral,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: cardRadius,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          CustomImage(
-            path: Img.fire,
-            width: responsive.dp(28),
-            height: responsive.dp(28),
+      child: Padding(
+        padding: EdgeInsets.all(responsive.dp(1.6)),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Color.alphaBlend(
+              DesignTokens.rose.withValues(alpha: 0.08),
+              Colors.white,
+            ),
+            borderRadius: cardRadius,
           ),
-          SizedBox(height: responsive.dp(10)),
-          CustomText(
-            l10n.ipsOverviewDashboardRewardTitle(streakMonths),
-            variant: MiniAppTextVariant.body,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: DesignTokens.ink,
-              fontWeight: MiniAppTypography.bold,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              responsive.dp(16),
+              responsive.dp(10),
+              responsive.dp(16),
+              responsive.dp(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                CustomImage(
+                  path: Img.fireFull,
+                  width: responsive.dp(38),
+                  height: responsive.dp(48),
+                ),
+                SizedBox(height: responsive.dp(18)),
+                CustomText(
+                  l10n.ipsOverviewDashboardRewardTitle(clampedStreakMonths),
+                  variant: MiniAppTextVariant.body1,
+                  textAlign: TextAlign.center,
+                  color: Colors.black,
+                ),
+                SizedBox(height: responsive.dp(18)),
+                _RewardBodyText(text: l10n.ipsOverviewDashboardRewardBody),
+                SizedBox(height: responsive.dp(28)),
+                _RewardProgressBar(months: clampedStreakMonths),
+              ],
             ),
           ),
-          SizedBox(height: responsive.dp(8)),
-          CustomText(
-            l10n.ipsOverviewDashboardRewardBody,
-            variant: MiniAppTextVariant.bodySmall,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: DesignTokens.ink,
-              height: 1.55,
-              fontWeight: MiniAppTypography.semiBold,
-            ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RewardBodyText extends StatelessWidget {
+  const _RewardBodyText({required this.text});
+
+  static const List<String> _highlightCandidates = <String>[
+    '5000 Tino Coupon',
+    '5000 Tino Coin',
+  ];
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    String? highlight;
+    for (final String candidate in _highlightCandidates) {
+      if (text.contains(candidate)) {
+        highlight = candidate;
+        break;
+      }
+    }
+
+    if (highlight == null) {
+      return CustomText(
+        text,
+        variant: MiniAppTextVariant.subtitle3,
+        textAlign: TextAlign.center,
+        color: Colors.black,
+        softWrap: true,
+        overflow: TextOverflow.visible,
+      );
+    }
+
+    final int start = text.indexOf(highlight);
+    final String before = text.substring(0, start);
+    final String after = text.substring(start + highlight.length);
+    final TextStyle bodyStyle = MiniAppTypography.subtitle3.copyWith(
+      color: Colors.black,
+    );
+
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: bodyStyle,
+        children: <InlineSpan>[
+          TextSpan(text: before),
+          TextSpan(
+            text: highlight,
+            style: bodyStyle.copyWith(color: DesignTokens.softPeach),
           ),
-          SizedBox(height: responsive.dp(12)),
-          CustomImage(
-            path: Img.fire,
-            width: responsive.dp(16),
-            height: responsive.dp(16),
-          ),
-          SizedBox(height: responsive.dp(10)),
-          Row(
-            children: List<Widget>.generate(
-              12,
-              (int index) => Expanded(
-                child: Container(
-                  height: responsive.dp(8),
-                  margin: EdgeInsets.symmetric(horizontal: responsive.dp(2)),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(999),
-                    gradient: index < streakMonths
-                        ? const LinearGradient(
-                            colors: <Color>[
-                              DesignTokens.rose,
-                              DesignTokens.coral,
-                            ],
-                          )
-                        : null,
-                    color: index < streakMonths
-                        ? null
-                        : const Color(0xFFF8E5DE),
+          TextSpan(text: after),
+        ],
+      ),
+    );
+  }
+}
+
+class _RewardProgressBar extends StatelessWidget {
+  final int months;
+
+  const _RewardProgressBar({required this.months});
+
+  static const int _monthCount = 12;
+
+  @override
+  Widget build(BuildContext context) {
+    final responsive = context.responsive;
+    final double barHeight = responsive.dp(16);
+    final double markerSize = responsive.dp(25);
+    final double progress = months / _monthCount;
+
+    return SizedBox(
+      height: markerSize,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final double maxWidth = constraints.maxWidth;
+          final double markerLeft = (maxWidth * progress - markerSize / 2).clamp(0.0, maxWidth - markerSize).toDouble();
+
+          return Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(999),
+                child: SizedBox(
+                  height: barHeight,
+                  child: Row(
+                    children: List<Widget>.generate(
+                      _monthCount * 2 - 1,
+                      (int index) {
+                        if (index.isOdd) {
+                          return Container(
+                            width: responsive.dp(2),
+                            color: Colors.white,
+                          );
+                        }
+
+                        final int segmentIndex = index ~/ 2;
+                        final bool completed = segmentIndex < months;
+
+                        return Expanded(
+                          child: ColoredBox(
+                            color: completed ? DesignTokens.rose : DesignTokens.softPeach.withValues(alpha: 0.55),
+                            child: SizedBox(height: barHeight),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
+              Positioned(
+                left: markerLeft,
+                child: CustomImage(
+                  path: Img.fireFull,
+                  height: markerSize,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -335,14 +419,9 @@ class _DashboardQuickAction extends StatelessWidget {
         SizedBox(height: responsive.dp(8)),
         CustomText(
           label,
-          variant: MiniAppTextVariant.caption,
+          variant: MiniAppTextVariant.overline1,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: disabled
-                ? DesignTokens.muted
-                : DesignTokens.ink,
-            fontWeight: MiniAppTypography.semiBold,
-          ),
+          color: disabled ? DesignTokens.muted : DesignTokens.ink,
         ),
       ],
     );

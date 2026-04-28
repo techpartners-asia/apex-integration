@@ -25,7 +25,9 @@ class OrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<IpsOrdersCubit, IpsOrdersState>(
-      listenWhen: (IpsOrdersState previous, IpsOrdersState current) => previous.cancelledOrderId != current.cancelledOrderId && current.cancelledOrderId != null,
+      listenWhen: (IpsOrdersState previous, IpsOrdersState current) =>
+          previous.cancelledOrderId != current.cancelledOrderId &&
+          current.cancelledOrderId != null,
       listener: (BuildContext context, IpsOrdersState state) {
         MiniAppToast.showSuccess(
           context,
@@ -38,11 +40,12 @@ class OrdersScreen extends StatelessWidget {
 
         return CustomScaffold(
           appBarTitle: l10n.ipsOrdersTitle,
-          subtitle: l10n.ipsOrdersSubtitle,
           onRefresh: context.read<IpsOrdersCubit>().load,
           actions: <Widget>[
             MiniAppAdaptivePressable(
-              onPressed: state.isLoading ? null : context.read<IpsOrdersCubit>().load,
+              onPressed: state.isLoading
+                  ? null
+                  : context.read<IpsOrdersCubit>().load,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -50,14 +53,15 @@ class OrdersScreen extends StatelessWidget {
                   SizedBox(width: context.responsive.spacing.inlineSpacing),
                   CustomText(
                     l10n.commonRefresh,
-                    variant: MiniAppTextVariant.button,
+                    variant: MiniAppTextVariant.buttonMedium,
                   ),
                 ],
               ),
             ),
           ],
           children: <Widget>[
-            if ((state.isLoading && state.orders.isNotEmpty) || state.cancellingOrderId != null) ...<Widget>[
+            if ((state.isLoading && state.orders.isNotEmpty) ||
+                state.cancellingOrderId != null) ...<Widget>[
               MiniAppLoadingState(
                 title: l10n.commonLoading,
                 message: l10n.ipsOrdersLoading,
@@ -79,10 +83,6 @@ class OrdersScreen extends StatelessWidget {
                 message: l10n.ipsOrdersNoOrders,
               )
             else ...<Widget>[
-              // if (state.refreshedOverview case final PortfolioOverview overview) ...<Widget>[
-              //   _OrdersBalanceCard(overview: overview),
-              //   SizedBox(height: context.responsive.spacing.sectionSpacing),
-              // ],
               SectionCard(
                 children: state.orders
                     .map(
@@ -90,13 +90,16 @@ class OrdersScreen extends StatelessWidget {
                         order: order,
                         cancelling: state.cancellingOrderId == order.id,
                         showDivider: order != state.orders.last,
-                        onCancel: order.status == IpsOrderStatus.pending ? () => cancelOrder(context, order) : null,
+                        onCancel: order.status == IpsOrderStatus.pending
+                            ? () => cancelOrder(context, order)
+                            : null,
                       ),
                     )
                     .toList(growable: false),
               ),
             ],
-            if (state.errorMessage != null && state.orders.isNotEmpty) ...<Widget>[
+            if (state.errorMessage != null &&
+                state.orders.isNotEmpty) ...<Widget>[
               SizedBox(height: context.responsive.spacing.sectionSpacing),
               NoticeBanner(
                 title: l10n.errorsActionFailed,
@@ -107,28 +110,6 @@ class OrdersScreen extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class _OrdersBalanceCard extends StatelessWidget {
-  const _OrdersBalanceCard({required this.overview});
-
-  final PortfolioOverview overview;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return IpsBalanceCard(
-      title: l10n.ipsPortfolioTitle,
-      subtitle: l10n.ipsOrdersSubtitle,
-      balance: overview.availableBalance?.toStringAsFixed(2) ?? '0.00',
-      currency: overview.currency,
-      availableBalanceLabel: l10n.ipsPortfolioAvailableBalance,
-      availableBalanceValue: overview.availableBalance == null ? null : formatIpsAmount(overview.availableBalance!, overview.currency),
-      investedBalanceLabel: l10n.ipsPortfolioInvestedBalance,
-      investedBalanceValue: overview.investedBalance == null ? null : formatIpsAmount(overview.investedBalance!, overview.currency),
     );
   }
 }
@@ -150,21 +131,39 @@ class OrderRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final String quantityValue = order.packQty == null ? order.amount.toStringAsFixed(0) : l10n.commonPackQuantity(order.packQty!);
+    final String quantityValue = order.packQty == null
+        ? order.amount.toStringAsFixed(0)
+        : l10n.commonPackQuantity(order.packQty!);
 
     return StatementListItem(
       title: order.title,
       subtitle: formatIpsDate(order.createdAt),
       trailing: quantityValue,
-      statusLabel: resolveOrderStatusLabel(l10n, order.status),
+      statusLabel: _resolveOrderStatusLabel(l10n, order.status),
       positive: order.buySell == CaspoTransactionType.buy,
       action: order.status == IpsOrderStatus.pending && onCancel != null
           ? TextButton(
               onPressed: cancelling ? null : onCancel,
-              child: Text(cancelling ? l10n.commonLoading : l10n.ipsOrdersCancelOrder),
+              child: CustomText(
+                cancelling ? l10n.commonLoading : l10n.ipsOrdersCancelOrder,
+                variant: MiniAppTextVariant.buttonMedium,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             )
           : null,
       showDivider: showDivider,
     );
   }
+}
+
+String _resolveOrderStatusLabel(
+  SdkLocalizations l10n,
+  IpsOrderStatus status,
+) {
+  return switch (status) {
+    IpsOrderStatus.pending => l10n.ipsStatusPending,
+    IpsOrderStatus.completed => l10n.ipsStatusCompleted,
+    IpsOrderStatus.cancelled => l10n.ipsStatusCancelled,
+    IpsOrderStatus.failed => l10n.ipsStatusFailed,
+  };
 }

@@ -80,6 +80,7 @@ class IpsSellCubit extends Cubit<IpsSellState> {
           isSubmitting: false,
           message: _normalizeSuccessMessage(res.message),
           errorMessage: null,
+          refreshErrorMessage: null,
         ),
       );
     } catch (error) {
@@ -89,6 +90,38 @@ class IpsSellCubit extends Cubit<IpsSellState> {
           errorMessage: formatIpsError(error, l10n),
         ),
       );
+    }
+  }
+
+  Future<List<IpsPack>?> refreshPacksAfterSuccess() async {
+    if (!state.canCompleteSuccessFlow) {
+      return null;
+    }
+
+    final PackService? ps = packService;
+    if (ps == null) {
+      emit(state.copyWith(refreshErrorMessage: l10n.ipsPackMissingService));
+      return null;
+    }
+
+    emit(state.copyWith(isRefreshingPacks: true, refreshErrorMessage: null));
+
+    try {
+      final List<IpsPack> packs = await ps.getPacks(forceRefresh: true);
+      if (!isClosed) {
+        emit(state.copyWith(isRefreshingPacks: false));
+      }
+      return packs;
+    } catch (error) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isRefreshingPacks: false,
+            refreshErrorMessage: formatIpsError(error, l10n),
+          ),
+        );
+      }
+      return null;
     }
   }
 

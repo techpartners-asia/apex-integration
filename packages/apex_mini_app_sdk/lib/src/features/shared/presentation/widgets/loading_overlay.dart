@@ -5,7 +5,7 @@ import 'package:mini_app_sdk/mini_app_sdk.dart';
 class BlockingLoadingOverlay extends StatelessWidget {
   final String title;
   final String message;
-  
+
   const BlockingLoadingOverlay({
     super.key,
     required this.title,
@@ -34,22 +34,18 @@ class BlockingLoadingOverlay extends StatelessWidget {
                     height: responsive.dp(88),
                   ),
                   SizedBox(height: responsive.dp(16)),
-                  Text(
+                  CustomText(
                     title,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: DesignTokens.ink,
-                      fontWeight: MiniAppTypography.bold,
-                    ),
+                    variant: MiniAppTextVariant.subtitle2,
+                    color: DesignTokens.ink,
                   ),
                   SizedBox(height: responsive.dp(8)),
-                  Text(
+                  CustomText(
                     message,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: DesignTokens.muted,
-                      height: 1.45,
-                    ),
+                    variant: MiniAppTextVariant.body3,
+                    color: DesignTokens.muted,
                   ),
                 ],
               ),

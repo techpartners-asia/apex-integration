@@ -26,9 +26,7 @@ class CustomScaffoldBody extends StatelessWidget {
     final responsive = context.responsive;
 
     final Widget scrollView = SingleChildScrollView(
-      physics: onRefresh != null
-          ? const AlwaysScrollableScrollPhysics()
-          : null,
+      physics: onRefresh != null ? const AlwaysScrollableScrollPhysics() : null,
       child: Padding(
         padding: bodyPadding,
         child: Column(
@@ -38,11 +36,8 @@ class CustomScaffoldBody extends StatelessWidget {
             if (title.trim().isNotEmpty) ...<Widget>[
               CustomText(
                 title,
-                variant: MiniAppTextVariant.title,
+                variant: MiniAppTextVariant.title1,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
               ),
             ],
             if (subtitle != null && subtitle!.trim().isNotEmpty) ...<Widget>[
@@ -53,9 +48,8 @@ class CustomScaffoldBody extends StatelessWidget {
                 ),
                 child: CustomText(
                   subtitle!,
-                  variant: MiniAppTextVariant.bodySmall,
+                  variant: MiniAppTextVariant.caption1,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
             ],

@@ -38,12 +38,10 @@ class OptionCard extends StatelessWidget {
             ),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: CustomText(
                 indexLabel == null ? label : '$indexLabel.$label',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: selected ? Colors.white : DesignTokens.ink,
-                  fontWeight: MiniAppTypography.semiBold,
-                ),
+                variant: MiniAppTextVariant.subtitle3,
+                color: selected ? Colors.white : DesignTokens.ink,
               ),
             ),
           ),

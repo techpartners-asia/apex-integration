@@ -37,7 +37,8 @@ class MiniAppEmptyState extends StatelessWidget {
               onPressed: onAction,
               child: CustomText(
                 actionLabel!,
-                variant: MiniAppTextVariant.button,
+                variant: MiniAppTextVariant.buttonMedium,
+                color: Theme.of(context).colorScheme.primary,
               ),
             )
           : null,

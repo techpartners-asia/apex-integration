@@ -3,7 +3,7 @@ import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class HelpCubit extends Cubit<LoadableState<BranchInfoEntity>> {
-  final MiniAppApiRepository appApi;
+  final MiniAppSupportRepository appApi;
   final SdkLocalizations l10n;
   final MiniAppLogger logger;
 

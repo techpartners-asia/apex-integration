@@ -1,5 +1,4 @@
 export 'contract/contract.dart';
-export 'demo/demo.dart';
 export 'di/di.dart';
 export 'feedback/feedback.dart';
 export 'help/help.dart';

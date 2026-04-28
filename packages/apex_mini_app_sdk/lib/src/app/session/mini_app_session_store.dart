@@ -2,7 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppSessionStore extends Cubit<MiniAppSessionState> {
-  MiniAppSessionStore({String? initialUserToken}) : super(MiniAppSessionState(userToken: initialUserToken));
+  MiniAppSessionStore({String? initialUserToken})
+    : super(MiniAppSessionState(userToken: initialUserToken));
 
   String? get userToken => state.userToken;
 

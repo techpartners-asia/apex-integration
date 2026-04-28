@@ -1,11 +1,7 @@
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-class SecAcntBankOptionsRepository {
-  const SecAcntBankOptionsRepository();
-
-  Future<List<SecAcntBankOption>> getBankOptions({bool forceRefresh = false}) {
-    throw UnimplementedError();
-  }
+abstract interface class SecAcntBankOptionsRepository {
+  Future<List<SecAcntBankOption>> getBankOptions({bool forceRefresh = false});
 }
 
 class ApiSecAcntBankOptionsRepository implements SecAcntBankOptionsRepository {
@@ -14,8 +10,12 @@ class ApiSecAcntBankOptionsRepository implements SecAcntBankOptionsRepository {
   const ApiSecAcntBankOptionsRepository({required this.fiBomInstRepository});
 
   @override
-  Future<List<SecAcntBankOption>> getBankOptions({bool forceRefresh = false}) async {
-    final fiBomInsts = await fiBomInstRepository.getFiBomInstList(forceRefresh: forceRefresh);
+  Future<List<SecAcntBankOption>> getBankOptions({
+    bool forceRefresh = false,
+  }) async {
+    final fiBomInsts = await fiBomInstRepository.getFiBomInstList(
+      forceRefresh: forceRefresh,
+    );
 
     return List<SecAcntBankOption>.unmodifiable(
       fiBomInsts.map(mapSecAcntBankOptionFromFiBomInst),
@@ -23,7 +23,8 @@ class ApiSecAcntBankOptionsRepository implements SecAcntBankOptionsRepository {
   }
 }
 
-class UnavailableSecAcntBankOptionsRepository implements SecAcntBankOptionsRepository {
+class UnavailableSecAcntBankOptionsRepository
+    implements SecAcntBankOptionsRepository {
   const UnavailableSecAcntBankOptionsRepository();
 
   @override

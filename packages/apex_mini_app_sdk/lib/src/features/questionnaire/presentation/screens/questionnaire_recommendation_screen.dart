@@ -93,8 +93,7 @@ class _QuestionnaireRecommendationView extends StatelessWidget {
                 left: responsive.dp(20),
                 child: CustomText(
                   l10n.commonBrandInvestx.toUpperCase(),
-                  variant: MiniAppTextVariant.titleSmall,
-                  fontWeight: FontWeight.bold,
+                  variant: MiniAppTextVariant.overline1,
                   color: Colors.white,
                 ),
               ),
@@ -103,7 +102,7 @@ class _QuestionnaireRecommendationView extends StatelessWidget {
                 left: responsive.dp(20),
                 child: CustomText(
                   l10n.investmentFund,
-                  variant: MiniAppTextVariant.titleSmall,
+                  variant: MiniAppTextVariant.subtitle3,
                   color: Colors.white,
                 ),
               ),
@@ -117,12 +116,12 @@ class _QuestionnaireRecommendationView extends StatelessWidget {
               children: [
                 CustomText(
                   l10n.ipsQuestionnaireRecommendationTitle,
-                  variant: MiniAppTextVariant.title,
+                  variant: MiniAppTextVariant.subtitle2,
                 ),
                 SizedBox(height: responsive.dp(8)),
                 CustomText(
                   l10n.ipsQuestionnaireRecommendationBody,
-                  variant: MiniAppTextVariant.body,
+                  variant: MiniAppTextVariant.body3,
                 ),
               ],
             ),

@@ -104,7 +104,10 @@ class OverviewDashboardHomeShimmer extends StatelessWidget {
   }
 }
 
-AllocationSummaryData _buildAllocationSummaryData(BuildContext context, OverviewDashboardMetrics metrics) {
+AllocationSummaryData _buildAllocationSummaryData(
+  BuildContext context,
+  OverviewDashboardMetrics metrics,
+) {
   final l10n = context.l10n;
 
   return AllocationSummaryData(

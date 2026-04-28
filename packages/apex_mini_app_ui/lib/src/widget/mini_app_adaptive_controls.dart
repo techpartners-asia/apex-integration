@@ -45,14 +45,22 @@ class MiniAppAdaptiveIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool enabled = onPressed != null;
-    final BorderRadius radius = borderRadius ?? BorderRadius.circular(circular ? size / 2 : 14);
-    final Color? effectiveBackground = enabled ? backgroundColor : disabledBackgroundColor ?? backgroundColor?.withValues(alpha: 0.72);
-    final Color? effectiveForeground = enabled ? foregroundColor : disabledForegroundColor ?? foregroundColor?.withValues(alpha: 0.52);
-    final IconData resolvedIcon = PlatformInfo.isIOS && iosIcon != null ? iosIcon! : icon ?? Icons.add;
+    final BorderRadius radius =
+        borderRadius ?? BorderRadius.circular(circular ? size / 2 : 14);
+    final Color? effectiveBackground = enabled
+        ? backgroundColor
+        : disabledBackgroundColor ?? backgroundColor?.withValues(alpha: 0.72);
+    final Color? effectiveForeground = enabled
+        ? foregroundColor
+        : disabledForegroundColor ?? foregroundColor?.withValues(alpha: 0.52);
+    final IconData resolvedIcon = PlatformInfo.isIOS && iosIcon != null
+        ? iosIcon!
+        : icon ?? Icons.add;
     // The native iOS 26 button implementation is a UiKitView with fixed-height
     // constraints. These icon/custom wrappers apply their own outer sizing, so
     // opting into the platform-view path by default causes UIKit conflicts.
-    final bool preferNativePlatformView = useNativePlatformView && PlatformInfo.isIOS26OrHigher();
+    final bool preferNativePlatformView =
+        useNativePlatformView && PlatformInfo.isIOS26OrHigher();
 
     Widget child = SizedBox.square(
       dimension: size,
@@ -120,14 +128,16 @@ class MiniAppAdaptivePressable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool preferNativePlatformView = useNativePlatformView && PlatformInfo.isIOS26OrHigher();
+    final bool preferNativePlatformView =
+        useNativePlatformView && PlatformInfo.isIOS26OrHigher();
 
     return AdaptiveButton.child(
       onPressed: onPressed,
       enabled: enabled && onPressed != null,
       style: AdaptiveButtonStyle.glass,
       padding: padding,
-      borderRadius: borderRadius ?? BorderRadius.circular(context.responsive.dp(16)),
+      borderRadius:
+          borderRadius ?? BorderRadius.circular(context.responsive.dp(16)),
       minSize: minSize,
       useNative: preferNativePlatformView,
       child: child,

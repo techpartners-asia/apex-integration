@@ -14,7 +14,9 @@ class LoginSessionResponseDto {
     if (responseCode != 0) {
       throw ApiBusinessException(
         responseCode: responseCode,
-        message: ApiParser.asNullableString(json['responseDesc']) ?? 'Login session bootstrap failed.',
+        message:
+            ApiParser.asNullableString(json['responseDesc']) ??
+            'Login session bootstrap failed.',
       );
     }
 

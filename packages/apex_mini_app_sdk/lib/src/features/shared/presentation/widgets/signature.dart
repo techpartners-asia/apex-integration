@@ -76,15 +76,11 @@ class SignaturePanel extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                             horizontal: responsive.dp(24),
                           ),
-                          child: Text(
+                          child: CustomText(
                             resolvedPlaceholder,
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: DesignTokens.muted.withValues(
-                                    alpha: 0.72,
-                                  ),
-                                ),
+                            variant: MiniAppTextVariant.caption1,
+                            color: DesignTokens.muted.withValues(alpha: 0.72),
                           ),
                         ),
                       )
@@ -114,13 +110,10 @@ class SignaturePanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: expandCanvasToFill ? MainAxisSize.max : MainAxisSize.min,
         children: <Widget>[
-          Text(
+          CustomText(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: DesignTokens.ink,
-              fontWeight: MiniAppTypography.bold,
-              height: 1.25,
-            ),
+            variant: MiniAppTextVariant.subtitle2,
+            color: DesignTokens.ink,
           ),
           SizedBox(height: responsive.dp(14)),
           if (message != null) ...<Widget>[

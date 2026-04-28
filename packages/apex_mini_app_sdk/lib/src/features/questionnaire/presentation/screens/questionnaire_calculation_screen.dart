@@ -9,10 +9,12 @@ class QuestionnaireCalculationScreen extends StatefulWidget {
   const QuestionnaireCalculationScreen({super.key});
 
   @override
-  State<QuestionnaireCalculationScreen> createState() => _QuestionnaireCalculationScreenState();
+  State<QuestionnaireCalculationScreen> createState() =>
+      _QuestionnaireCalculationScreenState();
 }
 
-class _QuestionnaireCalculationScreenState extends State<QuestionnaireCalculationScreen> {
+class _QuestionnaireCalculationScreenState
+    extends State<QuestionnaireCalculationScreen> {
   bool _isRouting = false;
 
   @override
@@ -50,11 +52,17 @@ class _QuestionnaireCalculationScreenState extends State<QuestionnaireCalculatio
     return PopScope(
       canPop: false,
       child: BlocConsumer<IpsQuestionnaireCubit, IpsQuestionnaireState>(
-        listenWhen: (IpsQuestionnaireState previous, IpsQuestionnaireState current) {
-          final bool hasFreshResult = previous.res != current.res && current.res != null;
-          final bool submitFailed = previous.isSubmitting && !current.isSubmitting && current.res == null && current.errorMessage != null;
-          return hasFreshResult || submitFailed;
-        },
+        listenWhen:
+            (IpsQuestionnaireState previous, IpsQuestionnaireState current) {
+              final bool hasFreshResult =
+                  previous.res != current.res && current.res != null;
+              final bool submitFailed =
+                  previous.isSubmitting &&
+                  !current.isSubmitting &&
+                  current.res == null &&
+                  current.errorMessage != null;
+              return hasFreshResult || submitFailed;
+            },
         listener: (BuildContext context, IpsQuestionnaireState state) {
           final QuestionnaireRes? res = state.res;
           if (res != null) {
@@ -72,7 +80,8 @@ class _QuestionnaireCalculationScreenState extends State<QuestionnaireCalculatio
               appBarTitle: l10n.ipsContractTitle,
               showCloseButton: false,
               showBackButton: true,
-              onBack: () => Navigator.of(context, rootNavigator: true).maybePop(),
+              onBack: () =>
+                  Navigator.of(context, rootNavigator: true).maybePop(),
               backgroundColor: DesignTokens.softSurface,
               appBarBackgroundColor: DesignTokens.softSurface,
               appBarShowBottomBorder: false,
@@ -131,22 +140,18 @@ class _QuestionnaireCalculationView extends StatelessWidget {
               height: responsive.dp(270),
             ),
             SizedBox(height: responsive.dp(28)),
-            Text(
+            CustomText(
               title,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: DesignTokens.ink,
-                fontWeight: MiniAppTypography.bold,
-              ),
+              variant: MiniAppTextVariant.title1,
+              color: DesignTokens.ink,
             ),
             SizedBox(height: responsive.dp(12)),
-            Text(
+            CustomText(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: DesignTokens.ink,
-                height: 1.55,
-              ),
+              variant: MiniAppTextVariant.body2,
+              color: DesignTokens.ink,
             ),
           ],
         ),

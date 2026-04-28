@@ -36,12 +36,18 @@ class IpsQuestionnaireState {
     return IpsQuestionnaireState(
       isLoading: isLoading ?? this.isLoading,
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      bootstrapState: bootstrapState == sentinel ? this.bootstrapState : bootstrapState as AcntBootstrapState?,
+      bootstrapState: bootstrapState == sentinel
+          ? this.bootstrapState
+          : bootstrapState as AcntBootstrapState?,
       questions: questions ?? this.questions,
       answers: answers ?? this.answers,
-      staticQuestionAnswerId: staticQuestionAnswerId == sentinel ? this.staticQuestionAnswerId : staticQuestionAnswerId as String?,
+      staticQuestionAnswerId: staticQuestionAnswerId == sentinel
+          ? this.staticQuestionAnswerId
+          : staticQuestionAnswerId as String?,
       res: res == sentinel ? this.res : res as QuestionnaireRes?,
-      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
+      errorMessage: errorMessage == sentinel
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 }

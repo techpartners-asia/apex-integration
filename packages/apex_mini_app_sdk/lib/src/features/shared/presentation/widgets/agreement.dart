@@ -75,7 +75,6 @@ class AgreementPageTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final ThemeData theme = Theme.of(context);
     final Widget content = wrapBodyInCard
         ? AgreementBodyCard(
             padding: bodyCardPadding ?? EdgeInsets.zero,
@@ -97,13 +96,10 @@ class AgreementPageTemplate extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           if (title != null && title!.trim().isNotEmpty) ...<Widget>[
-            Text(
+            CustomText(
               title!,
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: DesignTokens.ink,
-                fontWeight: MiniAppTypography.bold,
-                height: 1.25,
-              ),
+              variant: MiniAppTextVariant.subtitle2,
+              color: DesignTokens.ink,
             ),
             SizedBox(height: responsive.dp(12)),
           ],

@@ -7,7 +7,10 @@ class CreateFeedbackResponseDto {
   const CreateFeedbackResponseDto({this.message, required this.entity});
 
   factory CreateFeedbackResponseDto.fromJson(Map<String, Object?> json) {
-    ApiActionResultParser.ensureSuccess(json, fallbackErrorMessage: 'Failed to submit feedback.');
+    ApiActionResultParser.ensureSuccess(
+      json,
+      fallbackErrorMessage: 'Failed to submit feedback.',
+    );
 
     final Map<String, Object?> body = ApiActionResultParser.bodyOf(json);
 

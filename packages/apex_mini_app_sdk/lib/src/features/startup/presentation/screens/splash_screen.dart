@@ -34,9 +34,9 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
       title: l10n.errorsGenericTitle,
 
       /// Error Text
-      body: Text(
+      body: CustomText(
         state.errorMessage ?? l10n.errorsNetwork,
-        style: Theme.of(context).textTheme.bodyMedium,
+        variant: MiniAppTextVariant.body2,
       ),
 
       /// Error icon
@@ -50,14 +50,22 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-          child: Text(l10n.commonClose),
+          child: CustomText(
+            l10n.commonClose,
+            variant: MiniAppTextVariant.buttonMedium,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         FilledButton(
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pop();
             cubit.load();
           },
-          child: Text(l10n.commonRetry),
+          child: CustomText(
+            l10n.commonRetry,
+            variant: MiniAppTextVariant.buttonMedium,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ],
     );

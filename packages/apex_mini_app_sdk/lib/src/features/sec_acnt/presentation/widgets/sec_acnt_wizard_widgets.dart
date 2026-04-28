@@ -81,14 +81,13 @@ class SecAcntWizardHeader extends StatelessWidget {
       titleSpacing: centerTitle ? null : responsive.dp(20),
       backgroundColor: DesignTokens.softSurface,
       showBottomBorder: false,
-      titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-        color: titleColor,
-        fontWeight: highlightBrand
-            ? MiniAppTypography.bold
-            : MiniAppTypography.semiBold,
-        fontSize: responsive.sp(highlightBrand ? 18 : 16),
-        letterSpacing: highlightBrand ? responsive.dp(0.5) : 0,
-      ),
+      titleStyle:
+          (highlightBrand
+                  ? MiniAppTypography.title1
+                  : MiniAppTypography.subtitle2)
+              .copyWith(
+                color: titleColor,
+              ),
     );
   }
 }

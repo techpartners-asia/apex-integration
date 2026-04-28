@@ -9,7 +9,7 @@ class MessageCard extends StatelessWidget {
   final String message;
   final Widget? leading;
   final MessageCardVariant variant;
-  
+
   const MessageCard({
     super.key,
     required this.title,
@@ -45,9 +45,17 @@ class MessageCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(title, style: style.titleStyle),
+                  CustomText(
+                    title,
+                    variant: style.titleVariant,
+                    color: style.titleColor,
+                  ),
                   SizedBox(height: responsive.dp(style.messageSpacing)),
-                  Text(message, style: style.messageStyle),
+                  CustomText(
+                    message,
+                    variant: style.messageVariant,
+                    color: style.messageColor,
+                  ),
                 ],
               ),
             ),
@@ -89,8 +97,10 @@ final class _MessageCardStyle {
     required this.defaultLeading,
     required this.leadingSpacing,
     required this.messageSpacing,
-    required this.titleStyle,
-    required this.messageStyle,
+    required this.titleVariant,
+    required this.messageVariant,
+    this.titleColor,
+    this.messageColor,
     this.borderColor,
   });
 
@@ -100,8 +110,10 @@ final class _MessageCardStyle {
   final Widget defaultLeading;
   final double leadingSpacing;
   final double messageSpacing;
-  final TextStyle? titleStyle;
-  final TextStyle? messageStyle;
+  final MiniAppTextVariant titleVariant;
+  final MiniAppTextVariant messageVariant;
+  final Color? titleColor;
+  final Color? messageColor;
   final Color? borderColor;
 
   static _MessageCardStyle resolve(
@@ -121,13 +133,9 @@ final class _MessageCardStyle {
         ),
         leadingSpacing: 10,
         messageSpacing: 6,
-        titleStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          fontWeight: MiniAppTypography.bold,
-        ),
-        messageStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: DesignTokens.ink,
-          height: 1.55,
-        ),
+        titleVariant: MiniAppTextVariant.subtitle3,
+        messageVariant: MiniAppTextVariant.caption1,
+        messageColor: DesignTokens.ink,
       ),
       MessageCardVariant.accent => _MessageCardStyle(
         backgroundColor: DesignTokens.softAccent,
@@ -141,10 +149,9 @@ final class _MessageCardStyle {
         ),
         leadingSpacing: responsive.spacing.inlineSpacing * 0.75,
         messageSpacing: responsive.spacing.inlineSpacing * 0.35,
-        titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: DesignTokens.ink,
-        ),
-        messageStyle: Theme.of(context).textTheme.bodySmall,
+        titleVariant: MiniAppTextVariant.buttonMedium,
+        titleColor: DesignTokens.ink,
+        messageVariant: MiniAppTextVariant.caption1,
       ),
     };
   }

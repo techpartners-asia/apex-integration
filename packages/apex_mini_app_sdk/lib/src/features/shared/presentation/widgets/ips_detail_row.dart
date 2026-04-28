@@ -39,11 +39,8 @@ class IpsDetailRow extends StatelessWidget {
           Expanded(
             child: CustomText(
               label,
-              variant: MiniAppTextVariant.bodySmall,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: DesignTokens.muted,
-                fontWeight: MiniAppTypography.regular,
-              ),
+              variant: MiniAppTextVariant.body3,
+              color: DesignTokens.muted,
             ),
           ),
           SizedBox(width: responsive.spacing.inlineSpacing),
@@ -53,12 +50,9 @@ class IpsDetailRow extends StatelessWidget {
                 valueWidget ??
                 CustomText(
                   value!,
-                  variant: MiniAppTextVariant.body,
+                  variant: MiniAppTextVariant.subtitle3,
                   textAlign: TextAlign.end,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: DesignTokens.muted,
-                    fontWeight: MiniAppTypography.semiBold
-                  ),
+                  color: DesignTokens.muted,
                 ),
           ),
         ],

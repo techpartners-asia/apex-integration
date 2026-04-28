@@ -8,7 +8,7 @@ class MiniAppPaymentExecutor {
       'host_response_timed_out';
   static const String hostCallbackFailedMessageKey = 'host_callback_failed';
 
-  final MiniAppApiRepository appApi;
+  final MiniAppPaymentsRepository appApi;
   final MiniAppWalletPaymentHandler walletPaymentHandler;
   final Duration paymentTimeout;
   final MiniAppLogger logger;
@@ -163,14 +163,30 @@ class MiniAppPaymentExecutor {
           metadata: metadata,
         );
       case MiniAppPaymentStatus.pending:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return MiniAppPaymentRes.pending(
+          message: result.message,
+          transactionId: result.transactionId,
+          paymentReference: paymentReference,
+          metadata: metadata,
+        );
       case MiniAppPaymentStatus.paid:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return MiniAppPaymentRes.success(
+          message: result.message,
+          transactionId: result.transactionId,
+          paymentReference: paymentReference,
+          metadata: <String, Object?>{
+            ...metadata,
+            'originalStatus': MiniAppPaymentStatus.paid.name,
+          },
+        );
       case MiniAppPaymentStatus.unknown:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return MiniAppPaymentRes.unknown(
+          message: result.message,
+          transactionId: result.transactionId,
+          paymentReference: paymentReference,
+          failure: result.failure,
+          metadata: metadata,
+        );
     }
   }
 

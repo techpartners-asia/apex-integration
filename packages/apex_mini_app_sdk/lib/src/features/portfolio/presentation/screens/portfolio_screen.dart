@@ -37,8 +37,10 @@ class PortfolioScreen extends StatelessWidget {
 
         final IpsPortfolioViewData? data = state.data;
         final PortfolioOverview? overview = data?.overview;
-        final List<PortfolioHolding> yieldProfitHoldings = data?.yieldProfitHoldings ?? const <PortfolioHolding>[];
-        final List<PortfolioHolding> stockYieldDetails = data?.stockYieldDetails ?? const <PortfolioHolding>[];
+        final List<PortfolioHolding> yieldProfitHoldings =
+            data?.yieldProfitHoldings ?? const <PortfolioHolding>[];
+        final List<PortfolioHolding> stockYieldDetails =
+            data?.stockYieldDetails ?? const <PortfolioHolding>[];
 
         if (overview == null) {
           return CustomScaffold(
@@ -53,10 +55,11 @@ class PortfolioScreen extends StatelessWidget {
           );
         }
 
-        final PortfolioYieldChartData chartData = PortfolioYieldChartDataMapper.fromResponses(
-          yieldProfitHoldings: yieldProfitHoldings,
-          stockYieldDetails: stockYieldDetails,
-        );
+        final PortfolioYieldChartData chartData =
+            PortfolioYieldChartDataMapper.fromResponses(
+              yieldProfitHoldings: yieldProfitHoldings,
+              stockYieldDetails: stockYieldDetails,
+            );
 
         return CustomScaffold(
           appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
@@ -73,25 +76,43 @@ class PortfolioScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  SizedBox(height: context.responsive.spacing.sectionSpacing),
+                  SizedBox(
+                    height: context.responsive.spacing.sectionSpacing,
+                  ),
 
                   /// Allocation
-                  AllocationSummaryCard(data: _buildAllocationSummaryData(overview, l10n)),
+                  AllocationSummaryCard(
+                    data: _buildAllocationSummaryData(overview, l10n),
+                  ),
                   SizedBox(height: context.responsive.spacing.cardGap),
 
                   /// Reminder
-                  ReminderCard(title: l10n.ipsOverviewDashboardReminderTitle, message: l10n.ipsOverviewDashboardReminderBody),
+                  ReminderCard(
+                    title: l10n.ipsOverviewDashboardReminderTitle,
+                    message: l10n.ipsOverviewDashboardReminderBody,
+                  ),
 
                   /// Profit section
-                  PortfolioYieldSection(overview: overview, chartData: chartData, l10n: l10n),
+                  PortfolioYieldSection(
+                    overview: overview,
+                    chartData: chartData,
+                    l10n: l10n,
+                  ),
 
                   /// My portfolio
                   PortfolioMyPackSection(overview: overview, l10n: l10n),
-                  SizedBox(height: context.responsive.spacing.sectionSpacing),
+                  SizedBox(
+                    height: context.responsive.spacing.sectionSpacing,
+                  ),
 
                   /// Quick actions
-                  PortfolioQuickActionsSection(portfolioContext: data?.portfolioContext ?? const SdkPortfolioContext(), l10n: l10n),
-                  SizedBox(height: context.responsive.spacing.sectionSpacing * 2),
+                  // PortfolioQuickActionsSection(
+                  //   portfolioContext: data?.portfolioContext ?? const SdkPortfolioContext(),
+                  //   l10n: l10n,
+                  // ),
+                  SizedBox(
+                    height: context.responsive.spacing.sectionSpacing * 2,
+                  ),
                 ],
               ),
             ),
@@ -110,8 +131,11 @@ AllocationSummaryData _buildAllocationSummaryData(
   final double bondValue = overview.bondTotal ?? 0;
   final List<AllocationBadgeData> yieldBadges = <AllocationBadgeData>[
     AllocationBadgeData(
-      label: '${(overview.profitOrLoss ?? 0.0) >= 0 ? '+' : ''}${formatIpsPaymentAmount((overview.profitOrLoss ?? 0.0), overview.currency)}',
-      tone: (overview.profitOrLoss ?? 0.0) >= 0 ? DesignTokens.success : DesignTokens.danger,
+      label:
+          '${(overview.profitOrLoss ?? 0.0) >= 0 ? '+' : ''}${formatIpsPaymentAmount((overview.profitOrLoss ?? 0.0), overview.currency)}',
+      tone: (overview.profitOrLoss ?? 0.0) >= 0
+          ? DesignTokens.success
+          : DesignTokens.danger,
     ),
     AllocationBadgeData(
       label: '+${(overview.yieldAmount ?? 0.0).toStringAsFixed(0)}%',

@@ -31,20 +31,20 @@ class PaymentResState extends StatelessWidget {
       case MiniAppPaymentStatus.unsupported:
       case MiniAppPaymentStatus.timedOut:
       case MiniAppPaymentStatus.failed:
+      case MiniAppPaymentStatus.unknown:
         return MiniAppErrorState(
           title: l10n.errorsActionFailed,
           message:
               '${l10n.commonStatus}: ${resolvePaymentStatusLabel(l10n, res.status)}\n$message',
         );
       case MiniAppPaymentStatus.pending:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return MiniAppEmptyState(
+          title: l10n.ipsStatusPending,
+          message: message,
+          icon: Icons.schedule_outlined,
+        );
       case MiniAppPaymentStatus.paid:
-        // TODO: Handle this case.
-        throw UnimplementedError();
-      case MiniAppPaymentStatus.unknown:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return MiniAppSuccessState(title: l10n.commonSuccess, message: message);
     }
   }
 }

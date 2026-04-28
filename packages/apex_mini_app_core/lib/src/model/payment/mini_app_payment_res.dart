@@ -42,6 +42,30 @@ class MiniAppPaymentRes {
        paymentReference = null,
        status = MiniAppPaymentStatus.unsupported;
 
+  const MiniAppPaymentRes.pending({
+    this.message,
+    this.transactionId,
+    this.paymentReference,
+    this.metadata = const <String, Object?>{},
+  }) : failure = null,
+       status = MiniAppPaymentStatus.pending;
+
+  const MiniAppPaymentRes.paid({
+    this.message,
+    this.transactionId,
+    this.paymentReference,
+    this.metadata = const <String, Object?>{},
+  }) : failure = null,
+       status = MiniAppPaymentStatus.paid;
+
+  const MiniAppPaymentRes.unknown({
+    this.message,
+    this.transactionId,
+    this.paymentReference,
+    this.failure,
+    this.metadata = const <String, Object?>{},
+  }) : status = MiniAppPaymentStatus.unknown;
+
   final MiniAppPaymentStatus status;
   final String? message;
   final String? transactionId;
@@ -49,5 +73,7 @@ class MiniAppPaymentRes {
   final MiniAppFailure? failure;
   final Map<String, Object?> metadata;
 
-  bool get success => status == MiniAppPaymentStatus.success;
+  bool get success =>
+      status == MiniAppPaymentStatus.success ||
+      status == MiniAppPaymentStatus.paid;
 }

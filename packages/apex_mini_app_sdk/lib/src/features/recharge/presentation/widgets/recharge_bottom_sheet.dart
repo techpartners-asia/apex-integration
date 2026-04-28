@@ -19,6 +19,7 @@ Future<IpsRechargeState?> showRechargeBottomSheet(
   return showModalBottomSheet<IpsRechargeState>(
     context: context,
     isScrollControlled: true,
+    requestFocus: true,
     useSafeArea: true,
     backgroundColor: Colors.transparent,
     builder: (BuildContext sheetContext) {
@@ -45,18 +46,71 @@ class _RechargeBottomSheet extends StatefulWidget {
 
 class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   final TextEditingController _controller = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode(debugLabel: 'recharge_quantity_input');
+  Animation<double>? _routeAnimation;
+  bool _initialFocusRequested = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // _attachRouteAnimation();
+  }
+
+  void _attachRouteAnimation() {
+    final Animation<double>? animation = ModalRoute.of(context)?.animation;
+    if (identical(_routeAnimation, animation)) return;
+
+    _routeAnimation?.removeStatusListener(_handleRouteAnimationStatus);
+    _routeAnimation = animation;
+
+    if (animation == null || animation.status == AnimationStatus.completed) {
+      _scheduleInitialKeyboardRequest();
+      return;
+    }
+
+    animation.addStatusListener(_handleRouteAnimationStatus);
+  }
+
+  void _handleRouteAnimationStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      _scheduleInitialKeyboardRequest();
+    }
+  }
+
+  void _scheduleInitialKeyboardRequest() {
+    if (_initialFocusRequested) return;
+    _initialFocusRequested = true;
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   if (!mounted) return;
+    //
+    //   await WidgetsBinding.instance.endOfFrame;
+    //   if (!mounted) return;
+    //
+    //   _requestKeyboard();
+    // });
+  }
+
+  void _requestKeyboard() {
+    if (!mounted) return;
+
+    FocusScope.of(context).requestFocus(_focusNode);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
+      _showKeyboardIfFocused();
     });
+    Future<void>.delayed(const Duration(milliseconds: 80), () {
+      _showKeyboardIfFocused();
+    });
+  }
+
+  void _showKeyboardIfFocused() {
+    if (!mounted || !_focusNode.hasFocus) return;
+    SystemChannels.textInput.invokeMethod<void>('TextInput.show');
   }
 
   @override
   void dispose() {
+    _routeAnimation?.removeStatusListener(_handleRouteAnimationStatus);
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -65,9 +119,11 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final double keyboardInset = MediaQuery.of(context).viewInsets.bottom;
 
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
-      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) => prev.paymentRes != curr.paymentRes && curr.paymentRes != null,
+      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
+          prev.paymentRes != curr.paymentRes && curr.paymentRes != null,
       listener: (BuildContext context, IpsRechargeState state) {
         Navigator.of(context).pop(state);
       },
@@ -84,6 +140,8 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
                   controller: _controller,
                   focusNode: _focusNode,
                   state: state,
+                  hasKeyboard: keyboardInset > 0,
+                  onRequestKeyboard: _requestKeyboard,
                 ),
               );
             },
@@ -98,11 +156,15 @@ class _RechargeSheetBody extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final IpsRechargeState state;
+  final bool hasKeyboard;
+  final VoidCallback onRequestKeyboard;
 
   const _RechargeSheetBody({
     required this.controller,
     required this.focusNode,
     required this.state,
+    required this.hasKeyboard,
+    required this.onRequestKeyboard,
   });
 
   @override
@@ -110,177 +172,81 @@ class _RechargeSheetBody extends StatelessWidget {
     final l10n = context.l10n;
     final responsive = context.responsive;
 
-    return SingleChildScrollView(
+    final Widget quantitySection = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onRequestKeyboard,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SizedBox(height: responsive.spacing.sectionSpacing),
-          _SheetQuantityInput(
+          RechargeQuantityInput(
             controller: controller,
             focusNode: focusNode,
+            unfocusOnTapOutside: false,
           ),
           SizedBox(height: responsive.spacing.inlineSpacing),
           CustomText(
             l10n.ipsPaymentRechargeQuantityHint,
-            variant: MiniAppTextVariant.bodySmall,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: DesignTokens.muted,
-            ),
+            variant: MiniAppTextVariant.caption1,
+            color: DesignTokens.muted,
           ),
-          SizedBox(height: responsive.spacing.sectionSpacing * 1.5),
-          _SheetPricingSummary(state: state),
-          SizedBox(height: responsive.spacing.sectionSpacing),
-          PrimaryButton(
-            label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
-            onPressed: state.canSubmit ? context.read<IpsRechargeCubit>().submit : null,
-          ),
-          SizedBox(height: responsive.spacing.inlineSpacing),
         ],
       ),
     );
-  }
-}
 
-class _SheetQuantityInput extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
-
-  const _SheetQuantityInput({
-    required this.controller,
-    required this.focusNode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      keyboardType: TextInputType.number,
-      onTapOutside: (_) => FocusScope.of(context).unfocus(),
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-        fontWeight: MiniAppTypography.bold,
-        color: DesignTokens.ink,
-        height: 1.2,
-      ),
-      decoration: const InputDecoration(
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        contentPadding: EdgeInsets.zero,
-        isDense: true,
-      ),
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(4),
+    final Widget summarySection = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        SizedBox(height: responsive.spacing.sectionSpacing * 1.5),
+        RechargePricingSummaryCard(state: state),
       ],
-      onChanged: (String value) {
-        context.read<IpsRechargeCubit>().updatePackQty(value);
-      },
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final Widget content = hasKeyboard
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        quantitySection,
+                        summarySection,
+                      ],
+                    )
+                  : ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          quantitySection,
+                          summarySection,
+                        ],
+                      ),
+                    );
+
+              return SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: content,
+              );
+            },
+          ),
+        ),
+        SizedBox(height: responsive.spacing.sectionSpacing),
+        PrimaryButton(
+          label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
+          onPressed: state.canSubmit
+              ? context.read<IpsRechargeCubit>().submit
+              : null,
+        ),
+        SizedBox(height: responsive.spacing.inlineSpacing),
+      ],
     );
   }
-}
-
-class _SheetPricingSummary extends StatelessWidget {
-  const _SheetPricingSummary({required this.state});
-
-  final IpsRechargeState state;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final responsive = context.responsive;
-    final String currency = state.currency;
-
-    return Container(
-      padding: EdgeInsets.all(responsive.spacing.financialCardSpacing),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: DesignTokens.cardRadius,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          IpsDetailRow(
-            label: l10n.ipsContractUnitPrice,
-            value: formatIpsPaymentAmount(state.unitPrice, currency),
-          ),
-          IpsDetailRow(
-            label: l10n.ipsContractServiceFee,
-            value: formatIpsPaymentAmount(state.serviceFee, currency),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: responsive.spacing.inlineSpacing * 0.3,
-            ),
-            child: CustomPaint(
-              painter: _DashedLinePainter(
-                color: DesignTokens.border,
-              ),
-              size: const Size(double.infinity, 1),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: responsive.spacing.inlineSpacing * 0.7,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: CustomText(
-                    '${l10n.ipsPaymentRechargeTotalAmount}:',
-                    variant: MiniAppTextVariant.body,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: DesignTokens.ink,
-                      fontWeight: MiniAppTypography.bold,
-                    ),
-                  ),
-                ),
-                CustomText(
-                  formatIpsPaymentAmount(state.totalPayable, currency),
-                  variant: MiniAppTextVariant.body,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: DesignTokens.ink,
-                    fontWeight: MiniAppTypography.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DashedLinePainter extends CustomPainter {
-  final Color color;
-
-  const _DashedLinePainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.0
-      ..style = PaintingStyle.stroke;
-
-    const double dashWidth = 6;
-    const double dashSpace = 4;
-    double startX = 0;
-
-    while (startX < size.width) {
-      canvas.drawLine(
-        Offset(startX, size.height / 2),
-        Offset(startX + dashWidth, size.height / 2),
-        paint,
-      );
-      startX += dashWidth + dashSpace;
-    }
-  }
-
-  @override
-  bool shouldRepaint(_DashedLinePainter oldDelegate) => color != oldDelegate.color;
 }

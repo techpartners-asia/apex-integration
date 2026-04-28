@@ -6,10 +6,15 @@ class SecAcntBankSelectionSheet extends StatefulWidget {
   final SecAcntBankOption? selectedBank;
   final SecAcntBankOptionsRepository bankOptionsRepository;
 
-  const SecAcntBankSelectionSheet({super.key, required this.selectedBank, required this.bankOptionsRepository});
+  const SecAcntBankSelectionSheet({
+    super.key,
+    required this.selectedBank,
+    required this.bankOptionsRepository,
+  });
 
   @override
-  State<SecAcntBankSelectionSheet> createState() => _SecAcntBankSelectionSheetState();
+  State<SecAcntBankSelectionSheet> createState() =>
+      _SecAcntBankSelectionSheetState();
 }
 
 class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
@@ -21,8 +26,12 @@ class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
     _bankOptionsFuture = _loadBankOptions();
   }
 
-  Future<List<SecAcntBankOption>> _loadBankOptions({bool forceRefresh = false}) {
-    return widget.bankOptionsRepository.getBankOptions(forceRefresh: forceRefresh);
+  Future<List<SecAcntBankOption>> _loadBankOptions({
+    bool forceRefresh = false,
+  }) {
+    return widget.bankOptionsRepository.getBankOptions(
+      forceRefresh: forceRefresh,
+    );
   }
 
   void _retry() {
@@ -41,9 +50,8 @@ class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
 
     return ActionSheet(
       title: l10n.secAcntBankSelectionTitle,
-      titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+      titleStyle: MiniAppTypography.subtitle2.copyWith(
         color: DesignTokens.ink,
-        fontWeight: MiniAppTypography.bold,
       ),
       showHandle: false,
       trailing: MiniAppAdaptiveIconButton(
@@ -57,78 +65,86 @@ class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
       ),
       child: FutureBuilder<List<SecAcntBankOption>>(
         future: _bankOptionsFuture,
-        builder: (BuildContext context, AsyncSnapshot<List<SecAcntBankOption>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return _SecAcntSheetStatusView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(
-                    width: responsive.component(24),
-                    height: responsive.component(24),
-                    child: const CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                    ),
+        builder:
+            (
+              BuildContext context,
+              AsyncSnapshot<List<SecAcntBankOption>> snapshot,
+            ) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return _SecAcntSheetStatusView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      SizedBox(
+                        width: responsive.component(24),
+                        height: responsive.component(24),
+                        child: const CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                        ),
+                      ),
+                      SizedBox(height: responsive.space(AppSpacing.md)),
+                      CustomText(
+                        l10n.commonLoading,
+                        variant: MiniAppTextVariant.body2,
+                      ),
+                    ],
                   ),
-                  SizedBox(height: responsive.space(AppSpacing.md)),
-                  CustomText(l10n.commonLoading, style: Theme.of(context).textTheme.bodyMedium),
-                ],
-              ),
-            );
-          }
+                );
+              }
 
-          if (snapshot.hasError) {
-            return _SecAcntSheetStatusView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  CustomText(
-                    l10n.errorsApiLoadFailed,
+              if (snapshot.hasError) {
+                return _SecAcntSheetStatusView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      CustomText(
+                        l10n.errorsApiLoadFailed,
+                        textAlign: TextAlign.center,
+                        variant: MiniAppTextVariant.body2,
+                      ),
+                      SizedBox(height: responsive.space(AppSpacing.md)),
+                      SecondaryButton(
+                        label: l10n.commonRetry,
+                        onPressed: _retry,
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              final List<SecAcntBankOption> bankOptions =
+                  snapshot.data ?? const <SecAcntBankOption>[];
+              if (bankOptions.isEmpty) {
+                return _SecAcntSheetStatusView(
+                  child: CustomText(
+                    l10n.commonNoData,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    variant: MiniAppTextVariant.body2,
                   ),
-                  SizedBox(height: responsive.space(AppSpacing.md)),
-                  SecondaryButton(
-                    label: l10n.commonRetry,
-                    onPressed: _retry,
-                  ),
-                ],
-              ),
-            );
-          }
+                );
+              }
 
-          final List<SecAcntBankOption> bankOptions = snapshot.data ?? const <SecAcntBankOption>[];
-          if (bankOptions.isEmpty) {
-            return _SecAcntSheetStatusView(
-              child: CustomText(
-                l10n.commonNoData,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            );
-          }
-
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const ScrollPhysics(),
-            itemCount: bankOptions.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              crossAxisSpacing: responsive.dp(10),
-              mainAxisSpacing: responsive.dp(10),
-              mainAxisExtent: responsive.dp(100),
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              final SecAcntBankOption bank = bankOptions[index];
-              final bool selected = widget.selectedBank == bank;
-              return BankAccountTile(
-                bank: bank,
-                selected: selected,
-                onTap: () => Navigator.pop(context, bank),
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const ScrollPhysics(),
+                itemCount: bankOptions.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: responsive.dp(10),
+                  mainAxisSpacing: responsive.dp(10),
+                  mainAxisExtent: responsive.dp(100),
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  final SecAcntBankOption bank = bankOptions[index];
+                  final bool selected = widget.selectedBank == bank;
+                  return BankAccountTile(
+                    bank: bank,
+                    selected: selected,
+                    onTap: () => Navigator.pop(context, bank),
+                  );
+                },
               );
             },
-          );
-        },
       ),
     );
   }
@@ -144,7 +160,10 @@ class _SecAcntSheetStatusView extends StatelessWidget {
     final responsive = context.responsive;
 
     return Padding(
-      padding: responsive.insetsSymmetric(horizontal: AppSpacing.md, vertical: AppSpacing.lg),
+      padding: responsive.insetsSymmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.lg,
+      ),
       child: Center(child: child),
     );
   }

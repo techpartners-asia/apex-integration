@@ -115,8 +115,6 @@ Widget buildIpsPageForRoute(
         route: route,
         dependencies: dependencies,
       );
-    case MiniAppRoutes.liquidGlassDemo:
-      return buildIpsLiquidGlassDemoPage(context, route: route);
     default:
       return UnavailableScreen(route: route);
   }

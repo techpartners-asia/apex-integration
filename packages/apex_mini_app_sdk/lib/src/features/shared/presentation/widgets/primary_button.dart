@@ -30,15 +30,20 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final bool enabled = onPressed != null;
-    final BorderRadius resolvedBorderRadius = borderRadius ?? BorderRadius.circular(responsive.radiusLg);
+    final BorderRadius resolvedBorderRadius =
+        borderRadius ?? BorderRadius.circular(responsive.radiusLg);
 
     return SizedBox(
       height: height ?? responsive.spacing.buttonHeight + 4,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          gradient: enabled ? (enabledGradient ?? DesignTokens.primaryGradient) : (disabledGradient ?? DesignTokens.disabledGradient),
+          gradient: enabled
+              ? (enabledGradient ?? DesignTokens.primaryGradient)
+              : (disabledGradient ?? DesignTokens.disabledGradient),
           borderRadius: resolvedBorderRadius,
-          boxShadow: enabled ? (enabledBoxShadow ?? DesignTokens.buttonShadow) : const <BoxShadow>[],
+          boxShadow: enabled
+              ? (enabledBoxShadow ?? DesignTokens.buttonShadow)
+              : const <BoxShadow>[],
         ),
         child: Material(
           color: Colors.transparent,
@@ -56,7 +61,7 @@ class PrimaryButton extends StatelessWidget {
                   ],
                   CustomText(
                     label,
-                    variant: MiniAppTextVariant.button,
+                    variant: MiniAppTextVariant.buttonMedium,
                     color: foregroundColor,
                   ),
                 ],

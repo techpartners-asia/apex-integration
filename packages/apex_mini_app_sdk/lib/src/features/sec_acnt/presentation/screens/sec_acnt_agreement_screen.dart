@@ -17,7 +17,7 @@ class SecAcntAgreementScreen extends StatefulWidget {
   final SecAcntFlowStep step;
   final AcntBootstrapState? bootstrapState;
   final SecAcntFlowDraft draft;
-  final MiniAppApiRepository? appApi;
+  final MiniAppProfileRepository? appApi;
 
   @override
   State<SecAcntAgreementScreen> createState() => _SecAcntAgreementScreenState();

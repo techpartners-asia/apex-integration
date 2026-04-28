@@ -23,17 +23,28 @@ class SdkPortfolioContext {
 
   String? get normalizedSecurityCode => _normalizeText(securityCode);
 
-  int? get normalizedCasaAcntId => casaAcntId != null && casaAcntId! > 0 ? casaAcntId : null;
+  int? get normalizedCasaAcntId =>
+      casaAcntId != null && casaAcntId! > 0 ? casaAcntId : null;
 
   String? get normalizedStmtStartDate => _normalizeText(stmtStartDate);
 
   String? get normalizedStmtEndDate => _normalizeText(stmtEndDate);
 
-  bool get hasStockYieldDetailContext => normalizedBrokerId != null && normalizedSecurityCode != null;
+  bool get hasStockYieldDetailContext =>
+      normalizedBrokerId != null && normalizedSecurityCode != null;
 
-  bool get hasStatementContext => normalizedCasaAcntId != null && normalizedStmtStartDate != null && normalizedStmtEndDate != null;
+  bool get hasStatementContext =>
+      normalizedCasaAcntId != null &&
+      normalizedStmtStartDate != null &&
+      normalizedStmtEndDate != null;
 
-  bool get isEmpty => normalizedBrokerId == null && normalizedSrcFiCode == null && normalizedSecurityCode == null && normalizedCasaAcntId == null && normalizedStmtStartDate == null && normalizedStmtEndDate == null;
+  bool get isEmpty =>
+      normalizedBrokerId == null &&
+      normalizedSrcFiCode == null &&
+      normalizedSecurityCode == null &&
+      normalizedCasaAcntId == null &&
+      normalizedStmtStartDate == null &&
+      normalizedStmtEndDate == null;
 
   String resolveSrcFiCode(String fallback) {
     final String? normalizedFallback = _normalizeText(fallback);
@@ -51,10 +62,18 @@ class SdkPortfolioContext {
     return SdkPortfolioContext(
       brokerId: brokerId == _sentinel ? this.brokerId : brokerId as String?,
       srcFiCode: srcFiCode == _sentinel ? this.srcFiCode : srcFiCode as String?,
-      securityCode: securityCode == _sentinel ? this.securityCode : securityCode as String?,
-      casaAcntId: casaAcntId == _sentinel ? this.casaAcntId : casaAcntId as int?,
-      stmtStartDate: stmtStartDate == _sentinel ? this.stmtStartDate : stmtStartDate as String?,
-      stmtEndDate: stmtEndDate == _sentinel ? this.stmtEndDate : stmtEndDate as String?,
+      securityCode: securityCode == _sentinel
+          ? this.securityCode
+          : securityCode as String?,
+      casaAcntId: casaAcntId == _sentinel
+          ? this.casaAcntId
+          : casaAcntId as int?,
+      stmtStartDate: stmtStartDate == _sentinel
+          ? this.stmtStartDate
+          : stmtStartDate as String?,
+      stmtEndDate: stmtEndDate == _sentinel
+          ? this.stmtEndDate
+          : stmtEndDate as String?,
     );
   }
 

@@ -168,6 +168,8 @@ class _FakePortfolioService implements PortfolioService {
       currency: 'MNT',
       startDate: '',
       endDate: '',
+      pageCount: 0,
+      totalPage: 0,
     );
   }
 }
@@ -258,6 +260,8 @@ class _FailOnSecondLoadService implements PortfolioService {
       currency: 'MNT',
       startDate: '',
       endDate: '',
+      pageCount: 0,
+      totalPage: 0,
     );
   }
 }
@@ -302,6 +306,8 @@ class _SlowPortfolioService implements PortfolioService {
       currency: 'MNT',
       startDate: '',
       endDate: '',
+      pageCount: 0,
+      totalPage: 0,
     );
   }
 }
@@ -342,6 +348,8 @@ class _EmptyHoldingsService implements PortfolioService {
       currency: 'MNT',
       startDate: '',
       endDate: '',
+      pageCount: 0,
+      totalPage: 0,
     );
   }
 }

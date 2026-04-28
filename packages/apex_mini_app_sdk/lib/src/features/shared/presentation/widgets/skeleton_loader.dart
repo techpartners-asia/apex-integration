@@ -15,7 +15,8 @@ class SkeletonLoader extends StatefulWidget {
   State<SkeletonLoader> createState() => _SkeletonLoaderState();
 }
 
-class _SkeletonLoaderState extends State<SkeletonLoader> with SingleTickerProviderStateMixin {
+class _SkeletonLoaderState extends State<SkeletonLoader>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -142,7 +143,8 @@ class SkeletonListLoader extends StatefulWidget {
   State<SkeletonListLoader> createState() => _SkeletonListLoaderState();
 }
 
-class _SkeletonListLoaderState extends State<SkeletonListLoader> with SingleTickerProviderStateMixin {
+class _SkeletonListLoaderState extends State<SkeletonListLoader>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -210,7 +212,9 @@ class _SkeletonListItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(responsive.radius(12)),
-            border: Border.all(color: DesignTokens.muted.withValues(alpha: 0.12)),
+            border: Border.all(
+              color: DesignTokens.muted.withValues(alpha: 0.12),
+            ),
           ),
           child: Row(
             children: <Widget>[

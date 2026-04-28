@@ -77,6 +77,68 @@ class _FailingBootstrapFlow extends MiniAppBootstrapFlow {
   }
 }
 
-class _NoopSessionController extends MiniAppSessionController {}
+class _NoopSessionController implements MiniAppSessionController {
+  @override
+  void cacheCurrentUser(UserEntityDto user) {
+    // TODO: implement cacheCurrentUser
+  }
 
-class _NoopBootstrapService extends InvestmentBootstrapService {}
+  @override
+  // TODO: implement currentUser
+  UserEntityDto? get currentUser => throw UnimplementedError();
+
+  @override
+  Future<UserEntityDto> ensureCurrentUser() {
+    // TODO: implement ensureCurrentUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoginSession> ensureLoginSession() {
+    // TODO: implement ensureLoginSession
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement loginSession
+  LoginSession? get loginSession => throw UnimplementedError();
+
+  @override
+  void prepareLaunch({String? userToken}) {
+    // TODO: implement prepareLaunch
+  }
+
+  @override
+  Future<LoginSession> refreshLoginSession() {
+    // TODO: implement refreshLoginSession
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement store
+  MiniAppSessionStore get store => throw UnimplementedError();
+
+  @override
+  // TODO: implement userToken
+  String? get userToken => throw UnimplementedError();
+}
+
+class _NoopBootstrapService implements InvestmentBootstrapService {
+  @override
+  Future<SecAcntRequestResult> addSecuritiesAcntReq({SecAcntPersonalInfoData? personalInfo}) {
+    // TODO: implement addSecuritiesAcntReq
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AcntBootstrapState> getSecAcntBalanceState({required AcntBootstrapState currentState}) {
+    // TODO: implement getSecAcntBalanceState
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AcntBootstrapState> getSecAcntListState({bool forceRefresh = false}) {
+    // TODO: implement getSecAcntListState
+    throw UnimplementedError();
+  }
+}

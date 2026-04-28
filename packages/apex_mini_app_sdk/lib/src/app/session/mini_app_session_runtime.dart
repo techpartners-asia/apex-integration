@@ -34,7 +34,10 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
   final signUpRuntime = backendConfig.runtime.createCurrentUserRuntime(
     tokenProvider: currentUserTokenProvider,
   );
-  final currentUserProtectedRuntime = backendConfig.runtime.createTechInvestXProtectedRuntime(tokenProvider: currentUserTokenProvider);
+  final currentUserProtectedRuntime = backendConfig.runtime
+      .createTechInvestXProtectedRuntime(
+        tokenProvider: currentUserTokenProvider,
+      );
   final sessionRuntime = backendConfig.runtime.createSessionRuntime();
 
   late final MiniAppSessionController controller;

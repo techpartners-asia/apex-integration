@@ -1,12 +1,8 @@
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 
-class CurrentUserRepository {
-  const CurrentUserRepository();
-
-  Future<UserEntityDto> getCurrentUser({required String userToken}) {
-    throw UnimplementedError();
-  }
+abstract interface class CurrentUserRepository {
+  Future<UserEntityDto> getCurrentUser({required String userToken});
 }
 
 class RemoteSignupBootstrapRepository implements CurrentUserRepository {

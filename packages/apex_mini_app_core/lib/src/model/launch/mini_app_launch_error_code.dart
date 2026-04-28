@@ -2,7 +2,8 @@ enum MiniAppLaunchErrorCode {
   routeNotFound,
   invalidReq,
   runtimeError,
-  unsupportedPresentation;
+  unsupportedPresentation
+  ;
 
   String get title => switch (this) {
     routeNotFound => 'Route Not Found',

@@ -107,7 +107,9 @@ class LocationEntity {
       closeTime: ApiParser.asNullableString(json['closeTime']),
       latitude: ApiParser.asNullableDouble(json['latitude']),
       longitude: ApiParser.asNullableDouble(json['longitude']),
-      images: ApiParser.asObjectMapList(json['images']).map(FileEntity.fromJson).toList(growable: false),
+      images: ApiParser.asObjectMapList(
+        json['images'],
+      ).map(FileEntity.fromJson).toList(growable: false),
       createdAt: ApiParser.asNullableString(json['created_at']),
       updatedAt: ApiParser.asNullableString(json['updated_at']),
     );
@@ -115,7 +117,11 @@ class LocationEntity {
 
   bool get hasCoordinates => latitude != null && longitude != null;
 
-  bool get hasSchedule => startDay != null || endDay != null || openTime?.trim().isNotEmpty == true || closeTime?.trim().isNotEmpty == true;
+  bool get hasSchedule =>
+      startDay != null ||
+      endDay != null ||
+      openTime?.trim().isNotEmpty == true ||
+      closeTime?.trim().isNotEmpty == true;
 }
 
 class BranchInfoEntity {
@@ -139,9 +145,16 @@ class BranchInfoEntity {
     this.message,
   });
 
-  bool get hasContactInfo => email?.trim().isNotEmpty == true || phone?.trim().isNotEmpty == true;
+  bool get hasContactInfo =>
+      email?.trim().isNotEmpty == true || phone?.trim().isNotEmpty == true;
 
-  bool get hasLocationInfo => location != null && ((location!.title?.trim().isNotEmpty == true) || (location!.description?.trim().isNotEmpty == true) || location!.hasSchedule || location!.images.isNotEmpty || location!.hasCoordinates);
+  bool get hasLocationInfo =>
+      location != null &&
+      ((location!.title?.trim().isNotEmpty == true) ||
+          (location!.description?.trim().isNotEmpty == true) ||
+          location!.hasSchedule ||
+          location!.images.isNotEmpty ||
+          location!.hasCoordinates);
 
   bool get hasSocialLinks => socialLinks.isNotEmpty;
 

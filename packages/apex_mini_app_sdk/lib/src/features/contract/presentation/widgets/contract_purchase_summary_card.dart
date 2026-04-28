@@ -40,11 +40,9 @@ class ContractPurchaseSummaryCard extends StatelessWidget {
         children: <Widget>[
           CustomText(
             title,
+            variant: MiniAppTextVariant.subtitle2,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: MiniAppTypography.bold,
-              color: DesignTokens.ink,
-            ),
+            color: DesignTokens.ink,
           ),
           SizedBox(height: responsive.spacing.sectionSpacing),
           Row(
@@ -53,11 +51,8 @@ class ContractPurchaseSummaryCard extends StatelessWidget {
             children: <Widget>[
               CustomText(
                 quantity.toString(),
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                  color: DesignTokens.ink,
-                  height: 1,
-                ),
+                variant: MiniAppTextVariant.h4,
+                color: DesignTokens.ink,
               ),
               SizedBox(width: responsive.spacing.inlineSpacing * 0.35),
               Padding(
@@ -66,12 +61,8 @@ class ContractPurchaseSummaryCard extends StatelessWidget {
                 ),
                 child: CustomText(
                   context.l10n.commonPackUnit,
-                  variant: MiniAppTextVariant.label,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: DesignTokens.muted,
-                    fontWeight: MiniAppTypography.bold,
-                    letterSpacing: 1.1,
-                  ),
+                  variant: MiniAppTextVariant.overline1,
+                  color: DesignTokens.muted,
                 ),
               ),
             ],
@@ -83,10 +74,9 @@ class ContractPurchaseSummaryCard extends StatelessWidget {
             ),
             child: CustomText(
               quantityPrompt,
+              variant: MiniAppTextVariant.caption1,
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: DesignTokens.muted),
+              color: DesignTokens.muted,
             ),
           ),
           SizedBox(height: responsive.spacing.sectionSpacing),
@@ -110,10 +100,8 @@ class ContractPurchaseSummaryCard extends StatelessWidget {
             label: totalLabel,
             valueWidget: CustomText(
               formatIpsPaymentAmount(totalPayable, currency),
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: DesignTokens.ink,
-                fontWeight: MiniAppTypography.bold,
-              ),
+              variant: MiniAppTextVariant.subtitle2,
+              color: DesignTokens.ink,
             ),
           ),
         ],

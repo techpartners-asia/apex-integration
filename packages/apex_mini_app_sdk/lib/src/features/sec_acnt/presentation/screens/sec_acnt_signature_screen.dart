@@ -12,7 +12,7 @@ class SecAcntSignatureScreen extends StatefulWidget {
 
   final AcntBootstrapState? bootstrapState;
   final SecAcntFlowDraft draft;
-  final MiniAppApiRepository appApi;
+  final MiniAppProfileRepository appApi;
 
   @override
   State<SecAcntSignatureScreen> createState() => _SecAcntSignatureScreenState();

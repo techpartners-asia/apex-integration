@@ -33,20 +33,14 @@ class LauncherHomePage extends StatelessWidget {
               CustomText(
                 'Mini App Launcher',
                 key: const Key('launcher_title'),
-                variant: MiniAppTextVariant.headline,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
+                variant: MiniAppTextVariant.h8,
               ),
               const SizedBox(height: 8),
               CustomText(
                 'Reference host for the partner-facing SDK surface.'
                 'Tap once to open the ${sdk.miniAppDisplayName} mini app directly.',
-                variant: MiniAppTextVariant.body,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: ExampleAppTokens.mutedText,
-                  height: 1.5,
-                ),
+                variant: MiniAppTextVariant.body2,
+                color: ExampleAppTokens.mutedText,
               ),
               const SizedBox(height: 24),
               HeroCard(sdk: sdk, onLaunchMiniApp: () => launchMiniApp(context)),
@@ -136,20 +130,14 @@ class HeroCard extends StatelessWidget {
           const SizedBox(height: 24),
           CustomText(
             sdk.miniAppDisplayName,
-            variant: MiniAppTextVariant.headline,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              color: colors.onPrimary,
-              fontWeight: MiniAppTypography.bold,
-            ),
+            variant: MiniAppTextVariant.h8,
+            color: colors.onPrimary,
           ),
           const SizedBox(height: 8),
           CustomText(
             'Direct entry into the active investX mini app flow.',
-            variant: MiniAppTextVariant.body,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: colors.onPrimary.withValues(alpha: 0.84),
-              height: 1.5,
-            ),
+            variant: MiniAppTextVariant.body2,
+            color: colors.onPrimary.withValues(alpha: 0.84),
           ),
           const SizedBox(height: 20),
           FilledButton.icon(
@@ -162,7 +150,8 @@ class HeroCard extends StatelessWidget {
             icon: const Icon(Icons.play_arrow_rounded),
             label: CustomText(
               'Open ${sdk.miniAppDisplayName}',
-              variant: MiniAppTextVariant.button,
+              variant: MiniAppTextVariant.buttonMedium,
+              color: colors.primary,
             ),
           ),
         ],
@@ -183,8 +172,6 @@ class DetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -199,10 +186,7 @@ class DetailsCard extends StatelessWidget {
             children: <Widget>[
               CustomText(
                 'Launch configuration',
-                variant: MiniAppTextVariant.title,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
+                variant: MiniAppTextVariant.subtitle2,
               ),
               const SizedBox(height: 16),
               InfoRow(
@@ -257,18 +241,13 @@ class InfoRow extends StatelessWidget {
             children: <Widget>[
               CustomText(
                 label,
-                variant: MiniAppTextVariant.bodySmall,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: ExampleAppTokens.mutedText,
-                ),
+                variant: MiniAppTextVariant.caption1,
+                color: ExampleAppTokens.mutedText,
               ),
               const SizedBox(height: 2),
               CustomText(
                 value,
-                variant: MiniAppTextVariant.title,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
+                variant: MiniAppTextVariant.subtitle2,
               ),
             ],
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
@@ -10,7 +9,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     this.logger = const SilentMiniAppLogger(),
   }) : super(const FeedbackState());
 
-  final MiniAppApiRepository appApi;
+  final MiniAppFeedbackRepository appApi;
   final SdkLocalizations l10n;
   final MiniAppLogger logger;
 

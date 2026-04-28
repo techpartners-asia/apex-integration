@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../responsive/mini_app_responsive.dart';
 import '../theme/mini_app_state_colors.dart';
-import '../theme/mini_app_typography.dart';
 import 'mini_app_adaptive_controls.dart';
 import 'custom_text.dart';
 
@@ -23,7 +22,6 @@ class MiniAppPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final responsive = context.responsive;
     final MaterialLocalizations materialLocalizations =
@@ -51,23 +49,18 @@ class MiniAppPageHeader extends StatelessWidget {
             children: <Widget>[
               CustomText(
                 title,
-                variant: MiniAppTextVariant.title,
+                variant: MiniAppTextVariant.title1,
                 maxLines: responsive.isCompact ? 2 : 3,
                 overflow: TextOverflow.ellipsis,
-                style: textTheme.titleLarge?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
               ),
               if (subtitle != null && subtitle!.trim().isNotEmpty) ...<Widget>[
                 SizedBox(height: responsive.spacing.inlineSpacing * 0.5),
                 CustomText(
                   subtitle!,
-                  variant: MiniAppTextVariant.body,
+                  variant: MiniAppTextVariant.body3,
+                  color: MiniAppStateColors.mutedForeground,
                   maxLines: responsive.isCompact ? 2 : 3,
                   overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: MiniAppStateColors.mutedForeground,
-                  ),
                 ),
               ],
             ],

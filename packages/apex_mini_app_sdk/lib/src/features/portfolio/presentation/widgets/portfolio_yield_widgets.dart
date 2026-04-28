@@ -31,9 +31,7 @@ class PortfolioYieldSection extends StatelessWidget {
               padding: EdgeInsets.only(left: responsive.dp(4)),
               child: CustomText(
                 l10n.ipsYieldTitle,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
+                variant: MiniAppTextVariant.subtitle2,
               ),
             ),
             SizedBox(height: responsive.dp(16)),
@@ -103,7 +101,10 @@ class PortfolioYieldChart extends StatelessWidget {
               _PortfolioYieldLegendItem(
                 color: _secondaryColor,
                 label: l10n.ipsProfitTitle,
-                value: formatIpsPaymentAmount(data.secondaryTotal ?? 0, currency),
+                value: formatIpsPaymentAmount(
+                  data.secondaryTotal ?? 0,
+                  currency,
+                ),
               ),
           ],
         ),
@@ -115,19 +116,25 @@ class PortfolioYieldChart extends StatelessWidget {
     final List<FlSpot> primarySpots = data.points
         .asMap()
         .entries
-        .map((MapEntry<int, PortfolioYieldChartPoint> e) =>
-            FlSpot(e.key.toDouble(), e.value.primaryValue))
+        .map(
+          (MapEntry<int, PortfolioYieldChartPoint> e) =>
+              FlSpot(e.key.toDouble(), e.value.primaryValue),
+        )
         .toList(growable: false);
 
     final List<FlSpot> secondarySpots = data.hasSecondarySeries
         ? data.points
-            .asMap()
-            .entries
-            .where((MapEntry<int, PortfolioYieldChartPoint> e) =>
-                e.value.secondaryValue != null)
-            .map((MapEntry<int, PortfolioYieldChartPoint> e) =>
-                FlSpot(e.key.toDouble(), e.value.secondaryValue!))
-            .toList(growable: false)
+              .asMap()
+              .entries
+              .where(
+                (MapEntry<int, PortfolioYieldChartPoint> e) =>
+                    e.value.secondaryValue != null,
+              )
+              .map(
+                (MapEntry<int, PortfolioYieldChartPoint> e) =>
+                    FlSpot(e.key.toDouble(), e.value.secondaryValue!),
+              )
+              .toList(growable: false)
         : const <FlSpot>[];
 
     final List<LineChartBarData> bars = <LineChartBarData>[
@@ -173,10 +180,8 @@ class PortfolioYieldChart extends StatelessWidget {
               .map(
                 (LineBarSpot spot) => LineTooltipItem(
                   formatIpsPaymentAmount(spot.y, currency),
-                  const TextStyle(
+                  MiniAppTypography.caption1.copyWith(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
                   ),
                 ),
               )
@@ -218,18 +223,17 @@ class PortfolioYieldChart extends StatelessWidget {
 
   Widget _buildBottomTitle(double value, TitleMeta meta) {
     final int index = value.toInt();
-    if (index < 0 || index >= data.points.length || value != value.roundToDouble()) {
+    if (index < 0 ||
+        index >= data.points.length ||
+        value != value.roundToDouble()) {
       return const SizedBox.shrink();
     }
     return Padding(
       padding: const EdgeInsets.only(top: 6),
-      child: Text(
+      child: CustomText(
         data.points[index].label,
-        style: const TextStyle(
-          color: DesignTokens.muted,
-          fontSize: 10,
-          fontWeight: FontWeight.w500,
-        ),
+        variant: MiniAppTextVariant.caption2,
+        color: DesignTokens.muted,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
@@ -267,11 +271,8 @@ class _PortfolioYieldLegendItem extends StatelessWidget {
         SizedBox(width: responsive.dp(6)),
         CustomText(
           '$label: $value',
-          variant: MiniAppTextVariant.caption,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: DesignTokens.ink,
-            fontWeight: MiniAppTypography.semiBold,
-          ),
+          variant: MiniAppTextVariant.caption1,
+          color: DesignTokens.ink,
         ),
       ],
     );
@@ -310,10 +311,8 @@ class _PortfolioYieldEmptyState extends StatelessWidget {
           CustomText(
             message,
             textAlign: TextAlign.center,
-            variant: MiniAppTextVariant.bodySmall,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: DesignTokens.muted,
-            ),
+            variant: MiniAppTextVariant.caption1,
+            color: DesignTokens.muted,
           ),
         ],
       ),
@@ -346,7 +345,10 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
         ? (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)
         : (chartData.primaryTotal ?? 0);
     final double resolvedProfitLoss =
-        overview.profitOrLoss ?? chartData.secondaryTotal ?? overview.yieldAmount ?? 0;
+        overview.profitOrLoss ??
+        chartData.secondaryTotal ??
+        overview.yieldAmount ??
+        0;
 
     return Column(
       children: <Widget>[
@@ -412,17 +414,12 @@ class PortfolioCompactMetricTile extends StatelessWidget {
         children: <Widget>[
           CustomText(
             label,
-            variant: MiniAppTextVariant.caption,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: DesignTokens.muted,
-              fontSize: responsive.dp(11),
-            ),
+            variant: MiniAppTextVariant.caption1,
+            color: DesignTokens.muted,
           ),
           CustomText(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: MiniAppTypography.bold,
-            ),
+            variant: MiniAppTextVariant.subtitle3,
           ),
         ],
       );
@@ -433,20 +430,15 @@ class PortfolioCompactMetricTile extends StatelessWidget {
       children: <Widget>[
         CustomText(
           label,
-          variant: MiniAppTextVariant.caption,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: DesignTokens.muted,
-            fontSize: responsive.dp(11),
-          ),
+          variant: MiniAppTextVariant.caption1,
+          color: DesignTokens.muted,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: responsive.dp(2)),
         CustomText(
           value,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: MiniAppTypography.bold,
-          ),
+          variant: MiniAppTextVariant.subtitle3,
         ),
       ],
     );

@@ -51,10 +51,14 @@ class GetLoginSessionApiReq {
       'registerNo': registerNo,
       'firstName': firstName,
       'lastName': lastName,
-      if (familyName case final String value when value.trim().isNotEmpty) 'familyName': value.trim(),
-      if (email case final String value when value.trim().isNotEmpty) 'email': value.trim(),
-      if (sexCode case final String value when value.trim().isNotEmpty) 'sexCode': value.trim(),
-      if (birthDate case final String value when value.trim().isNotEmpty) 'birthDate': value.trim(),
+      if (familyName case final String value when value.trim().isNotEmpty)
+        'familyName': value.trim(),
+      if (email case final String value when value.trim().isNotEmpty)
+        'email': value.trim(),
+      if (sexCode case final String value when value.trim().isNotEmpty)
+        'sexCode': value.trim(),
+      if (birthDate case final String value when value.trim().isNotEmpty)
+        'birthDate': value.trim(),
     };
   }
 }

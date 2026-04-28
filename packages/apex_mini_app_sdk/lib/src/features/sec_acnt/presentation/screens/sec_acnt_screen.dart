@@ -6,7 +6,7 @@ class SecAcntScreen extends StatelessWidget {
   final AcntBootstrapState? initialBootstrapState;
   final SecAcntBankOptionsRepository bankOptionsRepository;
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
-  final MiniAppApiRepository appApi;
+  final MiniAppProfileRepository appApi;
   final UserEntityDto? currentUser;
 
   const SecAcntScreen({

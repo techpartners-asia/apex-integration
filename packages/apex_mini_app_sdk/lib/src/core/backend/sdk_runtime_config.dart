@@ -41,13 +41,18 @@ class SdkRuntimeConfig {
     );
   }
 
-  bool get hasCredentials => credentials.appId.trim().isNotEmpty && credentials.appSecret.trim().isNotEmpty;
+  bool get hasCredentials =>
+      credentials.appId.trim().isNotEmpty &&
+      credentials.appSecret.trim().isNotEmpty;
 
   bool get canFetchCurrentUser => hasCredentials && techInvestXUrl.isNotEmpty;
 
   bool get hasProtectedApi => hasCredentials && ipsApiBaseUrl.isNotEmpty;
 
-  bool get canBootstrapSession => hasProtectedApi && loginSessionBaseUrl.isNotEmpty && (neSession?.isNotEmpty ?? false);
+  bool get canBootstrapSession =>
+      hasProtectedApi &&
+      loginSessionBaseUrl.isNotEmpty &&
+      (neSession?.isNotEmpty ?? false);
 
   int get languageFlag => language.toUpperCase() == 'EN' ? 1 : 0;
 
@@ -68,7 +73,9 @@ class SdkRuntimeConfig {
 
   /// Alias for [createCurrentUserRuntime] — uses the same TechInvestX
   /// base URL with Bearer auth.
-  ApiRuntime? createTechInvestXProtectedRuntime({TokenProvider? tokenProvider}) => createCurrentUserRuntime(tokenProvider: tokenProvider);
+  ApiRuntime? createTechInvestXProtectedRuntime({
+    TokenProvider? tokenProvider,
+  }) => createCurrentUserRuntime(tokenProvider: tokenProvider);
 
   ApiRuntime? createProtectedRuntime({
     TokenProvider? tokenProvider,

@@ -6,7 +6,9 @@ String formatIpsAmount(double amount, String currency) {
 
 String formatIpsPaymentAmount(double amount, String currency) {
   final String normalizedCurrency = currency.trim().toUpperCase();
-  if (normalizedCurrency.isEmpty || normalizedCurrency == 'MNT' || normalizedCurrency == '₮') {
+  if (normalizedCurrency.isEmpty ||
+      normalizedCurrency == 'MNT' ||
+      normalizedCurrency == '₮') {
     return NumberFormat.currency(
       locale: 'mn_MN',
       symbol: '₮',

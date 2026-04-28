@@ -51,7 +51,7 @@ class SecAcntStatusContent extends StatelessWidget {
                   child: CustomText(
                     title,
                     textAlign: TextAlign.center,
-                    variant: MiniAppTextVariant.headline,
+                    variant: MiniAppTextVariant.h8,
                   ),
                 ),
                 SizedBox(height: responsive.dp(30)),
@@ -74,7 +74,6 @@ class _SecAcntStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final ThemeData theme = Theme.of(context);
 
     return Container(
       width: double.infinity,
@@ -95,16 +94,15 @@ class _SecAcntStatusCard extends StatelessWidget {
           SizedBox(height: responsive.dp(15)),
 
           /// Title
-          CustomText(title, variant: MiniAppTextVariant.titleSmall),
+          CustomText(title, variant: MiniAppTextVariant.subtitle3),
 
           SizedBox(height: responsive.dp(10)),
 
           /// Message
           CustomText(
             message,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: DesignTokens.muted,
-            ),
+            variant: MiniAppTextVariant.caption1,
+            color: DesignTokens.muted,
           ),
         ],
       ),

@@ -42,12 +42,10 @@ class SecondaryButton extends StatelessWidget {
             borderRadius: resolvedBorderRadius,
             onTap: onPressed,
             child: Center(
-              child: Text(
+              child: CustomText(
                 label,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: foregroundColor,
-                  fontWeight: MiniAppTypography.semiBold,
-                ),
+                variant: MiniAppTextVariant.buttonLarge,
+                color: foregroundColor,
               ),
             ),
           ),

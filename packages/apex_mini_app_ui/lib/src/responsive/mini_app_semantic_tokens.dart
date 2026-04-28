@@ -1,9 +1,9 @@
 final class AppSpacing {
   static const double xxs = 2;
-  static const double xs = 4;
+  static const double xs = 5;
   static const double sm = 8;
   static const double md = 10;
-  static const double lg = 16;
+  static const double lg = 15;
   static const double xl = 20;
   static const double xxl = 32;
   static const double xxxl = 40;
@@ -33,7 +33,7 @@ final class AppComponentSize {
   static const double controlSm = 36;
   static const double controlMd = 44;
   static const double buttonHeight = 52;
-  static const double inputHeight = 52;
+  static const double inputHeight = 54;
   static const double closeButton = 30;
   static const double handleWidth = 44;
   static const double handleHeight = 4;

@@ -24,7 +24,9 @@ class MiniAppRefreshContainer extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final EdgeInsets resolvedPadding = padding?.resolve(Directionality.of(context)) ?? context.responsive.spacing.pagePadding;
+        final EdgeInsets resolvedPadding =
+            padding?.resolve(Directionality.of(context)) ??
+            context.responsive.spacing.pagePadding;
 
         return RefreshIndicator.adaptive(
           onRefresh: onRefresh!,

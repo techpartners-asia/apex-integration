@@ -33,9 +33,8 @@ class FeatureBullet extends StatelessWidget {
         Expanded(
           child: CustomText(
             label,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: DesignTokens.ink),
+            variant: MiniAppTextVariant.body2,
+            color: DesignTokens.ink,
           ),
         ),
       ],

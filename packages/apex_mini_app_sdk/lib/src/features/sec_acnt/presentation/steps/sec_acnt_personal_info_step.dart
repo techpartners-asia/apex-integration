@@ -39,7 +39,6 @@ class SecAcntPersonalInfoStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final responsive = context.responsive;
-    final ThemeData theme = Theme.of(context);
     final List<Widget> fields = <Widget>[
       if (!isShortFlow)
         CustomTextField(
@@ -76,7 +75,7 @@ class SecAcntPersonalInfoStep extends StatelessWidget {
           validator: emailValidator,
         ),
       if (!isShortFlow) SizedBox(height: responsive.dp(16)),
-      SelectorField(
+      BankSelectorField(
         label: l10n.commonBank,
         value: selectedBank?.label ?? l10n.commonSelect,
         onTap: onSelectBank,
@@ -102,21 +101,16 @@ class SecAcntPersonalInfoStep extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        CustomText(
           l10n.internalAuthSectionPersonalInformation,
-          style: theme.textTheme.headlineSmall?.copyWith(
-            color: DesignTokens.ink,
-            fontWeight: MiniAppTypography.bold,
-            height: 1.25,
-          ),
+          variant: MiniAppTextVariant.h8,
+          color: DesignTokens.ink,
         ),
         SizedBox(height: responsive.dp(8)),
-        Text(
+        CustomText(
           l10n.secAcntPersonalInformationSubtitle,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: DesignTokens.muted,
-            height: 1.45,
-          ),
+          variant: MiniAppTextVariant.body3,
+          color: DesignTokens.muted,
         ),
         SizedBox(height: responsive.dp(24)),
         ...fields,

@@ -1,6 +1,5 @@
 import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
@@ -104,10 +103,12 @@ class _RechargeBody extends StatelessWidget {
                     children: <Widget>[
                       Column(
                         children: <Widget>[
-                          SizedBox(height: responsive.spacing.sectionSpacing * 2),
+                          SizedBox(
+                            height: responsive.spacing.sectionSpacing * 2,
+                          ),
 
                           /// The quantity input
-                          _QuantityInput(
+                          RechargeQuantityInput(
                             controller: controller,
                             focusNode: focusNode,
                           ),
@@ -116,16 +117,16 @@ class _RechargeBody extends StatelessWidget {
                           /// The hint text
                           CustomText(
                             l10n.ipsPaymentRechargeQuantityHint,
-                            variant: MiniAppTextVariant.bodySmall,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: DesignTokens.muted,
-                            ),
+                            variant: MiniAppTextVariant.caption1,
+                            color: DesignTokens.muted,
                           ),
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: responsive.spacing.sectionSpacing),
-                        child: _PricingSummaryCard(state: state),
+                        padding: EdgeInsets.symmetric(
+                          vertical: responsive.spacing.sectionSpacing,
+                        ),
+                        child: RechargePricingSummaryCard(state: state),
                       ),
                     ],
                   ),
@@ -138,147 +139,6 @@ class _RechargeBody extends StatelessWidget {
       ],
     );
   }
-}
-
-class _QuantityInput extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
-
-  const _QuantityInput({required this.controller, required this.focusNode});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      keyboardType: TextInputType.number,
-      onTapOutside: (_) => FocusScope.of(context).unfocus(),
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-        fontWeight: MiniAppTypography.bold,
-        color: DesignTokens.ink,
-        height: 1.2,
-      ),
-      decoration: const InputDecoration(
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        contentPadding: EdgeInsets.zero,
-        isDense: true,
-      ),
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(4),
-      ],
-      onChanged: (String value) {
-        context.read<IpsRechargeCubit>().updatePackQty(value);
-      },
-    );
-  }
-}
-
-class _PricingSummaryCard extends StatelessWidget {
-  final IpsRechargeState state;
-
-  const _PricingSummaryCard({required this.state});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final responsive = context.responsive;
-    final String currency = state.currency;
-
-    return Container(
-      padding: EdgeInsets.all(responsive.spacing.financialCardSpacing),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: DesignTokens.cardRadius,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          IpsDetailRow(
-            label: l10n.ipsContractUnitPrice,
-            value: formatIpsPaymentAmount(state.unitPrice, currency),
-          ),
-          IpsDetailRow(
-            label: l10n.ipsContractServiceFee,
-            value: formatIpsPaymentAmount(state.serviceFee, currency),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: responsive.spacing.inlineSpacing * 0.3,
-            ),
-            child: CustomPaint(
-              painter: _DashedLinePainter(
-                color: DesignTokens.border,
-              ),
-              size: const Size(double.infinity, 1),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: responsive.spacing.inlineSpacing * 0.7,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: CustomText(
-                    '${l10n.ipsPaymentRechargeTotalAmount}:',
-                    variant: MiniAppTextVariant.body,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: DesignTokens.ink,
-                      fontWeight: MiniAppTypography.bold,
-                    ),
-                  ),
-                ),
-                CustomText(
-                  formatIpsPaymentAmount(state.totalPayable, currency),
-                  variant: MiniAppTextVariant.body,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: DesignTokens.ink,
-                    fontWeight: MiniAppTypography.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DashedLinePainter extends CustomPainter {
-  final Color color;
-
-  const _DashedLinePainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.0
-      ..style = PaintingStyle.stroke;
-
-    const double dashWidth = 6;
-    const double dashSpace = 4;
-    double startX = 0;
-
-    while (startX < size.width) {
-      canvas.drawLine(
-        Offset(startX, size.height / 2),
-        Offset(startX + dashWidth, size.height / 2),
-        paint,
-      );
-      startX += dashWidth + dashSpace;
-    }
-  }
-
-  @override
-  bool shouldRepaint(_DashedLinePainter oldDelegate) => color != oldDelegate.color;
 }
 
 class _BottomActionArea extends StatelessWidget {
@@ -300,7 +160,9 @@ class _BottomActionArea extends StatelessWidget {
       ),
       child: PrimaryButton(
         label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
-        onPressed: state.canSubmit ? context.read<IpsRechargeCubit>().submit : null,
+        onPressed: state.canSubmit
+            ? context.read<IpsRechargeCubit>().submit
+            : null,
       ),
     );
   }
@@ -319,36 +181,7 @@ class _RechargeResultView extends StatelessWidget {
       appBarTitle: l10n.ipsPaymentRechargeTitle,
       children: <Widget>[
         PaymentResState(res: state.paymentRes!),
-        // if (state.paymentRes!.status == MiniAppPaymentStatus.success)
-        //   if (state.refreshedOverview case final PortfolioOverview overview) ...<Widget>[
-        //     SizedBox(
-        //       height: context.responsive.spacing.sectionSpacing,
-        //     ),
-        //     _RechargeBalanceCard(overview: overview),
-        //   ],
       ],
-    );
-  }
-}
-
-class _RechargeBalanceCard extends StatelessWidget {
-  const _RechargeBalanceCard({required this.overview});
-
-  final PortfolioOverview overview;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return IpsBalanceCard(
-      title: l10n.ipsPortfolioTitle,
-      subtitle: l10n.ipsPaymentRechargeSubtitle,
-      balance: overview.availableBalance?.toStringAsFixed(2) ?? '0.00',
-      currency: overview.currency,
-      availableBalanceLabel: l10n.ipsPortfolioAvailableBalance,
-      availableBalanceValue: overview.availableBalance == null ? null : formatIpsAmount(overview.availableBalance!, overview.currency),
-      investedBalanceLabel: l10n.ipsPortfolioInvestedBalance,
-      investedBalanceValue: overview.investedBalance == null ? null : formatIpsAmount(overview.investedBalance!, overview.currency),
     );
   }
 }

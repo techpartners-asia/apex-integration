@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../responsive/mini_app_responsive.dart';
-import '../../theme/mini_app_typography.dart';
 import '../custom_text.dart';
 import '../mini_app_surface_card.dart';
 
@@ -42,10 +41,7 @@ class MiniAppDialog extends StatelessWidget {
               ],
               CustomText(
                 title,
-                variant: MiniAppTextVariant.title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
+                variant: MiniAppTextVariant.subtitle2,
               ),
               SizedBox(height: responsive.spacing.inlineSpacing),
               body,

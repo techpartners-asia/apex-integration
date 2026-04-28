@@ -3,9 +3,12 @@ import 'package:mini_app_sdk/mini_app_sdk.dart';
 class PaymentCallbackQuery {
   final String invoiceId;
 
-  PaymentCallbackQuery({required String invoiceId}) : invoiceId = invoiceId.trim() {
+  PaymentCallbackQuery({required String invoiceId})
+    : invoiceId = invoiceId.trim() {
     if (this.invoiceId.isEmpty) {
-      throw const ApiIntegrationException('paymentCallback requires a non-empty invoiceId.');
+      throw const ApiIntegrationException(
+        'paymentCallback requires a non-empty invoiceId.',
+      );
     }
   }
 

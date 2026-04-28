@@ -12,7 +12,9 @@ class ApiClient {
   final Dio dio;
   final CookieJar cookieJar;
 
-  ApiClient({required this.config, Dio? dio, CookieJar? cookieJar}) : dio = dio ?? Dio(), cookieJar = cookieJar ?? CookieJar() {
+  ApiClient({required this.config, Dio? dio, CookieJar? cookieJar})
+    : dio = dio ?? Dio(),
+      cookieJar = cookieJar ?? CookieJar() {
     this.dio.options = BaseOptions(
       baseUrl: config.baseUrl,
       connectTimeout: config.connectTimeout,
@@ -41,15 +43,28 @@ class _ApiDebugLogInterceptor extends Interceptor {
 
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
   static const int _chunkSize = 800;
+  static const Set<String> _sensitiveKeys = <String>{
+    'authorization',
+    'cookie',
+    'set-cookie',
+    'access_token',
+    'refresh_token',
+    'token',
+    'password',
+    'adm_session',
+    'session',
+    'x-auth-token',
+    'x-access-token',
+  };
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     _printBlock(' ----- [API REQ] ----- ', <String>[
       '${options.method.toUpperCase()} ${options.uri}',
       // 'ContentType: ${options.contentType ?? options.headers['Content-Type'] ?? '-'}',
-      'DataType: ${options.data.runtimeType}',
-      'Headers: ${_formatValue(options.headers)}',
-      'Query: ${_formatValue(options.queryParameters)}',
+      // 'DataType: ${options.data.runtimeType}',
+      // 'Headers: ${_formatValue(options.headers)}',
+      // 'Query: ${_formatValue(options.queryParameters)}',
       'Body: ${_formatValue(options.data)}',
     ]);
     handler.next(options);
@@ -63,7 +78,7 @@ class _ApiDebugLogInterceptor extends Interceptor {
     _printBlock(' ----- [API RES] ----- ', <String>[
       '${response.statusCode ?? '-'} ${response.requestOptions.method.toUpperCase()} ${response.requestOptions.uri}',
       // 'Headers: ${_formatValue(response.headers.map)}',
-      'Body: ${_formatResponseBody(response.data)}',
+      'Body: ${_formatValue(response.data)}',
     ]);
     handler.next(response);
   }
@@ -72,14 +87,16 @@ class _ApiDebugLogInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     _printBlock(' ----- [API ERR] ----- ', <String>[
       '${err.requestOptions.method.toUpperCase()} ${err.requestOptions.uri}',
-      'ContentType: ${err.requestOptions.contentType ?? err.requestOptions.headers['Content-Type'] ?? '-'}',
-      'DataType: ${err.requestOptions.data.runtimeType}',
-      'Type: ${err.type}',
-      'Status: ${err.response?.statusCode ?? '-'}',
+      // 'ContentType: ${err.requestOptions.contentType ?? err.requestOptions.headers['Content-Type'] ?? '-'}',
+      // 'DataType: ${err.requestOptions.data.runtimeType}',
+      // 'Type: ${err.type}',
+      // 'Status: ${err.response?.statusCode ?? '-'}',
       // 'Headers: ${_formatValue(err.response?.headers.map)}',
       'Body: ${_formatValue(err.response?.data)}',
-      if (err.message case final String message when message.trim().isNotEmpty) 'Message: $message',
-      if (err.stackTrace case final StackTrace stackTrace) 'StackTrace: $stackTrace',
+      if (err.message case final String message when message.trim().isNotEmpty)
+        'Message: $message',
+      if (err.stackTrace case final StackTrace stackTrace)
+        'StackTrace: $stackTrace',
     ]);
     handler.next(err);
   }
@@ -87,13 +104,15 @@ class _ApiDebugLogInterceptor extends Interceptor {
   void _printBlock(String prefix, List<String> lines) {
     final String block = '$prefix\n${lines.join('\n')}';
     for (int index = 0; index < block.length; index += _chunkSize) {
-      final int end = index + _chunkSize > block.length ? block.length : index + _chunkSize;
+      final int end = index + _chunkSize > block.length
+          ? block.length
+          : index + _chunkSize;
       debugPrint(block.substring(index, end));
     }
   }
 
   String _formatValue(Object? value) {
-    final Object? sanitized = _sanitizeValue(value);
+    final Object? sanitized = _truncateLongFields(_sanitizeValue(value));
     if (sanitized == null) {
       return 'null';
     }
@@ -110,6 +129,10 @@ class _ApiDebugLogInterceptor extends Interceptor {
   }
 
   Object? _sanitizeValue(Object? value, {String? key}) {
+    if (_isSensitiveKey(key)) {
+      return '[redacted]';
+    }
+
     if (value is FormData) {
       return <String, Object?>{
         'fields': value.fields
@@ -142,22 +165,26 @@ class _ApiDebugLogInterceptor extends Interceptor {
     }
 
     if (value is Iterable) {
-      return value.map((Object? item) => _sanitizeValue(item)).toList(growable: false);
+      return value
+          .map((Object? item) => _sanitizeValue(item))
+          .toList(growable: false);
     }
 
     return value;
   }
-}
 
-String _formatResponseBody(dynamic data, {int maxStringLength = 1200}) {
-  if (data == null) return 'null';
+  bool _isSensitiveKey(String? key) {
+    final String normalized = key?.trim().toLowerCase() ?? '';
+    if (normalized.isEmpty) {
+      return false;
+    }
 
-  final sanitized = _truncateLongFields(data, maxStringLength: maxStringLength);
-
-  try {
-    return const JsonEncoder.withIndent('  ').convert(sanitized);
-  } catch (_) {
-    return sanitized.toString();
+    return _sensitiveKeys.contains(normalized) ||
+        normalized.contains('authorization') ||
+        normalized.contains('token') ||
+        normalized.contains('cookie') ||
+        normalized.contains('password') ||
+        normalized.contains('session');
   }
 }
 
@@ -166,7 +193,11 @@ dynamic _truncateLongFields(dynamic value, {int maxStringLength = 500}) {
 
   if (value is String) {
     final trimmed = value.trimLeft();
-    final isMarkup = trimmed.startsWith('<!DOCTYPE html') || trimmed.startsWith('<html') || trimmed.startsWith('<?xml') || trimmed.startsWith('<svg');
+    final isMarkup =
+        trimmed.startsWith('<!DOCTYPE html') ||
+        trimmed.startsWith('<html') ||
+        trimmed.startsWith('<?xml') ||
+        trimmed.startsWith('<svg');
 
     final limit = isMarkup ? 400 : maxStringLength;
 

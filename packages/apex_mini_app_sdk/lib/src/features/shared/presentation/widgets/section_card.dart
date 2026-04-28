@@ -25,33 +25,27 @@ class SectionCard extends StatelessWidget {
     final responsive = context.responsive;
 
     return MiniAppSurfaceCard(
-      hasBorder: hasBorder,
+      hasBorder: false,
       hasShadow: hasShadow,
       backgroundColor: Colors.white,
-      borderColor: hasBorder
-          ? DesignTokens.border
-          : Colors.transparent,
+      borderColor: hasBorder ? DesignTokens.border : Colors.transparent,
       borderRadius: responsive.radius(20),
       padding: padding ?? responsive.insetsAll(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           if (title != null) ...<Widget>[
-            Text(
+            CustomText(
               title!,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: MiniAppTypography.bold,
-              ),
+              variant: MiniAppTextVariant.subtitle2,
             ),
           ],
           if (subtitle != null && subtitle!.trim().isNotEmpty) ...<Widget>[
             SizedBox(height: responsive.spacing.inlineSpacing * 0.5),
-            Text(
+            CustomText(
               subtitle!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: DesignTokens.muted,
-                height: 1.45,
-              ),
+              variant: MiniAppTextVariant.caption1,
+              color: DesignTokens.muted,
             ),
           ],
           if ((title != null || subtitle != null) && children.isNotEmpty)

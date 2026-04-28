@@ -24,8 +24,12 @@ class MiniAppSessionState {
   }) {
     return MiniAppSessionState(
       userToken: userToken == _sentinel ? this.userToken : userToken as String?,
-      currentUser: currentUser == _sentinel ? this.currentUser : currentUser as UserEntityDto?,
-      loginSession: loginSession == _sentinel ? this.loginSession : loginSession as LoginSession?,
+      currentUser: currentUser == _sentinel
+          ? this.currentUser
+          : currentUser as UserEntityDto?,
+      loginSession: loginSession == _sentinel
+          ? this.loginSession
+          : loginSession as LoginSession?,
     );
   }
 }

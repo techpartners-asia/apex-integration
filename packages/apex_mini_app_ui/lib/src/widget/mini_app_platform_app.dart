@@ -73,7 +73,8 @@ class MiniAppPlatformApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData materialLightTheme = theme;
     final ThemeData materialDarkTheme = darkTheme ?? theme;
-    final Iterable<LocalizationsDelegate<dynamic>> effectiveLocalizationsDelegates = _mergeLocalizationDelegates(
+    final Iterable<LocalizationsDelegate<dynamic>>
+    effectiveLocalizationsDelegates = _mergeLocalizationDelegates(
       localizationsDelegates,
     );
 
@@ -89,7 +90,10 @@ class MiniAppPlatformApp extends StatelessWidget {
       );
     }
 
-    if (routerConfig != null || routeInformationProvider != null || routeInformationParser != null || routerDelegate != null) {
+    if (routerConfig != null ||
+        routeInformationProvider != null ||
+        routeInformationParser != null ||
+        routerDelegate != null) {
       return AdaptiveApp.router(
         routerConfig: routerConfig,
         routeInformationProvider: routeInformationProvider,
@@ -146,17 +150,20 @@ class MiniAppPlatformApp extends StatelessWidget {
   static Iterable<LocalizationsDelegate<dynamic>> _mergeLocalizationDelegates(
     Iterable<LocalizationsDelegate<dynamic>>? delegates,
   ) {
-    final LinkedHashMap<Type, LocalizationsDelegate<dynamic>> merged = LinkedHashMap<Type, LocalizationsDelegate<dynamic>>();
+    final LinkedHashMap<Type, LocalizationsDelegate<dynamic>> merged =
+        LinkedHashMap<Type, LocalizationsDelegate<dynamic>>();
 
-    for (final LocalizationsDelegate<dynamic> delegate in delegates ?? const <LocalizationsDelegate<dynamic>>[]) {
+    for (final LocalizationsDelegate<dynamic> delegate
+        in delegates ?? const <LocalizationsDelegate<dynamic>>[]) {
       merged[delegate.runtimeType] = delegate;
     }
 
-    for (final LocalizationsDelegate<dynamic> delegate in const <LocalizationsDelegate<dynamic>>[
-      GlobalMaterialLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ]) {
+    for (final LocalizationsDelegate<dynamic> delegate
+        in const <LocalizationsDelegate<dynamic>>[
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ]) {
       merged.putIfAbsent(delegate.runtimeType, () => delegate);
     }
 

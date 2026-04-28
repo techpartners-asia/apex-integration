@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -173,7 +175,7 @@ FeedbackEntity _fakeFeedbackEntity({String title = 'Test'}) {
   );
 }
 
-class _SuccessApi extends MiniAppApiRepository {
+class _SuccessApi implements MiniAppApiRepository {
   int _counter = 0;
   bool? lastForceRefresh;
 
@@ -218,9 +220,45 @@ class _SuccessApi extends MiniAppApiRepository {
       total: allItems.length,
     );
   }
+
+  @override
+  Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
+    // TODO: implement createInvoice
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getPaymentCallback({required String invoiceId}) {
+    // TODO: implement getPaymentCallback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> getProfileInfo() {
+    // TODO: implement getProfileInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) {
+    // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateSignature({required Uint8List bytes, String fileName = 'signature.png'}) {
+    // TODO: implement updateSignature
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) {
+    // TODO: implement updateTargetGoal
+    throw UnimplementedError();
+  }
 }
 
-class _FailingApi extends MiniAppApiRepository {
+class _FailingApi implements MiniAppApiRepository {
   @override
   Future<FeedbackEntity> createFeedback(CreateFeedbackApiReq req) async {
     throw const ApiBusinessException(
@@ -244,5 +282,41 @@ class _FailingApi extends MiniAppApiRepository {
       responseCode: 1,
       message: 'Server error',
     );
+  }
+
+  @override
+  Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
+    // TODO: implement createInvoice
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getPaymentCallback({required String invoiceId}) {
+    // TODO: implement getPaymentCallback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> getProfileInfo() {
+    // TODO: implement getProfileInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) {
+    // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateSignature({required Uint8List bytes, String fileName = 'signature.png'}) {
+    // TODO: implement updateSignature
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) {
+    // TODO: implement updateTargetGoal
+    throw UnimplementedError();
   }
 }

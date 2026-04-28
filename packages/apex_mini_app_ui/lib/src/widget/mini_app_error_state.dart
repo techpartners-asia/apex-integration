@@ -37,7 +37,8 @@ class MiniAppErrorState extends StatelessWidget {
               onPressed: onRetry,
               child: CustomText(
                 retryLabel!,
-                variant: MiniAppTextVariant.button,
+                variant: MiniAppTextVariant.buttonMedium,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
               ),
             )
           : null,

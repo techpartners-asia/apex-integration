@@ -18,7 +18,6 @@ class SecAcntPaymentStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final responsive = context.responsive;
-    final ThemeData theme = Theme.of(context);
     final bool hasAmount = payableAmount.isFinite && payableAmount > 0;
     final bool hasError =
         errorMessage != null && errorMessage!.trim().isNotEmpty;
@@ -36,22 +35,17 @@ class SecAcntPaymentStep extends StatelessWidget {
           height: responsive.dp(56),
         ),
         SizedBox(height: responsive.dp(20)),
-        Text(
+        CustomText(
           l10n.secAcntPaymentTitle,
-          style: theme.textTheme.headlineSmall?.copyWith(
-            color: DesignTokens.ink,
-            fontWeight: MiniAppTypography.bold,
-            height: 1.25,
-          ),
+          variant: MiniAppTextVariant.h8,
+          color: DesignTokens.ink,
         ),
         SizedBox(height: responsive.dp(22)),
         _PaymentInfoCard(
           icon: hasError
               ? Icons.error_outline_rounded
               : Icons.priority_high_rounded,
-          iconColor: hasError
-              ? DesignTokens.danger
-              : const Color(0xFFF29A2E),
+          iconColor: hasError ? DesignTokens.danger : const Color(0xFFF29A2E),
           iconBackground: hasError
               ? const Color(0xFFFCE7EA)
               : const Color(0xFFFFF0DD),
@@ -60,9 +54,7 @@ class SecAcntPaymentStep extends StatelessWidget {
               : hasAmount
               ? l10n.secAcntPaymentNoticeMessage
               : l10n.secAcntPaymentAmountUnavailable,
-          textColor: hasError
-              ? DesignTokens.danger
-              : DesignTokens.ink,
+          textColor: hasError ? DesignTokens.danger : DesignTokens.ink,
         ),
         if (hasAmount) ...<Widget>[
           SizedBox(height: responsive.space(AppSpacing.lg)),
@@ -72,17 +64,13 @@ class SecAcntPaymentStep extends StatelessWidget {
               children: <Widget>[
                 CustomText(
                   l10n.commonTotalPayable,
-                  variant: MiniAppTextVariant.body,
+                  variant: MiniAppTextVariant.body3,
                   color: DesignTokens.muted,
                 ),
                 const Spacer(),
                 CustomText(
                   amountLabel!,
-                  variant: MiniAppTextVariant.titleLarge,
-                  // style: theme.textTheme.titleLarge?.copyWith(
-                  //   color: DesignTokens.ink,
-                  //   fontWeight: MiniAppTypography.bold,
-                  // ),
+                  variant: MiniAppTextVariant.title1,
                 ),
               ],
             ),
@@ -120,7 +108,6 @@ class _PaymentInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final ThemeData theme = Theme.of(context);
 
     return Container(
       width: double.infinity,
@@ -146,10 +133,8 @@ class _PaymentInfoCard extends StatelessWidget {
           Expanded(
             child: CustomText(
               message,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: textColor,
-                height: 1.45,
-              ),
+              variant: MiniAppTextVariant.body3,
+              color: textColor,
             ),
           ),
         ],

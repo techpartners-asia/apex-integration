@@ -19,8 +19,7 @@ class GradientHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final Gradient resolvedGradient =
-        gradient ?? DesignTokens.primaryGradient;
+    final Gradient resolvedGradient = gradient ?? DesignTokens.primaryGradient;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -59,19 +58,16 @@ class GradientHeroCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                CustomText(
                   title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: MiniAppTypography.bold,
-                  ),
+                  variant: MiniAppTextVariant.title1,
+                  color: Colors.white,
                 ),
                 SizedBox(height: responsive.spacing.inlineSpacing * 0.5),
-                Text(
+                CustomText(
                   subtitle,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.82),
-                  ),
+                  variant: MiniAppTextVariant.body3,
+                  color: Colors.white.withValues(alpha: 0.82),
                 ),
                 if (body != null) ...<Widget>[
                   SizedBox(height: responsive.spacing.cardGap),

@@ -58,7 +58,7 @@ void main() {
   });
 }
 
-class _SuccessApi extends MiniAppApiRepository {
+class _SuccessApi implements MiniAppApiRepository {
   bool? lastForceRefresh;
 
   @override

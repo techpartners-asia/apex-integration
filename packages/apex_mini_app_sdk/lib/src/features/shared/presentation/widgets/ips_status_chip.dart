@@ -45,12 +45,10 @@ class IpsStatusChip extends StatelessWidget {
               ),
               SizedBox(width: responsive.spacing.inlineSpacing * 0.5),
             ],
-            Text(
+            CustomText(
               label,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: foreground,
-                fontWeight: MiniAppTypography.bold,
-              ),
+              variant: MiniAppTextVariant.caption1,
+              color: foreground,
             ),
           ],
         ),

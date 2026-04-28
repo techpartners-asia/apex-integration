@@ -23,11 +23,9 @@ class StepProgressCard extends StatelessWidget {
         Row(
           children: <Widget>[
             Expanded(
-              child: Text(
+              child: CustomText(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
+                variant: MiniAppTextVariant.subtitle2,
               ),
             ),
             Container(
@@ -39,11 +37,10 @@ class StepProgressCard extends StatelessWidget {
                 border: Border.all(color: DesignTokens.border),
               ),
               alignment: Alignment.center,
-              child: Text(
+              child: CustomText(
                 progressLabel,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: DesignTokens.ink,
-                ),
+                variant: MiniAppTextVariant.buttonMedium,
+                color: DesignTokens.ink,
               ),
             ),
           ],

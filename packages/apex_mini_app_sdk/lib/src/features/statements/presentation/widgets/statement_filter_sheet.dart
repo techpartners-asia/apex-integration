@@ -3,21 +3,53 @@ import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class StatementFilterSheet extends StatefulWidget {
-  const StatementFilterSheet({super.key});
+  final IpsStatementFilter initialFilter;
+  final ValueChanged<IpsStatementFilter>? onApply;
+  final VoidCallback? onClear;
+
+  const StatementFilterSheet({
+    super.key,
+    this.initialFilter = const IpsStatementFilter(),
+    this.onApply,
+    this.onClear,
+  });
 
   @override
   State<StatementFilterSheet> createState() => _StatementFilterSheetState();
 }
 
 class _StatementFilterSheetState extends State<StatementFilterSheet> {
-  RangeValues _amountRange = const RangeValues(0, 1000000);
-  int _selectedDateFilter = 0;
+  late RangeValues _amountRange;
+  late int _selectedDateFilter;
 
-  int get _activeFilterCount {
-    int count = 0;
-    if (_amountRange.start > 0 || _amountRange.end < 1000000) count++;
-    if (_selectedDateFilter > 0) count++;
-    return count;
+  IpsStatementFilter get _currentFilter {
+    return IpsStatementFilter(
+      minAmount: _amountRange.start,
+      maxAmount: _amountRange.end,
+      dateFilter: IpsStatementDateFilter.values[_selectedDateFilter],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final double initialStart = widget.initialFilter.minAmount
+        .clamp(
+          IpsStatementFilter.defaultMinAmount,
+          IpsStatementFilter.defaultMaxAmount,
+        )
+        .toDouble();
+    final double initialEnd = widget.initialFilter.maxAmount
+        .clamp(
+          IpsStatementFilter.defaultMinAmount,
+          IpsStatementFilter.defaultMaxAmount,
+        )
+        .toDouble();
+    _amountRange = RangeValues(
+      initialStart <= initialEnd ? initialStart : initialEnd,
+      initialStart <= initialEnd ? initialEnd : initialStart,
+    );
+    _selectedDateFilter = widget.initialFilter.dateFilter.index;
   }
 
   @override
@@ -47,9 +79,7 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
               const Spacer(),
               CustomText(
                 l10n.ipsStatementFilterTitle,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                ),
+                variant: MiniAppTextVariant.subtitle2,
               ),
               const Spacer(),
               GestureDetector(
@@ -73,9 +103,7 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
           SizedBox(height: responsive.spacing.sectionSpacing),
           CustomText(
             l10n.ipsStatementFilterAmountTitle,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: MiniAppTypography.bold,
-            ),
+            variant: MiniAppTextVariant.subtitle3,
           ),
           SizedBox(height: responsive.dp(12)),
           SliderTheme(
@@ -91,8 +119,8 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
             ),
             child: RangeSlider(
               values: _amountRange,
-              min: 0,
-              max: 1000000,
+              min: IpsStatementFilter.defaultMinAmount,
+              max: IpsStatementFilter.defaultMaxAmount,
               onChanged: (RangeValues values) {
                 setState(() => _amountRange = values);
               },
@@ -105,17 +133,13 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
               children: <Widget>[
                 CustomText(
                   '${_amountRange.start.toInt()}₮',
-                  variant: MiniAppTextVariant.caption,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: DesignTokens.muted,
-                  ),
+                  variant: MiniAppTextVariant.caption1,
+                  color: DesignTokens.muted,
                 ),
                 CustomText(
                   "${_amountRange.end.toInt().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]}'")}₮",
-                  variant: MiniAppTextVariant.caption,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: DesignTokens.muted,
-                  ),
+                  variant: MiniAppTextVariant.caption1,
+                  color: DesignTokens.muted,
                 ),
               ],
             ),
@@ -123,9 +147,7 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
           SizedBox(height: responsive.spacing.sectionSpacing),
           CustomText(
             l10n.ipsStatementFilterDateTitle,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: MiniAppTypography.bold,
-            ),
+            variant: MiniAppTextVariant.subtitle3,
           ),
           SizedBox(height: responsive.dp(12)),
           Row(
@@ -171,17 +193,24 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
                   label: l10n.ipsStatementFilterClear,
                   onPressed: () {
                     setState(() {
-                      _amountRange = const RangeValues(0, 1000000);
-                      _selectedDateFilter = 0;
+                      _amountRange = const RangeValues(
+                        IpsStatementFilter.defaultMinAmount,
+                        IpsStatementFilter.defaultMaxAmount,
+                      );
+                      _selectedDateFilter = IpsStatementDateFilter.all.index;
                     });
+                    widget.onClear?.call();
                   },
                 ),
               ),
               SizedBox(width: responsive.dp(12)),
               Expanded(
                 child: PrimaryButton(
-                  label: l10n.ipsStatementFilterSearch(_activeFilterCount),
-                  onPressed: () => Navigator.pop(context),
+                  label: l10n.ipsStatementFilterSearch(_currentFilter.activeFilterCount),
+                  onPressed: () {
+                    widget.onApply?.call(_currentFilter);
+                    Navigator.pop(context);
+                  },
                 ),
               ),
             ],
@@ -216,19 +245,14 @@ class _DateFilterChip extends StatelessWidget {
             color: isSelected ? DesignTokens.ink : Colors.white,
             borderRadius: BorderRadius.circular(responsive.radius(12)),
             border: Border.all(
-              color: isSelected
-                  ? DesignTokens.ink
-                  : DesignTokens.border,
+              color: isSelected ? DesignTokens.ink : DesignTokens.border,
             ),
           ),
           child: Center(
             child: CustomText(
               label,
-              variant: MiniAppTextVariant.caption,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isSelected ? Colors.white : DesignTokens.ink,
-                fontWeight: MiniAppTypography.semiBold,
-              ),
+              variant: MiniAppTextVariant.caption1,
+              color: isSelected ? Colors.white : DesignTokens.ink,
             ),
           ),
         ),

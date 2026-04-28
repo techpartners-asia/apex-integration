@@ -9,7 +9,10 @@ class CreateInvoiceResponseDto {
   factory CreateInvoiceResponseDto.fromJson(Map<String, Object?> json) {
     final Map<String, Object?> body = ApiParser.asObjectMap(json['body']);
     if (body.isEmpty) {
-      throw ApiParsingException(ApiParser.asNullableString(json['message']) ?? 'createInvoice returned success without a body payload.');
+      throw ApiParsingException(
+        ApiParser.asNullableString(json['message']) ??
+            'createInvoice returned success without a body payload.',
+      );
     }
 
     return CreateInvoiceResponseDto(

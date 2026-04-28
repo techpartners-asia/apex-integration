@@ -11,7 +11,7 @@ class IpsOverviewScreen extends StatefulWidget {
 }
 
 class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
-  static const int _homeTabIndex = BottomNavigationConfig.homeIndex;
+  static const int _homeTabIndex = OverviewBottomNavigation.homeIndex;
 
   int _selectedTabIndex = _homeTabIndex;
 
@@ -41,7 +41,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
               body: _buildBody(context, state, sessionState),
               adaptiveBottomNavigationBar: data == null || !state.isSuccess
                   ? null
-                  : adaptiveBottomNavigationBarWidget(
+                  : buildOverviewBottomNavigationBar(
                       context,
                       selectedIndex: _selectedTabIndex,
                       onSelected: _handleTabSelected,

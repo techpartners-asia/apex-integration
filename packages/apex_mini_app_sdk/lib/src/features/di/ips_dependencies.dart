@@ -2,7 +2,12 @@ import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class IpsDependencies {
-  final InvestmentServices services;
+  final InvestmentBootstrapService? bootstrapService;
+  final QuestionnaireService? questionnaireService;
+  final PackService? packService;
+  final ContractService? contractService;
+  final PortfolioService? portfolioService;
+  final OrdersService? ordersService;
   final MiniAppPaymentExecutor paymentExecutor;
   final MiniAppSessionStore sessionStore;
   final MiniAppSessionController sessionController;
@@ -12,8 +17,13 @@ class IpsDependencies {
   final MiniAppBootstrapFlow? bootstrapFlow;
   final MiniAppLogger logger;
 
-  const IpsDependencies({
-    required this.services,
+  IpsDependencies({
+    this.bootstrapService,
+    this.questionnaireService,
+    this.packService,
+    this.contractService,
+    this.portfolioService,
+    this.ordersService,
     required this.paymentExecutor,
     required this.sessionStore,
     required this.sessionController,

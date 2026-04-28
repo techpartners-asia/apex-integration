@@ -1,7 +1,3 @@
-class TokenProvider {
-  const TokenProvider();
-
-  Future<String?> getAccessToken() {
-    throw UnimplementedError();
-  }
+abstract interface class TokenProvider {
+  Future<String?> getAccessToken();
 }

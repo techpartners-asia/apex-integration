@@ -4,13 +4,18 @@ import 'package:mini_app_sdk/mini_app_sdk.dart';
 class QuestionnaireSignatureScreen extends StatefulWidget {
   final SignatureUploadService signatureUploadService;
 
-  const QuestionnaireSignatureScreen({super.key, required this.signatureUploadService});
+  const QuestionnaireSignatureScreen({
+    super.key,
+    required this.signatureUploadService,
+  });
 
   @override
-  State<QuestionnaireSignatureScreen> createState() => _QuestionnaireSignatureScreenState();
+  State<QuestionnaireSignatureScreen> createState() =>
+      _QuestionnaireSignatureScreenState();
 }
 
-class _QuestionnaireSignatureScreenState extends State<QuestionnaireSignatureScreen> {
+class _QuestionnaireSignatureScreenState
+    extends State<QuestionnaireSignatureScreen> {
   final List<Offset?> _points = <Offset?>[];
   bool _isUploading = false;
   String? _errorMessage;

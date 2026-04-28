@@ -45,28 +45,23 @@ class IpsMetricTile extends StatelessWidget {
             ),
             SizedBox(height: responsive.spacing.inlineSpacing),
           ],
-          Text(
+          CustomText(
             label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: colors.onSurfaceVariant,
-              fontWeight: MiniAppTypography.semiBold,
-            ),
+            variant: MiniAppTextVariant.subtitle3,
+            color: colors.onSurfaceVariant,
           ),
           SizedBox(height: responsive.spacing.inlineSpacing * 0.5),
-          Text(
+          CustomText(
             value,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: resolvedTone,
-              fontWeight: MiniAppTypography.bold,
-            ),
+            variant: MiniAppTextVariant.subtitle2,
+            color: resolvedTone,
           ),
           if (caption != null && caption!.trim().isNotEmpty) ...<Widget>[
             SizedBox(height: responsive.spacing.inlineSpacing * 0.5),
-            Text(
+            CustomText(
               caption!,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: colors.onSurfaceVariant),
+              variant: MiniAppTextVariant.caption1,
+              color: colors.onSurfaceVariant,
             ),
           ],
         ],

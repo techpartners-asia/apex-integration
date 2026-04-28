@@ -16,15 +16,11 @@ class SecAcntBankAccountLookupResult {
   bool get isSuccess => responseCode == 0;
 }
 
-class SecAcntBankAccountLookupRepository {
-  const SecAcntBankAccountLookupRepository();
-
+abstract interface class SecAcntBankAccountLookupRepository {
   Future<SecAcntBankAccountLookupResult> lookupAccountHolder({
     required String bankCode,
     required String accountNumber,
-  }) {
-    throw UnimplementedError();
-  }
+  });
 }
 
 class PlaceholderSecAcntBankAccountLookupRepository

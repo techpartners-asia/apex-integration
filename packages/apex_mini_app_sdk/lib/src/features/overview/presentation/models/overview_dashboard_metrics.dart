@@ -47,8 +47,12 @@ class OverviewDashboardMetrics {
     required UserEntityDto? user,
   }) {
     final String currency = _resolveCurrency(bootstrapState, overview);
-    final double? stockTotalFromYieldDetails = _sumHoldingsCurrentValue(stockYieldDetails);
-    final double? stockTotalFromYieldProfit = _sumHoldingsCurrentValue(yieldProfitHoldings);
+    final double? stockTotalFromYieldDetails = _sumHoldingsCurrentValue(
+      stockYieldDetails,
+    );
+    final double? stockTotalFromYieldProfit = _sumHoldingsCurrentValue(
+      yieldProfitHoldings,
+    );
     final double totalInvestment =
         _firstMeaningful(
           overview?.investedBalance,
@@ -71,18 +75,29 @@ class OverviewDashboardMetrics {
     final double holdingsProfit = yieldProfitHoldings.isNotEmpty
         ? yieldProfitHoldings.fold<double>(
             0,
-            (double sum, PortfolioHolding item) => sum + (item.profitAmount ?? 0),
+            (double sum, PortfolioHolding item) =>
+                sum + (item.profitAmount ?? 0),
           )
         : stockYieldDetails.isNotEmpty
         ? stockYieldDetails.fold<double>(
             0,
-            (double sum, PortfolioHolding item) => sum + (item.profitAmount ?? 0),
+            (double sum, PortfolioHolding item) =>
+                sum + (item.profitAmount ?? 0),
           )
         : 0;
-    final double profit = overview?.profitOrLoss ?? (holdingsProfit != 0 ? holdingsProfit : null) ?? overview?.yieldAmount ?? 0;
-    final double goalCurrent = _firstMeaningful(overview?.stockTotal, totalInvestment) ?? 0;
-    final double goalTarget = _firstMeaningful(user?.account?.targetGoal?.toDouble(), 1000000) ?? 1000000;
-    final double profitRatio = totalInvestment > 0 ? profit / totalInvestment : 0;
+    final double profit =
+        overview?.profitOrLoss ??
+        (holdingsProfit != 0 ? holdingsProfit : null) ??
+        overview?.yieldAmount ??
+        0;
+    final double goalCurrent =
+        _firstMeaningful(overview?.stockTotal, totalInvestment) ?? 0;
+    final double goalTarget =
+        _firstMeaningful(user?.account?.targetGoal?.toDouble(), 1000000) ??
+        1000000;
+    final double profitRatio = totalInvestment > 0
+        ? profit / totalInvestment
+        : 0;
 
     return OverviewDashboardMetrics(
       shortDisplayName: _resolveShortDisplayName(context, user),
@@ -104,7 +119,10 @@ class OverviewDashboardMetrics {
     );
   }
 
-  static String _resolveCurrency(AcntBootstrapState bootstrapState, PortfolioOverview? overview) {
+  static String _resolveCurrency(
+    AcntBootstrapState bootstrapState,
+    PortfolioOverview? overview,
+  ) {
     final String candidate = overview?.currency.trim() ?? '';
     return candidate.isNotEmpty ? candidate : bootstrapState.currency;
   }

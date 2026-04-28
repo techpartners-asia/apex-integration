@@ -3,24 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-class PackSelectionScreen extends StatefulWidget {
+class PackSelectionScreen extends StatelessWidget {
   const PackSelectionScreen({super.key, this.questionnaireRes});
 
   final QuestionnaireRes? questionnaireRes;
-
-  @override
-  State<PackSelectionScreen> createState() => PackSelectionScreenState();
-}
-
-class PackSelectionScreenState extends State<PackSelectionScreen> {
-  final PageController pageController = PageController();
-  int currentPage = 0;
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +14,6 @@ class PackSelectionScreenState extends State<PackSelectionScreen> {
       builder: (BuildContext context, LoadableState<List<IpsPack>> state) {
         final l10n = context.l10n;
         final List<IpsPack> packs = state.data ?? const <IpsPack>[];
-        if (currentPage >= packs.length && packs.isNotEmpty) {
-          currentPage = packs.length - 1;
-        }
 
         return CustomScaffold(
           appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
@@ -38,16 +21,6 @@ class PackSelectionScreenState extends State<PackSelectionScreen> {
             padding: EdgeInsets.all(AppSpacing.xl),
             child: Column(
               children: <Widget>[
-                // if (widget.questionnaireRes != null) ...<Widget>[
-                //   NoticeBanner(
-                //     title: l10n.ipsQuestionnaireResTitle,
-                //     message:
-                //         '${l10n.ipsQuestionnaireScore}: ${widget.questionnaireRes!.score}'
-                //         '${widget.questionnaireRes!.summary == null ? '' : '\n${widget.questionnaireRes!.summary!}'}',
-                //     icon: Icons.shield_outlined,
-                //   ),
-                //   SizedBox(height: context.responsive.spacing.sectionSpacing),
-                // ],
                 if (state.isLoading && packs.isNotEmpty) ...<Widget>[
                   MiniAppLoadingState(
                     title: l10n.commonLoading,
@@ -74,12 +47,8 @@ class PackSelectionScreenState extends State<PackSelectionScreen> {
                   )
                 else
                   PackSelectionContent(
-                    pageController: pageController,
-                    currentPage: currentPage,
                     packs: packs,
-                    questionnaireRes: widget.questionnaireRes,
-                    onPageChanged: (int index) =>
-                        setState(() => currentPage = index),
+                    questionnaireRes: questionnaireRes,
                   ),
               ],
             ),
@@ -91,35 +60,30 @@ class PackSelectionScreenState extends State<PackSelectionScreen> {
 }
 
 class PackSelectionContent extends StatelessWidget {
-  final PageController pageController;
-  final int currentPage;
   final List<IpsPack> packs;
   final QuestionnaireRes? questionnaireRes;
-  final ValueChanged<int> onPageChanged;
 
   const PackSelectionContent({
     super.key,
-    required this.pageController,
-    required this.currentPage,
     required this.packs,
     required this.questionnaireRes,
-    required this.onPageChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final responsive = context.responsive;
-    packs.sort((a, b) => b.isRecommended.compareTo(a.isRecommended));
-    // final IpsPack selectedPack = packs.singleWhere((p) => p.isRecommended, orElse: () => packs.first); // packs[currentPage];
-    IpsPack selectedPack = packs[currentPage];
+    final List<IpsPack> sortedPacks = List<IpsPack>.of(packs)
+      ..sort((IpsPack a, IpsPack b) {
+        return b.isRecommended.compareTo(a.isRecommended);
+      });
 
     return Column(
-      children: packs
+      children: sortedPacks
           .map(
-            (e) => SelectionPageTemplate(
+            (IpsPack pack) => SelectionPageTemplate(
               hasMargin: true,
-              header: PackCard(pack: e),
+              header: PackCard(pack: pack),
               content: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                 child: Column(
@@ -136,12 +100,12 @@ class PackSelectionContent extends StatelessWidget {
                         SizedBox(width: responsive.spacing.inlineSpacing),
                         CustomText(
                           l10n.ipsPackRecommendedBadge,
-                          style: Theme.of(context).textTheme.titleSmall,
+                          variant: MiniAppTextVariant.subtitle3,
                         ),
                       ],
                     ),
                     SizedBox(height: responsive.spacing.cardGap),
-                    ...buildPackBenefits(context, e),
+                    ...buildPackBenefits(context, pack),
                   ],
                 ),
               ),
@@ -161,20 +125,16 @@ class PackSelectionContent extends StatelessWidget {
                       ),
                       child: CustomText(
                         l10n.ipsPackChoosePack,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontSize: 13,
-                          color: Colors.white,
-                          fontWeight: MiniAppTypography.semiBold,
-                        ),
+                        variant: MiniAppTextVariant.buttonSmall,
+                        color: Colors.white,
                       ),
                     ),
                     onTap: () {
-                      selectedPack = e;
                       launchIpsRoute(
                         context,
                         route: MiniAppRoutes.contract,
                         arguments: ContractPayload(
-                          pack: selectedPack,
+                          pack: pack,
                           res: questionnaireRes,
                         ),
                       );

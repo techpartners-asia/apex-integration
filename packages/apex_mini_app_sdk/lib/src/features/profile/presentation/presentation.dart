@@ -1,1 +1,2 @@
-export 'personal_info_screen.dart';
+export 'screens/screens.dart';
+export 'widgets/widgets.dart';

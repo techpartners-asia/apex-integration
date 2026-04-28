@@ -26,7 +26,9 @@ class IpsQuickActionTile extends StatelessWidget {
     final Gradient gradient = DesignTokens.primaryGradient;
     final Color baseColor = emphasized ? DesignTokens.rose : Colors.white;
     final Color contentColor = emphasized ? Colors.white : DesignTokens.ink;
-    final Color subtitleColor = emphasized ? Colors.white.withValues(alpha: 0.78) : DesignTokens.muted;
+    final Color subtitleColor = emphasized
+        ? Colors.white.withValues(alpha: 0.78)
+        : DesignTokens.muted;
 
     return Material(
       color: Colors.transparent,
@@ -50,7 +52,9 @@ class IpsQuickActionTile extends StatelessWidget {
                   width: responsive.spacing.iconSizeMedium + 22,
                   height: responsive.spacing.iconSizeMedium + 22,
                   decoration: BoxDecoration(
-                    color: emphasized ? Colors.white.withValues(alpha: 0.18) : DesignTokens.softSurface,
+                    color: emphasized
+                        ? Colors.white.withValues(alpha: 0.18)
+                        : DesignTokens.softSurface,
                     borderRadius: BorderRadius.circular(
                       responsive.spacing.radiusMedium,
                     ),
@@ -66,7 +70,8 @@ class IpsQuickActionTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (badgeLabel != null && badgeLabel!.trim().isNotEmpty) ...<Widget>[
+                      if (badgeLabel != null &&
+                          badgeLabel!.trim().isNotEmpty) ...<Widget>[
                         IpsStatusChip(
                           label: badgeLabel!,
                           color: emphasized ? Colors.white : DesignTokens.rose,
@@ -74,20 +79,16 @@ class IpsQuickActionTile extends StatelessWidget {
                         ),
                         SizedBox(height: responsive.spacing.inlineSpacing),
                       ],
-                      Text(
+                      CustomText(
                         title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: contentColor,
-                          fontWeight: MiniAppTypography.bold,
-                        ),
+                        variant: MiniAppTextVariant.subtitle2,
+                        color: contentColor,
                       ),
                       SizedBox(height: responsive.spacing.inlineSpacing * 0.5),
-                      Text(
+                      CustomText(
                         subtitle,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: subtitleColor,
-                          height: 1.45,
-                        ),
+                        variant: MiniAppTextVariant.caption1,
+                        color: subtitleColor,
                       ),
                     ],
                   ),
@@ -95,7 +96,9 @@ class IpsQuickActionTile extends StatelessWidget {
                 SizedBox(width: responsive.spacing.inlineSpacing),
                 Icon(
                   Icons.arrow_forward_rounded,
-                  color: emphasized ? Colors.white.withValues(alpha: 0.92) : DesignTokens.rose,
+                  color: emphasized
+                      ? Colors.white.withValues(alpha: 0.92)
+                      : DesignTokens.rose,
                 ),
               ],
             ),

@@ -48,19 +48,17 @@ class MenuListItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
+                      CustomText(
                         title,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: MiniAppTypography.semiBold,
-                        ),
+                        variant: MiniAppTextVariant.subtitle3,
                       ),
                       if (subtitle != null &&
                           subtitle!.trim().isNotEmpty) ...<Widget>[
                         SizedBox(height: responsive.spacingXxs),
-                        Text(
+                        CustomText(
                           subtitle!,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: DesignTokens.muted),
+                          variant: MiniAppTextVariant.caption1,
+                          color: DesignTokens.muted,
                         ),
                       ],
                     ],

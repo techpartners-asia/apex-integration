@@ -4,7 +4,8 @@ final class TimedMemoryCache<T> {
   final Duration ttl;
   final CacheClock _now;
 
-  TimedMemoryCache({required this.ttl, CacheClock? now}) : _now = now ?? DateTime.now;
+  TimedMemoryCache({required this.ttl, CacheClock? now})
+    : _now = now ?? DateTime.now;
 
   _CacheRecord<T>? _record;
   Future<T>? _inFlight;
@@ -18,7 +19,10 @@ final class TimedMemoryCache<T> {
     return record.value;
   }
 
-  Future<T> getOrLoad(Future<T> Function() loader, {bool forceRefresh = false}) async {
+  Future<T> getOrLoad(
+    Future<T> Function() loader, {
+    bool forceRefresh = false,
+  }) async {
     final T? cached = !forceRefresh ? value : null;
     if (cached != null) {
       return cached;
@@ -63,7 +67,8 @@ final class TimedMemoryCacheMap<K, V> {
   final Duration ttl;
   final CacheClock _now;
 
-  TimedMemoryCacheMap({required this.ttl, CacheClock? now}) : _now = now ?? DateTime.now;
+  TimedMemoryCacheMap({required this.ttl, CacheClock? now})
+    : _now = now ?? DateTime.now;
 
   final Map<K, _CacheRecord<V>> _records = <K, _CacheRecord<V>>{};
   final Map<K, Future<V>> _inFlight = <K, Future<V>>{};
@@ -77,7 +82,11 @@ final class TimedMemoryCacheMap<K, V> {
     return record.value;
   }
 
-  Future<V> getOrLoad(K key, Future<V> Function() loader, {bool forceRefresh = false}) async {
+  Future<V> getOrLoad(
+    K key,
+    Future<V> Function() loader, {
+    bool forceRefresh = false,
+  }) async {
     final V? cached = !forceRefresh ? get(key) : null;
     if (cached != null) {
       return cached;

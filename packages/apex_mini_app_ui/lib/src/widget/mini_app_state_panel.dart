@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../responsive/mini_app_responsive.dart';
 import '../theme/mini_app_state_colors.dart';
-import '../theme/mini_app_typography.dart';
 import 'custom_text.dart';
 import 'mini_app_surface_card.dart';
 
@@ -27,7 +26,6 @@ class MiniAppStatePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return MiniAppSurfaceCard(
       backgroundColor: surfaceColor,
@@ -42,20 +40,15 @@ class MiniAppStatePanel extends StatelessWidget {
           SizedBox(height: responsive.spacing.inlineSpacing),
           CustomText(
             title,
-            variant: MiniAppTextVariant.title,
+            variant: MiniAppTextVariant.subtitle2,
             textAlign: TextAlign.center,
-            style: textTheme.titleMedium?.copyWith(
-              fontWeight: MiniAppTypography.bold,
-            ),
           ),
           SizedBox(height: responsive.spacing.inlineSpacing * 0.5),
           CustomText(
             message,
-            variant: MiniAppTextVariant.body,
+            variant: MiniAppTextVariant.body3,
+            color: MiniAppStateColors.mutedForeground,
             textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: MiniAppStateColors.mutedForeground,
-            ),
           ),
           if (action != null) ...<Widget>[
             SizedBox(height: responsive.spacing.sectionSpacing),

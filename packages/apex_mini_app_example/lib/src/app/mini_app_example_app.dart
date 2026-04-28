@@ -1,5 +1,4 @@
 import 'package:mini_app_sdk/mini_app_sdk.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'example_app_tokens.dart';

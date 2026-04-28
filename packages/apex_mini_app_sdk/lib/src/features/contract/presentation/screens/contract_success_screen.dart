@@ -50,20 +50,17 @@ class ContractSuccessScreen extends StatelessWidget {
               SizedBox(height: responsive.spacing.sectionSpacing),
               CustomText(
                 l10n.secAcntCalculationTitle,
+                variant: MiniAppTextVariant.h8,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: MiniAppTypography.bold,
-                  color: DesignTokens.ink,
-                ),
+                color: DesignTokens.ink,
               ),
               if (contractId.isNotEmpty) ...<Widget>[
                 SizedBox(height: responsive.spacing.inlineSpacing),
                 CustomText(
                   '${l10n.ipsContractId}: $contractId',
+                  variant: MiniAppTextVariant.caption1,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: DesignTokens.muted,
-                  ),
+                  color: DesignTokens.muted,
                 ),
               ],
               SizedBox(height: responsive.spacing.sectionSpacing * 1.5),

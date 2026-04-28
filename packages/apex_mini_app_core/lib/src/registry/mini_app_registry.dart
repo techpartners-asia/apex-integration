@@ -11,17 +11,23 @@ class MiniAppRegistry {
 
     final String initialRoute = module.initialRoute.trim();
     if (initialRoute.isEmpty) {
-      throw StateError('Mini app module "$displayName" initialRoute must not be empty.');
+      throw StateError(
+        'Mini app module "$displayName" initialRoute must not be empty.',
+      );
     }
 
-    final List<String> routePaths = module.routes.map((route) => route.path).toList(growable: false);
+    final List<String> routePaths = module.routes
+        .map((route) => route.path)
+        .toList(growable: false);
     if (routePaths.isEmpty) {
       throw StateError('Mini app module must declare at least one route.');
     }
 
     final Set<String> uniqueRoutePaths = routePaths.toSet();
     if (uniqueRoutePaths.length != routePaths.length) {
-      throw StateError('Mini app module "$displayName" declares duplicate routes.');
+      throw StateError(
+        'Mini app module "$displayName" declares duplicate routes.',
+      );
     }
 
     if (!uniqueRoutePaths.contains(initialRoute)) {
@@ -36,7 +42,9 @@ class MiniAppRegistry {
       orElse: () => null,
     );
     if (conflictingRoute != null) {
-      throw StateError('Route "$conflictingRoute" is already registered by another module.');
+      throw StateError(
+        'Route "$conflictingRoute" is already registered by another module.',
+      );
     }
 
     for (final String route in routePaths) {

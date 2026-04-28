@@ -17,7 +17,6 @@ const List<String> ipsRoutes = <String>[
   MiniAppRoutes.feedback,
   MiniAppRoutes.reward,
   MiniAppRoutes.personalInfo,
-  MiniAppRoutes.liquidGlassDemo,
 ];
 
 List<MiniAppRouteSpec> buildIpsRoutes() {

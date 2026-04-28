@@ -1,11 +1,7 @@
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-class LoginSessionRepository {
-  const LoginSessionRepository();
-
-  Future<LoginSession> getLoginSession(UserEntityDto user) {
-    throw UnimplementedError();
-  }
+abstract interface class LoginSessionRepository {
+  Future<LoginSession> getLoginSession(UserEntityDto user);
 }
 
 class RemoteLoginSessionRepository implements LoginSessionRepository {

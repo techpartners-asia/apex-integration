@@ -17,7 +17,9 @@ final class MiniAppToast {
     MiniAppToastType type = MiniAppToastType.info,
     Duration duration = const Duration(seconds: 3),
   }) {
-    final OverlayState? overlay = Navigator.maybeOf(context, rootNavigator: true)?.overlay ?? Overlay.maybeOf(context, rootOverlay: true);
+    final OverlayState? overlay =
+        Navigator.maybeOf(context, rootNavigator: true)?.overlay ??
+        Overlay.maybeOf(context, rootOverlay: true);
 
     if (overlay == null || !context.mounted) {
       return;
@@ -137,7 +139,8 @@ class _MiniAppToastOverlay extends StatefulWidget {
   State<_MiniAppToastOverlay> createState() => _MiniAppToastOverlayState();
 }
 
-class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay> with SingleTickerProviderStateMixin {
+class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 220),
@@ -182,7 +185,6 @@ class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay> with SingleT
   @override
   Widget build(BuildContext context) {
     final _MiniAppToastStyle style = _MiniAppToastStyle.resolve(widget.type);
-    final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
     return Positioned(
@@ -250,28 +252,27 @@ class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay> with SingleT
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      if (widget.title?.trim().isNotEmpty == true)
+                                      if (widget.title?.trim().isNotEmpty ==
+                                          true)
                                         Padding(
                                           padding: const EdgeInsets.only(
                                             bottom: 4,
                                           ),
                                           child: CustomText(
                                             widget.title!.trim(),
-                                            style: theme.textTheme.labelLarge?.copyWith(
-                                              color: style.titleColor,
-                                              fontWeight: MiniAppTypography.bold,
-                                            ),
+                                            variant:
+                                                MiniAppTextVariant.buttonMedium,
+                                            color: style.titleColor,
                                           ),
                                         ),
                                       CustomText(
                                         widget.message,
-                                        style: theme.textTheme.bodyMedium?.copyWith(
-                                          color: style.messageColor,
-                                          height: 1.35,
-                                        ),
+                                        variant: MiniAppTextVariant.body2,
+                                        color: style.messageColor,
                                       ),
                                     ],
                                   ),

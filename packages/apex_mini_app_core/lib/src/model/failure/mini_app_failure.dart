@@ -18,7 +18,7 @@ class MiniAppFailure {
         'MiniAppFailure.code must not be empty.',
       );
     }
-    
+
     return normalized;
   }
 }

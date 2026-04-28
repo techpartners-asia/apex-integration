@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
@@ -127,10 +129,70 @@ class _FakePortfolioService implements PortfolioService {
   }
 }
 
+class _FakeMiniAppApiRepository implements MiniAppApiRepository {
+  const _FakeMiniAppApiRepository();
+
+  @override
+  Future<FeedbackEntity> createFeedback(CreateFeedbackApiReq req) {
+    // TODO: implement createFeedback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
+    // TODO: implement createInvoice
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) {
+    // TODO: implement getCompanyInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<FeedbackListResponse> getFeedbackList({required int limit, required int page, bool forceRefresh = false}) {
+    // TODO: implement getFeedbackList
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getPaymentCallback({required String invoiceId}) {
+    // TODO: implement getPaymentCallback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> getProfileInfo() {
+    // TODO: implement getProfileInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) {
+    // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateSignature({required Uint8List bytes, String fileName = 'signature.png'}) {
+    // TODO: implement updateSignature
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) {
+    // TODO: implement updateTargetGoal
+    throw UnimplementedError();
+  }
+
+// implement required methods
+}
+
 class _FakePaymentExecutor extends MiniAppPaymentExecutor {
   _FakePaymentExecutor({required this.result})
     : super(
-        appApi: const MiniAppApiRepository(),
+        appApi: const _FakeMiniAppApiRepository(),
         walletPaymentHandler: _unusedWalletHandler,
       );
 
