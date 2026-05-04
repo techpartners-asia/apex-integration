@@ -49,12 +49,7 @@ class MgBkrCasaAcntStatementResDataDto {
       credit: credit,
       debit: debit,
       balance: ApiParser.asNullableDouble(json['balance']),
-      description:
-          ApiParser.asNullableString(json['txnDesc']) ??
-          txnCode ??
-          txnNo ??
-          jrNo ??
-          'Transaction',
+      description: ApiParser.asNullableString(json['txnDesc']) ?? txnCode ?? txnNo ?? jrNo ?? 'Transaction',
       postDate: postDate,
       isFee: ApiParser.asNullableInt(json['isFee']),
       txnNo: txnNo,
@@ -137,13 +132,11 @@ class CasaStatementResponseDto {
       txnDate: ApiParser.asNullableString(json['txnDate']),
       beginBalance: ApiParser.asNullableDouble(json['beginBalance']),
       endBalance: ApiParser.asNullableDouble(json['endBalance']),
-      startDate:
-          ApiParser.asNullableString(json['startDate']) ?? fallbackStartDate,
+      startDate: ApiParser.asNullableString(json['startDate']) ?? fallbackStartDate,
       endDate: ApiParser.asNullableString(json['endDate']) ?? fallbackEndDate,
       pageCount: ApiParser.asNullableInt(json['pageCount']) ?? 0,
       totalPage: ApiParser.asNullableInt(json['totalPage']) ?? 0,
-      totalCount:
-          ApiParser.asNullableInt(json['totalCount']) ?? stmtList.length,
+      totalCount: ApiParser.asNullableInt(json['totalCount']) ?? stmtList.length,
       responseCode: ApiParser.asNullableInt(json['responseCode']) ?? 0,
       responseDesc: ApiParser.asNullableString(json['responseDesc']),
       resultValue: ApiParser.asNullableString(json['resultValue']),

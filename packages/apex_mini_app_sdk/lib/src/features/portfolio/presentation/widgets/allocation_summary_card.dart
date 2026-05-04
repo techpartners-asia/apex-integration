@@ -296,7 +296,6 @@ class AllocationMetricRow extends StatelessWidget {
           child: CustomText(
             label,
             variant: MiniAppTextVariant.caption1,
-            color: DesignTokens.muted,
           ),
         ),
         if (value.trim().isNotEmpty)

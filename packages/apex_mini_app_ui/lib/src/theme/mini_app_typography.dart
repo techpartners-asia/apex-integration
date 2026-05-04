@@ -103,6 +103,13 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  static const TextStyle subtitle4 = TextStyle(
+    fontFamily: fontFamily,
+    package: package,
+    fontSize: 14,
+    fontWeight: bold,
+  );
+
   static const TextStyle body1 = TextStyle(
     fontFamily: fontFamily,
     package: package,

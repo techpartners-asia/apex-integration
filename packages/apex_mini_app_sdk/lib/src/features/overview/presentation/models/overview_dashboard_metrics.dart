@@ -73,31 +73,14 @@ class OverviewDashboardMetrics {
         0;
     final double bondTotal = _firstMeaningful(overview?.bondTotal) ?? 0;
     final double holdingsProfit = yieldProfitHoldings.isNotEmpty
-        ? yieldProfitHoldings.fold<double>(
-            0,
-            (double sum, PortfolioHolding item) =>
-                sum + (item.profitAmount ?? 0),
-          )
+        ? yieldProfitHoldings.fold<double>(0, (double sum, PortfolioHolding item) => sum + ((item.holdingType == HoldingType.getStockAcntYieldDtl ? item.totalYield : item.profit) ?? 0))
         : stockYieldDetails.isNotEmpty
-        ? stockYieldDetails.fold<double>(
-            0,
-            (double sum, PortfolioHolding item) =>
-                sum + (item.profitAmount ?? 0),
-          )
+        ? stockYieldDetails.fold<double>(0, (double sum, PortfolioHolding item) => sum + ((item.holdingType == HoldingType.getStockAcntYieldDtl ? item.totalYield : item.profit) ?? 0))
         : 0;
-    final double profit =
-        overview?.profitOrLoss ??
-        (holdingsProfit != 0 ? holdingsProfit : null) ??
-        overview?.yieldAmount ??
-        0;
-    final double goalCurrent =
-        _firstMeaningful(overview?.stockTotal, totalInvestment) ?? 0;
-    final double goalTarget =
-        _firstMeaningful(user?.account?.targetGoal?.toDouble(), 1000000) ??
-        1000000;
-    final double profitRatio = totalInvestment > 0
-        ? profit / totalInvestment
-        : 0;
+    final double profit = overview?.profitOrLoss ?? (holdingsProfit != 0 ? holdingsProfit : null) ?? overview?.yieldAmount ?? 0;
+    final double goalCurrent = _firstMeaningful(overview?.stockTotal, totalInvestment) ?? 0;
+    final double goalTarget = _firstMeaningful(user?.account?.targetGoal?.toDouble(), 1000000) ?? 1000000;
+    final double profitRatio = totalInvestment > 0 ? profit / totalInvestment : 0;
 
     return OverviewDashboardMetrics(
       shortDisplayName: _resolveShortDisplayName(context, user),
@@ -167,10 +150,10 @@ class OverviewDashboardMetrics {
     double total = 0;
     bool hasValue = false;
     for (final PortfolioHolding holding in holdings) {
-      if (!holding.currentValue.isFinite) {
+      if (!(holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.currentValue : holding.buyAmount)!.isFinite) {
         continue;
       }
-      total += holding.currentValue;
+      total += (holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.currentValue : holding.buyAmount) ?? 0;
       hasValue = true;
     }
     return hasValue ? total : null;

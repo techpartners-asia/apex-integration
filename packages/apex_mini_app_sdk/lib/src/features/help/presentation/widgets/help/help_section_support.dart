@@ -30,11 +30,9 @@ class _ContactRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
+
     final Widget content = Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: responsive.dp(18),
-        vertical: responsive.dp(14),
-      ),
+      padding: EdgeInsets.symmetric(horizontal: responsive.dp(18), vertical: responsive.dp(14)),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -61,10 +59,14 @@ class _ContactRow extends StatelessWidget {
 
     if (launchUri == null) return content;
 
-    return InkWell(
+    return Material(
+      color: DesignTokens.white,
       borderRadius: BorderRadius.circular(16),
-      onTap: () => _launchUri(context, launchUri!),
-      child: content,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () => _launchUri(context, launchUri!),
+        child: content,
+      ),
     );
   }
 }
@@ -82,12 +84,9 @@ class _SocialChip extends StatelessWidget {
     final Uri? linkUri = _webUri(link.link);
 
     final Widget content = AdaptiveCard(
-      color: DesignTokens.white,
-      padding: EdgeInsets.symmetric(
-        horizontal: responsive.dp(14),
-        vertical: responsive.dp(12),
-      ),
-      borderRadius: BorderRadius.circular(responsive.radius(16)),
+      color: linkUri == null ? DesignTokens.white : Colors.transparent,
+      padding: EdgeInsets.symmetric(horizontal: responsive.dp(14), vertical: responsive.dp(12)),
+      borderRadius: BorderRadius.circular(responsive.radius(14)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -132,14 +131,18 @@ class _SocialChip extends StatelessWidget {
 
     if (linkUri == null) return content;
 
-    return InkWell(
+    return Material(
+      color: DesignTokens.white,
       borderRadius: BorderRadius.circular(responsive.radius(14)),
-      onTap: () => _launchUri(
-        context,
-        linkUri,
-        mode: LaunchMode.externalApplication,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(responsive.radius(14)),
+        onTap: () => _launchUri(
+          context,
+          linkUri,
+          mode: LaunchMode.externalApplication,
+        ),
+        child: content,
       ),
-      child: content,
     );
   }
 }
@@ -211,15 +214,8 @@ _SocialMeta _socialMeta(String type) {
 }
 
 String? _buildWorkingHoursLabel(BuildContext context, LocationEntity location) {
-  final String? dayRange = _formatDayRange(
-    context,
-    location.startDay,
-    location.endDay,
-  );
-  final String? timeRange = _formatTimeRange(
-    location.openTime,
-    location.closeTime,
-  );
+  final String? dayRange = _formatDayRange(context, location.startDay, location.endDay);
+  final String? timeRange = _formatTimeRange(location.openTime, location.closeTime);
 
   if (dayRange == null && timeRange == null) return null;
   return <String>[
@@ -228,11 +224,7 @@ String? _buildWorkingHoursLabel(BuildContext context, LocationEntity location) {
   ].join(' ');
 }
 
-String? _formatDayRange(
-  BuildContext context,
-  String? startDay,
-  String? endDay,
-) {
+String? _formatDayRange(BuildContext context, String? startDay, String? endDay) {
   if (startDay == null && endDay == null) return null;
   final String start = _dayLabel(context, startDay ?? endDay!);
   final String end = _dayLabel(context, endDay ?? startDay!);
@@ -240,12 +232,8 @@ String? _formatDayRange(
 }
 
 String? _formatTimeRange(String? openTime, String? closeTime) {
-  final String? open = openTime?.trim().isNotEmpty == true
-      ? openTime!.trim()
-      : null;
-  final String? close = closeTime?.trim().isNotEmpty == true
-      ? closeTime!.trim()
-      : null;
+  final String? open = openTime?.trim().isNotEmpty == true ? openTime!.trim() : null;
+  final String? close = closeTime?.trim().isNotEmpty == true ? closeTime!.trim() : null;
   if (open == null && close == null) return null;
   if (open != null && close != null) return '$open - $close';
   return open ?? close;
@@ -305,8 +293,7 @@ Uri? _googleMapsUri(LocationEntity location) {
 
   final String query = <String>[
     if (location.title?.trim().isNotEmpty == true) location.title!.trim(),
-    if (location.description?.trim().isNotEmpty == true)
-      location.description!.trim(),
+    if (location.description?.trim().isNotEmpty == true) location.description!.trim(),
   ].join(', ');
 
   if (query.isEmpty) return null;

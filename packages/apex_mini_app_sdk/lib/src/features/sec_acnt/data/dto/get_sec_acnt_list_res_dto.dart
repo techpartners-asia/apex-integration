@@ -73,11 +73,9 @@ class GetSecuritiesAccountListResDto {
 
   GetSecAcntListAccountDto? get ipsCasaAccount => accountByFlag(12);
 
-  GetSecAcntListAccountDto? get primaryAccount =>
-      securitiesAccount ?? ipsCasaAccount ?? ipsMasterAccount ?? firstAccount;
+  GetSecAcntListAccountDto? get primaryAccount => securitiesAccount ?? ipsCasaAccount ?? ipsMasterAccount ?? firstAccount;
 
-  GetSecAcntListAccountDto? get firstAccount =>
-      acnts.isEmpty ? null : acnts.first;
+  GetSecAcntListAccountDto? get firstAccount => acnts.isEmpty ? null : acnts.first;
 
   GetSecAcntListAccountDto? accountByFlag(int flag) {
     for (final GetSecAcntListAccountDto account in acnts) {

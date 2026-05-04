@@ -17,7 +17,7 @@ void main() {
           portfolio: const SdkPortfolioContext(
             srcFiCode: '181001',
             brokerId: '390000',
-            securityCode: 'SEC001',
+            // securityCode: '007881004786',
             casaAcntId: 99,
             stmtStartDate: '2026-04-01',
             stmtEndDate: '2026-04-09',
@@ -35,7 +35,7 @@ void main() {
         portfolio: const SdkPortfolioContext(
           srcFiCode: '181001',
           brokerId: '390000',
-          securityCode: 'SEC001',
+          // securityCode: '007881004786',
           casaAcntId: 99,
           stmtStartDate: '2026-04-01',
           stmtEndDate: '2026-04-09',
@@ -48,7 +48,9 @@ void main() {
 
     expect(result.overview.currency, 'MNT');
     expect(result.yieldProfitHoldings, isNotEmpty);
-    expect(result.stockYieldDetails, isNotEmpty);
+    expect(result.stockYieldDetails, hasLength(2));
+    expect(executor.stockYieldSecurityCodes, <String>['COPX', 'AAPL']);
+    expect(executor.stockYieldSecurityCodes, isNot(contains('007881004786')));
     expect(
       executor.calledPaths,
       isNot(contains(ApiEndpoints.getBkrPublicCasaAcntStmt)),
@@ -71,7 +73,7 @@ void main() {
             portfolio: const SdkPortfolioContext(
               srcFiCode: '181001',
               brokerId: '390000',
-              securityCode: 'SEC001',
+              // securityCode: 'SEC001',
               casaAcntId: 99,
               stmtStartDate: '2026-04-01',
               stmtEndDate: '2026-04-09',
@@ -89,7 +91,7 @@ void main() {
           portfolio: const SdkPortfolioContext(
             srcFiCode: '181001',
             brokerId: '390000',
-            securityCode: 'SEC001',
+            // securityCode: 'SEC001',
             casaAcntId: 88,
             stmtStartDate: '2026-04-01',
             stmtEndDate: '2026-04-09',
@@ -131,6 +133,7 @@ class _FakeApiExecutor extends ApiExecutor {
       );
 
   final List<String> calledPaths = <String>[];
+  final List<String> stockYieldSecurityCodes = <String>[];
   int? statementAcntId;
   String? statementStartDate;
   String? statementEndDate;
@@ -152,6 +155,20 @@ class _FakeApiExecutor extends ApiExecutor {
           'packAmount': 600000,
           'packFee': 1500,
         },
+        'security': <Map<String, Object?>>[
+          <String, Object?>{
+            'securityCode': 'COPX',
+            'firstInvDate': '2025-07-15T00:00:00.000',
+            'firstPrice': 11,
+            'currentPrice': 58.74,
+          },
+          <String, Object?>{
+            'securityCode': 'AAPL',
+            'firstInvDate': '2025-08-10T00:00:00.000',
+            'firstPrice': 120,
+            'currentPrice': 188.5,
+          },
+        ],
       };
     }
 
@@ -171,11 +188,14 @@ class _FakeApiExecutor extends ApiExecutor {
     }
 
     if (path == ApiEndpoints.getStockAcntYieldDtl) {
+      final String securityCode = body['securityCode'] as String;
+      stockYieldSecurityCodes.add(securityCode);
+
       return <String, Object?>{
         'responseCode': 0,
         'yield': <String, Object?>{
-          'securityCode': 'SEC001',
-          'securityName': 'Package Asset',
+          'securityCode': securityCode,
+          'securityName': '$securityCode Asset',
           'investmentValue': 1,
           'currentValue': 500000,
           'totalYield': 25000,

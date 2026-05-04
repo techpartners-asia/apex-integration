@@ -1,11 +1,11 @@
 class GetStockAcntYieldDtlApiReq {
-  final String brokerId;
+  final String? brokerId;
   final String securityCode;
   final String srcFiCode;
   final bool isIps;
 
   const GetStockAcntYieldDtlApiReq({
-    required this.brokerId,
+    this.brokerId,
     required this.securityCode,
     required this.srcFiCode,
     required this.isIps,

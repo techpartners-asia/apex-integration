@@ -4,11 +4,7 @@ class HelpContactSection extends StatelessWidget {
   final SdkLocalizations l10n;
   final BranchInfoEntity company;
 
-  const HelpContactSection({
-    super.key,
-    required this.l10n,
-    required this.company,
-  });
+  const HelpContactSection({super.key, required this.l10n, required this.company});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +48,7 @@ class HelpContactSection extends StatelessWidget {
           (e) => Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
             child: AdaptiveCard(
-              color: DesignTokens.white,
+              color: Colors.transparent,
               child: _ContactRow(
                 label: e.label,
                 value: e.value,

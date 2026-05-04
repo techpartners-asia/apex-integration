@@ -17,41 +17,36 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MiniAppSessionState sessionState = context
-        .watch<MiniAppSessionStore>()
-        .state;
+    final MiniAppSessionState sessionState = context.watch<MiniAppSessionStore>().state;
 
     return BlocBuilder<IpsOverviewCubit, LoadableState<IpsOverviewViewData>>(
-      builder:
-          (BuildContext context, LoadableState<IpsOverviewViewData> state) {
-            final IpsOverviewViewData? data = state.data;
-            final bool isTradingEnabled = _hasTradingAccess(
-              viewData: data,
-              sessionState: sessionState,
-            );
+      builder: (BuildContext context, LoadableState<IpsOverviewViewData> state) {
+        final IpsOverviewViewData? data = state.data;
+        final bool isTradingEnabled = _hasTradingAccess(
+          viewData: data,
+          sessionState: sessionState,
+        );
 
-            return CustomScaffold(
-              showBackButton: false,
-              showCloseButton: true,
-              appBarCenterTitle: false,
-              appBarBackgroundColor: DesignTokens.softSurface,
-              backgroundColor: DesignTokens.softSurface,
-              appBarShowBottomBorder: false,
-              appBarReserveLeadingSpace: false,
-              body: _buildBody(context, state, sessionState),
-              adaptiveBottomNavigationBar: data == null || !state.isSuccess
-                  ? null
-                  : buildOverviewBottomNavigationBar(
-                      context,
-                      selectedIndex: _selectedTabIndex,
-                      onSelected: _handleTabSelected,
-                      onActionPressed: isTradingEnabled
-                          ? () => _showActionSheet(context, data)
-                          : null,
-                      isActionEnabled: isTradingEnabled,
-                    ),
-            );
-          },
+        return CustomScaffold(
+          showBackButton: false,
+          showCloseButton: true,
+          appBarCenterTitle: false,
+          appBarBackgroundColor: DesignTokens.softSurface,
+          backgroundColor: DesignTokens.softSurface,
+          appBarShowBottomBorder: false,
+          appBarReserveLeadingSpace: false,
+          body: _buildBody(context, state, sessionState),
+          adaptiveBottomNavigationBar: data == null || !state.isSuccess
+              ? null
+              : buildOverviewBottomNavigationBar(
+                  context,
+                  selectedIndex: _selectedTabIndex,
+                  onSelected: _handleTabSelected,
+                  onActionPressed: isTradingEnabled ? () => _showActionSheet(context, data) : null,
+                  isActionEnabled: isTradingEnabled,
+                ),
+        );
+      },
     );
   }
 
@@ -75,8 +70,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     final responsive = context.responsive;
     final IpsOverviewViewData? viewData = state.data;
     final AcntBootstrapState? data = viewData?.bootstrapState;
-    final bool shouldHoldDashboard =
-        data?.hasIpsAcnt == true && !(viewData?.isDashboardDataReady ?? false);
+    final bool shouldHoldDashboard = data?.hasIpsAcnt == true && !(viewData?.isDashboardDataReady ?? false);
 
     if ((state.isInitial || state.isLoading) && data == null) {
       return Center(
@@ -112,12 +106,8 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   ? OverviewDashboardHomeTab(
                       bootstrapState: data,
                       portfolioOverview: viewData?.portfolioOverview,
-                      yieldProfitHoldings:
-                          viewData?.yieldProfitHoldings ??
-                          const <PortfolioHolding>[],
-                      stockYieldDetails:
-                          viewData?.stockYieldDetails ??
-                          const <PortfolioHolding>[],
+                      yieldProfitHoldings: viewData?.yieldProfitHoldings ?? const <PortfolioHolding>[],
+                      stockYieldDetails: viewData?.stockYieldDetails ?? const <PortfolioHolding>[],
                       user: sessionState.currentUser,
                       onRecharge: () => launchIpsRoute(
                         context,
@@ -128,8 +118,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                         route: MiniAppRoutes.statements,
                         arguments: viewData?.portfolioContext,
                       ),
-                      onWithdraw: () =>
-                          launchIpsRoute(context, route: MiniAppRoutes.sell),
+                      onWithdraw: () => launchIpsRoute(context, route: MiniAppRoutes.sell),
                       onViewDetails: () => launchIpsRoute(
                         context,
                         route: MiniAppRoutes.portfolio,
@@ -163,9 +152,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
             ),
             child: MiniAppLoadingState(
               title: l10n.commonLoading,
-              message: data.hasIpsAcnt
-                  ? l10n.ipsPortfolioLoading
-                  : l10n.ipsBootstrapLoading,
+              message: data.hasIpsAcnt ? l10n.ipsPortfolioLoading : l10n.ipsBootstrapLoading,
             ),
           ),
         ],
@@ -188,10 +175,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     return account?.isInvestContract == true && packageCode.isNotEmpty;
   }
 
-  Future<void> _showActionSheet(
-    BuildContext context,
-    IpsOverviewViewData data,
-  ) async {
+  Future<void> _showActionSheet(BuildContext context, IpsOverviewViewData data) async {
     final AcntBootstrapState bootstrapState = data.bootstrapState;
 
     await showModalBottomSheet<void>(
@@ -206,15 +190,26 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
             showDivider: false,
             child: OverviewDashboardActionSheetContent(
               onRecharge: () async {
-                Navigator.maybePop(context);
+                await Navigator.of(sheetContext).maybePop();
+
+                if (!context.mounted) return;
+
+                await Future<void>.delayed(const Duration(milliseconds: 120));
+
+                if (!context.mounted) return;
+
                 await showIpsRechargeBottomSheet(
                   context,
                   dependencies: context.read<IpsDependencies>(),
                   l10n: context.l10n,
                 );
               },
-              onClosePack: () {
-                Navigator.maybePop(context);
+
+              onClosePack: () async {
+                await Navigator.of(sheetContext).maybePop();
+
+                if (!context.mounted) return;
+
                 launchIpsRoute(context, route: MiniAppRoutes.sell);
               },
             ),

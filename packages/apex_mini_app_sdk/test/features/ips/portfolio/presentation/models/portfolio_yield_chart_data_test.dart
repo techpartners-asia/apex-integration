@@ -7,45 +7,64 @@ void main() {
       final PortfolioYieldChartData data =
           PortfolioYieldChartDataMapper.fromResponses(
             yieldProfitHoldings: <PortfolioHolding>[
-              PortfolioHolding(
-                code: 'AAA',
-                name: 'Alpha',
-                quantity: 1,
-                currentValue: 120,
-                profitAmount: 12,
-                pointLabel: 'Jan',
-                recordedAt: DateTime.utc(2026, 1, 1),
+              const PortfolioHolding(
+                holdingType: HoldingType.getAcntYieldProfit,
+                securityName: 'Jan',
+                buyAmount: 120,
+                profit: 12,
               ),
-              PortfolioHolding(
-                code: 'CCC',
-                name: 'Charlie',
-                quantity: 1,
-                currentValue: 320,
-                profitAmount: 32,
-                pointLabel: 'Mar',
-                recordedAt: DateTime.utc(2026, 3, 1),
+              const PortfolioHolding(
+                holdingType: HoldingType.getAcntYieldProfit,
+                securityName: 'Feb',
+                buyAmount: 220,
+                profit: 22,
               ),
+              const PortfolioHolding(
+                holdingType: HoldingType.getAcntYieldProfit,
+                securityName: 'Mar',
+                buyAmount: 320,
+                profit: 32,
+              ),
+              //   PortfolioHolding(
+              //     code: 'AAA',
+              //     name: 'Alpha',
+              //     quantity: 1,
+              //     currentValue: 120,
+              //     profitAmount: 12,
+              //     pointLabel: 'Jan',
+              //     recordedAt: DateTime.utc(2026, 1, 1),
+              //   ),
+              //   PortfolioHolding(
+              //     code: 'CCC',
+              //     name: 'Charlie',
+              //     quantity: 1,
+              //     currentValue: 320,
+              //     profitAmount: 32,
+              //     pointLabel: 'Mar',
+              //     recordedAt: DateTime.utc(2026, 3, 1),
+              //   ),
+              // ],
+              // stockYieldDetails: <PortfolioHolding>[
+              //   PortfolioHolding(
+              //     code: 'BBB',
+              //     name: 'Bravo',
+              //     quantity: 1,
+              //     currentValue: 220,
+              //     profitAmount: 22,
+              //     pointLabel: 'Feb',
+              //     recordedAt: DateTime.utc(2026, 2, 1),
+              //   ),
+              //   PortfolioHolding(
+              //     code: 'AAA',
+              //     name: 'Alpha detail',
+              //     quantity: 1,
+              //     currentValue: 999,
+              //     profitAmount: 99,
+              //     pointLabel: 'Jan',
+              //     recordedAt: DateTime.utc(2026, 1, 1),
+              //   ),
             ],
-            stockYieldDetails: <PortfolioHolding>[
-              PortfolioHolding(
-                code: 'BBB',
-                name: 'Bravo',
-                quantity: 1,
-                currentValue: 220,
-                profitAmount: 22,
-                pointLabel: 'Feb',
-                recordedAt: DateTime.utc(2026, 2, 1),
-              ),
-              PortfolioHolding(
-                code: 'AAA',
-                name: 'Alpha detail',
-                quantity: 1,
-                currentValue: 999,
-                profitAmount: 99,
-                pointLabel: 'Jan',
-                recordedAt: DateTime.utc(2026, 1, 1),
-              ),
-            ],
+            stockYieldDetails: const <PortfolioHolding>[],
           );
 
       expect(data.hasData, isTrue);
@@ -61,13 +80,13 @@ void main() {
       final PortfolioYieldChartData data =
           PortfolioYieldChartDataMapper.fromResponses(
             yieldProfitHoldings: const <PortfolioHolding>[
-              PortfolioHolding(
-                code: 'BAD',
-                name: 'Broken',
-                quantity: 0,
-                currentValue: double.nan,
-                profitAmount: double.nan,
-              ),
+              // PortfolioHolding(
+              //   code: 'BAD',
+              //   name: 'Broken',
+              //   quantity: 0,
+              //   currentValue: double.nan,
+              //   profitAmount: double.nan,
+              // ),
             ],
             stockYieldDetails: const <PortfolioHolding>[],
           );

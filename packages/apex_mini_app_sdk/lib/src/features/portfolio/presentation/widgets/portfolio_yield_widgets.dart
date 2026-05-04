@@ -117,8 +117,7 @@ class PortfolioYieldChart extends StatelessWidget {
         .asMap()
         .entries
         .map(
-          (MapEntry<int, PortfolioYieldChartPoint> e) =>
-              FlSpot(e.key.toDouble(), e.value.primaryValue),
+          (MapEntry<int, PortfolioYieldChartPoint> e) => FlSpot(e.key.toDouble(), e.value.primaryValue),
         )
         .toList(growable: false);
 
@@ -127,12 +126,10 @@ class PortfolioYieldChart extends StatelessWidget {
               .asMap()
               .entries
               .where(
-                (MapEntry<int, PortfolioYieldChartPoint> e) =>
-                    e.value.secondaryValue != null,
+                (MapEntry<int, PortfolioYieldChartPoint> e) => e.value.secondaryValue != null,
               )
               .map(
-                (MapEntry<int, PortfolioYieldChartPoint> e) =>
-                    FlSpot(e.key.toDouble(), e.value.secondaryValue!),
+                (MapEntry<int, PortfolioYieldChartPoint> e) => FlSpot(e.key.toDouble(), e.value.secondaryValue!),
               )
               .toList(growable: false)
         : const <FlSpot>[];
@@ -223,9 +220,7 @@ class PortfolioYieldChart extends StatelessWidget {
 
   Widget _buildBottomTitle(double value, TitleMeta meta) {
     final int index = value.toInt();
-    if (index < 0 ||
-        index >= data.points.length ||
-        value != value.roundToDouble()) {
+    if (index < 0 || index >= data.points.length || value != value.roundToDouble()) {
       return const SizedBox.shrink();
     }
     return Padding(
@@ -321,6 +316,10 @@ class _PortfolioYieldEmptyState extends StatelessWidget {
 }
 
 class PortfolioYieldMetricsGrid extends StatelessWidget {
+  final PortfolioOverview overview;
+  final PortfolioYieldChartData chartData;
+  final SdkLocalizations l10n;
+
   const PortfolioYieldMetricsGrid({
     super.key,
     required this.overview,
@@ -328,27 +327,14 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
     this.chartData = const PortfolioYieldChartData(),
   });
 
-  final PortfolioOverview overview;
-  final PortfolioYieldChartData chartData;
-  final SdkLocalizations l10n;
-
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final String currency = overview.currency;
-    final double resolvedAvailableBalance =
-        overview.availableBalance ?? overview.cashTotal ?? 0;
-    final double resolvedInvestedBalance =
-        overview.investedBalance ?? chartData.primaryTotal ?? 0;
-    final double resolvedTotalAllocation =
-        ((overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)) > 0
-        ? (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)
-        : (chartData.primaryTotal ?? 0);
-    final double resolvedProfitLoss =
-        overview.profitOrLoss ??
-        chartData.secondaryTotal ??
-        overview.yieldAmount ??
-        0;
+    final double resolvedAvailableBalance = overview.availableBalance ?? overview.cashTotal ?? 0;
+    final double resolvedInvestedBalance = overview.investedBalance ?? chartData.primaryTotal ?? 0;
+    final double resolvedTotalAllocation = ((overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)) > 0 ? (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0) : (chartData.primaryTotal ?? 0);
+    final double resolvedProfitLoss = overview.profitOrLoss ?? chartData.secondaryTotal ?? overview.yieldAmount ?? 0;
 
     return Column(
       children: <Widget>[
@@ -357,14 +343,14 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioAvailableBalance,
-                value: formatIpsAmount(resolvedAvailableBalance, currency),
+                value: formatIpsPaymentAmount(resolvedAvailableBalance, currency, showDecimal: true),
               ),
             ),
             SizedBox(width: responsive.dp(12)),
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioInvestedBalance,
-                value: formatIpsAmount(resolvedInvestedBalance, currency),
+                value: formatIpsPaymentAmount(resolvedInvestedBalance, currency, showDecimal: true),
               ),
             ),
           ],
@@ -375,14 +361,14 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsOverviewDashboardAllocationTotal,
-                value: formatIpsAmount(resolvedTotalAllocation, currency),
+                value: formatIpsPaymentAmount(resolvedTotalAllocation, currency, showDecimal: true),
               ),
             ),
             SizedBox(width: responsive.dp(12)),
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioProfitLoss,
-                value: formatIpsAmount(resolvedProfitLoss, currency),
+                value: formatIpsPaymentAmount(resolvedProfitLoss, currency, showDecimal: true),
               ),
             ),
           ],
@@ -393,6 +379,10 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
 }
 
 class PortfolioCompactMetricTile extends StatelessWidget {
+  final String label;
+  final String value;
+  final bool showHorizontal;
+
   const PortfolioCompactMetricTile({
     super.key,
     required this.label,
@@ -400,47 +390,67 @@ class PortfolioCompactMetricTile extends StatelessWidget {
     this.showHorizontal = false,
   });
 
-  final String label;
-  final String value;
-  final bool showHorizontal;
-
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
+    Widget content = SizedBox();
 
     if (showHorizontal) {
-      return Row(
+      content = Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           CustomText(
             label,
-            variant: MiniAppTextVariant.caption1,
+            variant: MiniAppTextVariant.caption2,
             color: DesignTokens.muted,
           ),
           CustomText(
             value,
-            variant: MiniAppTextVariant.subtitle3,
+            variant: MiniAppTextVariant.subtitle4,
           ),
+        ],
+      );
+    } else {
+      content = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // customMarquee(
+          //   child:
+            CustomText(
+              label,
+              variant: MiniAppTextVariant.caption2,
+              color: DesignTokens.muted,
+              maxLines: 1,
+              // overflow: TextOverflow.ellipsis,
+            ),
+          // ),
+          SizedBox(height: responsive.dp(2)),
+          // customMarquee(
+          //   child:
+            CustomText(
+              value,
+              maxLines: 1,
+              variant: MiniAppTextVariant.subtitle4,
+            ),
+          // ),
         ],
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        CustomText(
-          label,
-          variant: MiniAppTextVariant.caption1,
-          color: DesignTokens.muted,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        SizedBox(height: responsive.dp(2)),
-        CustomText(
-          value,
-          variant: MiniAppTextVariant.subtitle3,
-        ),
-      ],
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 3,
+            offset: Offset(0, 0),
+          ),
+        ],
+      ),
+      child: content,
     );
   }
 }

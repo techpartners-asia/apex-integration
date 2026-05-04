@@ -23,8 +23,7 @@ class SecAcntPersonalInfoScreen extends StatefulWidget {
   });
 
   @override
-  State<SecAcntPersonalInfoScreen> createState() =>
-      _SecAcntPersonalInfoScreenState();
+  State<SecAcntPersonalInfoScreen> createState() => _SecAcntPersonalInfoScreenState();
 }
 
 class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
@@ -126,8 +125,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       if (bankCode != null && option.id.trim() == bankCode.trim()) {
         return option;
       }
-      if (bankName != null &&
-          option.label.trim().toLowerCase() == bankName.trim().toLowerCase()) {
+      if (bankName != null && option.label.trim().toLowerCase() == bankName.trim().toLowerCase()) {
         return option;
       }
     }
@@ -165,9 +163,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
   }
 
-  AutovalidateMode get _autovalidateMode => _didInteractWithPersonalInfo
-      ? AutovalidateMode.always
-      : AutovalidateMode.disabled;
+  AutovalidateMode get _autovalidateMode => _didInteractWithPersonalInfo ? AutovalidateMode.always : AutovalidateMode.disabled;
 
   String? _bankErrorText(BuildContext context) {
     if (!_didInteractWithPersonalInfo && !_didTouchBankSelector) {
@@ -178,8 +174,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
 
   bool _canContinue(BuildContext context) {
     return _validateMobile(context, _mobileController.text) == null &&
-        _validateSecondaryMobile(context, _secondaryMobileController.text) ==
-            null &&
+        _validateSecondaryMobile(context, _secondaryMobileController.text) == null &&
         _validateEmail(context, _emailController.text) == null &&
         _validateIban(context, _ibanController.text) == null &&
         _validateSelectedBank(context) == null;
@@ -190,20 +185,19 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       setState(() => _didTouchBankSelector = true);
     }
 
-    final SecAcntBankOption? selected =
-        await showModalBottomSheet<SecAcntBankOption>(
-          context: context,
-          useSafeArea: false,
-          backgroundColor: MiniAppStateColors.bottomSheetBackground,
-          isScrollControlled: true,
-          showDragHandle: false,
-          builder: (BuildContext context) {
-            return SecAcntBankSelectionSheet(
-              selectedBank: _selectedBank,
-              bankOptionsRepository: widget.bankOptionsRepository,
-            );
-          },
+    final SecAcntBankOption? selected = await showModalBottomSheet<SecAcntBankOption>(
+      context: context,
+      useSafeArea: false,
+      backgroundColor: MiniAppStateColors.bottomSheetBackground,
+      isScrollControlled: true,
+      showDragHandle: false,
+      builder: (BuildContext context) {
+        return SecAcntBankSelectionSheet(
+          selectedBank: _selectedBank,
+          bankOptionsRepository: widget.bankOptionsRepository,
         );
+      },
+    );
 
     if (selected == null || !mounted) {
       return;
@@ -298,11 +292,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final double footerClearance =
-        responsive.dp(24) +
-        responsive.spacing.buttonHeight +
-        4 +
-        responsive.safeBottom;
+    final double footerClearance = responsive.dp(24) + responsive.spacing.buttonHeight + 4 + responsive.safeBottom;
     final SecAcntWizardHeaderData header = buildSecAcntHeader(
       context,
       SecAcntFlowStep.personalInformation,
@@ -378,24 +368,20 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
               onSelectBank: () => _selectBank(context),
               isShortFlow: _isShortFlow,
               autovalidateMode: _autovalidateMode,
-              mobileValidator: (String? value) =>
-                  _validateMobile(context, value),
-              secondaryMobileValidator: (String? value) =>
-                  _validateSecondaryMobile(context, value),
+              mobileValidator: (String? value) => _validateMobile(context, value),
+              secondaryMobileValidator: (String? value) => _validateSecondaryMobile(context, value),
               emailValidator: (String? value) => _validateEmail(context, value),
               ibanValidator: (String? value) => _validateIban(context, value),
               bankErrorText: _bankErrorText(context),
             ),
-            if (_hasSubmitError)
-              _SubmitErrorBanner(message: _submitErrorMessage!),
+            if (_hasSubmitError) _SubmitErrorBanner(message: _submitErrorMessage!),
           ],
         ),
       ),
     );
   }
 
-  bool get _hasSubmitError =>
-      _submitErrorMessage != null && _submitErrorMessage!.trim().isNotEmpty;
+  bool get _hasSubmitError => _submitErrorMessage != null && _submitErrorMessage!.trim().isNotEmpty;
 
   @override
   void dispose() {

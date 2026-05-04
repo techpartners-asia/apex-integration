@@ -6,9 +6,7 @@ class BootstrapStateResolver {
   const BootstrapStateResolver({required this.service});
 
   Future<AcntBootstrapState> load({bool forceRefresh = false}) async {
-    final AcntBootstrapState state = await service.getSecAcntListState(
-      forceRefresh: forceRefresh,
-    );
+    final AcntBootstrapState state = await service.getSecAcntListState(forceRefresh: forceRefresh);
 
     try {
       return await service.getSecAcntBalanceState(currentState: state);

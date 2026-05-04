@@ -11,9 +11,7 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
     return PortfolioOverviewDto.fromJson(json);
   }
 
-  Future<List<PortfolioHoldingDto>> getYieldProfitHoldings(
-    GetAcntYieldProfitApiReq req,
-  ) async {
+  Future<List<PortfolioHoldingDto>> getYieldProfitHoldings(GetAcntYieldProfitApiReq req) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getAcntYieldProfit,
       body: req.toJson(),
@@ -23,9 +21,7 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
     return PortfolioHoldingDto.listFromYieldProfitResponse(json);
   }
 
-  Future<List<PortfolioHoldingDto>> getStockYieldDetail(
-    GetStockAcntYieldDtlApiReq req,
-  ) async {
+  Future<List<PortfolioHoldingDto>> getStockYieldDetail(GetStockAcntYieldDtlApiReq req) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getStockAcntYieldDtl,
       body: req.toJson(),
@@ -35,9 +31,7 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
     return PortfolioHoldingDto.listFromStockYieldDetailResponse(json);
   }
 
-  Future<CasaStatementResponseDto> getCasaStatements(
-    GetCasaStmtApiReq req,
-  ) async {
+  Future<CasaStatementResponseDto> getCasaStatements(GetCasaStmtApiReq req) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getBkrPublicCasaAcntStmt,
       body: req.toJson(),

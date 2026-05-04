@@ -29,12 +29,8 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
     final PortfolioSecurity security = widget.security;
     final double yieldPercent = security.percent ?? 0;
     final bool isPositive = yieldPercent >= 0;
-    final Color toneColor = isPositive
-        ? DesignTokens.success
-        : DesignTokens.danger;
-    final String displayName =
-        '${security.securityCode} ${_portfolioSecurityTypeLabel(security.securityType, upper: true)}'
-            .trim();
+    final Color toneColor = isPositive ? DesignTokens.success : DesignTokens.danger;
+    final String displayName = '${security.securityCode} ${_portfolioSecurityTypeLabel(security.securityType, upper: true)}'.trim();
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: responsive.dp(8)),
@@ -162,16 +158,13 @@ class _SecurityDetails extends StatelessWidget {
         children: <Widget>[
           PortfolioCompactMetricTile(
             label: l10n.ipsPortfolioHoldingValueLabel,
-            value: formatIpsPaymentAmount(
-              security.currentPrice ?? 0,
-              currency,
-            ),
+            value: formatIpsPaymentAmount(security.currentPrice ?? 0, currency, showDecimal: true),
             showHorizontal: true,
           ),
           SizedBox(height: responsive.dp(10)),
           PortfolioCompactMetricTile(
             label: l10n.ipsPortfolioHoldingQuantity,
-            value: '${(security.qty ?? 0).toStringAsFixed(0)} ш',
+            value: '${(security.qty ?? 0).toStringAsFixed(2)} ш',
             showHorizontal: true,
           ),
         ],

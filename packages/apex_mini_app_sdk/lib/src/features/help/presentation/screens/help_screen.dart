@@ -26,8 +26,7 @@ class HelpScreen extends StatelessWidget {
                 title: l10n.ipsHelpTitle,
                 message: state.errorMessage ?? l10n.errorsActionFailed,
                 actionLabel: l10n.commonRetry,
-                onAction: () =>
-                    context.read<HelpCubit>().load(forceRefresh: true),
+                onAction: () => context.read<HelpCubit>().load(forceRefresh: true),
               ),
             );
           }
@@ -39,8 +38,7 @@ class HelpScreen extends StatelessWidget {
                 title: l10n.ipsHelpTitle,
                 message: l10n.commonNoData,
                 actionLabel: l10n.commonRefresh,
-                onAction: () =>
-                    context.read<HelpCubit>().load(forceRefresh: true),
+                onAction: () => context.read<HelpCubit>().load(forceRefresh: true),
               ),
             );
           }
@@ -49,33 +47,33 @@ class HelpScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: responsive.spacing.financialCardSpacing,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: responsive.spacing.financialCardSpacing),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       SizedBox(height: responsive.spacing.sectionSpacing),
+
+                      /// Contact info "Email and Phone"
                       if (company.hasContactInfo) ...<Widget>[
                         HelpContactSection(l10n: l10n, company: company),
                         SizedBox(height: responsive.dp(10)),
                       ],
 
+                      /// Social links
                       if (company.hasSocialLinks) ...<Widget>[
                         HelpSocialLinksSection(links: company.socialLinks),
-                        SizedBox(height: responsive.spacing.sectionSpacing),
+                        // SizedBox(height: responsive.spacing.cardGap),
                       ],
 
-                      if (company.hasLocationInfo)
-                        HelpLocationSection(
-                          l10n: l10n,
-                          location: company.location!,
-                        ),
+                      /// Location
+                      if (company.hasLocationInfo) HelpLocationSection(l10n: l10n, location: company.location!),
                       SizedBox(height: responsive.spacing.sectionSpacing * 2),
                     ],
                   ),
                 ),
               ),
+
+              /// Feedback button
               Padding(
                 padding: EdgeInsets.all(context.responsive.dp(20)),
                 child: PrimaryButton(

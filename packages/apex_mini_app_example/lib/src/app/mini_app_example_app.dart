@@ -33,9 +33,7 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
       sdkConfig = widget.sdkConfig!;
     } else {
       sdkConfig = buildExampleMiniAppSdkConfig(
-        walletPaymentHandler:
-            widget.walletPaymentHandler ??
-            buildExampleWalletPaymentHandler(navigatorKey),
+        walletPaymentHandler: widget.walletPaymentHandler ?? buildExampleWalletPaymentHandler(navigatorKey),
       );
     }
 

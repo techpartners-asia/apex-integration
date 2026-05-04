@@ -28,15 +28,13 @@ class RechargeQuantityInput extends StatelessWidget {
           controller: controller,
           focusNode: focusNode,
           keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.done,
+          textInputAction: TextInputAction.unspecified,
           showCursor: true,
-          onTap: () {
-            focusNode.requestFocus();
-            SystemChannels.textInput.invokeMethod<void>('TextInput.show');
-          },
-          onTapOutside: unfocusOnTapOutside
-              ? (_) => FocusScope.of(context).unfocus()
-              : null,
+          // onTap: () {
+          //   focusNode.requestFocus();
+          //   SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+          // },
+          onTapOutside: unfocusOnTapOutside ? (_) => FocusScope.of(context).unfocus() : null,
           textAlign: TextAlign.center,
           textAlignVertical: TextAlignVertical.center,
           style: MiniAppTypography.h3.copyWith(
@@ -158,6 +156,5 @@ class RechargeDashedLinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(RechargeDashedLinePainter oldDelegate) =>
-      color != oldDelegate.color;
+  bool shouldRepaint(RechargeDashedLinePainter oldDelegate) => color != oldDelegate.color;
 }

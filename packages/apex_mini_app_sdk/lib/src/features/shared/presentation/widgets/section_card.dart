@@ -9,6 +9,7 @@ class SectionCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final bool hasBorder;
   final bool hasShadow;
+  final Color?  backgroundColor;
 
   const SectionCard({
     super.key,
@@ -18,6 +19,7 @@ class SectionCard extends StatelessWidget {
     this.padding,
     this.hasBorder = false,
     this.hasShadow = false,
+    this.backgroundColor,
   });
 
   @override
@@ -27,7 +29,7 @@ class SectionCard extends StatelessWidget {
     return MiniAppSurfaceCard(
       hasBorder: false,
       hasShadow: hasShadow,
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor ?? Colors.white,
       borderColor: hasBorder ? DesignTokens.border : Colors.transparent,
       borderRadius: responsive.radius(20),
       padding: padding ?? responsive.insetsAll(16),

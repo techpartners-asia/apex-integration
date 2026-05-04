@@ -6,6 +6,7 @@ final class IpsDefaults {
   static const String contractIdFallback = 'IPS-CONTRACT';
   static const String qrFallbackValue = 'QR';
   static const String orderTitleFallback = 'IPS Order';
+  static const String secuCodeBond = 'Bond';
 
   const IpsDefaults._();
 }

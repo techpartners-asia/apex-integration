@@ -24,4 +24,6 @@ class StaticApiConfig {
   static const String defaultSrcFiCode = '181';
   static const String defaultFiCode = '181';
   static const String defaultLanguage = 'MN';
+
+  static const String techInvestXStorageUrl = 'https://storage.admin.investx.mn/';
 }

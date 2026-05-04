@@ -85,9 +85,7 @@ class PortfolioOverviewDto {
       packFee: ApiParser.asNullableDouble(responseData['packFee']),
       description: ApiParser.asNullableString(responseData['description']),
       security: security,
-      packDetail: packDetail.isEmpty
-          ? null
-          : PortfolioPackDetailDto.fromJson(packDetail),
+      packDetail: packDetail.isEmpty ? null : PortfolioPackDetailDto.fromJson(packDetail),
     );
   }
 
@@ -109,9 +107,7 @@ class PortfolioOverviewDto {
       packAmount: packAmount,
       packFee: packFee,
       description: description,
-      security: security
-          .map((PortfolioSecurityDto item) => item.toDomain())
-          .toList(growable: false),
+      security: security.map((PortfolioSecurityDto item) => item.toDomain()).toList(growable: false),
       packDetail: packDetail?.toDomain(),
       statementSummary: statementSummary,
     );
@@ -157,9 +153,7 @@ class PortfolioSecurityDto {
     }
 
     return PortfolioSecurityDto(
-      securityCode:
-          ApiParser.asNullableString(json['securityCode']) ??
-          IpsDefaults.unknownSecurityCode,
+      securityCode: ApiParser.asNullableString(json['securityCode']) ?? IpsDefaults.unknownSecurityCode,
       firstInvDate: ApiParser.asNullableDateTime(json['firstInvDate']),
       firstPrice: ApiParser.asNullableDouble(json['firstPrice']),
       currentPrice: ApiParser.asNullableDouble(json['currentPrice']),
@@ -185,9 +179,7 @@ class PortfolioSecurityDto {
       portfolioPercent: portfolioPercent,
       typePercent: typePercent,
       securityType: securityType,
-      closePrices: closePrices
-          ?.map((PortfolioClosePriceDto item) => item.toDomain())
-          .toList(growable: false),
+      closePrices: closePrices?.map((PortfolioClosePriceDto item) => item.toDomain()).toList(growable: false),
     );
   }
 }
@@ -234,9 +226,7 @@ class PortfolioPackDetailDto {
 
   factory PortfolioPackDetailDto.fromJson(Map<String, Object?> json) {
     return PortfolioPackDetailDto(
-      isRecommended: json.containsKey('isRecommended')
-          ? ApiParser.asFlag(json['isRecommended'])
-          : null,
+      isRecommended: json.containsKey('isRecommended') ? ApiParser.asFlag(json['isRecommended']) : null,
       packCode: ApiParser.asNullableString(json['packCode']),
       name: ApiParser.asNullableString(json['name']),
       name2: ApiParser.asNullableString(json['name2']),
@@ -260,78 +250,93 @@ class PortfolioPackDetailDto {
 }
 
 class PortfolioHoldingDto {
-  final String code;
-  final String name;
-  final double quantity;
-  final double currentValue;
-  final double? yieldPercent;
-  final double? profitAmount;
+  final HoldingType holdingType;
+  final String securityName;
+  final String? symbol;
   final HoldingAssetType? assetType;
-  final String? pointLabel;
-  final DateTime? recordedAt;
+
+  /// getStockAcntYieldDtl
+  final String? securityCode;
+  final double? currentValue;
+  final double? investmentValue;
+  final double? todaysYield;
+  final double? totalYield;
+  final double? totalPercent;
+  final double? todaysPercent;
+
+  /// getAcntYieldProfit
+  final String? acntCode;
+  final double? buyAmount;
+  final String? custCode;
+  final double? balance;
+  final double? profit;
+  final double? profitPercent;
 
   const PortfolioHoldingDto({
-    required this.code,
-    required this.name,
-    required this.quantity,
-    required this.currentValue,
-    this.yieldPercent,
-    this.profitAmount,
+    required this.holdingType,
+    required this.securityName,
+    this.symbol,
     this.assetType,
-    this.pointLabel,
-    this.recordedAt,
+
+    /// getStockAcntYieldDtl
+    this.securityCode,
+    this.currentValue,
+    this.investmentValue,
+    this.todaysYield,
+    this.totalYield,
+    this.totalPercent,
+    this.todaysPercent,
+
+    /// getAcntYieldProfit
+    this.acntCode,
+    this.buyAmount,
+    this.custCode,
+    this.balance,
+    this.profit,
+    this.profitPercent,
   });
 
   factory PortfolioHoldingDto.fromYieldProfitJson(Map<String, Object?> json) {
     return PortfolioHoldingDto(
-      code:
-          ApiParser.asNullableString(json['symbol']) ??
-          IpsDefaults.unknownSecurityCode,
-      name:
-          ApiParser.asNullableString(json['securityName']) ??
-          IpsDefaults.unknownSecurityName,
-      quantity: ApiParser.asNullableDouble(json['balance']) ?? 0,
-      currentValue: ApiParser.asNullableDouble(json['buyAmount']) ?? 0,
-      yieldPercent: ApiParser.asNullableDouble(json['profitPercent']),
-      profitAmount: ApiParser.asNullableDouble(json['profit']),
+      holdingType: HoldingType.getAcntYieldProfit,
+      acntCode: ApiParser.asNullableString(json['acntCode']) ?? '',
+      securityName: ApiParser.asNullableString(json['securityName']) ?? IpsDefaults.unknownSecurityName,
+      buyAmount: ApiParser.asNullableDouble(json['buyAmount']) ?? 0,
+      custCode: ApiParser.asNullableString(json['custCode']) ?? '',
+      balance: ApiParser.asNullableDouble(json['balance']) ?? 0,
+      profit: ApiParser.asNullableDouble(json['profit']) ?? 0,
+      profitPercent: ApiParser.asNullableDouble(json['profitPercent']) ?? 0,
+      symbol: ApiParser.asNullableString(json['symbol']) ?? '',
     );
   }
 
-  factory PortfolioHoldingDto.fromStockYieldDetailJson(
-    Map<String, Object?> json,
-  ) {
+  factory PortfolioHoldingDto.fromStockYieldDtlJson(Map<String, Object?> json) {
     return PortfolioHoldingDto(
-      code:
-          ApiParser.asNullableString(json['securityCode']) ??
-          IpsDefaults.unknownSecurityCode,
-      name:
-          ApiParser.asNullableString(json['securityName']) ??
-          IpsDefaults.unknownSecurityName,
-      quantity: ApiParser.asNullableDouble(json['investmentValue']) ?? 0,
+      holdingType: HoldingType.getStockAcntYieldDtl,
+      securityCode: ApiParser.asNullableString(json['securityCode']) ?? IpsDefaults.unknownSecurityCode,
+      securityName: ApiParser.asNullableString(json['securityName']) ?? IpsDefaults.unknownSecurityName,
       currentValue: ApiParser.asNullableDouble(json['currentValue']) ?? 0,
-      yieldPercent: ApiParser.asNullableDouble(json['totalPercent']),
-      profitAmount: ApiParser.asNullableDouble(json['totalYield']),
+      investmentValue: ApiParser.asNullableDouble(json['currentValue']) ?? 0,
+      todaysYield: ApiParser.asNullableDouble(json['todaysYield']) ?? 0,
+      totalYield: ApiParser.asNullableDouble(json['totalYield']) ?? 0,
+      totalPercent: ApiParser.asNullableDouble(json['totalPercent']) ?? 0,
+      todaysPercent: ApiParser.asNullableDouble(json['todaysPercent']) ?? 0,
+      symbol: ApiParser.asNullableString(json['symbol']) ?? '',
       assetType: HoldingAssetType.stock,
     );
   }
 
-  static List<PortfolioHoldingDto> listFromYieldProfitResponse(
-    Map<String, Object?> json,
-  ) {
+  static List<PortfolioHoldingDto> listFromYieldProfitResponse(Map<String, Object?> json) {
     ApiActionResultParser.ensureSuccess(
       json,
       fallbackErrorMessage: 'Yield/profit req failed.',
       strictResponseCode: true,
     );
 
-    return ApiParser.asObjectMapList(
-      json['profit'],
-    ).map(PortfolioHoldingDto.fromYieldProfitJson).toList(growable: false);
+    return ApiParser.asObjectMapList(json['profit']).map(PortfolioHoldingDto.fromYieldProfitJson).toList(growable: false);
   }
 
-  static List<PortfolioHoldingDto> listFromStockYieldDetailResponse(
-    Map<String, Object?> json,
-  ) {
+  static List<PortfolioHoldingDto> listFromStockYieldDetailResponse(Map<String, Object?> json) {
     ApiActionResultParser.ensureSuccess(
       json,
       fallbackErrorMessage: 'Stock yield detail req failed.',
@@ -340,13 +345,9 @@ class PortfolioHoldingDto {
 
     final Object? rawYield = json['yield'];
 
-    final List<Map<String, Object?>> yieldList = ApiParser.asObjectMapList(
-      rawYield,
-    );
+    final List<Map<String, Object?>> yieldList = ApiParser.asObjectMapList(rawYield);
     if (yieldList.isNotEmpty) {
-      return yieldList
-          .map(PortfolioHoldingDto.fromStockYieldDetailJson)
-          .toList(growable: false);
+      return yieldList.map(PortfolioHoldingDto.fromStockYieldDtlJson).toList(growable: false);
     }
 
     final Map<String, Object?> yieldData = ApiParser.asObjectMap(rawYield);
@@ -355,21 +356,33 @@ class PortfolioHoldingDto {
     }
 
     return <PortfolioHoldingDto>[
-      PortfolioHoldingDto.fromStockYieldDetailJson(yieldData),
+      PortfolioHoldingDto.fromStockYieldDtlJson(yieldData),
     ];
   }
 
   PortfolioHolding toDomain() {
     return PortfolioHolding(
-      code: code,
-      name: name,
-      quantity: quantity,
-      currentValue: currentValue,
-      yieldPercent: yieldPercent,
-      profitAmount: profitAmount,
+      holdingType: holdingType,
+      securityCode: securityCode ?? '',
+      securityName: securityName,
       assetType: assetType,
-      pointLabel: pointLabel,
-      recordedAt: recordedAt,
+      symbol: symbol ?? '',
+
+      /// getStockAcntYieldDtl
+      currentValue: currentValue,
+      investmentValue: investmentValue,
+      todaysYield: todaysYield,
+      totalYield: totalYield,
+      totalPercent: totalPercent,
+      todaysPercent: todaysPercent,
+
+      /// getAcntYieldProfit
+      acntCode: acntCode ?? '',
+      buyAmount: buyAmount,
+      custCode: custCode ?? '',
+      balance: balance,
+      profit: profit,
+      profitPercent: profitPercent,
     );
   }
 }
@@ -390,19 +403,14 @@ class CasaStatementSummaryDto {
       strictResponseCode: true,
     );
 
-    final String beginBalance =
-        ApiParser.asNullableString(json['beginBalance']) ?? '0';
-    final String endBalance =
-        ApiParser.asNullableString(json['endBalance']) ?? '0';
-    final String startDate =
-        ApiParser.asNullableString(json['startDate']) ?? fallbackStartDate;
-    final String endDate =
-        ApiParser.asNullableString(json['endDate']) ?? fallbackEndDate;
+    final String beginBalance = ApiParser.asNullableString(json['beginBalance']) ?? '0';
+    final String endBalance = ApiParser.asNullableString(json['endBalance']) ?? '0';
+    final String startDate = ApiParser.asNullableString(json['startDate']) ?? fallbackStartDate;
+    final String endDate = ApiParser.asNullableString(json['endDate']) ?? fallbackEndDate;
     final int totalCount = ApiParser.asNullableInt(json['totalCount']) ?? 0;
 
     return CasaStatementSummaryDto(
-      summary:
-          '$startDate  $endDate • begin $beginBalance • end $endBalance • $totalCount entries',
+      summary: '$startDate  $endDate • begin $beginBalance • end $endBalance • $totalCount entries',
     );
   }
 

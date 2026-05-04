@@ -1,7 +1,7 @@
 class SdkPortfolioContext {
   final String? brokerId;
   final String? srcFiCode;
-  final String? securityCode;
+  final String? ipsAcntCode;
   final int? casaAcntId;
   final String? stmtStartDate;
   final String? stmtEndDate;
@@ -9,7 +9,7 @@ class SdkPortfolioContext {
   const SdkPortfolioContext({
     this.brokerId,
     this.srcFiCode,
-    this.securityCode,
+    this.ipsAcntCode,
     this.casaAcntId,
     this.stmtStartDate,
     this.stmtEndDate,
@@ -21,27 +21,23 @@ class SdkPortfolioContext {
 
   String? get normalizedSrcFiCode => _normalizeText(srcFiCode);
 
-  String? get normalizedSecurityCode => _normalizeText(securityCode);
+  String? get normalizedIpsAcntCode => _normalizeText(ipsAcntCode);
 
-  int? get normalizedCasaAcntId =>
-      casaAcntId != null && casaAcntId! > 0 ? casaAcntId : null;
+  int? get normalizedCasaAcntId => casaAcntId != null && casaAcntId! > 0 ? casaAcntId : null;
 
   String? get normalizedStmtStartDate => _normalizeText(stmtStartDate);
 
   String? get normalizedStmtEndDate => _normalizeText(stmtEndDate);
 
-  bool get hasStockYieldDetailContext =>
-      normalizedBrokerId != null && normalizedSecurityCode != null;
+  // bool get hasStockYieldDetailContext =>
+  //     normalizedBrokerId != null && normalizedSecurityCode != null;
 
-  bool get hasStatementContext =>
-      normalizedCasaAcntId != null &&
-      normalizedStmtStartDate != null &&
-      normalizedStmtEndDate != null;
+  bool get hasStatementContext => normalizedCasaAcntId != null && normalizedStmtStartDate != null && normalizedStmtEndDate != null;
 
   bool get isEmpty =>
       normalizedBrokerId == null &&
       normalizedSrcFiCode == null &&
-      normalizedSecurityCode == null &&
+          normalizedIpsAcntCode == null &&
       normalizedCasaAcntId == null &&
       normalizedStmtStartDate == null &&
       normalizedStmtEndDate == null;
@@ -54,7 +50,7 @@ class SdkPortfolioContext {
   SdkPortfolioContext copyWith({
     Object? brokerId = _sentinel,
     Object? srcFiCode = _sentinel,
-    Object? securityCode = _sentinel,
+    Object? ipsAcntCode = _sentinel,
     Object? casaAcntId = _sentinel,
     Object? stmtStartDate = _sentinel,
     Object? stmtEndDate = _sentinel,
@@ -62,18 +58,10 @@ class SdkPortfolioContext {
     return SdkPortfolioContext(
       brokerId: brokerId == _sentinel ? this.brokerId : brokerId as String?,
       srcFiCode: srcFiCode == _sentinel ? this.srcFiCode : srcFiCode as String?,
-      securityCode: securityCode == _sentinel
-          ? this.securityCode
-          : securityCode as String?,
-      casaAcntId: casaAcntId == _sentinel
-          ? this.casaAcntId
-          : casaAcntId as int?,
-      stmtStartDate: stmtStartDate == _sentinel
-          ? this.stmtStartDate
-          : stmtStartDate as String?,
-      stmtEndDate: stmtEndDate == _sentinel
-          ? this.stmtEndDate
-          : stmtEndDate as String?,
+      ipsAcntCode: ipsAcntCode == _sentinel ? this.ipsAcntCode : ipsAcntCode as String?,
+      casaAcntId: casaAcntId == _sentinel ? this.casaAcntId : casaAcntId as int?,
+      stmtStartDate: stmtStartDate == _sentinel ? this.stmtStartDate : stmtStartDate as String?,
+      stmtEndDate: stmtEndDate == _sentinel ? this.stmtEndDate : stmtEndDate as String?,
     );
   }
 
@@ -81,7 +69,7 @@ class SdkPortfolioContext {
     return SdkPortfolioContext(
       brokerId: normalizedBrokerId ?? other.normalizedBrokerId,
       srcFiCode: normalizedSrcFiCode ?? other.normalizedSrcFiCode,
-      securityCode: normalizedSecurityCode ?? other.normalizedSecurityCode,
+      ipsAcntCode: normalizedIpsAcntCode ?? other.normalizedIpsAcntCode,
       casaAcntId: normalizedCasaAcntId ?? other.normalizedCasaAcntId,
       stmtStartDate: normalizedStmtStartDate ?? other.normalizedStmtStartDate,
       stmtEndDate: normalizedStmtEndDate ?? other.normalizedStmtEndDate,
@@ -96,7 +84,7 @@ class SdkPortfolioContext {
     return SdkPortfolioContext(
       brokerId: normalizedBrokerId,
       srcFiCode: normalizedSrcFiCode ?? normalizedFallbackSrcFiCode,
-      securityCode: normalizedSecurityCode,
+      ipsAcntCode: normalizedIpsAcntCode,
       casaAcntId: normalizedCasaAcntId,
       stmtStartDate: normalizedStmtStartDate,
       stmtEndDate: normalizedStmtEndDate,

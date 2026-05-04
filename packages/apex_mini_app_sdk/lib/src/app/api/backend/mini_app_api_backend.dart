@@ -110,10 +110,7 @@ class MiniAppApiBackend {
 
   Future<CompanyInfoResponseDto> getCompanyInfo() async {
     final ApiExecutor executor = _requireAuthorizedExecutor('getCompanyInfo');
-    final Map<String, Object?> json = await executor.getJson(
-      ApiEndpoints.companyInfo,
-      context: const ReqContext(operName: 'getCompanyInfo'),
-    );
+    final Map<String, Object?> json = await executor.getJson(ApiEndpoints.companyInfo, context: const ReqContext(operName: 'getCompanyInfo'));
 
     return CompanyInfoResponseDto.fromJson(json);
   }

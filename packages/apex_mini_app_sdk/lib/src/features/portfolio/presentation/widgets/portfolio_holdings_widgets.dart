@@ -5,7 +5,9 @@ import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 part 'portfolio_filter_tabs.dart';
+
 part 'portfolio_pie_chart.dart';
+
 part 'portfolio_security_tile.dart';
 
 const List<Color> kPieChartPalette = <Color>[
@@ -82,12 +84,7 @@ class _PortfolioMyPackSectionState extends State<PortfolioMyPackSection> {
     final List<PortfolioSecurity> all = widget.overview.security;
     if (_selectedFilter == 0) return all;
     final String targetType = _selectedFilter == 1 ? 'bond' : 'share';
-    final List<PortfolioSecurity> filtered = all
-        .where(
-          (PortfolioSecurity s) =>
-              (s.securityType ?? '').toLowerCase() == targetType,
-        )
-        .toList(growable: false);
+    final List<PortfolioSecurity> filtered = all.where((PortfolioSecurity s) => (s.securityType ?? '').toLowerCase() == targetType).toList(growable: false);
     if (filtered.isEmpty) return all;
     return filtered;
   }
@@ -127,8 +124,7 @@ class _PortfolioMyPackSectionState extends State<PortfolioMyPackSection> {
                 Expanded(
                   child: AllocationMetricRow(
                     color: DesignTokens.rose,
-                    label:
-                        '${l10n.ipsOverviewDashboardAllocationStocks} ${stockPercent.toStringAsFixed(0)}%',
+                    label: '${l10n.ipsOverviewDashboardAllocationStocks} ${stockPercent.toStringAsFixed(0)}%',
                     value: '',
                   ),
                 ),
@@ -136,8 +132,7 @@ class _PortfolioMyPackSectionState extends State<PortfolioMyPackSection> {
                 Expanded(
                   child: AllocationMetricRow(
                     color: DesignTokens.teal,
-                    label:
-                        '${l10n.ipsOverviewDashboardAllocationBonds} ${bondPercent.toStringAsFixed(0)}%',
+                    label: '${l10n.ipsOverviewDashboardAllocationBonds} ${bondPercent.toStringAsFixed(0)}%',
                     value: '',
                   ),
                 ),
@@ -160,8 +155,7 @@ class _PortfolioMyPackSectionState extends State<PortfolioMyPackSection> {
                 sKey: ValueKey(
                   _filteredSecurities
                       .map(
-                        (e) =>
-                            '${e.securityCode}_${e.securityType}_${e.portfolioPercent}',
+                        (e) => '${e.securityCode}_${e.securityType}_${e.portfolioPercent}',
                       )
                       .join('|'),
                 ),

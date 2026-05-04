@@ -19,7 +19,7 @@ Future<IpsRechargeState?> showRechargeBottomSheet(
   return showModalBottomSheet<IpsRechargeState>(
     context: context,
     isScrollControlled: true,
-    requestFocus: true,
+    requestFocus: false,
     useSafeArea: true,
     backgroundColor: Colors.transparent,
     builder: (BuildContext sheetContext) {
@@ -51,9 +51,14 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   bool _initialFocusRequested = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // _attachRouteAnimation();
+    _attachRouteAnimation();
   }
 
   void _attachRouteAnimation() {
@@ -81,14 +86,15 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     if (_initialFocusRequested) return;
     _initialFocusRequested = true;
 
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   if (!mounted) return;
-    //
-    //   await WidgetsBinding.instance.endOfFrame;
-    //   if (!mounted) return;
-    //
-    //   _requestKeyboard();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted) return;
+
+      // _requestKeyboard();
+      _focusNode.requestFocus();
+    });
   }
 
   void _requestKeyboard() {
@@ -122,8 +128,7 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     final double keyboardInset = MediaQuery.of(context).viewInsets.bottom;
 
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
-      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
-          prev.paymentRes != curr.paymentRes && curr.paymentRes != null,
+      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) => prev.paymentRes != curr.paymentRes && curr.paymentRes != null,
       listener: (BuildContext context, IpsRechargeState state) {
         Navigator.of(context).pop(state);
       },
@@ -231,8 +236,7 @@ class _RechargeSheetBody extends StatelessWidget {
                     );
 
               return SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                 child: content,
               );
             },
@@ -241,9 +245,7 @@ class _RechargeSheetBody extends StatelessWidget {
         SizedBox(height: responsive.spacing.sectionSpacing),
         PrimaryButton(
           label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
-          onPressed: state.canSubmit
-              ? context.read<IpsRechargeCubit>().submit
-              : null,
+          onPressed: state.canSubmit ? context.read<IpsRechargeCubit>().submit : null,
         ),
         SizedBox(height: responsive.spacing.inlineSpacing),
       ],

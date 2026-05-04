@@ -28,10 +28,7 @@ class PortfolioContextResolver {
   }
 
   SdkPortfolioContext _fromUser(UserEntityDto? user) {
-    final AccountDto? account = user?.account;
-    return SdkPortfolioContext(
-      securityCode: account?.scAcntCode ?? account?.acntCode,
-    );
+    return SdkPortfolioContext();
   }
 
   SdkPortfolioContext _fromBootstrapState(AcntBootstrapState? state) {
@@ -45,7 +42,7 @@ class PortfolioContextResolver {
 
     return SdkPortfolioContext(
       brokerId: state.portfolioBrokerId,
-      securityCode: state.portfolioSecurityCode,
+      ipsAcntCode: state.ipsAcntCode,
       casaAcntId: state.portfolioCasaAcntId,
       stmtStartDate: statementRange?.startDate,
       stmtEndDate: statementRange?.endDate,

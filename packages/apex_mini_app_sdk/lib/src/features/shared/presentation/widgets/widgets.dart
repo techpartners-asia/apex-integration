@@ -18,6 +18,7 @@ export 'ips_detail_row.dart';
 export 'ips_quick_action_tile.dart';
 export 'ips_status_chip.dart';
 export 'loading_overlay.dart';
+export 'marquee_widget.dart';
 export 'menu_list_item.dart';
 export 'message_card.dart';
 export 'notice_banner.dart';

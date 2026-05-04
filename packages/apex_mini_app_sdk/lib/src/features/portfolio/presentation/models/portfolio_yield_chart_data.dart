@@ -1,16 +1,15 @@
-import 'package:intl/intl.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class PortfolioYieldChartPoint {
+  final String label;
+  final double primaryValue;
+  final double? secondaryValue;
+
   const PortfolioYieldChartPoint({
     required this.label,
     required this.primaryValue,
     this.secondaryValue,
   });
-
-  final String label;
-  final double primaryValue;
-  final double? secondaryValue;
 }
 
 class PortfolioYieldChartData {
@@ -63,15 +62,11 @@ final class PortfolioYieldChartDataMapper {
       return const PortfolioYieldChartData();
     }
 
-    final bool canSortByDate = seeds.every(
-      (_ChartSeed seed) => seed.recordedAt != null,
-    );
-
     final List<_ChartSeed> sortedSeeds = List<_ChartSeed>.from(seeds)
       ..sort((a, b) {
-        if (canSortByDate) {
-          return a.recordedAt!.compareTo(b.recordedAt!);
-        }
+        // if (canSortByDate) {
+        //   return a.recordedAt!.compareTo(b.recordedAt!);
+        // }
         return a.order.compareTo(b.order);
       });
 
@@ -95,19 +90,19 @@ final class PortfolioYieldChartDataMapper {
   }
 
   static String _resolveKey(PortfolioHolding holding, int fallbackIndex) {
-    final String? code = _normalizedText(holding.code);
-    if (code != null) {
-      return 'code:$code';
+    final String? securityCode = _normalizedText(holding.securityCode);
+    if (securityCode != null) {
+      return 'securityCode:$securityCode';
     }
 
-    final String? label = _normalizedText(holding.pointLabel);
-    if (label != null) {
-      return 'label:$label';
-    }
+    // final String? label = _normalizedText(holding.pointLabel);
+    // if (label != null) {
+    //   return 'label:$label';
+    // }
 
-    final String? name = _normalizedText(holding.name);
-    if (name != null) {
-      return 'name:$name';
+    final String? securityName = _normalizedText(holding.securityName);
+    if (securityName != null) {
+      return 'securityName:$securityName';
     }
 
     return 'index:$fallbackIndex';
@@ -139,10 +134,11 @@ class _ChartSeed {
   _ChartSeed({required this.order});
 
   final int order;
-  String? code;
-  String? name;
-  String? pointLabel;
-  DateTime? recordedAt;
+  String? securityCode;
+  String? securityName;
+
+  // String? pointLabel;
+  // DateTime? recordedAt;
   double? primaryValue;
   double? secondaryValue;
 
@@ -151,39 +147,49 @@ class _ChartSeed {
       (secondaryValue != null && secondaryValue!.isFinite);
 
   String get displayLabel {
-    final String? customLabel = _normalizedText(pointLabel);
-    if (customLabel != null) {
-      return customLabel;
+    // final String? customLabel = _normalizedText(pointLabel);
+    // if (customLabel != null) {
+    //   return customLabel;
+    // }
+    //
+    // if (recordedAt != null) {
+    //   return DateFormat('MMM').format(recordedAt!.toLocal());
+    // }
+
+    final String? shortsecurityCode = _normalizedText(securityCode);
+    if (shortsecurityCode != null) {
+      return shortsecurityCode;
     }
 
-    if (recordedAt != null) {
-      return DateFormat('MMM').format(recordedAt!.toLocal());
-    }
-
-    final String? shortCode = _normalizedText(code);
-    if (shortCode != null) {
-      return shortCode;
-    }
-
-    final String? shortName = _normalizedText(name);
-    if (shortName != null) {
-      return shortName.length > 6 ? shortName.substring(0, 6) : shortName;
+    final String? shortsecurityName = _normalizedText(securityName);
+    if (shortsecurityName != null) {
+      return shortsecurityName.length > 6
+          ? shortsecurityName.substring(0, 6)
+          : shortsecurityName;
     }
 
     return 'P${order + 1}';
   }
 
   void absorb(PortfolioHolding holding) {
-    code ??= _normalizedText(holding.code);
-    name ??= _normalizedText(holding.name);
-    pointLabel ??= _normalizedText(holding.pointLabel);
-    recordedAt ??= holding.recordedAt;
+    securityCode ??= _normalizedText(holding.securityCode);
+    securityName ??= _normalizedText(holding.securityName);
+    // pointLabel ??= _normalizedText(holding.pointLabel);
+    // recordedAt ??= holding.recordedAt;
 
-    if (holding.currentValue.isFinite && primaryValue == null) {
-      primaryValue = holding.currentValue;
+    final double? resolvedPrimaryValue =
+        holding.holdingType == HoldingType.getStockAcntYieldDtl
+        ? holding.currentValue
+        : holding.buyAmount;
+    if (resolvedPrimaryValue case final double value
+        when value.isFinite && primaryValue == null) {
+      primaryValue = value;
     }
 
-    if (holding.profitAmount case final double profit when profit.isFinite) {
+    if (holding.holdingType == HoldingType.getStockAcntYieldDtl
+            ? holding.totalYield
+            : holding.profit
+        case final double profit when profit.isFinite) {
       secondaryValue ??= profit;
     }
   }

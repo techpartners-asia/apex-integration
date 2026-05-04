@@ -20,7 +20,7 @@ class MiniAppBootstrapFlow {
   });
 
   Future<MiniAppBootstrapRes> resolve() async {
-    await sessionController.ensureCurrentUser();
+    final UserEntityDto currentUser = await sessionController.ensureCurrentUser();
     await sessionController.ensureLoginSession();
     final AcntBootstrapState bootstrapState = await BootstrapStateResolver(
       service: bootstrapService,
@@ -28,19 +28,29 @@ class MiniAppBootstrapFlow {
 
     return MiniAppBootstrapRes(
       bootstrapState: bootstrapState,
-      nextRoute: resolveNextRoute(bootstrapState),
+      nextRoute: resolveNextRoute(
+        bootstrapState,
+        currentUser: currentUser,
+      ),
     );
   }
 
-  static String resolveNextRoute(AcntBootstrapState bootstrapState) {
-    if (!bootstrapState.hasAcnt || bootstrapState.requiresSecAcntPayment) {
-      return MiniAppRoutes.secAcnt;
+  static String resolveNextRoute(
+    AcntBootstrapState bootstrapState, {
+    UserEntityDto? currentUser,
+  }) {
+    if (bootstrapState.hasAcnt && bootstrapState.hasIpsAcnt && bootstrapState.hasOpenSecAcnt) {
+      return MiniAppRoutes.overview;
     }
 
-    if (!bootstrapState.hasIpsAcnt) {
-      return MiniAppRoutes.questionnaire;
+    if (bootstrapState.hasAcnt && !bootstrapState.hasIpsAcnt) {
+      return _hasProfileBankAccount(currentUser) ? MiniAppRoutes.questionnaire : MiniAppRoutes.secAcnt;
     }
 
-    return MiniAppRoutes.overview;
+    return MiniAppRoutes.secAcnt;
+  }
+
+  static bool _hasProfileBankAccount(UserEntityDto? user) {
+    return user?.bank?.accountNumber?.trim().isNotEmpty ?? false;
   }
 }
