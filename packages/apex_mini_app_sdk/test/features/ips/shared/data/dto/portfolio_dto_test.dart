@@ -142,6 +142,49 @@ void main() {
   });
 
   group('PortfolioHoldingDto', () {
+    test('parses getAcntYieldProfit root response with profit items', () {
+      final PortfolioYieldProfitResponseDto dto =
+          PortfolioYieldProfitResponseDto.fromJson(
+            <String, Object?>{
+              'responseCode': '0',
+              'responseDesc': '',
+              'resultValue': null,
+              'investmentValue': '0',
+              'totalProfit': 5998.74,
+              'profit': <Map<String, Object?>>[
+                <String, Object?>{
+                  'resultValue': null,
+                  'acntCode': '001000956953',
+                  'symbol': 'COPX',
+                  'securityName': 'GLOBAL X COPPER MINERS ETF',
+                  'qty': '0.62',
+                  'buyAmount': 0,
+                  'buyFeeAmt': null,
+                  'sellAmount': '32467.2',
+                  'sellFeeAmt': 0,
+                  'buyAvg': 0,
+                  'sellAvg': 52401.95,
+                  'profit': '5998.74',
+                  'profitPercent': 0,
+                },
+              ],
+            },
+          );
+
+      expect(dto.responseCode, 0);
+      expect(dto.responseDesc, isNull);
+      expect(dto.resultValue, isNull);
+      expect(dto.investmentValue, 0);
+      expect(dto.totalProfit, 5998.74);
+      expect(dto.profit, hasLength(1));
+      expect(dto.profit.first.securityCode, 'COPX');
+      expect(dto.profit.first.qty, 0.62);
+      expect(dto.profit.first.sellAmount, 32467.2);
+      expect(dto.profit.first.sellAvg, 52401.95);
+      expect(dto.profit.first.profit, 5998.74);
+      expect(dto.profit.first.profitPercent, 0);
+    });
+
     test('parses getAcntYieldProfit profit item with exact API keys', () {
       final PortfolioHoldingDto dto = PortfolioHoldingDto.fromYieldProfitJson(
         <String, Object?>{

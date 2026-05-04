@@ -1,3 +1,5 @@
+import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
@@ -36,15 +38,26 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
           appBarShowBottomBorder: false,
           appBarReserveLeadingSpace: false,
           body: _buildBody(context, state, sessionState),
+          isTradingEnabled: isTradingEnabled,
           adaptiveBottomNavigationBar: data == null || !state.isSuccess
               ? null
               : buildOverviewBottomNavigationBar(
                   context,
                   selectedIndex: _selectedTabIndex,
                   onSelected: _handleTabSelected,
-                  onActionPressed: isTradingEnabled ? () => _showActionSheet(context, data) : null,
+                  onActionPressed: isTradingEnabled ? () => (context, data) : null,
                   isActionEnabled: isTradingEnabled,
                 ),
+          floatingActionButton: isTradingEnabled
+              ? PlatformInfo.isIOS26OrHigher()
+                    ? _InvestXFloatingButton(
+                        selected: true,
+                        onTap: () {
+                          _showActionSheet(context, data!);
+                        },
+                      )
+                    : null
+              : null,
         );
       },
     );
@@ -175,7 +188,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     return account?.isInvestContract == true && packageCode.isNotEmpty;
   }
 
-  Future<void> _showActionSheet(BuildContext context, IpsOverviewViewData data) async {
+  Future<void> _showActionSheet(BuildContext context, IpsOvervi_showActionSheetewViewData data) async {
     final AcntBootstrapState bootstrapState = data.bootstrapState;
 
     await showModalBottomSheet<void>(
@@ -229,6 +242,55 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class _InvestXFloatingButton extends StatelessWidget {
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _InvestXFloatingButton({
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final responsive = context.responsive;
+
+    return Padding(
+      padding: EdgeInsets.only(
+        right: responsive.dp(5),
+        bottom: responsive.dp(5),
+      ),
+      child: Semantics(
+        button: true,
+        selected: selected,
+        label: context.l10n.ipsOverviewActionTitle,
+        child: GestureDetector(
+          onTap: onTap,
+          behavior: HitTestBehavior.opaque,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+            width: responsive.dp(62),
+            height: responsive.dp(62),
+            decoration: BoxDecoration(
+              gradient: DesignTokens.primaryGradient,
+              shape: BoxShape.circle,
+            ),
+            child:
+
+              // CustomImage(path: Img.trophyBlue, width: 24, height: 37,),
+            Icon(
+              Icons.trending_up_rounded,
+              color: DesignTokens.white,
+              size: 37,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

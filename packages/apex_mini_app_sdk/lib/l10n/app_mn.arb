@@ -621,5 +621,7 @@
   "commonAll": "Бүгд",
   "ipsPortfolioFilterAll": "Бүгд",
   "ipsPortfolioFilterBonds": "Бонд",
-  "ipsPortfolioFilterStocks": "Хувьцаа"
+  "ipsPortfolioFilterStocks": "Хувьцаа",
+  "closedPrice": "Хаалтын ханш",
+  "closedDate": "Огноо"
 }

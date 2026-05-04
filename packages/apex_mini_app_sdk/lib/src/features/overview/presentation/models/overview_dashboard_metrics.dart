@@ -180,7 +180,7 @@ class OverviewDashboardMetrics {
 
   static String _formatSignedAmount(double value, String currency) {
     final String prefix = value > 0
-        ? '+'
+        ? ''
         : value < 0
         ? '-'
         : '';
@@ -190,7 +190,7 @@ class OverviewDashboardMetrics {
   static String _formatPercent(double value) {
     final double normalized = value * 100;
     final String prefix = normalized > 0
-        ? '+'
+        ? ''
         : normalized < 0
         ? '-'
         : '';

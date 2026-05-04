@@ -344,6 +344,7 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioAvailableBalance,
                 value: formatIpsPaymentAmount(resolvedAvailableBalance, currency, showDecimal: true),
+                hasBorder: true,
               ),
             ),
             SizedBox(width: responsive.dp(12)),
@@ -351,6 +352,7 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioInvestedBalance,
                 value: formatIpsPaymentAmount(resolvedInvestedBalance, currency, showDecimal: true),
+                hasBorder: true,
               ),
             ),
           ],
@@ -362,6 +364,7 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsOverviewDashboardAllocationTotal,
                 value: formatIpsPaymentAmount(resolvedTotalAllocation, currency, showDecimal: true),
+                hasBorder: true,
               ),
             ),
             SizedBox(width: responsive.dp(12)),
@@ -369,6 +372,7 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioProfitLoss,
                 value: formatIpsPaymentAmount(resolvedProfitLoss, currency, showDecimal: true),
+                hasBorder: true,
               ),
             ),
           ],
@@ -382,12 +386,16 @@ class PortfolioCompactMetricTile extends StatelessWidget {
   final String label;
   final String value;
   final bool showHorizontal;
+  final bool hasBorder;
+  final MiniAppTextVariant? variant;
 
   const PortfolioCompactMetricTile({
     super.key,
     required this.label,
     required this.value,
     this.showHorizontal = false,
+    this.hasBorder = false,
+    this.variant,
   });
 
   @override
@@ -406,7 +414,7 @@ class PortfolioCompactMetricTile extends StatelessWidget {
           ),
           CustomText(
             value,
-            variant: MiniAppTextVariant.subtitle4,
+            variant: variant ?? MiniAppTextVariant.subtitle4,
           ),
         ],
       );
@@ -416,41 +424,43 @@ class PortfolioCompactMetricTile extends StatelessWidget {
         children: <Widget>[
           // customMarquee(
           //   child:
-            CustomText(
-              label,
-              variant: MiniAppTextVariant.caption2,
-              color: DesignTokens.muted,
-              maxLines: 1,
-              // overflow: TextOverflow.ellipsis,
-            ),
+          CustomText(
+            label,
+            variant: MiniAppTextVariant.caption2,
+            color: DesignTokens.muted,
+            maxLines: 1,
+            // overflow: TextOverflow.ellipsis,
+          ),
           // ),
           SizedBox(height: responsive.dp(2)),
           // customMarquee(
           //   child:
-            CustomText(
-              value,
-              maxLines: 1,
-              variant: MiniAppTextVariant.subtitle4,
-            ),
+          CustomText(
+            value,
+            maxLines: 1,
+            variant: variant ?? MiniAppTextVariant.subtitle4,
+          ),
           // ),
         ],
       );
     }
 
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 3,
-            offset: Offset(0, 0),
-          ),
-        ],
-      ),
-      child: content,
-    );
+    return hasBorder
+        ? Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 3,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+            child: content,
+          )
+        : content;
   }
 }

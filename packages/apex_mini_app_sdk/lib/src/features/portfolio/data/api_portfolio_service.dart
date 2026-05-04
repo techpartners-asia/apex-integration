@@ -58,7 +58,10 @@ class ApiPortfolioService implements PortfolioService {
     SdkPortfolioContext? context,
   }) async {
     final SdkRuntimeConfig runtime = config.runtime;
-    final SdkPortfolioContext portfolio = (context ?? const SdkPortfolioContext()).merge(config.portfolio).normalized(fallbackSrcFiCode: runtime.defaultSrcFiCode);
+    final SdkPortfolioContext portfolio =
+        (context ?? const SdkPortfolioContext())
+            .merge(config.portfolio)
+            .normalized(fallbackSrcFiCode: runtime.defaultSrcFiCode);
     await session.ensureLoginSession();
 
     final PortfolioOverviewDto overviewDto = await api.getIpsOverview(
@@ -82,11 +85,17 @@ class ApiPortfolioService implements PortfolioService {
       override: context,
     );
     final PortfolioOverview overview = await getIpsBalance(context: portfolio);
-    final List<PortfolioHolding> yieldProfitHoldings = await _loadYieldProfitHoldings(runtime, portfolio);
-    final List<PortfolioHolding> stockYieldDetails = await _loadStockYieldDetails(runtime, portfolio, overview.security);
+    final _YieldProfitData yieldProfitData = await _loadYieldProfitData(
+      runtime,
+      portfolio,
+    );
+    final List<PortfolioHolding> yieldProfitHoldings = yieldProfitData.holdings;
+    final List<PortfolioHolding> stockYieldDetails =
+        await _loadStockYieldDetails(runtime, portfolio, overview.security);
 
     final PortfolioOverview resolvedOverview = _mergeOverview(
       overview,
+      yieldProfitData: yieldProfitData,
       yieldProfitHoldings: yieldProfitHoldings,
       stockYieldDetails: stockYieldDetails,
     );
@@ -139,10 +148,16 @@ class ApiPortfolioService implements PortfolioService {
     SdkPortfolioContext? override,
     bool requireStatementContext = false,
   }) async {
-    final bool hasOverrideStatementStartDate = override?.normalizedStmtStartDate != null;
-    final bool hasOverrideStatementEndDate = override?.normalizedStmtEndDate != null;
-    final SdkPortfolioContext seed = (override ?? const SdkPortfolioContext()).merge(config.portfolio).normalized(fallbackSrcFiCode: config.runtime.defaultSrcFiCode);
-    final bool hasRequiredSeedContext = requireStatementContext ? seed.hasStatementContext : (_hasStockYieldDetailContext(seed) && seed.hasStatementContext);
+    final bool hasOverrideStatementStartDate =
+        override?.normalizedStmtStartDate != null;
+    final bool hasOverrideStatementEndDate =
+        override?.normalizedStmtEndDate != null;
+    final SdkPortfolioContext seed = (override ?? const SdkPortfolioContext())
+        .merge(config.portfolio)
+        .normalized(fallbackSrcFiCode: config.runtime.defaultSrcFiCode);
+    final bool hasRequiredSeedContext = requireStatementContext
+        ? seed.hasStatementContext
+        : (_hasStockYieldDetailContext(seed) && seed.hasStatementContext);
     if (hasRequiredSeedContext && !requireStatementContext) {
       return seed;
     }
@@ -173,29 +188,38 @@ class ApiPortfolioService implements PortfolioService {
       return resolved;
     }
 
-    final SdkPortfolioContext bootstrapStatementContext = const PortfolioContextResolver().resolve(
-      bootstrapState: bootstrapState,
-    );
+    final SdkPortfolioContext bootstrapStatementContext =
+        const PortfolioContextResolver().resolve(
+          bootstrapState: bootstrapState,
+        );
 
     return resolved.copyWith(
-      casaAcntId: bootstrapStatementContext.normalizedCasaAcntId ?? resolved.normalizedCasaAcntId,
-      stmtStartDate: hasOverrideStatementStartDate ? resolved.normalizedStmtStartDate : bootstrapStatementContext.normalizedStmtStartDate ?? resolved.normalizedStmtStartDate,
-      stmtEndDate: hasOverrideStatementEndDate ? resolved.normalizedStmtEndDate : bootstrapStatementContext.normalizedStmtEndDate ?? resolved.normalizedStmtEndDate,
+      casaAcntId:
+          bootstrapStatementContext.normalizedCasaAcntId ??
+          resolved.normalizedCasaAcntId,
+      stmtStartDate: hasOverrideStatementStartDate
+          ? resolved.normalizedStmtStartDate
+          : bootstrapStatementContext.normalizedStmtStartDate ??
+                resolved.normalizedStmtStartDate,
+      stmtEndDate: hasOverrideStatementEndDate
+          ? resolved.normalizedStmtEndDate
+          : bootstrapStatementContext.normalizedStmtEndDate ??
+                resolved.normalizedStmtEndDate,
     );
   }
 
-  Future<List<PortfolioHolding>> _loadYieldProfitHoldings(
+  Future<_YieldProfitData> _loadYieldProfitData(
     SdkRuntimeConfig runtime,
     SdkPortfolioContext portfolio,
   ) async {
     if (!_hasYieldProfitContext(runtime)) {
-      return const <PortfolioHolding>[];
+      return const _YieldProfitData();
     }
 
     try {
-      return await _fetchYieldProfitHoldings(runtime, portfolio);
+      return await _fetchYieldProfitData(runtime, portfolio);
     } on ApiException {
-      return const <PortfolioHolding>[];
+      return const _YieldProfitData();
     }
   }
 
@@ -219,16 +243,34 @@ class ApiPortfolioService implements PortfolioService {
     SdkRuntimeConfig runtime,
     SdkPortfolioContext portfolio,
   ) async {
+    final _YieldProfitData data = await _fetchYieldProfitData(
+      runtime,
+      portfolio,
+    );
+    return data.holdings;
+  }
+
+  Future<_YieldProfitData> _fetchYieldProfitData(
+    SdkRuntimeConfig runtime,
+    SdkPortfolioContext portfolio,
+  ) async {
     await session.ensureLoginSession();
 
-    final List<PortfolioHoldingDto> holdings = await api.getYieldProfitHoldings(
-      GetAcntYieldProfitApiReq(
-        srcFiCode: runtime.defaultSrcFiCode,
-        acntCode: portfolio.normalizedIpsAcntCode ?? '',
-      ),
-    );
+    final PortfolioYieldProfitResponseDto response = await api
+        .getYieldProfitResponse(
+          GetAcntYieldProfitApiReq(
+            srcFiCode: runtime.defaultSrcFiCode,
+            acntCode: portfolio.normalizedIpsAcntCode ?? '',
+          ),
+        );
 
-    return holdings.map((PortfolioHoldingDto dto) => dto.toDomain()).toList(growable: false);
+    return _YieldProfitData(
+      investmentValue: response.investmentValue,
+      totalProfit: response.totalProfit,
+      holdings: response.profit
+          .map((PortfolioHoldingDto dto) => dto.toDomain())
+          .toList(growable: false),
+    );
   }
 
   Future<List<PortfolioHolding>> _fetchStockYieldDetails(
@@ -244,31 +286,38 @@ class ApiPortfolioService implements PortfolioService {
 
     final List<PortfolioHoldingDto> holdings = <PortfolioHoldingDto>[];
     final String brokerId = portfolio.normalizedBrokerId!;
-    final String srcFiCode = portfolio.resolveSrcFiCode(runtime.defaultSrcFiCode);
+    final String srcFiCode = portfolio.resolveSrcFiCode(
+      runtime.defaultSrcFiCode,
+    );
 
     for (final PortfolioSecurity security in securities) {
       final String securityCode = security.securityCode.trim().toLowerCase();
-      if (securityCode.isEmpty || securityCode == IpsDefaults.secuCodeBond.toLowerCase()) {
+      if (securityCode.isEmpty ||
+          securityCode == IpsDefaults.secuCodeBond.toLowerCase()) {
         continue;
       }
 
-      final List<PortfolioHoldingDto> securityHoldings = await api.getStockYieldDetail(
-        GetStockAcntYieldDtlApiReq(
-          brokerId: brokerId,
-          securityCode: securityCode,
-          srcFiCode: srcFiCode,
-          isIps: true,
-        ),
-      );
+      final List<PortfolioHoldingDto> securityHoldings = await api
+          .getStockYieldDetail(
+            GetStockAcntYieldDtlApiReq(
+              brokerId: brokerId,
+              securityCode: securityCode,
+              srcFiCode: srcFiCode,
+              isIps: true,
+            ),
+          );
 
       holdings.addAll(securityHoldings);
     }
 
-    return holdings.map((PortfolioHoldingDto dto) => dto.toDomain()).toList(growable: false);
+    return holdings
+        .map((PortfolioHoldingDto dto) => dto.toDomain())
+        .toList(growable: false);
   }
 
   PortfolioOverview _mergeOverview(
     PortfolioOverview overview, {
+    required _YieldProfitData yieldProfitData,
     required List<PortfolioHolding> yieldProfitHoldings,
     required List<PortfolioHolding> stockYieldDetails,
   }) {
@@ -288,6 +337,7 @@ class ApiPortfolioService implements PortfolioService {
     final double? resolvedBondTotal = overview.bondTotal;
     final double? resolvedInvestedBalance = _firstMeaningful(
       overview.investedBalance,
+      yieldProfitData.investmentValue,
       _sumIfAny(resolvedStockTotal, resolvedBondTotal),
       stockTotalFromDetails,
       stockTotalFromYieldProfit,
@@ -302,25 +352,37 @@ class ApiPortfolioService implements PortfolioService {
     );
     final double? resolvedYieldAmount = _firstMeaningful(
       overview.yieldAmount,
+      yieldProfitData.totalProfit,
       _sumHoldingValues(
         yieldProfitHoldings,
-        (PortfolioHolding holding) => holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.totalYield : holding.profit,
+        (PortfolioHolding holding) =>
+            holding.holdingType == HoldingType.getStockAcntYieldDtl
+            ? holding.totalYield
+            : holding.profit,
       ),
       _sumHoldingValues(
         stockYieldDetails,
-        (PortfolioHolding holding) => holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.totalYield : holding.profit,
+        (PortfolioHolding holding) =>
+            holding.holdingType == HoldingType.getStockAcntYieldDtl
+            ? holding.totalYield
+            : holding.profit,
       ),
     );
+
     final double? resolvedProfitOrLoss = _firstMeaningful(
       overview.profitOrLoss,
+      yieldProfitData.totalProfit,
       resolvedYieldAmount,
-      _sumHoldingValues(
-        yieldProfitHoldings,
-        (PortfolioHolding holding) => holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.totalYield : holding.profit,
+    );
+    final double? resolvedProfitPercent = _firstMeaningful(
+      overview.profitPercent,
+      _derivePercent(
+        yieldProfitData.totalProfit,
+        yieldProfitData.investmentValue,
       ),
-      _sumHoldingValues(
-        stockYieldDetails,
-        (PortfolioHolding holding) => holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.totalYield : holding.profit,
+      _firstHoldingValue(
+        yieldProfitHoldings,
+        (PortfolioHolding holding) => holding.profitPercent,
       ),
     );
     final double? resolvedStockPercent = _firstMeaningful(
@@ -337,6 +399,7 @@ class ApiPortfolioService implements PortfolioService {
       investedBalance: resolvedInvestedBalance,
       profitOrLoss: resolvedProfitOrLoss,
       yieldAmount: resolvedYieldAmount,
+      profitPercent: resolvedProfitPercent,
       stockTotal: resolvedStockTotal,
       bondTotal: resolvedBondTotal,
       stockPercent: resolvedStockPercent,
@@ -362,8 +425,15 @@ class ApiPortfolioService implements PortfolioService {
     double? second,
     double? third,
     double? fourth,
+    double? fifth,
   ]) {
-    for (final double? value in <double?>[first, second, third, fourth]) {
+    for (final double? value in <double?>[
+      first,
+      second,
+      third,
+      fourth,
+      fifth,
+    ]) {
       if (value != null && value.isFinite) {
         return value;
       }
@@ -397,6 +467,19 @@ class ApiPortfolioService implements PortfolioService {
     return total;
   }
 
+  double? _firstHoldingValue(
+    List<PortfolioHolding> holdings,
+    double? Function(PortfolioHolding holding) selector,
+  ) {
+    for (final PortfolioHolding holding in holdings) {
+      final double? value = selector(holding);
+      if (value != null && value.isFinite) {
+        return value;
+      }
+    }
+    return null;
+  }
+
   double? _sumIfAny(double? first, double? second) {
     if (first == null && second == null) {
       return null;
@@ -410,4 +493,16 @@ class ApiPortfolioService implements PortfolioService {
     }
     return (value / total) * 100;
   }
+}
+
+final class _YieldProfitData {
+  final double? investmentValue;
+  final double? totalProfit;
+  final List<PortfolioHolding> holdings;
+
+  const _YieldProfitData({
+    this.investmentValue,
+    this.totalProfit,
+    this.holdings = const <PortfolioHolding>[],
+  });
 }

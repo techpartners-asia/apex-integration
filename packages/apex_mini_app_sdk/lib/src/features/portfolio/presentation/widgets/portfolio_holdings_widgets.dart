@@ -67,11 +67,7 @@ class PortfolioMyPackSection extends StatefulWidget {
   final PortfolioOverview overview;
   final SdkLocalizations l10n;
 
-  const PortfolioMyPackSection({
-    super.key,
-    required this.overview,
-    required this.l10n,
-  });
+  const PortfolioMyPackSection({super.key, required this.overview, required this.l10n});
 
   @override
   State<PortfolioMyPackSection> createState() => _PortfolioMyPackSectionState();

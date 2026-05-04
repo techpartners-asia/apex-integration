@@ -2977,6 +2977,18 @@ abstract class SdkLocalizations {
   /// In en, this message translates to:
   /// **'Stocks'**
   String get ipsPortfolioFilterStocks;
+
+  /// No description provided for @closedPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Closing price'**
+  String get closedPrice;
+
+  /// No description provided for @closedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get closedDate;
 }
 
 class _SdkLocalizationsDelegate

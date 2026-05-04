@@ -37,10 +37,8 @@ class PortfolioScreen extends StatelessWidget {
 
         final IpsPortfolioViewData? data = state.data;
         final PortfolioOverview? overview = data?.overview;
-        final List<PortfolioHolding> yieldProfitHoldings =
-            data?.yieldProfitHoldings ?? const <PortfolioHolding>[];
-        final List<PortfolioHolding> stockYieldDetails =
-            data?.stockYieldDetails ?? const <PortfolioHolding>[];
+        final List<PortfolioHolding> yieldProfitHoldings = data?.yieldProfitHoldings ?? const <PortfolioHolding>[];
+        final List<PortfolioHolding> stockYieldDetails = data?.stockYieldDetails ?? const <PortfolioHolding>[];
 
         if (overview == null) {
           return CustomScaffold(
@@ -55,11 +53,10 @@ class PortfolioScreen extends StatelessWidget {
           );
         }
 
-        final PortfolioYieldChartData chartData =
-            PortfolioYieldChartDataMapper.fromResponses(
-              yieldProfitHoldings: yieldProfitHoldings,
-              stockYieldDetails: stockYieldDetails,
-            );
+        final PortfolioYieldChartData chartData = PortfolioYieldChartDataMapper.fromResponses(
+          yieldProfitHoldings: yieldProfitHoldings,
+          stockYieldDetails: stockYieldDetails,
+        );
 
         return CustomScaffold(
           appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
@@ -82,6 +79,7 @@ class PortfolioScreen extends StatelessWidget {
 
                   /// Allocation
                   AllocationSummaryCard(
+                    variant: AllocationSummaryCardVariant.dashboard,
                     data: _buildAllocationSummaryData(overview, l10n),
                   ),
                   SizedBox(height: context.responsive.spacing.cardGap),
@@ -101,9 +99,7 @@ class PortfolioScreen extends StatelessWidget {
 
                   /// My portfolio
                   PortfolioMyPackSection(overview: overview, l10n: l10n),
-                  SizedBox(
-                    height: context.responsive.spacing.sectionSpacing,
-                  ),
+                  SizedBox(height: context.responsive.spacing.sectionSpacing),
 
                   /// Quick actions
                   // PortfolioQuickActionsSection(
@@ -123,22 +119,16 @@ class PortfolioScreen extends StatelessWidget {
   }
 }
 
-AllocationSummaryData _buildAllocationSummaryData(
-  PortfolioOverview overview,
-  SdkLocalizations l10n,
-) {
+AllocationSummaryData _buildAllocationSummaryData(PortfolioOverview overview, SdkLocalizations l10n) {
   final double stockValue = overview.stockTotal ?? 0;
   final double bondValue = overview.bondTotal ?? 0;
   final List<AllocationBadgeData> yieldBadges = <AllocationBadgeData>[
     AllocationBadgeData(
-      label:
-          '${(overview.profitOrLoss ?? 0.0) >= 0 ? '+' : ''}${formatIpsPaymentAmount((overview.profitOrLoss ?? 0.0), overview.currency)}',
-      tone: (overview.profitOrLoss ?? 0.0) >= 0
-          ? DesignTokens.success
-          : DesignTokens.danger,
+      label: '${(overview.profitOrLoss ?? 0.0) >= 0 ? '+' : ''}${formatIpsPaymentAmount((overview.profitOrLoss ?? 0.0), overview.currency)}',
+      tone: (overview.profitOrLoss ?? 0.0) >= 0 ? DesignTokens.success : DesignTokens.danger,
     ),
     AllocationBadgeData(
-      label: '+${(overview.yieldAmount ?? 0.0).toStringAsFixed(0)}%',
+      label: '+${(overview.profitPercent ?? 0.0).toStringAsFixed(0)}%',
       tone: DesignTokens.success,
     ),
   ];

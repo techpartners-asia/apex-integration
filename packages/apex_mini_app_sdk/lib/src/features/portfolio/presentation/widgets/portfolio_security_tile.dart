@@ -74,16 +74,42 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
                 ),
               ],
             ),
+            _SecurityDetails(
+              security: security,
+              currency: widget.currency,
+              l10n: widget.l10n,
+            ),
             AnimatedSize(
               duration: const Duration(milliseconds: 240),
               reverseDuration: const Duration(milliseconds: 180),
               curve: Curves.easeInOutCubic,
               alignment: Alignment.topCenter,
               child: _expanded
-                  ? _SecurityDetails(
-                      security: security,
-                      currency: widget.currency,
-                      l10n: widget.l10n,
+                  ? Container(
+                      margin: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 3,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: (security.closePrices ?? [])
+                            .map(
+                              (el) => _SecurityClosedPriceWidget(
+                                closedPrice: el,
+                                currency: widget.currency,
+                                l10n: widget.l10n,
+                              ),
+                            )
+                            .toList(),
+                      ),
                     )
                   : const SizedBox.shrink(),
             ),
@@ -166,6 +192,50 @@ class _SecurityDetails extends StatelessWidget {
             label: l10n.ipsPortfolioHoldingQuantity,
             value: '${(security.qty ?? 0).toStringAsFixed(2)} ш',
             showHorizontal: true,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SecurityClosedPriceWidget extends StatelessWidget {
+  final PortfolioClosePrice closedPrice;
+  final String currency;
+  final SdkLocalizations l10n;
+
+  const _SecurityClosedPriceWidget({
+    required this.closedPrice,
+    required this.currency,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final responsive = context.responsive;
+
+    return Padding(
+      padding: EdgeInsets.only(top: responsive.dp(10)),
+      child: Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: PortfolioCompactMetricTile(
+              label: l10n.closedPrice,
+              value: formatIpsPaymentAmount(closedPrice.closePrice, currency, showDecimal: true),
+              showHorizontal: false,
+              variant: MiniAppTextVariant.caption1,
+            ),
+          ),
+          // SizedBox(height: responsive.dp(10)),
+          Expanded(
+            child: PortfolioCompactMetricTile(
+              label: l10n.closedDate,
+              value: (DateTimeFormatter.toDateTime(closedPrice.tradeDate ?? DateTime.now())),
+              // showHorizontal: true,
+              variant: MiniAppTextVariant.caption1,
+            ),
           ),
         ],
       ),

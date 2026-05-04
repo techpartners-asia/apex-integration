@@ -47,9 +47,13 @@ void main() {
     final result = await service.getDashboardData();
 
     expect(result.overview.currency, 'MNT');
+    expect(result.overview.profitOrLoss, 25000);
+    expect(result.overview.yieldAmount, 25000);
+    expect(result.overview.profitPercent, 5);
     expect(result.yieldProfitHoldings, isNotEmpty);
+    expect(result.yieldProfitHoldings.first.sellAmount, 525000);
     expect(result.stockYieldDetails, hasLength(2));
-    expect(executor.stockYieldSecurityCodes, <String>['COPX', 'AAPL']);
+    expect(executor.stockYieldSecurityCodes, <String>['copx', 'aapl']);
     expect(executor.stockYieldSecurityCodes, isNot(contains('007881004786')));
     expect(
       executor.calledPaths,
@@ -175,13 +179,19 @@ class _FakeApiExecutor extends ApiExecutor {
     if (path == ApiEndpoints.getAcntYieldProfit) {
       return <String, Object?>{
         'responseCode': 0,
+        'responseDesc': '',
+        'resultValue': null,
+        'investmentValue': 500000,
+        'totalProfit': 25000,
         'profit': <Map<String, Object?>>[
           <String, Object?>{
             'symbol': 'PACK',
             'securityName': 'Growth Pack',
-            'balance': 2,
+            'qty': 2,
             'buyAmount': 500000,
+            'sellAmount': 525000,
             'profit': 25000,
+            'profitPercent': 5,
           },
         ],
       };

@@ -7,6 +7,7 @@ class PortfolioOverview {
   final double? investedBalance;
   final double? profitOrLoss;
   final double? yieldAmount;
+  final double? profitPercent;
   final String? statementSummary;
   final double? stockTotal;
   final double? bondTotal;
@@ -29,6 +30,7 @@ class PortfolioOverview {
     this.investedBalance,
     this.profitOrLoss,
     this.yieldAmount,
+    this.profitPercent,
     this.statementSummary,
     this.stockTotal,
     this.bondTotal,
@@ -54,6 +56,7 @@ class PortfolioOverview {
     Object? investedBalance = _sentinel,
     Object? profitOrLoss = _sentinel,
     Object? yieldAmount = _sentinel,
+    Object? profitPercent = _sentinel,
     Object? statementSummary = _sentinel,
     Object? stockTotal = _sentinel,
     Object? bondTotal = _sentinel,
@@ -76,6 +79,7 @@ class PortfolioOverview {
       investedBalance: investedBalance == _sentinel ? this.investedBalance : investedBalance as double?,
       profitOrLoss: profitOrLoss == _sentinel ? this.profitOrLoss : profitOrLoss as double?,
       yieldAmount: yieldAmount == _sentinel ? this.yieldAmount : yieldAmount as double?,
+      profitPercent: profitPercent == _sentinel ? this.profitPercent : profitPercent as double?,
       statementSummary: statementSummary == _sentinel ? this.statementSummary : statementSummary as String?,
       stockTotal: stockTotal == _sentinel ? this.stockTotal : stockTotal as double?,
       bondTotal: bondTotal == _sentinel ? this.bondTotal : bondTotal as double?,

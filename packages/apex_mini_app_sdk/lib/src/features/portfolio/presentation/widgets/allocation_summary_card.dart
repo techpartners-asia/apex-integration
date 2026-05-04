@@ -55,7 +55,8 @@ class AllocationSummaryCard extends StatelessWidget {
     this.detailsLabel,
   });
 
-  bool get _showsDetailsAction => detailsLabel != null && detailsLabel!.trim().isNotEmpty;
+  bool get _showsDetailsAction =>
+      detailsLabel != null && detailsLabel!.trim().isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -130,30 +131,25 @@ class AllocationSummaryCard extends StatelessWidget {
       ],
     );
 
-    return switch (variant) {
-      AllocationSummaryCardVariant.dashboard => Container(
-        padding: EdgeInsets.all(responsive.dp(18)),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(responsive.radius(16)),
-        ),
-        child: content,
+    return Container(
+      padding: EdgeInsets.all(responsive.dp(18)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(responsive.radius(16)),
       ),
-      AllocationSummaryCardVariant.section => SectionCard(
-        padding: EdgeInsets.all(responsive.dp(18)),
-        children: <Widget>[content],
-      ),
-    };
+      child: content,
+    );
   }
 
   _AllocationSummaryCardConfig get _config => switch (variant) {
-    AllocationSummaryCardVariant.dashboard => const _AllocationSummaryCardConfig(
-      metricTopSpacing: 16,
-      metricGap: 10,
-      showTotalDivider: true,
-      yieldTopSpacing: 18,
-      totalValueColor: DesignTokens.rose,
-    ),
+    AllocationSummaryCardVariant.dashboard =>
+      const _AllocationSummaryCardConfig(
+        metricTopSpacing: 16,
+        metricGap: 10,
+        showTotalDivider: true,
+        yieldTopSpacing: 18,
+        totalValueColor: DesignTokens.rose,
+      ),
     AllocationSummaryCardVariant.section => const _AllocationSummaryCardConfig(
       metricTopSpacing: 16,
       metricGap: 10,
@@ -164,18 +160,18 @@ class AllocationSummaryCard extends StatelessWidget {
   };
 
   Widget _buildYieldSection(BuildContext context) {
-      return Row(
-        children: <Widget>[
-          Expanded(
-            child: CustomText(
-              data.yieldSectionLabel!,
-              variant: MiniAppTextVariant.caption1,
-              color: DesignTokens.muted,
-            ),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: CustomText(
+            data.yieldSectionLabel!,
+            variant: MiniAppTextVariant.caption1,
+            color: DesignTokens.muted,
           ),
-          ..._buildYieldBadges(context, withLeadingSpacing: true),
-        ],
-      );
+        ),
+        ..._buildYieldBadges(context, withLeadingSpacing: true),
+      ],
+    );
 
     // return Row(
     //   children: <Widget>[
@@ -185,7 +181,10 @@ class AllocationSummaryCard extends StatelessWidget {
     // );
   }
 
-  List<Widget> _buildYieldBadges(BuildContext context, {required bool withLeadingSpacing}) {
+  List<Widget> _buildYieldBadges(
+    BuildContext context, {
+    required bool withLeadingSpacing,
+  }) {
     final responsive = context.responsive;
     final List<Widget> children = <Widget>[];
     for (int index = 0; index < data.yieldBadges.length; index++) {
@@ -215,7 +214,9 @@ class AllocationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final double total = stockValue + bondValue;
-    final double effectiveTotal = total > 0 ? total : math.max(fallbackTotal, 1);
+    final double effectiveTotal = total > 0
+        ? total
+        : math.max(fallbackTotal, 1);
     final double stockFlex = math.max(
       stockValue > 0 ? stockValue : effectiveTotal,
       1,

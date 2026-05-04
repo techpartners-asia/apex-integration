@@ -52,9 +52,7 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                     ),
                     SizedBox(height: responsive.dp(8)),
                     CustomText(
-                      l10n.ipsOverviewDashboardProfitMessage(
-                        metrics.profitLabel,
-                      ),
+                      l10n.ipsOverviewDashboardProfitMessage(metrics.profitLabel),
                       variant: MiniAppTextVariant.body2,
                       color: metrics.profitTone,
                     ),

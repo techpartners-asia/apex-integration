@@ -620,5 +620,7 @@
   "commonAll": "All",
   "ipsPortfolioFilterAll": "All",
   "ipsPortfolioFilterBonds": "Bonds",
-  "ipsPortfolioFilterStocks": "Stocks"
+  "ipsPortfolioFilterStocks": "Stocks",
+  "closedPrice": "Closing price",
+  "closedDate": "Date"
 }

@@ -12,13 +12,18 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
   }
 
   Future<List<PortfolioHoldingDto>> getYieldProfitHoldings(GetAcntYieldProfitApiReq req) async {
+    final PortfolioYieldProfitResponseDto response = await getYieldProfitResponse(req);
+    return response.profit;
+  }
+
+  Future<PortfolioYieldProfitResponseDto> getYieldProfitResponse(GetAcntYieldProfitApiReq req) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getAcntYieldProfit,
       body: req.toJson(),
       context: const ReqContext(operName: 'getAcntYieldProfit'),
     );
 
-    return PortfolioHoldingDto.listFromYieldProfitResponse(json);
+    return PortfolioYieldProfitResponseDto.fromJson(json);
   }
 
   Future<List<PortfolioHoldingDto>> getStockYieldDetail(GetStockAcntYieldDtlApiReq req) async {

@@ -74,7 +74,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
 
         /// Dashboard reward card
         OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
-        SizedBox(height: responsive.dp(50)),
+        SizedBox(height: responsive.dp(100)),
       ],
     );
 

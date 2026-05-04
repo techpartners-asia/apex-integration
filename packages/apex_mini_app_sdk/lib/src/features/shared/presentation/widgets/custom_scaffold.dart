@@ -33,6 +33,7 @@ class CustomScaffold extends StatelessWidget {
   final bool hasSafeArea;
   final Widget? floatingActionButton;
   final Future<void> Function()? onRefresh;
+  final bool isTradingEnabled;
 
   const CustomScaffold({
     super.key,
@@ -64,6 +65,7 @@ class CustomScaffold extends StatelessWidget {
     this.hasSafeArea = true,
     this.floatingActionButton,
     this.onRefresh,
+    this.isTradingEnabled = false,
   });
 
   @override
@@ -126,6 +128,7 @@ class CustomScaffold extends StatelessWidget {
                       appBar: effectiveAppBar,
                       cupertinoNavigationBar: effectiveAppBar is ObstructingPreferredSizeWidget ? effectiveAppBar : null,
                     ),
+              minimizeBehavior: TabBarMinimizeBehavior.never,
               body: ColoredBox(
                 color: backgroundColor,
                 child: effectiveBody,

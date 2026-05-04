@@ -1596,4 +1596,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsPortfolioFilterStocks => 'Хувьцаа';
+
+  @override
+  String get closedPrice => 'Хаалтын ханш';
+
+  @override
+  String get closedDate => 'Огноо';
 }

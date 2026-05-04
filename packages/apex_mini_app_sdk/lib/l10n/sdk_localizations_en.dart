@@ -1590,4 +1590,10 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get ipsPortfolioFilterStocks => 'Stocks';
+
+  @override
+  String get closedPrice => 'Closing price';
+
+  @override
+  String get closedDate => 'Date';
 }

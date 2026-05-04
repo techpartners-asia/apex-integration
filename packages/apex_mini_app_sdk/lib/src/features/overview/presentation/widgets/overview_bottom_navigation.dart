@@ -74,6 +74,7 @@ AdaptiveBottomNavigationBar buildOverviewBottomNavigationBar(
               ? CupertinoIcons.chart_bar_alt_fill
               : Icons.trending_up_rounded,
           label: l10n.ipsOverviewActionTitle,
+          isSearch: PlatformInfo.isIOS26OrHigher(),
         ),
     ],
   );
