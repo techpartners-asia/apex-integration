@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 
 class RechargeQuantityInput extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
+  final ValueChanged<String>? onChanged;
   final bool unfocusOnTapOutside;
 
   const RechargeQuantityInput({
     super.key,
     required this.controller,
     required this.focusNode,
-    this.unfocusOnTapOutside = true,
+    this.onChanged,
+    this.unfocusOnTapOutside = false,
   });
 
   @override
@@ -27,14 +28,13 @@ class RechargeQuantityInput extends StatelessWidget {
         child: TextField(
           controller: controller,
           focusNode: focusNode,
-          keyboardType: TextInputType.phone,
+          keyboardType: TextInputType.number,
           textInputAction: TextInputAction.unspecified,
           showCursor: true,
-          // onTap: () {
-          //   focusNode.requestFocus();
-          //   SystemChannels.textInput.invokeMethod<void>('TextInput.show');
-          // },
-          onTapOutside: unfocusOnTapOutside ? (_) => FocusScope.of(context).unfocus() : null,
+          onTap: () => focusNode.requestFocus(),
+          onTapOutside: unfocusOnTapOutside
+              ? (_) => FocusScope.of(context).unfocus()
+              : null,
           textAlign: TextAlign.center,
           textAlignVertical: TextAlignVertical.center,
           style: MiniAppTypography.h3.copyWith(
@@ -52,9 +52,7 @@ class RechargeQuantityInput extends StatelessWidget {
             FilteringTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(4),
           ],
-          onChanged: (String value) {
-            context.read<IpsRechargeCubit>().updatePackQty(value);
-          },
+          onChanged: onChanged,
         ),
       ),
     );
@@ -156,5 +154,6 @@ class RechargeDashedLinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(RechargeDashedLinePainter oldDelegate) => color != oldDelegate.color;
+  bool shouldRepaint(RechargeDashedLinePainter oldDelegate) =>
+      color != oldDelegate.color;
 }

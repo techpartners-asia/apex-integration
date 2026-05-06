@@ -1,6 +1,6 @@
 part of '../get_sec_acnt_list_res_dto.dart';
 
-class GetSecAcntListDetailDto {
+class GetSecuritiesAcntListDetailDto {
   final bool hasAcnt;
   final bool hasIpsAcnt;
   final double? commission;
@@ -25,7 +25,7 @@ class GetSecAcntListDetailDto {
   final bool hideBalance;
   final String? templateType;
 
-  const GetSecAcntListDetailDto({
+  const GetSecuritiesAcntListDetailDto({
     required this.hasAcnt,
     required this.hasIpsAcnt,
     this.commission,
@@ -51,8 +51,8 @@ class GetSecAcntListDetailDto {
     this.templateType,
   });
 
-  factory GetSecAcntListDetailDto.fromJson(Map<String, Object?> json) {
-    return GetSecAcntListDetailDto(
+  factory GetSecuritiesAcntListDetailDto.fromJson(Map<String, Object?> json) {
+    return GetSecuritiesAcntListDetailDto(
       hasAcnt: ApiParser.asFlag(json['hasAcnt']),
       hasIpsAcnt: ApiParser.asFlag(json['hasIpsAcnt']),
       commission: ApiParser.asNullableDouble(json['commission']),

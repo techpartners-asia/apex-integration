@@ -102,6 +102,11 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<List<QuestionnaireQuestion>> getAllGoals() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<UserEntityDto> getProfileInfo() {
     throw UnimplementedError();
   }

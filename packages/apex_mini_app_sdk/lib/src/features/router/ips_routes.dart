@@ -20,9 +20,7 @@ const List<String> ipsRoutes = <String>[
 ];
 
 List<MiniAppRouteSpec> buildIpsRoutes() {
-  return ipsRoutes
-      .map((String route) => MiniAppRouteSpec(path: route))
-      .toList(growable: false);
+  return ipsRoutes.map((String route) => MiniAppRouteSpec(path: route)).toList(growable: false);
 }
 
 bool isKnownIpsRoute(String route) => ipsRoutes.contains(route);

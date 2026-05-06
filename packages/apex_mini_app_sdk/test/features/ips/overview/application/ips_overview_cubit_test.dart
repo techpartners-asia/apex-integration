@@ -40,8 +40,8 @@ void main() {
 
       await cubit.load(
         initial: const AcntBootstrapState(
-          response: GetSecuritiesAccountListResDto(
-            detail: GetSecAcntListDetailDto(
+          response: GetSecuritiesAcntListResDto(
+            detail: GetSecuritiesAcntListDetailDto(
               hasAcnt: true,
               hasIpsAcnt: true,
             ),
@@ -199,8 +199,8 @@ class _TrackableBootstrapService implements InvestmentBootstrapService {
 
 AcntBootstrapState _openBootstrapState() {
   return const AcntBootstrapState(
-    response: GetSecuritiesAccountListResDto(
-      detail: GetSecAcntListDetailDto(
+    response: GetSecuritiesAcntListResDto(
+      detail: GetSecuritiesAcntListDetailDto(
         hasAcnt: true,
         hasIpsAcnt: false,
       ),

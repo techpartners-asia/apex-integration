@@ -43,6 +43,7 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
             requestResult: requestResult,
             fallbackRefId: fallbackRefId,
           ),
+          isTransaction: false,
         ),
       );
 

@@ -26,12 +26,8 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     );
 
     try {
-      final AcntBootstrapState bootstrapState =
-          state.bootstrapState ??
-          initialBootstrapState ??
-          await BootstrapStateResolver(service: bootstrapService!).load();
-      final List<QuestionnaireQuestion> questions = await service
-          .getQuestions();
+      final AcntBootstrapState bootstrapState = state.bootstrapState ?? initialBootstrapState ?? await BootstrapStateResolver(service: bootstrapService!).load();
+      final List<QuestionnaireQuestion> questions = await service.getQuestions();
 
       emit(
         state.copyWith(
@@ -39,7 +35,6 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
           bootstrapState: bootstrapState,
           questions: questions,
           answers: const <String, String>{},
-          staticQuestionAnswerId: null,
           res: null,
           errorMessage: null,
         ),
@@ -55,14 +50,50 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
   }
 
   void selectAnswer({required String questionId, required String optionId}) {
-    final Map<String, String> nextAnswers = Map<String, String>.from(
-      state.answers,
-    )..[questionId] = optionId;
+    final Map<String, String> nextAnswers = Map<String, String>.from(state.answers)..[questionId] = optionId;
     emit(state.copyWith(answers: nextAnswers, errorMessage: null));
   }
 
-  void selectStaticQuestionAnswer(String optionId) {
-    emit(state.copyWith(staticQuestionAnswerId: optionId, errorMessage: null));
+  Future<bool> saveSelectedTargetGoal({required String questionId}) async {
+    if (state.isSavingTargetGoal) {
+      return false;
+    }
+
+    final int? selectedGoalId = int.tryParse(state.answers[questionId] ?? '');
+    if (selectedGoalId == null) {
+      emit(
+        state.copyWith(
+          errorMessage: l10n.ipsQuestionnaireTargetGoalMissing,
+        ),
+      );
+      return false;
+    }
+
+    emit(
+      state.copyWith(
+        isSavingTargetGoal: true,
+        errorMessage: null,
+      ),
+    );
+
+    try {
+      await appApi.updateTargetGoal(UpdateTargetGoalApiReq(goalId: selectedGoalId));
+      emit(
+        state.copyWith(
+          isSavingTargetGoal: false,
+          errorMessage: null,
+        ),
+      );
+      return true;
+    } catch (error) {
+      emit(
+        state.copyWith(
+          isSavingTargetGoal: false,
+          errorMessage: formatIpsError(error, l10n),
+        ),
+      );
+      return false;
+    }
   }
 
   Future<void> submit() async {
@@ -72,6 +103,7 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
 
     try {
       final List<QuestionnaireAnswer> answers = state.questions
+          .where((el) => !el.isGoal)
           .map(
             (QuestionnaireQuestion question) => QuestionnaireAnswer(
               questionId: question.id,
@@ -81,15 +113,6 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
           .where((QuestionnaireAnswer answer) => answer.optionId.isNotEmpty)
           .toList(growable: false);
       final QuestionnaireRes res = await service.calculateScore(answers);
-      final num? targetGoal = resolveQuestionnaireTargetGoal(
-        state.staticQuestionAnswerId,
-      );
-      if (targetGoal == null) {
-        throw StateError(l10n.ipsQuestionnaireTargetGoalMissing);
-      }
-      await appApi.updateTargetGoal(
-        UpdateTargetGoalApiReq(targetGoal: targetGoal),
-      );
 
       emit(state.copyWith(isSubmitting: false, res: res, errorMessage: null));
     } catch (error) {

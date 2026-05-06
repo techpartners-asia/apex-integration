@@ -93,9 +93,9 @@ class AgreementScreen extends StatelessWidget {
 }
 
 class AgreementHtmlBody extends StatelessWidget {
-  const AgreementHtmlBody({super.key, required this.agreementText});
-
   final String agreementText;
+
+  const AgreementHtmlBody({super.key, required this.agreementText});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,9 @@ class AgreementHtmlBody extends StatelessWidget {
     return SingleChildScrollView(
       padding: EdgeInsets.all(responsive.dp(AppSpacing.xl)),
       child: SelectionArea(
-        child: Html(data: sanitizeAgreementHtml(agreementText)),
+        child: Html(
+          data: sanitizeAgreementHtml(agreementText),
+        ),
       ),
     );
   }
@@ -115,5 +117,7 @@ String sanitizeAgreementHtml(String raw) {
       .replaceAll(RegExp(r'<!DOCTYPE[^>]*>', caseSensitive: false), '')
       .replaceAll(RegExp(r'<head[\s\S]*?</head>', caseSensitive: false), '')
       .replaceAll(RegExp(r'<script[\s\S]*?</script>', caseSensitive: false), '')
-      .replaceAll(RegExp(r'<style[\s\S]*?</style>', caseSensitive: false), '');
+      .replaceAll(RegExp(r'<style[\s\S]*?</style>', caseSensitive: false), '')
+      .replaceAll('charset=windows-1252', 'charset=UTF-8')
+      .replaceAll('charset=Windows-1252', 'charset=UTF-8');
 }

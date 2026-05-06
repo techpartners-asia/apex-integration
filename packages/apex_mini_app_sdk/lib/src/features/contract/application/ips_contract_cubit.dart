@@ -133,6 +133,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
           amount: state.totalPayable,
           note: 'ips_pack_purchase',
           refId: _buildPurchaseRefId(),
+          isTransaction: true,
         ),
       );
 

@@ -292,8 +292,8 @@ class _FakeBootstrapService implements InvestmentBootstrapService {
     bool forceRefresh = false,
   }) async {
     return AcntBootstrapState(
-      response: GetSecuritiesAccountListResDto(
-        detail: const GetSecAcntListDetailDto(
+      response: GetSecuritiesAcntListResDto(
+        detail: const GetSecuritiesAcntListDetailDto(
           hasAcnt: true,
           hasIpsAcnt: true,
         ),

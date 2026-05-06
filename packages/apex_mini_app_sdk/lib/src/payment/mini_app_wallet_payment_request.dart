@@ -9,6 +9,7 @@ class MiniAppWalletPaymentRequest {
   final int paymentRecordId;
   final String? externalInvoiceId;
   final String? uuid;
+  final bool isTransaction;
 
   MiniAppWalletPaymentRequest({
     required this.flow,
@@ -19,5 +20,6 @@ class MiniAppWalletPaymentRequest {
     required this.paymentRecordId,
     this.externalInvoiceId,
     this.uuid,
+    required this.isTransaction,
   }) : amount = amount.toDouble();
 }

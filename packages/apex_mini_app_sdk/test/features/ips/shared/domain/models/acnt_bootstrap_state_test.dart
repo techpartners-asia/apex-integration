@@ -6,8 +6,8 @@ void main() {
     'resolves bootstrap banking values from account and settlement fallbacks',
     () {
       final AcntBootstrapState state = AcntBootstrapState(
-        response: GetSecuritiesAccountListResDto(
-          detail: const GetSecAcntListDetailDto(
+        response: GetSecuritiesAcntListResDto(
+          detail: const GetSecuritiesAcntListDetailDto(
             hasAcnt: true,
             hasIpsAcnt: false,
           ),
@@ -46,8 +46,8 @@ void main() {
 
   test('copyWithBalanceState overlays refreshed balance values', () {
     final AcntBootstrapState currentState = AcntBootstrapState(
-      response: GetSecuritiesAccountListResDto(
-        detail: const GetSecAcntListDetailDto(hasAcnt: true, hasIpsAcnt: true),
+      response: GetSecuritiesAcntListResDto(
+        detail: const GetSecuritiesAcntListDetailDto(hasAcnt: true, hasIpsAcnt: true),
         acnts: const <GetSecAcntListAccountDto>[
           GetSecAcntListAccountDto(
             flag: 3,
@@ -63,8 +63,8 @@ void main() {
     );
 
     final AcntBootstrapState refreshedState = currentState.copyWithBalanceState(
-      const GetSecuritiesAccountListResDto(
-        detail: GetSecAcntListDetailDto(hasAcnt: true, hasIpsAcnt: true),
+      const GetSecuritiesAcntListResDto(
+        detail: GetSecuritiesAcntListDetailDto(hasAcnt: true, hasIpsAcnt: true),
         acnts: <GetSecAcntListAccountDto>[
           GetSecAcntListAccountDto(
             flag: 3,

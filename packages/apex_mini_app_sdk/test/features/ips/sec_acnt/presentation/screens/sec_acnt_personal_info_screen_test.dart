@@ -112,6 +112,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<List<QuestionnaireQuestion>> getAllGoals() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) async {
     lastUpdateProfileReq = req;
     return UserEntityDto();
@@ -133,8 +138,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
 
 AcntBootstrapState _openSecAccountBootstrapState() {
   return AcntBootstrapState(
-    response: GetSecuritiesAccountListResDto(
-      detail: const GetSecAcntListDetailDto(hasAcnt: true, hasIpsAcnt: false),
+    response: GetSecuritiesAcntListResDto(
+      detail: const GetSecuritiesAcntListDetailDto(
+        hasAcnt: true,
+        hasIpsAcnt: false,
+      ),
       acnts: const <GetSecAcntListAccountDto>[
         GetSecAcntListAccountDto(flag: 3, status: 1),
       ],

@@ -8,14 +8,14 @@ part 'sec_acnt_list/get_sec_acnt_settlement_account_dto.dart';
 
 part 'sec_acnt_list/sec_acnt_account_support_dto.dart';
 
-class GetSecuritiesAccountListResDto {
-  final GetSecAcntListDetailDto detail;
+class GetSecuritiesAcntListResDto {
+  final GetSecuritiesAcntListDetailDto detail;
   final List<GetSecAcntListAccountDto> acnts;
   final List<GetSecAcntSettlementAccountDto> stlAcnts;
   final int responseCode;
   final String? responseDesc;
 
-  const GetSecuritiesAccountListResDto({
+  const GetSecuritiesAcntListResDto({
     required this.detail,
     required this.acnts,
     required this.stlAcnts,
@@ -23,42 +23,31 @@ class GetSecuritiesAccountListResDto {
     this.responseDesc,
   });
 
-  factory GetSecuritiesAccountListResDto.fromJson(Map<String, Object?> json) {
+  factory GetSecuritiesAcntListResDto.fromJson(Map<String, Object?> json) {
     final int responseCode = ApiParser.asNullableInt(json['responseCode']) ?? 1;
-    final String? responseDesc = ApiParser.asNullableString(
-      json['responseDesc'],
-    );
+    final String? responseDesc = ApiParser.asNullableString(json['responseDesc']);
 
     if (responseCode != 0) {
-      throw ApiBusinessException(
-        responseCode: responseCode,
-        message: responseDesc ?? 'Failed to load securities account list.',
-      );
+      throw ApiBusinessException(responseCode: responseCode, message: responseDesc ?? 'Failed to load securities account list.');
     }
 
-    return GetSecuritiesAccountListResDto(
-      detail: GetSecAcntListDetailDto.fromJson(
-        ApiParser.asObjectMap(json['detail']),
-      ),
-      acnts: ApiParser.asObjectMapList(
-        json['acnts'],
-      ).map(GetSecAcntListAccountDto.fromJson).toList(growable: false),
-      stlAcnts: ApiParser.asObjectMapList(
-        json['stlAcnts'],
-      ).map(GetSecAcntSettlementAccountDto.fromJson).toList(growable: false),
+    return GetSecuritiesAcntListResDto(
+      detail: GetSecuritiesAcntListDetailDto.fromJson(ApiParser.asObjectMap(json['detail'])),
+      acnts: ApiParser.asObjectMapList(json['acnts']).map(GetSecAcntListAccountDto.fromJson).toList(growable: false),
+      stlAcnts: ApiParser.asObjectMapList(json['stlAcnts']).map(GetSecAcntSettlementAccountDto.fromJson).toList(growable: false),
       responseCode: responseCode,
       responseDesc: responseDesc,
     );
   }
 
-  GetSecuritiesAccountListResDto copyWith({
-    GetSecAcntListDetailDto? detail,
+  GetSecuritiesAcntListResDto copyWith({
+    GetSecuritiesAcntListDetailDto? detail,
     List<GetSecAcntListAccountDto>? acnts,
     List<GetSecAcntSettlementAccountDto>? stlAcnts,
     int? responseCode,
     String? responseDesc,
   }) {
-    return GetSecuritiesAccountListResDto(
+    return GetSecuritiesAcntListResDto(
       detail: detail ?? this.detail,
       acnts: acnts ?? this.acnts,
       stlAcnts: stlAcnts ?? this.stlAcnts,

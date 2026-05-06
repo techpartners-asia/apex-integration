@@ -11,8 +11,8 @@ void main() {
 
       final SdkPortfolioContext context = resolver.resolve(
         bootstrapState: const AcntBootstrapState(
-          response: GetSecuritiesAccountListResDto(
-            detail: GetSecAcntListDetailDto(
+          response: GetSecuritiesAcntListResDto(
+            detail: GetSecuritiesAcntListDetailDto(
               hasAcnt: true,
               hasIpsAcnt: true,
               brokerCode: 'DETAIL-BROKER',

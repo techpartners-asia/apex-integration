@@ -81,8 +81,8 @@ AcntBootstrapState _bootstrapState({
   int? secAcntStatusCode,
 }) {
   return AcntBootstrapState(
-    response: GetSecuritiesAccountListResDto(
-      detail: GetSecAcntListDetailDto(
+    response: GetSecuritiesAcntListResDto(
+      detail: GetSecuritiesAcntListDetailDto(
         hasAcnt: hasAcnt,
         hasIpsAcnt: hasIpsAcnt,
       ),

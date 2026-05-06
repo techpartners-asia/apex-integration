@@ -8,6 +8,9 @@ class QuestionnaireQuestion {
   final String? questionType;
   final String? answerType;
   final int? orderNo;
+  final bool isGoal;
+  final String? createdAt;
+  final String? updatedAt;
   final List<QuestionnaireOption> options;
 
   const QuestionnaireQuestion({
@@ -18,6 +21,9 @@ class QuestionnaireQuestion {
     this.questionType,
     this.answerType,
     this.orderNo,
+    this.isGoal = false,
+    this.createdAt,
+    this.updatedAt,
     required this.options,
   });
 }

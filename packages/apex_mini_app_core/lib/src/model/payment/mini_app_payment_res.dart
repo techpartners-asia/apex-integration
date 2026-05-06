@@ -2,11 +2,20 @@ import '../failure/mini_app_failure.dart';
 import 'mini_app_payment_status.dart';
 
 class MiniAppPaymentRes {
+  final MiniAppPaymentStatus status;
+  final String? message;
+  final String? transactionId;
+  final String? paymentReference;
+  final MiniAppFailure? failure;
+  final Map<String, Object?> metadata;
+  final bool isTransaction;
+
   const MiniAppPaymentRes.success({
     this.message,
     this.transactionId,
     this.paymentReference,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : failure = null,
        status = MiniAppPaymentStatus.success;
 
@@ -16,6 +25,7 @@ class MiniAppPaymentRes {
     this.paymentReference,
     this.failure,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : status = MiniAppPaymentStatus.failed;
 
   const MiniAppPaymentRes.cancelled({
@@ -23,6 +33,7 @@ class MiniAppPaymentRes {
     this.transactionId,
     this.paymentReference,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : failure = null,
        status = MiniAppPaymentStatus.cancelled;
 
@@ -31,6 +42,7 @@ class MiniAppPaymentRes {
     this.transactionId,
     this.paymentReference,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : failure = null,
        status = MiniAppPaymentStatus.timedOut;
 
@@ -38,6 +50,7 @@ class MiniAppPaymentRes {
     this.message,
     this.failure,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : transactionId = null,
        paymentReference = null,
        status = MiniAppPaymentStatus.unsupported;
@@ -47,6 +60,7 @@ class MiniAppPaymentRes {
     this.transactionId,
     this.paymentReference,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : failure = null,
        status = MiniAppPaymentStatus.pending;
 
@@ -55,6 +69,7 @@ class MiniAppPaymentRes {
     this.transactionId,
     this.paymentReference,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : failure = null,
        status = MiniAppPaymentStatus.paid;
 
@@ -64,16 +79,8 @@ class MiniAppPaymentRes {
     this.paymentReference,
     this.failure,
     this.metadata = const <String, Object?>{},
+    required this.isTransaction,
   }) : status = MiniAppPaymentStatus.unknown;
 
-  final MiniAppPaymentStatus status;
-  final String? message;
-  final String? transactionId;
-  final String? paymentReference;
-  final MiniAppFailure? failure;
-  final Map<String, Object?> metadata;
-
-  bool get success =>
-      status == MiniAppPaymentStatus.success ||
-      status == MiniAppPaymentStatus.paid;
+  bool get success => status == MiniAppPaymentStatus.success || status == MiniAppPaymentStatus.paid;
 }

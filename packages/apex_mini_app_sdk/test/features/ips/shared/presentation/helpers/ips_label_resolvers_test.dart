@@ -17,6 +17,7 @@ void main() {
         code: 'invoice_create_failed',
         message: 'Дансны нэр хоосон байна.',
       ),
+      isTransaction: true,
     );
 
     expect(
@@ -36,6 +37,7 @@ void main() {
           code: 'invoice_create_failed',
           message: 'invoice_create_failed',
         ),
+        isTransaction: true,
       );
 
       expect(

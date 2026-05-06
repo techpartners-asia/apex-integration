@@ -40,6 +40,7 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
       ? null
       : ApiQuestionnaireService(
           api: ipsApi,
+          appApi: appApi,
           config: appSession.backendConfig,
           session: appSession.controller,
         );

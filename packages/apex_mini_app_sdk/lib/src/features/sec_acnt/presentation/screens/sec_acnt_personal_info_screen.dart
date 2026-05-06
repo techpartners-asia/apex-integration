@@ -261,11 +261,20 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     _openNextStep(draft);
   }
 
-  void _openNextStep(SecAcntFlowDraft draft) {
+  Future<void> _openNextStep(SecAcntFlowDraft draft) async {
     final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
       SecAcntFlowStep.personalInformation,
       widget.bootstrapState,
     );
+
+    if (nextStep == SecAcntFlowStep.success && _isShortFlow) {
+      await replaceIpsRoute(
+        context,
+        route: MiniAppRoutes.questionnaire,
+        arguments: widget.bootstrapState,
+      );
+      return;
+    }
 
     final Widget nextScreen = switch (nextStep) {
       SecAcntFlowStep.success => SecAcntSuccessScreen(
@@ -284,7 +293,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       ),
     };
 
-    Navigator.of(
+    await Navigator.of(
       context,
     ).push(MaterialPageRoute<void>(builder: (_) => nextScreen));
   }

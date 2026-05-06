@@ -3,6 +3,7 @@ class ApiEndpoints {
 
   static const String signUp = '/api/v1/user/signup';
   static const String profileInfo = '/api/v1/user/profile/info';
+  static const String getAllGoals = '/api/v1/user/question/get-all';
   static const String updateProfile = '/api/v1/user/profile/update';
   static const String updateTargetGoal = '/api/v1/user/profile/update-target-goal';
   static const String updateSignature = '/api/v1/user/profile/update-signature';

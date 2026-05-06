@@ -15,24 +15,25 @@ MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
           code: 'example_wallet_unavailable',
           message: 'example_wallet_unavailable',
         ),
+        isTransaction: request.isTransaction,
       );
     }
 
-    final MiniAppPaymentRes? result =
-        await showModalBottomSheet<MiniAppPaymentRes>(
-          context: context,
-          useRootNavigator: true,
-          isScrollControlled: true,
-          backgroundColor: const Color(0xFFF2F4F7),
-          builder: (BuildContext context) {
-            return _ExampleWalletPaymentSheet(request: request);
-          },
-        );
+    final MiniAppPaymentRes? result = await showModalBottomSheet<MiniAppPaymentRes>(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: const Color(0xFFF2F4F7),
+      builder: (BuildContext context) {
+        return _ExampleWalletPaymentSheet(request: request);
+      },
+    );
 
     return result ??
         MiniAppPaymentRes.cancelled(
           message: 'Payment was cancelled by the host wallet.',
           paymentReference: request.invoiceId,
+          isTransaction: request.isTransaction,
         );
   };
 }
@@ -97,9 +98,9 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     context,
                     MiniAppPaymentRes.success(
                       message: 'Payment completed in the host wallet.',
-                      transactionId:
-                          'wallet_${DateTime.now().millisecondsSinceEpoch}',
+                      transactionId: 'wallet_${DateTime.now().millisecondsSinceEpoch}',
                       paymentReference: request.invoiceId,
+                      isTransaction: request.isTransaction,
                     ),
                   ),
                   icon: const Icon(Icons.check_circle_outline_rounded),
@@ -122,6 +123,7 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                         code: 'example_wallet_failed',
                         message: 'example_wallet_failed',
                       ),
+                      isTransaction: request.isTransaction,
                     ),
                   ),
                   icon: Icon(Icons.error_outline_rounded, color: colors.error),
@@ -140,6 +142,7 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     MiniAppPaymentRes.cancelled(
                       message: 'Payment was cancelled by the user.',
                       paymentReference: request.invoiceId,
+                      isTransaction: request.isTransaction,
                     ),
                   ),
                   icon: const Icon(Icons.close_rounded),

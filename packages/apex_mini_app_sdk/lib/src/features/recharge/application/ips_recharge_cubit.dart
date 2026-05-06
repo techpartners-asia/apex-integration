@@ -65,10 +65,7 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
     );
 
     try {
-      final RechargeReq req = RechargeReq(
-        packQty: state.packQty,
-        amount: state.totalPayable,
-      );
+      final RechargeReq req = RechargeReq(packQty: state.packQty, amount: state.totalPayable);
       await service.chargeIpsAcnt(req);
 
       final paymentRes = await paymentExecutor.execute(
@@ -77,11 +74,11 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
           amount: req.amount!.toInt(),
           note: 'ips_recharge',
           refId: _buildRechargeRefId(req),
+          isTransaction: true,
         ),
       );
 
-      final PortfolioOverview? refreshedOverview =
-          await _refreshBalanceAfterSuccess();
+      final PortfolioOverview? refreshedOverview = await _refreshBalanceAfterSuccess();
 
       emit(
         state.copyWith(

@@ -233,12 +233,11 @@ class _FakePortfolioService implements PortfolioService {
 
 class _FakePackService implements PackService {
   _FakePackService({
-    this.packs = _testPacks,
     this.error,
     this.completer,
   });
 
-  final List<IpsPack> packs;
+  final List<IpsPack> packs = _testPacks;
   final Object? error;
   final Completer<List<IpsPack>>? completer;
   int getPacksCallCount = 0;

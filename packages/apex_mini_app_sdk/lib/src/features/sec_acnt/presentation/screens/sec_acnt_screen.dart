@@ -46,8 +46,7 @@ class SecAcntScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Navigator(
-        onGenerateRoute: (_) =>
-            MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
+        onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
       ),
     );
   }

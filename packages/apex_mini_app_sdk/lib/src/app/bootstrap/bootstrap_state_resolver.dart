@@ -9,7 +9,11 @@ class BootstrapStateResolver {
     final AcntBootstrapState state = await service.getSecAcntListState(forceRefresh: forceRefresh);
 
     try {
-      return await service.getSecAcntBalanceState(currentState: state);
+      if (state.hasAcnt && state.commission.isNullEmptyFalseOrZero) {
+        return await service.getSecAcntBalanceState(currentState: state);
+      } else {
+        return state;
+      }
     } on ApiException {
       return state;
     }

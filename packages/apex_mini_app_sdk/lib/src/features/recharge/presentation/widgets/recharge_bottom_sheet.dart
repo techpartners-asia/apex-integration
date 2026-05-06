@@ -49,40 +49,36 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   final FocusNode _focusNode = FocusNode(debugLabel: 'recharge_quantity_input');
   Animation<double>? _routeAnimation;
   bool _initialFocusRequested = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  bool _keyboardFallbackRequested = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _attachRouteAnimation();
+    _watchBottomSheetOpenAnimation();
   }
 
-  void _attachRouteAnimation() {
+  void _watchBottomSheetOpenAnimation() {
     final Animation<double>? animation = ModalRoute.of(context)?.animation;
     if (identical(_routeAnimation, animation)) return;
 
-    _routeAnimation?.removeStatusListener(_handleRouteAnimationStatus);
+    _routeAnimation?.removeStatusListener(_handleBottomSheetAnimationStatus);
     _routeAnimation = animation;
 
     if (animation == null || animation.status == AnimationStatus.completed) {
-      _scheduleInitialKeyboardRequest();
+      _requestInitialFocusAfterOpen();
       return;
     }
 
-    animation.addStatusListener(_handleRouteAnimationStatus);
+    animation.addStatusListener(_handleBottomSheetAnimationStatus);
   }
 
-  void _handleRouteAnimationStatus(AnimationStatus status) {
+  void _handleBottomSheetAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      _scheduleInitialKeyboardRequest();
+      _requestInitialFocusAfterOpen();
     }
   }
 
-  void _scheduleInitialKeyboardRequest() {
+  void _requestInitialFocusAfterOpen() {
     if (_initialFocusRequested) return;
     _initialFocusRequested = true;
 
@@ -92,31 +88,27 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
       await WidgetsBinding.instance.endOfFrame;
       if (!mounted) return;
 
-      // _requestKeyboard();
-      _focusNode.requestFocus();
+      _focusQuantityInput(showKeyboardFallback: true);
     });
   }
 
-  void _requestKeyboard() {
+  void _focusQuantityInput({bool showKeyboardFallback = false}) {
     if (!mounted) return;
 
     FocusScope.of(context).requestFocus(_focusNode);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showKeyboardIfFocused();
-    });
-    Future<void>.delayed(const Duration(milliseconds: 80), () {
-      _showKeyboardIfFocused();
-    });
-  }
+    if (!showKeyboardFallback || _keyboardFallbackRequested) return;
+    _keyboardFallbackRequested = true;
 
-  void _showKeyboardIfFocused() {
-    if (!mounted || !_focusNode.hasFocus) return;
-    SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_focusNode.hasFocus) return;
+      if (MediaQuery.of(context).viewInsets.bottom > 0) return;
+      SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+    });
   }
 
   @override
   void dispose() {
-    _routeAnimation?.removeStatusListener(_handleRouteAnimationStatus);
+    _routeAnimation?.removeStatusListener(_handleBottomSheetAnimationStatus);
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -125,7 +117,7 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final double keyboardInset = MediaQuery.of(context).viewInsets.bottom;
+    // final bool hasKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
       listenWhen: (IpsRechargeState prev, IpsRechargeState curr) => prev.paymentRes != curr.paymentRes && curr.paymentRes != null,
@@ -141,12 +133,13 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
                 title: l10n.ipsPaymentRechargeTitle,
                 showDivider: false,
                 backgroundColor: DesignTokens.softSurface,
+                btmPad: 0 , // MediaQuery.of(context).viewInsets.bottom,
                 child: _RechargeSheetBody(
                   controller: _controller,
                   focusNode: _focusNode,
                   state: state,
-                  hasKeyboard: keyboardInset > 0,
-                  onRequestKeyboard: _requestKeyboard,
+                  onRequestFocus: _focusQuantityInput,
+                  onQuantityChanged: context.read<IpsRechargeCubit>().updatePackQty,
                 ),
               );
             },
@@ -161,25 +154,26 @@ class _RechargeSheetBody extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final IpsRechargeState state;
-  final bool hasKeyboard;
-  final VoidCallback onRequestKeyboard;
+  final VoidCallback onRequestFocus;
+  final ValueChanged<String> onQuantityChanged;
 
   const _RechargeSheetBody({
     required this.controller,
     required this.focusNode,
     required this.state,
-    required this.hasKeyboard,
-    required this.onRequestKeyboard,
+    required this.onRequestFocus,
+    required this.onQuantityChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final responsive = context.responsive;
+    // final hasKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
 
     final Widget quantitySection = GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: onRequestKeyboard,
+      onTap: onRequestFocus,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -187,7 +181,8 @@ class _RechargeSheetBody extends StatelessWidget {
           RechargeQuantityInput(
             controller: controller,
             focusNode: focusNode,
-            unfocusOnTapOutside: false,
+            onChanged: onQuantityChanged,
+            unfocusOnTapOutside: true,
           ),
           SizedBox(height: responsive.spacing.inlineSpacing),
           CustomText(
@@ -211,35 +206,15 @@ class _RechargeSheetBody extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Expanded(
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              final Widget content = hasKeyboard
-                  ? Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        quantitySection,
-                        summarySection,
-                      ],
-                    )
-                  : ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          quantitySection,
-                          summarySection,
-                        ],
-                      ),
-                    );
-
-              return SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-                child: content,
-              );
-            },
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                quantitySection,
+                summarySection,
+              ],
+            ),
           ),
         ),
         SizedBox(height: responsive.spacing.sectionSpacing),

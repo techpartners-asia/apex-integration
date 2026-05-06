@@ -10,8 +10,7 @@ class SecAcntAgreementScreen extends StatefulWidget {
     required this.draft,
     this.appApi,
   }) : assert(
-         step == SecAcntFlowStep.serviceAgreement ||
-             step == SecAcntFlowStep.secAgreement,
+         step == SecAcntFlowStep.serviceAgreement || step == SecAcntFlowStep.secAgreement,
        );
 
   final SecAcntFlowStep step;
@@ -49,14 +48,8 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
       context,
       widget.step,
     );
-    final String title = widget.step == SecAcntFlowStep.serviceAgreement
-        ? context.l10n.secAcntInvestxAgreementTitle
-        : context.l10n.secAcntSecuritiesAgreementTitle;
-    final String agreementText = widget.step == SecAcntFlowStep.serviceAgreement
-        ? widget.bootstrapState?.introIps ??
-              context.l10n.secAcntInvestxAgreementText
-        : widget.bootstrapState?.intro ??
-              context.l10n.secAcntSecuritiesAgreementText;
+    final String title = widget.step == SecAcntFlowStep.serviceAgreement ? context.l10n.secAcntInvestxAgreementTitle : context.l10n.secAcntSecuritiesAgreementTitle;
+    final String agreementText = widget.step == SecAcntFlowStep.serviceAgreement ? widget.bootstrapState?.introIps ?? context.l10n.secAcntInvestxAgreementText : widget.bootstrapState?.intro ?? context.l10n.secAcntSecuritiesAgreementText;
 
     return AgreementScreen(
       appBarTitle: header.title,

@@ -34,9 +34,7 @@ class QuestionnaireRecommendationScreen extends StatelessWidget {
             children: <Widget>[
               _QuestionnaireRecommendationView(
                 isLoading: state.isLoading,
-                errorMessage: state.questions.isEmpty
-                    ? state.errorMessage
-                    : null,
+                errorMessage: state.questions.isEmpty ? state.errorMessage : null,
                 onRetry: context.read<IpsQuestionnaireCubit>().load,
               ),
               if (state.isLoading)
@@ -59,15 +57,15 @@ class QuestionnaireRecommendationScreen extends StatelessWidget {
 }
 
 class _QuestionnaireRecommendationView extends StatelessWidget {
+  final bool isLoading;
+  final String? errorMessage;
+  final VoidCallback onRetry;
+
   const _QuestionnaireRecommendationView({
     required this.isLoading,
     required this.errorMessage,
     required this.onRetry,
   });
-
-  final bool isLoading;
-  final String? errorMessage;
-  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +125,7 @@ class _QuestionnaireRecommendationView extends StatelessWidget {
             ),
           ),
 
-          if (errorMessage != null &&
-              errorMessage!.trim().isNotEmpty) ...<Widget>[
+          if (errorMessage != null && errorMessage!.trim().isNotEmpty) ...<Widget>[
             SizedBox(height: responsive.spacing.sectionSpacing),
             NoticeBanner(
               title: l10n.errorsActionFailed,

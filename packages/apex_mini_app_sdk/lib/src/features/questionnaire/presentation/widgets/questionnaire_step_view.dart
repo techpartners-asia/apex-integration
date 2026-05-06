@@ -19,39 +19,28 @@ class QuestionnaireStepView extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final l10n = context.l10n;
-    final bool isStaticQuestion = currentIndex == state.questions.length;
-    final QuestionnaireQuestion? question = isStaticQuestion
-        ? null
-        : state.questions[currentIndex];
-    final List<_QuestionnaireChoice> options = isStaticQuestion
-        ? _buildStaticQuestionChoices(l10n)
-        : question!.options
-              .asMap()
-              .entries
-              .map(
-                (MapEntry<int, QuestionnaireOption> entry) =>
-                    _QuestionnaireChoice(
-                      id: entry.value.id,
-                      label: entry.value.label.trim().isEmpty
-                          ? l10n.ipsQuestionnaireOptionPrefix(entry.key + 1)
-                          : entry.value.label,
-                      number: entry.key + 1,
-                    ),
-              )
-              .toList(growable: false);
-    final String? selectedOptionId = isStaticQuestion
-        ? state.staticQuestionAnswerId
-        : state.answers[question!.id];
-    final String questionTitle = isStaticQuestion
-        ? l10n.ipsQuestionnaireStaticQuestionTitle
-        : question!.title.trim().isEmpty
-        ? l10n.ipsQuestionnaireQuestionPrefix(currentIndex + 1)
-        : question.title;
-    final String? subtitle = isStaticQuestion
-        ? null
-        : question!.subtitle?.trim().isEmpty ?? true
-        ? null
-        : question.subtitle?.trim();
+    final QuestionnaireQuestion question = state.questions[currentIndex];
+    final bool isGoalQuestion = question.isGoal;
+    final List<_QuestionnaireChoice> options = question.options
+        .asMap()
+        .entries
+        .map(
+          (MapEntry<int, QuestionnaireOption> entry) => _QuestionnaireChoice(
+            id: entry.value.id,
+            label: _resolveOptionLabel(
+              question,
+              entry.value,
+              entry.key + 1,
+              l10n,
+            ),
+            number: entry.key + 1,
+          ),
+        )
+        .toList(growable: false);
+    final String? selectedOptionId = state.answers[question.id];
+    final String questionTitle = question.title.trim().isEmpty ? l10n.ipsQuestionnaireQuestionPrefix(currentIndex + 1) : question.title;
+    final String? subtitle = question.subtitle?.trim().isEmpty ?? true ? null : question.subtitle?.trim();
+    final String? visibleErrorMessage = state.errorMessage;
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(responsive.dp(AppSpacing.xl)),
@@ -62,7 +51,7 @@ class QuestionnaireStepView extends StatelessWidget {
           SizedBox(height: responsive.spacing.sectionSpacing),
 
           /// Question
-          CustomText(questionTitle, variant: MiniAppTextVariant.h8),
+          CustomText(questionTitle, variant: MiniAppTextVariant.title1),
 
           /// Sub question
           if (subtitle != null) ...<Widget>[
@@ -77,37 +66,33 @@ class QuestionnaireStepView extends StatelessWidget {
 
           /// Answers
           SizedBox(height: responsive.spacing.sectionSpacing),
-          ...options.map(
-            (_QuestionnaireChoice option) => Padding(
-              padding: EdgeInsets.only(
-                bottom: responsive.spacing.inlineSpacing,
-              ),
-              child: _QuestionnaireOptionTile(
-                label: option.label,
-                number: option.number,
-                selected: selectedOptionId == option.id,
-                onTap: () {
-                  if (isStaticQuestion) {
-                    context
-                        .read<IpsQuestionnaireCubit>()
-                        .selectStaticQuestionAnswer(option.id);
-                    return;
-                  }
-
-                  context.read<IpsQuestionnaireCubit>().selectAnswer(
-                    questionId: question!.id,
-                    optionId: option.id,
-                  );
-                },
+          if (options.isEmpty && isGoalQuestion)
+            MiniAppEmptyState(
+              title: questionTitle,
+              message: visibleErrorMessage ?? l10n.commonNoData,
+            )
+          else
+            ...options.map(
+              (_QuestionnaireChoice option) => Padding(
+                padding: EdgeInsets.only(bottom: responsive.spacing.inlineSpacing),
+                child: _QuestionnaireOptionTile(
+                  label: option.label,
+                  number: option.number,
+                  selected: selectedOptionId == option.id,
+                  onTap: () {
+                    context.read<IpsQuestionnaireCubit>().selectAnswer(
+                      questionId: question.id,
+                      optionId: option.id,
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          if (state.errorMessage != null &&
-              state.errorMessage!.trim().isNotEmpty) ...<Widget>[
+          if (options.isNotEmpty && visibleErrorMessage != null && visibleErrorMessage.trim().isNotEmpty) ...<Widget>[
             SizedBox(height: responsive.spacing.sectionSpacing),
             NoticeBanner(
               title: l10n.errorsActionFailed,
-              message: state.errorMessage!,
+              message: visibleErrorMessage,
               icon: Icons.error_outline_rounded,
             ),
           ],
@@ -129,29 +114,21 @@ class _QuestionnaireChoice {
   final int number;
 }
 
-List<_QuestionnaireChoice> _buildStaticQuestionChoices(SdkLocalizations l10n) {
-  return <_QuestionnaireChoice>[
-    _QuestionnaireChoice(
-      id: 'ui_static_100000',
-      label: l10n.ipsQuestionnaireStaticOption100k,
-      number: 1,
-    ),
-    _QuestionnaireChoice(
-      id: 'ui_static_200000',
-      label: l10n.ipsQuestionnaireStaticOption200k,
-      number: 2,
-    ),
-    _QuestionnaireChoice(
-      id: 'ui_static_500000',
-      label: l10n.ipsQuestionnaireStaticOption500k,
-      number: 3,
-    ),
-    _QuestionnaireChoice(
-      id: 'ui_static_1000000_plus',
-      label: l10n.ipsQuestionnaireStaticOption1000000Plus,
-      number: 4,
-    ),
-  ];
+String _resolveOptionLabel(
+  QuestionnaireQuestion question,
+  QuestionnaireOption option,
+  int index,
+  SdkLocalizations l10n,
+) {
+  if (question.isGoal && option.amount != null) {
+    return formatIpsPaymentAmount(option.amount!, IpsDefaults.defaultCurrency);
+  }
+
+  if (option.label.trim().isNotEmpty) {
+    return option.label;
+  }
+
+  return l10n.ipsQuestionnaireOptionPrefix(index);
 }
 
 class _QuestionnaireOptionTile extends StatelessWidget {
@@ -200,7 +177,7 @@ class _QuestionnaireOptionTile extends StatelessWidget {
                     Expanded(
                       child: CustomText(
                         '$number. $label',
-                        variant: MiniAppTextVariant.subtitle2,
+                        variant: MiniAppTextVariant.subtitle3,
                         color: selected ? DesignTokens.rose : DesignTokens.ink,
                       ),
                     ),
@@ -234,9 +211,7 @@ class _QuestionnaireRadioIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: selected
-              ? DesignTokens.coral
-              : DesignTokens.selectionBlueMuted.withValues(alpha: 0.55),
+          color: selected ? DesignTokens.coral : DesignTokens.selectionBlueMuted.withValues(alpha: 0.55),
           width: responsive.dp(selected ? 1.6 : 1.3),
         ),
         color: Colors.white,

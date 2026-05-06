@@ -1,9 +1,9 @@
 class UpdateTargetGoalApiReq {
-  final num targetGoal;
+  final int goalId;
 
-  const UpdateTargetGoalApiReq({required this.targetGoal});
+  const UpdateTargetGoalApiReq({required this.goalId});
 
   Map<String, Object?> toJson() {
-    return <String, Object?>{'target_goal': targetGoal};
+    return <String, Object?>{'goal_id': goalId};
   }
 }

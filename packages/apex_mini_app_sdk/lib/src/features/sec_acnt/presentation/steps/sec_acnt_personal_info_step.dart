@@ -90,6 +90,11 @@ class SecAcntPersonalInfoStep extends StatelessWidget {
         keyboardType: TextInputType.number,
         maxLength: 18,
         prefixText: 'MN ',
+        onChanged: (String value) {
+          if (value.length >= 18) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          }
+        },
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.digitsOnly,
         ],

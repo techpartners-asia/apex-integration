@@ -9,19 +9,13 @@ class QuestionnaireQuestionScreen extends StatefulWidget {
   final int stepIndex;
 
   @override
-  State<QuestionnaireQuestionScreen> createState() =>
-      _QuestionnaireQuestionScreenState();
+  State<QuestionnaireQuestionScreen> createState() => _QuestionnaireQuestionScreenState();
 }
 
-class _QuestionnaireQuestionScreenState
-    extends State<QuestionnaireQuestionScreen> {
+class _QuestionnaireQuestionScreenState extends State<QuestionnaireQuestionScreen> {
   late int _currentStepIndex = widget.stepIndex;
 
   bool _hasCurrentAnswer(IpsQuestionnaireState state) {
-    if (_currentStepIndex == state.questions.length) {
-      return state.staticQuestionAnswerId != null;
-    }
-
     if (_currentStepIndex < 0 || _currentStepIndex >= state.questions.length) {
       return false;
     }
@@ -29,8 +23,17 @@ class _QuestionnaireQuestionScreenState
     return state.answers[state.questions[_currentStepIndex].id] != null;
   }
 
-  void _goNext(BuildContext context, IpsQuestionnaireState state) {
-    final int totalSteps = state.questions.length + 1;
+  Future<void> _goNext(IpsQuestionnaireState state) async {
+    final QuestionnaireQuestion currentQuestion = state.questions[_currentStepIndex];
+    final bool shouldSaveGoal = currentQuestion.isGoal;
+    if (shouldSaveGoal) {
+      final bool saved = await context.read<IpsQuestionnaireCubit>().saveSelectedTargetGoal(questionId: currentQuestion.id);
+      if (!mounted || !saved) {
+        return;
+      }
+    }
+
+    final int totalSteps = state.questions.length;
     if (_currentStepIndex >= totalSteps - 1) {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
@@ -137,7 +140,7 @@ class _QuestionnaireQuestionScreenState
             );
           }
 
-          final int totalSteps = state.questions.length + 1;
+          final int totalSteps = state.questions.length;
           final bool isLastStep = _currentStepIndex == totalSteps - 1;
 
           return CustomScaffold(
@@ -158,21 +161,17 @@ class _QuestionnaireQuestionScreenState
                     totalSteps: totalSteps,
                   ),
                 ),
-                if (state.isLoading)
+                if (state.isLoading || state.isSavingTargetGoal)
                   BlockingLoadingOverlay(
                     title: l10n.commonLoading,
-                    message: l10n.ipsQuestionnaireLoading,
+                    message: state.isSavingTargetGoal ? l10n.commonLoading : l10n.ipsQuestionnaireLoading,
                   ),
               ],
             ),
             bottomNavigationBar: BottomActionBar(
               child: PrimaryButton(
-                label: isLastStep
-                    ? l10n.ipsQuestionnaireViewPacks
-                    : l10n.commonContinue,
-                onPressed: _hasCurrentAnswer(state)
-                    ? () => _goNext(context, state)
-                    : null,
+                label: isLastStep ? l10n.ipsQuestionnaireViewPacks : l10n.commonContinue,
+                onPressed: _hasCurrentAnswer(state) && !state.isSavingTargetGoal ? () => _goNext(state) : null,
               ),
             ),
           );

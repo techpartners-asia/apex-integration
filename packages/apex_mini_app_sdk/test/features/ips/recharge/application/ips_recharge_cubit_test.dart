@@ -17,7 +17,7 @@ void main() {
       service: _FakeOrdersService(),
       portfolioService: portfolioService,
       paymentExecutor: _FakePaymentExecutor(
-        result: const MiniAppPaymentRes.success(),
+        result: const MiniAppPaymentRes.success(isTransaction: true),
       ),
       l10n: lookupSdkLocalizations(const Locale('en')),
     );
@@ -43,7 +43,7 @@ void main() {
       service: ordersService,
       portfolioService: portfolioService,
       paymentExecutor: _FakePaymentExecutor(
-        result: const MiniAppPaymentRes.success(),
+        result: const MiniAppPaymentRes.success(isTransaction: true),
       ),
       l10n: lookupSdkLocalizations(const Locale('en')),
       unitPrice: 150000,
@@ -151,7 +151,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<FeedbackListResponse> getFeedbackList({required int limit, required int page, bool forceRefresh = false}) {
+  Future<FeedbackListResponse> getFeedbackList({
+    required int limit,
+    required int page,
+    bool forceRefresh = false,
+  }) {
     // TODO: implement getFeedbackList
     throw UnimplementedError();
   }
@@ -159,6 +163,12 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   @override
   Future<String> getPaymentCallback({required String invoiceId}) {
     // TODO: implement getPaymentCallback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<QuestionnaireQuestion>> getAllGoals() {
+    // TODO: implement getAllGoals
     throw UnimplementedError();
   }
 
@@ -175,7 +185,10 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<UserEntityDto> updateSignature({required Uint8List bytes, String fileName = 'signature.png'}) {
+  Future<UserEntityDto> updateSignature({
+    required Uint8List bytes,
+    String fileName = 'signature.png',
+  }) {
     // TODO: implement updateSignature
     throw UnimplementedError();
   }
@@ -186,7 +199,7 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
     throw UnimplementedError();
   }
 
-// implement required methods
+  // implement required methods
 }
 
 class _FakePaymentExecutor extends MiniAppPaymentExecutor {
@@ -209,6 +222,6 @@ class _FakePaymentExecutor extends MiniAppPaymentExecutor {
   static Future<MiniAppPaymentRes> _unusedWalletHandler(
     MiniAppWalletPaymentRequest request,
   ) async {
-    return const MiniAppPaymentRes.unsupported();
+    return const MiniAppPaymentRes.unsupported(isTransaction: true);
   }
 }

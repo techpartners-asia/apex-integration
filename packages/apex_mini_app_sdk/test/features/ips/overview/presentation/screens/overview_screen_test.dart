@@ -190,8 +190,8 @@ class _FakeBootstrapService implements InvestmentBootstrapService {
 
 AcntBootstrapState _openIpsBootstrapState() {
   return const AcntBootstrapState(
-    response: GetSecuritiesAccountListResDto(
-      detail: GetSecAcntListDetailDto(
+    response: GetSecuritiesAcntListResDto(
+      detail: GetSecuritiesAcntListDetailDto(
         hasAcnt: true,
         hasIpsAcnt: true,
       ),

@@ -52,12 +52,8 @@ class ApiOrdersService implements OrdersService {
   @override
   Future<List<IpsOrder>> getOrders() async {
     await session.ensureLoginSession();
-    final List<IpsOrderDto> orders = await api.getIpsOrderList(
-      srcFiCode: config.runtime.defaultSrcFiCode,
-    );
+    final List<IpsOrderDto> orders = await api.getIpsOrderList(srcFiCode: config.runtime.defaultSrcFiCode);
 
-    return orders
-        .map((IpsOrderDto dto) => dto.toDomain())
-        .toList(growable: false);
+    return orders.map((IpsOrderDto dto) => dto.toDomain()).toList(growable: false);
   }
 }

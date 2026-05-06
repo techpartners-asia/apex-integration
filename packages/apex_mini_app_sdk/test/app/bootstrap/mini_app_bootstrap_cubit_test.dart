@@ -52,8 +52,8 @@ class _SuccessBootstrapFlow extends MiniAppBootstrapFlow {
   Future<MiniAppBootstrapRes> resolve() async {
     return MiniAppBootstrapRes(
       bootstrapState: const AcntBootstrapState(
-        response: GetSecuritiesAccountListResDto(
-          detail: GetSecAcntListDetailDto(hasAcnt: false, hasIpsAcnt: false),
+        response: GetSecuritiesAcntListResDto(
+          detail: GetSecuritiesAcntListDetailDto(hasAcnt: false, hasIpsAcnt: false),
           acnts: <GetSecAcntListAccountDto>[],
           stlAcnts: <GetSecAcntSettlementAccountDto>[],
           responseCode: 0,

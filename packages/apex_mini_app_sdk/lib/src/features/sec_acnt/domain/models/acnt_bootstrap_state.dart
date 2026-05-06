@@ -1,11 +1,11 @@
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class AcntBootstrapState {
-  final GetSecuritiesAccountListResDto _response;
+  final GetSecuritiesAcntListResDto _response;
 
-  const AcntBootstrapState({required GetSecuritiesAccountListResDto response}) : _response = response;
+  const AcntBootstrapState({required GetSecuritiesAcntListResDto response}) : _response = response;
 
-  GetSecAcntListDetailDto get _detail => _response.detail;
+  GetSecuritiesAcntListDetailDto get _detail => _response.detail;
 
   GetSecAcntListAccountDto? get _securitiesAccount => _response.securitiesAccount;
 
@@ -56,9 +56,7 @@ class AcntBootstrapState {
   String? get introIps => _detail.introIps;
 
   String? get bootstrapBankCode {
-    final String? detailBankCode = _trimToNull(
-      _detail.bankCode ?? _securitiesAccount?.bankCode,
-    );
+    final String? detailBankCode = _trimToNull(_detail.bankCode ?? _securitiesAccount?.bankCode);
     if (detailBankCode != null) {
       return detailBankCode;
     }
@@ -73,9 +71,7 @@ class AcntBootstrapState {
   }
 
   String? get bootstrapBankName {
-    final String? detailBankName = _trimToNull(
-      _detail.bankName ?? _securitiesAccount?.bankName,
-    );
+    final String? detailBankName = _trimToNull(_detail.bankName ?? _securitiesAccount?.bankName);
     if (detailBankName != null) {
       return detailBankName;
     }
@@ -123,9 +119,7 @@ class AcntBootstrapState {
 
   bool get requiresSecAcntPayment => hasAcnt && !hasOpenSecAcnt;
 
-  AcntBootstrapState copyWithBalanceState(
-    GetSecuritiesAccountListResDto balanceState,
-  ) {
+  AcntBootstrapState copyWithBalanceState(GetSecuritiesAcntListResDto balanceState) {
     final GetSecAcntListAccountDto? updatedBalanceAccount = balanceState.acnts.isEmpty ? null : balanceState.acnts.first;
     if (updatedBalanceAccount == null) {
       return this;

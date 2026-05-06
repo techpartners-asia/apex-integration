@@ -18,9 +18,17 @@ class MiniAppApiBackend {
     return UserEntityDto.fromJson(json);
   }
 
-  Future<CreateInvoiceResponseDto> createInvoice(
-    CreateInvoiceApiReq req,
-  ) async {
+  Future<List<QuestionnaireQuestionDto>> getAllGoals() async {
+    final ApiExecutor executor = _requireAuthorizedExecutor('getAllGoals');
+    final List<Object?> json = await executor.getJsonList(
+      ApiEndpoints.getAllGoals,
+      context: const ReqContext(operName: 'getAllGoals'),
+    );
+
+    return QuestionnaireQuestionDto.listFromQuestionApiRaw(json);
+  }
+
+  Future<CreateInvoiceResponseDto> createInvoice(CreateInvoiceApiReq req) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('createInvoice');
     final Map<String, Object?> json = await executor.postJson(
       ApiEndpoints.createInvoice,
@@ -31,9 +39,7 @@ class MiniAppApiBackend {
     return CreateInvoiceResponseDto.fromJson(json);
   }
 
-  Future<ApiActionResponseDto> updateTargetGoal(
-    UpdateTargetGoalApiReq req,
-  ) async {
+  Future<ApiActionResponseDto> updateTargetGoal(UpdateTargetGoalApiReq req) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('updateTargetGoal');
     final Map<String, Object?> json = await executor.putJson(
       ApiEndpoints.updateTargetGoal,
@@ -61,10 +67,7 @@ class MiniAppApiBackend {
     );
   }
 
-  Future<ApiActionResponseDto> updateSignature({
-    required Uint8List bytes,
-    required String fileName,
-  }) async {
+  Future<ApiActionResponseDto> updateSignature({required Uint8List bytes, required String fileName}) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('updateSignature');
 
     final FormData formData = FormData.fromMap(<String, Object?>{
@@ -82,9 +85,7 @@ class MiniAppApiBackend {
     );
   }
 
-  Future<CreateFeedbackResponseDto> createFeedback(
-    CreateFeedbackApiReq req,
-  ) async {
+  Future<CreateFeedbackResponseDto> createFeedback(CreateFeedbackApiReq req) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('createFeedback');
     final Map<String, Object?> json = await executor.postJson(
       ApiEndpoints.createFeedback,
@@ -95,9 +96,7 @@ class MiniAppApiBackend {
     return CreateFeedbackResponseDto.fromJson(json);
   }
 
-  Future<FeedbackListResponseDto> getFeedbackList(
-    FeedbackListApiReq req,
-  ) async {
+  Future<FeedbackListResponseDto> getFeedbackList(FeedbackListApiReq req) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('getFeedbackList');
     final Map<String, Object?> json = await executor.postJson(
       ApiEndpoints.feedbackList,
@@ -110,14 +109,15 @@ class MiniAppApiBackend {
 
   Future<CompanyInfoResponseDto> getCompanyInfo() async {
     final ApiExecutor executor = _requireAuthorizedExecutor('getCompanyInfo');
-    final Map<String, Object?> json = await executor.getJson(ApiEndpoints.companyInfo, context: const ReqContext(operName: 'getCompanyInfo'));
+    final Map<String, Object?> json = await executor.getJson(
+      ApiEndpoints.companyInfo,
+      context: const ReqContext(operName: 'getCompanyInfo'),
+    );
 
     return CompanyInfoResponseDto.fromJson(json);
   }
 
-  Future<PaymentCallbackResponseDto> getPaymentCallback(
-    PaymentCallbackQuery query,
-  ) async {
+  Future<PaymentCallbackResponseDto> getPaymentCallback(PaymentCallbackQuery query) async {
     final ApiExecutor executor = _requirePublicExecutor('getPaymentCallback');
     final Map<String, Object?> json = await executor.getJson(
       ApiEndpoints.paymentCallback,

@@ -44,6 +44,24 @@ class ApiExecutor {
     );
   }
 
+  Future<List<Object?>> getJsonList(
+    String path, {
+    Map<String, Object?> queryParameters = const <String, Object?>{},
+    ReqContext context = const ReqContext(),
+  }) async {
+    return _runGuarded(
+      path,
+      context: context,
+      action: () async => asJsonList(
+        (await get(
+          path,
+          queryParameters: queryParameters,
+          context: context,
+        )).data,
+      ),
+    );
+  }
+
   Future<Map<String, Object?>> putJson(
     String path, {
     required Map<String, Object?> body,
@@ -52,14 +70,18 @@ class ApiExecutor {
     return _runGuarded(
       path,
       context: context,
-      action: () async => asJsonMap(
-        (await put(
+      action: () async {
+        final Object? data = (await put(
           path,
           body: body,
           context: context,
           contentType: Headers.jsonContentType,
-        )).data,
-      ),
+        )).data;
+        if (data == null || data is String && data.trim().isEmpty) {
+          return const <String, Object?>{};
+        }
+        return asJsonMap(data);
+      },
     );
   }
 
@@ -161,6 +183,22 @@ class ApiExecutor {
     );
   }
 
+  List<Object?> asJsonList(Object? raw) {
+    final Object? value;
+
+    if (raw is Map<String, Object?>) {
+      value = raw['body'];
+    } else {
+      value = raw;
+    }
+
+    if (value is! List) {
+      throw const ApiParsingException('Expected JSON array response.');
+    }
+
+    return value.cast<Object?>().toList(growable: false);
+  }
+
   ApiException mapDioException(
     String path,
     ReqContext context,
@@ -178,9 +216,7 @@ class ApiExecutor {
         stackTrace: stackTrace,
       );
     }
-    if (error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.sendTimeout ||
-        error.type == DioExceptionType.receiveTimeout) {
+    if (error.type == DioExceptionType.connectionTimeout || error.type == DioExceptionType.sendTimeout || error.type == DioExceptionType.receiveTimeout) {
       return ApiNetworkException(
         'Req timed out for $operName.',
         cause: error,

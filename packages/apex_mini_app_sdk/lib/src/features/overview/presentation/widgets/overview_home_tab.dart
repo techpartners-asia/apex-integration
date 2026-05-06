@@ -29,8 +29,7 @@ class OverviewHomeTab extends StatelessWidget {
       );
     }
 
-    final OverviewVerificationViewModel viewModel =
-        buildOverviewVerificationViewModel(context, data);
+    final OverviewVerificationViewModel viewModel = buildOverviewVerificationViewModel(context, data);
 
     if (onRefresh == null) {
       return OverviewVerificationCard(viewModel: viewModel);

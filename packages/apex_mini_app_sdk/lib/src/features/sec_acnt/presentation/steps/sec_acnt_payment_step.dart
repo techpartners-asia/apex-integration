@@ -19,11 +19,8 @@ class SecAcntPaymentStep extends StatelessWidget {
     final l10n = context.l10n;
     final responsive = context.responsive;
     final bool hasAmount = payableAmount.isFinite && payableAmount > 0;
-    final bool hasError =
-        errorMessage != null && errorMessage!.trim().isNotEmpty;
-    final String? amountLabel = hasAmount
-        ? formatIpsPaymentAmount(payableAmount, 'MNT')
-        : null;
+    final bool hasError = errorMessage != null && errorMessage!.trim().isNotEmpty;
+    final String? amountLabel = hasAmount ? formatIpsPaymentAmount(payableAmount, 'MNT') : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,13 +39,9 @@ class SecAcntPaymentStep extends StatelessWidget {
         ),
         SizedBox(height: responsive.dp(22)),
         _PaymentInfoCard(
-          icon: hasError
-              ? Icons.error_outline_rounded
-              : Icons.priority_high_rounded,
+          icon: hasError ? Icons.error_outline_rounded : Icons.priority_high_rounded,
           iconColor: hasError ? DesignTokens.danger : const Color(0xFFF29A2E),
-          iconBackground: hasError
-              ? const Color(0xFFFCE7EA)
-              : const Color(0xFFFFF0DD),
+          iconBackground: hasError ? const Color(0xFFFCE7EA) : const Color(0xFFFFF0DD),
           message: hasError
               ? errorMessage!.trim()
               : hasAmount

@@ -27,7 +27,7 @@ dependencies:
   cached_network_image: ^3.4.1
   email_validator: ^3.0.0
   cupertino_icons: ^1.0.9
-  adaptive_platform_ui: ^0.1.104
+  adaptive_platform_ui: ^0.1.107
   liquid_glass_widgets: ^0.7.4
   path_provider: ^2.1.5
   url_launcher: ^6.3.2

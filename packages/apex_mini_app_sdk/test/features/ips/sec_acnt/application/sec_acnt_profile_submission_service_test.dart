@@ -133,6 +133,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<List<QuestionnaireQuestion>> getAllGoals() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) async {
     lastUpdateProfileReq = req;
     return UserEntityDto();

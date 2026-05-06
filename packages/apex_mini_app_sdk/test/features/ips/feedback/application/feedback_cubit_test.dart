@@ -234,6 +234,12 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<List<QuestionnaireQuestion>> getAllGoals() {
+    // TODO: implement getAllGoals
+    throw UnimplementedError();
+  }
+
+  @override
   Future<UserEntityDto> getProfileInfo() {
     // TODO: implement getProfileInfo
     throw UnimplementedError();
@@ -246,7 +252,10 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
-  Future<UserEntityDto> updateSignature({required Uint8List bytes, String fileName = 'signature.png'}) {
+  Future<UserEntityDto> updateSignature({
+    required Uint8List bytes,
+    String fileName = 'signature.png',
+  }) {
     // TODO: implement updateSignature
     throw UnimplementedError();
   }
@@ -297,6 +306,12 @@ class _FailingApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<List<QuestionnaireQuestion>> getAllGoals() {
+    // TODO: implement getAllGoals
+    throw UnimplementedError();
+  }
+
+  @override
   Future<UserEntityDto> getProfileInfo() {
     // TODO: implement getProfileInfo
     throw UnimplementedError();
@@ -309,7 +324,10 @@ class _FailingApi implements MiniAppApiRepository {
   }
 
   @override
-  Future<UserEntityDto> updateSignature({required Uint8List bytes, String fileName = 'signature.png'}) {
+  Future<UserEntityDto> updateSignature({
+    required Uint8List bytes,
+    String fileName = 'signature.png',
+  }) {
     // TODO: implement updateSignature
     throw UnimplementedError();
   }

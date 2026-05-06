@@ -1,5 +1,4 @@
 import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
@@ -48,15 +47,11 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   onActionPressed: isTradingEnabled ? () => (context, data) : null,
                   isActionEnabled: isTradingEnabled,
                 ),
-          floatingActionButton: isTradingEnabled
-              ? PlatformInfo.isIOS26OrHigher()
-                    ? _InvestXFloatingButton(
-                        selected: true,
-                        onTap: () {
-                          _showActionSheet(context, data!);
-                        },
-                      )
-                    : null
+          floatingActionButton: isTradingEnabled && PlatformInfo.isIOS26OrHigher()
+              ? _InvestXFloatingButton(
+                  selected: true,
+                  onTap: () => _showActionSheet(context, data!),
+                )
               : null,
         );
       },
@@ -188,7 +183,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     return account?.isInvestContract == true && packageCode.isNotEmpty;
   }
 
-  Future<void> _showActionSheet(BuildContext context, IpsOvervi_showActionSheetewViewData data) async {
+  Future<void> _showActionSheet(BuildContext context, IpsOverviewViewData data) async {
     final AcntBootstrapState bootstrapState = data.bootstrapState;
 
     await showModalBottomSheet<void>(
@@ -281,13 +276,12 @@ class _InvestXFloatingButton extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child:
-
-              // CustomImage(path: Img.trophyBlue, width: 24, height: 37,),
-            Icon(
-              Icons.trending_up_rounded,
-              color: DesignTokens.white,
-              size: 37,
-            ),
+                // CustomImage(path: Img.trophyBlue, width: 24, height: 37,),
+                Icon(
+                  Icons.trending_up_rounded,
+                  color: DesignTokens.white,
+                  size: 37,
+                ),
           ),
         ),
       ),

@@ -44,7 +44,7 @@ class MiniAppBootstrapFlow {
     }
 
     if (bootstrapState.hasAcnt && !bootstrapState.hasIpsAcnt) {
-      return _hasProfileBankAccount(currentUser) ? MiniAppRoutes.questionnaire : MiniAppRoutes.secAcnt;
+      return _hasProfileBankAccount(currentUser) ? MiniAppRoutes.overview : MiniAppRoutes.secAcnt;
     }
 
     return MiniAppRoutes.secAcnt;

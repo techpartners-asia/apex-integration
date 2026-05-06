@@ -10,6 +10,7 @@ class ActionSheet extends StatelessWidget {
   final bool showHandle;
   final Widget? trailing;
   final Color backgroundColor;
+  final double? btmPad;
 
   const ActionSheet({
     super.key,
@@ -20,6 +21,7 @@ class ActionSheet extends StatelessWidget {
     this.showHandle = true,
     this.trailing,
     this.backgroundColor = MiniAppStateColors.bottomSheetBackground,
+    this.btmPad,
   });
 
   @override
@@ -30,9 +32,7 @@ class ActionSheet extends StatelessWidget {
     final double safeBottom = mediaQuery.padding.bottom;
     final bool hasKeyboard = bottomInset > 0;
     final double contentMaxHeight = mediaQuery.size.height * 0.8;
-    final double bottomPad =
-        (hasKeyboard ? bottomInset : safeBottom) +
-        responsive.space(AppSpacing.lg);
+    final double bottomPad = (hasKeyboard ? bottomInset : safeBottom) + responsive.space(AppSpacing.lg);
     final Widget resolvedTrailing =
         trailing ??
         ActionButton(
@@ -42,9 +42,7 @@ class ActionSheet extends StatelessWidget {
         );
 
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: contentMaxHeight + bottomInset,
-      ),
+      constraints: BoxConstraints(maxHeight: contentMaxHeight + bottomInset),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOutCubic,
@@ -52,7 +50,7 @@ class ActionSheet extends StatelessWidget {
           responsive.space(AppSpacing.lg),
           responsive.space(AppSpacing.md),
           responsive.space(AppSpacing.lg),
-          bottomPad,
+          btmPad ?? bottomPad,
         ),
         decoration: BoxDecoration(
           color: backgroundColor,

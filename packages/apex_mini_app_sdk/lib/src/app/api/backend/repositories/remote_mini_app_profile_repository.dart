@@ -29,6 +29,25 @@ class RemoteMiniAppProfileRepository implements MiniAppProfileRepository {
   }
 
   @override
+  Future<List<QuestionnaireQuestion>> getAllGoals() async {
+    try {
+      await _ensureAdminAuthToken(session);
+      final List<QuestionnaireQuestionDto> res = await api.getAllGoals();
+      return res
+          .map((QuestionnaireQuestionDto dto) => dto.toDomain())
+          .toList(growable: false);
+    } catch (error, stackTrace) {
+      logger.onError(
+        'get_all_goals_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+
+      rethrow;
+    }
+  }
+
+  @override
   Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) async {
     try {
       final UserEntityDto currentUser = await _ensureAdminAuthToken(session);
@@ -37,11 +56,7 @@ class RemoteMiniAppProfileRepository implements MiniAppProfileRepository {
         api: api,
         session: session,
         logger: logger,
-        fallbackUser: currentUser.copyWith(
-          account: (currentUser.account ?? const AccountDto()).copyWith(
-            targetGoal: req.targetGoal,
-          ),
-        ),
+        fallbackUser: currentUser,
         operation: 'update_target_goal',
       );
     } catch (error, stackTrace) {

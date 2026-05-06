@@ -111,6 +111,7 @@ class _RechargeBody extends StatelessWidget {
                           RechargeQuantityInput(
                             controller: controller,
                             focusNode: focusNode,
+                            onChanged: context.read<IpsRechargeCubit>().updatePackQty,
                           ),
                           SizedBox(height: responsive.spacing.inlineSpacing),
 
@@ -160,9 +161,7 @@ class _BottomActionArea extends StatelessWidget {
       ),
       child: PrimaryButton(
         label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
-        onPressed: state.canSubmit
-            ? context.read<IpsRechargeCubit>().submit
-            : null,
+        onPressed: state.canSubmit ? context.read<IpsRechargeCubit>().submit : null,
       ),
     );
   }
@@ -179,9 +178,7 @@ class _RechargeResultView extends StatelessWidget {
 
     return CustomScaffold(
       appBarTitle: l10n.ipsPaymentRechargeTitle,
-      children: <Widget>[
-        PaymentResState(res: state.paymentRes!),
-      ],
+      children: <Widget>[PaymentResState(res: state.paymentRes!)],
     );
   }
 }

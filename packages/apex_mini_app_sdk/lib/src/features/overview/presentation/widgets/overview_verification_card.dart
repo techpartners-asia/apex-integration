@@ -15,8 +15,7 @@ class OverviewVerificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final double progress =
-        (viewModel.progressCurrent / viewModel.progressTotal).clamp(0.0, 1.0);
+    final double progress = (viewModel.progressCurrent / viewModel.progressTotal).clamp(0.0, 1.0);
 
     return Container(
       padding: EdgeInsets.all(AppSpacing.xl),

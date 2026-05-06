@@ -5,6 +5,9 @@ class QuestionnaireOption {
   final int? scoreValue;
   final String? answerType;
   final int? orderNo;
+  final double? amount;
+  final String? createdAt;
+  final String? updatedAt;
 
   const QuestionnaireOption({
     required this.id,
@@ -13,5 +16,8 @@ class QuestionnaireOption {
     this.scoreValue,
     this.answerType,
     this.orderNo,
+    this.amount,
+    this.createdAt,
+    this.updatedAt,
   });
 }
