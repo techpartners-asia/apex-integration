@@ -2,7 +2,7 @@
 
 Mini App SDK-ийн цөм контракт, модель, валидацийн логик.
 
-## Энэ багц юу эзэмшдэг вэ
+## Энэ юу байдаг вэ
 
  `MiniAppModule`, `MiniAppRouteSpec`
  `MiniAppLaunchReq`, `MiniAppLaunchRes`
@@ -17,7 +17,7 @@ Mini App SDK-ийн цөм контракт, модель, валидацийн 
 validation, payment req/res model зэрэг SDK-д үнэхээр хэрэгтэй pure Dart
 контрактуудыг л хадгална.
 
-## Валидацийн дүрмүүд
+## Validation дүрмүүд
 
  module `displayName` болон `initialRoute` хоосон байж болохгүй
  route жагсаалт хоосон байж болохгүй

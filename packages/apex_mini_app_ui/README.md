@@ -1,8 +1,8 @@
 # mini_app_ui
 
-`_mini_app_core` дээр суурилсан Flutter runtime багц.
+`_mini_app_core` дээр суурилсан Flutter runtime.
 
-## Энэ багц юу эзэмшдэг вэ
+## Энд юу байдаг вэ
 
  `UiMiniAppModule`
  `MiniAppSdk`
@@ -17,7 +17,7 @@
 `DefaultMiniAppHostController`:
 
  module бүртгэх/lookup хийх
- route валидаци хийх
+ route validate хийх
  Navigator ашиглан launch хийх
  `MiniAppLaunchRes` буцаах
 

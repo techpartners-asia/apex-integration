@@ -79,9 +79,7 @@ class MiniAppPaymentExecutor {
       hostResult = await walletPaymentHandler(request).timeout(
         paymentTimeout,
         onTimeout: () => MiniAppPaymentRes.timedOut(
-          metadata: <String, Object?>{
-            'messageKey': hostResponseTimedOutMessageKey,
-          },
+          metadata: <String, Object?>{'messageKey': hostResponseTimedOutMessageKey},
           isTransaction: invoiceRequest.isTransaction,
         ),
       );

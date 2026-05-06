@@ -10,3 +10,20 @@ This package is not the product SDK.It demonstrates the intended partner integra
  open the single `investX` mini app entry flow directly
 
 The example does not provide DAN/KYC/session/region gating and does not provide invoice creation logic from the host side.
+
+## integration
+
+```dart
+final sdk = MiniAppSdk(
+    config: MiniAppSdkConfig(
+        paymentHandler: (String invoiceId, {double? amount}) async {
+            return hostWalletPay(invoiceId, amount: amount);
+        },
+    ),
+);
+
+await sdk.launchRoute(
+    context,
+    route: MiniAppRoutes.investX,
+);
+```

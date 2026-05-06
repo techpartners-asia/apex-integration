@@ -74,10 +74,8 @@ class LauncherHomePage extends StatelessWidget {
 
   String toSafeUserMessage(MiniAppLaunchRes res) {
     return switch (res.errorCode) {
-      MiniAppLaunchErrorCode.routeNotFound =>
-        'Сонгосон дэлгэц нээгдэх боломжгүй байна.',
-      MiniAppLaunchErrorCode.invalidReq =>
-        'Илгээсэн хүсэлт буруу форматтай байна.',
+      MiniAppLaunchErrorCode.routeNotFound => 'Сонгосон дэлгэц нээгдэх боломжгүй байна.',
+      MiniAppLaunchErrorCode.invalidReq => 'Илгээсэн хүсэлт буруу форматтай байна.',
       _ => 'Системийн алдаа гарлаа. Дараа дахин оролдоно уу.',
     };
   }
@@ -161,14 +159,14 @@ class HeroCard extends StatelessWidget {
 }
 
 class DetailsCard extends StatelessWidget {
+  final MiniAppSdk sdk;
+  final VoidCallback onLaunchMiniApp;
+
   const DetailsCard({
     super.key,
     required this.sdk,
     required this.onLaunchMiniApp,
   });
-
-  final MiniAppSdk sdk;
-  final VoidCallback onLaunchMiniApp;
 
   @override
   Widget build(BuildContext context) {
