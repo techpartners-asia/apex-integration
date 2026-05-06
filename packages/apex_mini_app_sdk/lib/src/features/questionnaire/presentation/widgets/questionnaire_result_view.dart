@@ -12,6 +12,8 @@ class QuestionnaireResultView extends StatelessWidget {
     final l10n = context.l10n;
     final responsive = context.responsive;
 
+    res.showRecomended = false;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[

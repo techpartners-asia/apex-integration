@@ -7,6 +7,7 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
   final SdkBackendConfig config;
   final MiniAppSessionController session;
   final FiBomInstRepository fiBomInstRepository;
+  final MiniAppUserDataSourceMode userDataSourceMode;
   final TimedMemoryCache<GetSecuritiesAcntListResDto> _secAcntListCache;
 
   String? _secAcntListCacheScope;
@@ -16,6 +17,7 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
     required this.config,
     required this.session,
     required this.fiBomInstRepository,
+    this.userDataSourceMode = MiniAppUserDataSourceMode.contract,
     TimedMemoryCache<GetSecuritiesAcntListResDto>? secAcntListCache,
   }) : _secAcntListCache =
            secAcntListCache ??
@@ -42,32 +44,43 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
       _secAcntListCacheScope = cacheScope;
     }
 
-    final GetSecuritiesAcntListResDto secAcntList = await _secAcntListCache.getOrLoad(
-      () async {
-        await session.ensureLoginSession();
-        return api.getSecuritiesAcntList(
-          GetSecuritiesAcntListApiReq(
-            registerCode: registerCode.isNotNullOrEmpty ? registerCode : LoginSessionContract.registerNo,
-            mobile: phone,
-            acnts: bootstrap.secAcntCode == null ? const <String>[] : <String>[bootstrap.secAcntCode!],
-            srcFiCode: runtime.defaultSrcFiCode,
-          ),
+    final GetSecuritiesAcntListResDto secAcntList = await _secAcntListCache
+        .getOrLoad(
+          () async {
+            await session.ensureLoginSession();
+            return api.getSecuritiesAcntList(
+              GetSecuritiesAcntListApiReq(
+                registerCode: registerCode.isNotNullOrEmpty
+                    ? registerCode
+                    : ResolvedUserIdentity.resolveRegisterNo(
+                        mode: userDataSourceMode,
+                        user: user,
+                      ),
+                mobile: phone,
+                acnts: bootstrap.secAcntCode == null
+                    ? const <String>[]
+                    : <String>[bootstrap.secAcntCode!],
+                srcFiCode: runtime.defaultSrcFiCode,
+              ),
+            );
+          },
+          forceRefresh: forceRefresh,
         );
-      },
-      forceRefresh: forceRefresh,
-    );
 
     return AcntBootstrapState(response: secAcntList);
   }
 
   @override
-  Future<AcntBootstrapState> getSecAcntBalanceState({required AcntBootstrapState currentState}) async {
+  Future<AcntBootstrapState> getSecAcntBalanceState({
+    required AcntBootstrapState currentState,
+  }) async {
     final SdkRuntimeConfig runtime = config.runtime;
 
     await session.ensureLoginSession();
-    final GetSecuritiesAcntListResDto balanceState = await api.getSecAcntBalState(
-      GetSecAcntBalApiReq(srcFiCode: runtime.defaultSrcFiCode, flag: 3),
-    );
+    final GetSecuritiesAcntListResDto balanceState = await api
+        .getSecAcntBalState(
+          GetSecAcntBalApiReq(srcFiCode: runtime.defaultSrcFiCode, flag: 3),
+        );
 
     return currentState.copyWithBalanceState(balanceState);
   }
@@ -82,7 +95,8 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
     final String? enteredBankCode = _normalizedValue(personalInfo?.bankCode);
     final String? enteredBankLabel = _normalizedValue(personalInfo?.bankLabel);
     await session.ensureLoginSession();
-    final FiBomInstDto fiBomInst = await fiBomInstRepository.getDefaultFiBomInst();
+    final FiBomInstDto fiBomInst = await fiBomInstRepository
+        .getDefaultFiBomInst();
 
     final AddSecuritiesAcntResDto response = await api.addSecuritiesAcntReq(
       AddSecuritiesAcntApiReq(

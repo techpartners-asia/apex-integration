@@ -1,6 +1,11 @@
 part of '../overview_home_tab.dart';
 
 class OverviewPackRecommendationView extends StatelessWidget {
+  final AcntBootstrapState data;
+  final UserEntityDto? user;
+  final List<IpsPack> packs;
+  final RefreshCallback? onRefresh;
+
   const OverviewPackRecommendationView({
     super.key,
     required this.data,
@@ -9,16 +14,12 @@ class OverviewPackRecommendationView extends StatelessWidget {
     this.onRefresh,
   });
 
-  final AcntBootstrapState data;
-  final UserEntityDto? user;
-  final List<IpsPack> packs;
-  final RefreshCallback? onRefresh;
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final responsive = context.responsive;
     final String displayName = user?.displayName ?? '';
+    // final IpsPack recommendedPack = packs.firstWhere((el) => el.isRecommended == 1, orElse: () => packs.first);
 
     final Widget scrollView = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -35,7 +36,7 @@ class OverviewPackRecommendationView extends StatelessWidget {
           packs.length,
           (int index) => Padding(
             padding: EdgeInsets.only(
-              bottom: index == packs.length - 1 ? 0 : responsive.dp(18),
+              bottom: responsive.dp(18),
             ),
             child: _PackRecommendationCard(
               pack: packs[index],
@@ -115,13 +116,13 @@ class _PackRecommendationGreeting extends StatelessWidget {
 }
 
 class _PackRecommendationCard extends StatelessWidget {
+  final IpsPack pack;
+  final int stackIndex;
+
   const _PackRecommendationCard({
     required this.pack,
     required this.stackIndex,
   });
-
-  final IpsPack pack;
-  final int stackIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -236,9 +237,7 @@ class _PackRecommendationHero extends StatelessWidget {
             right: responsive.dp(18),
             top: responsive.dp(12),
             child: _PackRecommendationStackPlate(
-              color: _isWarmVariant
-                  ? const Color(0x1EE96E96)
-                  : const Color(0x143F7E9F),
+              color: _isWarmVariant ? const Color(0x1EE96E96) : const Color(0x143F7E9F),
             ),
           ),
           Positioned(
@@ -246,9 +245,7 @@ class _PackRecommendationHero extends StatelessWidget {
             right: responsive.dp(10),
             top: responsive.dp(6),
             child: _PackRecommendationStackPlate(
-              color: _isWarmVariant
-                  ? const Color(0x24F59CB5)
-                  : const Color(0x1E5A93AD),
+              color: _isWarmVariant ? const Color(0x24F59CB5) : const Color(0x1E5A93AD),
             ),
           ),
           Positioned.fill(

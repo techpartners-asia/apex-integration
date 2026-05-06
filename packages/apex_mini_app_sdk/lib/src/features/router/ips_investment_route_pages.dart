@@ -56,20 +56,23 @@ Widget buildIpsPackPage(
     route: route,
     service: dependencies.packService,
     missingMessage: l10n.ipsPackMissingService,
-    builder: (service) => BlocProvider<IpsPackSelectionCubit>(
-      create: (BuildContext context) {
-        final IpsPackSelectionCubit cubit = IpsPackSelectionCubit(
-          service: service,
-          l10n: l10n,
-          initialPacks: initialPacks,
-        );
-        if (initialPacks == null) {
-          cubit.load();
-        }
-        return cubit;
-      },
-      child: PackSelectionScreen(
-        questionnaireRes: arguments is QuestionnaireRes ? arguments : null,
+    builder: (service) => RepositoryProvider<IpsDependencies>.value(
+      value: dependencies,
+      child: BlocProvider<IpsPackSelectionCubit>(
+        create: (BuildContext context) {
+          final IpsPackSelectionCubit cubit = IpsPackSelectionCubit(
+            service: service,
+            l10n: l10n,
+            initialPacks: initialPacks,
+          );
+          if (initialPacks == null) {
+            cubit.load();
+          }
+          return cubit;
+        },
+        child: PackSelectionScreen(
+          questionnaireRes: arguments is QuestionnaireRes ? arguments : null,
+        ),
       ),
     ),
   );
@@ -110,18 +113,21 @@ Widget buildIpsContractPage(
     return missingScreen(context, route, l10n.ipsPaymentMissingService);
   }
 
-  return BlocProvider<IpsContractCubit>(
-    create: (BuildContext context) => IpsContractCubit(
-      contractService: contractService,
-      bootstrapService: bootstrapService,
-      portfolioService: portfolioService,
-      ordersService: ordersService,
-      paymentExecutor: dependencies.paymentExecutor,
-      payload: payload,
-      l10n: l10n,
-      logger: dependencies.logger,
+  return RepositoryProvider<IpsDependencies>.value(
+    value: dependencies,
+    child: BlocProvider<IpsContractCubit>(
+      create: (BuildContext context) => IpsContractCubit(
+        contractService: contractService,
+        bootstrapService: bootstrapService,
+        portfolioService: portfolioService,
+        ordersService: ordersService,
+        paymentExecutor: dependencies.paymentExecutor,
+        payload: payload,
+        l10n: l10n,
+        logger: dependencies.logger,
+      ),
+      child: const ContractScreen(),
     ),
-    child: const ContractScreen(),
   );
 }
 
@@ -185,6 +191,7 @@ Widget buildIpsRechargePage(
       create: (BuildContext context) => IpsRechargeCubit(
         service: service,
         portfolioService: dependencies.portfolioService,
+        bootstrapService: dependencies.bootstrapService,
         paymentExecutor: dependencies.paymentExecutor,
         l10n: l10n,
         logger: dependencies.logger,
@@ -206,6 +213,7 @@ Future<IpsRechargeState?> showIpsRechargeBottomSheet(
     context,
     ordersService: ordersService,
     portfolioService: dependencies.portfolioService,
+    bootstrapService: dependencies.bootstrapService,
     paymentExecutor: dependencies.paymentExecutor,
     l10n: l10n,
     logger: dependencies.logger,

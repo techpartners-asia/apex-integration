@@ -11,6 +11,8 @@ class ContractSetupScreen extends StatefulWidget {
 }
 
 class _ContractSetupScreenState extends State<ContractSetupScreen> {
+  bool _didOpenRechargeSheet = false;
+
   @override
   void initState() {
     super.initState();
@@ -22,24 +24,40 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
     });
   }
 
+  Future<void> _openRechargeBottomSheetAfterReady(BuildContext context) async {
+    final IpsDependencies dependencies = context.read<IpsDependencies>();
+    final SdkLocalizations l10n = context.l10n;
+
+    final IpsRechargeState? result = await showIpsRechargeBottomSheet(
+      context,
+      dependencies: dependencies,
+      l10n: l10n,
+    );
+
+    if (!context.mounted || result == null) return;
+
+    final MiniAppPaymentStatus? status = result.paymentRes?.status;
+    final bool didSucceed = status == MiniAppPaymentStatus.success || status == MiniAppPaymentStatus.paid;
+    if (!didSucceed) return;
+
+    await replaceIpsRoute(context, route: MiniAppRoutes.overview);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<IpsContractCubit, IpsContractState>(
-      listenWhen: (IpsContractState previous, IpsContractState current) =>
-          previous.isReady != current.isReady && current.isReady,
-      listener: (BuildContext context, IpsContractState state) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute<void>(
-            builder: (_) => const ContractPurchaseScreen(),
-          ),
-        );
+      listenWhen: (IpsContractState previous, IpsContractState current) => previous.isReady != current.isReady && current.isReady,
+      listener: (BuildContext context, IpsContractState state) async {
+        if (_didOpenRechargeSheet) {
+          return;
+        }
+        _didOpenRechargeSheet = true;
+        await _openRechargeBottomSheetAfterReady(context);
       },
       child: BlocBuilder<IpsContractCubit, IpsContractState>(
         builder: (BuildContext context, IpsContractState state) {
           final l10n = context.l10n;
-          final bool showLoading =
-              state.isInitializing ||
-              (!state.isReady && state.errorMessage == null);
+          final bool showLoading = state.isInitializing || (!state.isReady && state.errorMessage == null);
 
           return CustomScaffold(
             showBackButton: true,

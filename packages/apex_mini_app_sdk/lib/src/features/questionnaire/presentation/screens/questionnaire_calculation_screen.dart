@@ -33,6 +33,7 @@ class _QuestionnaireCalculationScreenState extends State<QuestionnaireCalculatio
     }
 
     _isRouting = true;
+    res.showRecomended = true;
     await replaceIpsRoute(context, route: MiniAppRoutes.packs, arguments: res);
   }
 

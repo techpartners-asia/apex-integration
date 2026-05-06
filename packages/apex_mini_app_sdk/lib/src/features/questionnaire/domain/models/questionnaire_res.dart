@@ -3,11 +3,13 @@ class QuestionnaireRes {
   final String? srcFiCode;
   final String? summary;
   final String? customerCode;
+  bool showRecomended;
 
-  const QuestionnaireRes({
+  QuestionnaireRes({
     required this.score,
     this.srcFiCode,
     this.summary,
     this.customerCode,
+    required this.showRecomended,
   });
 }

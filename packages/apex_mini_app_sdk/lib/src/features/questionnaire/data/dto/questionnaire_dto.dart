@@ -37,7 +37,7 @@ class QuestionnaireOptionDto {
   factory QuestionnaireOptionDto.fromQuestionApiJson(Map<String, Object?> json) {
     final String id = ApiParser.asNullableString(json['id']) ?? ApiParser.asNullableString(json['answerId']) ?? '';
     final double? amount = ApiParser.asNullableDouble(json['amount']);
-    final String label = ApiParser.asNullableString(json['title']) ?? ApiParser.asNullableString(json['name']) ?? (amount?.toString() ?? '');
+    final String label = ApiParser.asNullableString(json['title']) ?? ApiParser.asNullableString(json['name']) ?? ApiParser.asNullableString(json['answer']) ?? (amount?.toString() ?? '');
 
     return QuestionnaireOptionDto(
       id: id,
@@ -178,11 +178,12 @@ class QuestionnaireResDto {
   final String? customerCode;
   final String? summary;
 
-  QuestionnaireRes toDomain() {
+  QuestionnaireRes toDomain(bool showRecomended) {
     return QuestionnaireRes(
       score: score,
       customerCode: customerCode,
       summary: summary,
+      showRecomended: showRecomended,
     );
   }
 }

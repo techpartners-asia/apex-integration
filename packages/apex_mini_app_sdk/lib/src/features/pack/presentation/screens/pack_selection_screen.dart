@@ -47,7 +47,7 @@ class PackSelectionScreen extends StatelessWidget {
                   )
                 else
                   PackSelectionContent(
-                    packs: packs,
+                    packs: questionnaireRes!.showRecomended ? packs.where((el) => el.isRecommended == 1).toList() : packs,
                     questionnaireRes: questionnaireRes,
                   ),
               ],
@@ -129,8 +129,23 @@ class PackSelectionContent extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    onTap: () {
-                      launchIpsRoute(
+                    onTap: () async {
+                      // final IpsDependencies dependencies = context.read<IpsDependencies>();
+                      // final SdkLocalizations l10n = context.l10n;
+                      //
+                      // final IpsRechargeState? result = await showIpsRechargeBottomSheet(
+                      //   context,
+                      //   dependencies: dependencies,
+                      //   l10n: l10n,
+                      // );
+
+                      // if (!context.mounted || result == null) return;
+
+                      // final MiniAppPaymentStatus? status = result.paymentRes?.status;
+                      // final bool didSucceed = status == MiniAppPaymentStatus.success || status == MiniAppPaymentStatus.paid;
+                      // if (!didSucceed) return;
+
+                      await replaceIpsRoute(
                         context,
                         route: MiniAppRoutes.contract,
                         arguments: ContractPayload(
@@ -155,8 +170,7 @@ List<Widget> buildPackBenefits(BuildContext context, IpsPack pack) {
     if (pack.bondPercent >= pack.stockPercent) l10n.ipsPackBenefitStableYield,
     if (pack.stockPercent > 0) l10n.ipsPackBenefitStockGrowth,
     if (pack.assetPercent > 0) l10n.ipsPackBenefitBalancedStructure,
-    if (pack.bondPercent == 0 && pack.assetPercent == 0)
-      l10n.ipsPackBenefitGrowthFocused,
+    if (pack.bondPercent == 0 && pack.assetPercent == 0) l10n.ipsPackBenefitGrowthFocused,
   ];
 
   return points

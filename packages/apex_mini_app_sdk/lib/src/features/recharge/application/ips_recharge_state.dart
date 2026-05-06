@@ -5,6 +5,7 @@ class IpsRechargeState {
   final double unitPrice;
   final double serviceFee;
   final String currency;
+  final bool isPricingLoading;
   final bool isSubmitting;
   final MiniAppPaymentRes? paymentRes;
   final PortfolioOverview? refreshedOverview;
@@ -15,6 +16,7 @@ class IpsRechargeState {
     this.unitPrice = 0,
     this.serviceFee = 0,
     this.currency = 'MNT',
+    this.isPricingLoading = false,
     this.isSubmitting = false,
     this.paymentRes,
     this.refreshedOverview,
@@ -23,17 +25,20 @@ class IpsRechargeState {
 
   static const Object sentinel = Object();
 
-  bool get canSubmit => packQty > 0 && !isSubmitting;
+  bool get canSubmit =>
+      packQty > 0 && hasPricing && !isPricingLoading && !isSubmitting;
 
   bool get hasPricing => unitPrice > 0;
 
-  double get totalPayable => packQty <= 0 ? 0 : (packQty * unitPrice) + serviceFee;
+  double get totalPayable =>
+      packQty <= 0 ? 0 : (packQty * unitPrice) + serviceFee;
 
   IpsRechargeState copyWith({
     int? packQty,
     double? unitPrice,
     double? serviceFee,
     String? currency,
+    bool? isPricingLoading,
     bool? isSubmitting,
     Object? paymentRes = sentinel,
     Object? refreshedOverview = sentinel,
@@ -44,10 +49,17 @@ class IpsRechargeState {
       unitPrice: unitPrice ?? this.unitPrice,
       serviceFee: serviceFee ?? this.serviceFee,
       currency: currency ?? this.currency,
+      isPricingLoading: isPricingLoading ?? this.isPricingLoading,
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      paymentRes: paymentRes == sentinel ? this.paymentRes : paymentRes as MiniAppPaymentRes?,
-      refreshedOverview: refreshedOverview == sentinel ? this.refreshedOverview : refreshedOverview as PortfolioOverview?,
-      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
+      paymentRes: paymentRes == sentinel
+          ? this.paymentRes
+          : paymentRes as MiniAppPaymentRes?,
+      refreshedOverview: refreshedOverview == sentinel
+          ? this.refreshedOverview
+          : refreshedOverview as PortfolioOverview?,
+      errorMessage: errorMessage == sentinel
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 }

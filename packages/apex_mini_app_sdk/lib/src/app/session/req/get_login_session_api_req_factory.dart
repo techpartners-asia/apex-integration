@@ -3,22 +3,27 @@ import 'package:mini_app_sdk/mini_app_sdk.dart';
 class GetLoginSessionApiReqFactory {
   const GetLoginSessionApiReqFactory._();
 
-  ///Temporary req contract for getLoginSession().
-  ///
-  ///Remove this factory once the backend is ready to accept the real current
-  ///user payload dynamically.
-  static GetLoginSessionApiReq temporary({required String admSession}) {
+  static GetLoginSessionApiReq build({
+    required String admSession,
+    required MiniAppUserDataSourceMode userDataSourceMode,
+    UserEntityDto? user,
+  }) {
+    final ResolvedUserIdentity identity = ResolvedUserIdentity.resolve(
+      mode: userDataSourceMode,
+      user: user,
+    );
+
     return GetLoginSessionApiReq(
       fiCode: StaticApiConfig.defaultFiCode,
       admSession: admSession,
-      registerNo: LoginSessionContract.registerNo,
-      firstName: LoginSessionContract.firstName,
-      lastName: LoginSessionContract.lastName,
-      familyName: LoginSessionContract.familyName,
-      sexCode: LoginSessionContract.sexCode,
-      birthDate: LoginSessionContract.birthDate,
-      mobile: LoginSessionContract.mobile,
-      email: LoginSessionContract.email,
+      registerNo: identity.registerNo,
+      firstName: identity.firstName,
+      lastName: identity.lastName,
+      familyName: identity.familyName,
+      sexCode: identity.sexCode,
+      birthDate: identity.birthDate,
+      mobile: identity.mobile,
+      email: identity.email,
     );
   }
 }

@@ -7,17 +7,21 @@ abstract interface class LoginSessionRepository {
 class RemoteLoginSessionRepository implements LoginSessionRepository {
   final LoginSessionBackendApi api;
   final SdkRuntimeConfig runtimeConfig;
+  final MiniAppUserDataSourceMode userDataSourceMode;
 
   const RemoteLoginSessionRepository({
     required this.api,
     required this.runtimeConfig,
+    this.userDataSourceMode = MiniAppUserDataSourceMode.contract,
   });
 
   @override
   Future<LoginSession> getLoginSession(UserEntityDto user) async {
     final LoginSessionResponseDto response = await api.getLoginSession(
-      GetLoginSessionApiReqFactory.temporary(
+      GetLoginSessionApiReqFactory.build(
         admSession: runtimeConfig.neSession!,
+        userDataSourceMode: userDataSourceMode,
+        user: user,
       ),
     );
 

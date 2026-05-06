@@ -30,6 +30,59 @@ void main() {
     expect(cubit.state.serviceFee, 1500);
   });
 
+  test(
+    'loadPricing resolves bootstrap-backed portfolio context when available',
+    () async {
+      final _FakePortfolioService portfolioService = _FakePortfolioService(
+        overview: const PortfolioOverview(
+          currency: 'MNT',
+          packAmount: 90000,
+          packFee: 1000,
+        ),
+      );
+      final IpsRechargeCubit cubit = IpsRechargeCubit(
+        service: _FakeOrdersService(),
+        portfolioService: portfolioService,
+        bootstrapService: _FakeBootstrapService(
+          state: const AcntBootstrapState(
+            response: GetSecuritiesAcntListResDto(
+              detail: GetSecuritiesAcntListDetailDto(
+                hasAcnt: true,
+                hasIpsAcnt: true,
+                brokerCode: 'DETAIL-BROKER',
+              ),
+              acnts: <GetSecAcntListAccountDto>[
+                GetSecAcntListAccountDto(
+                  flag: 3,
+                  brokerId: 'BROKER-1',
+                ),
+                GetSecAcntListAccountDto(
+                  flag: 12,
+                  acntId: 77,
+                  statementMaxDay: '7',
+                ),
+              ],
+              stlAcnts: <GetSecAcntSettlementAccountDto>[],
+              responseCode: 0,
+            ),
+          ),
+        ),
+        paymentExecutor: _FakePaymentExecutor(
+          result: const MiniAppPaymentRes.success(isTransaction: true),
+        ),
+        l10n: lookupSdkLocalizations(const Locale('en')),
+      );
+
+      await cubit.loadPricing();
+
+      expect(portfolioService.lastContext?.normalizedBrokerId, 'BROKER-1');
+      expect(portfolioService.lastContext?.normalizedCasaAcntId, 77);
+      expect(cubit.state.unitPrice, 90000);
+      expect(cubit.state.serviceFee, 1000);
+      expect(cubit.state.canSubmit, isFalse);
+    },
+  );
+
   test('submit refreshes IPS balance after charge success', () async {
     final _FakeOrdersService ordersService = _FakeOrdersService();
     final _FakePortfolioService portfolioService = _FakePortfolioService(
@@ -94,12 +147,14 @@ class _FakePortfolioService implements PortfolioService {
   final PortfolioOverview overview;
   int getIpsBalanceCallCount = 0;
   int getOverviewCallCount = 0;
+  SdkPortfolioContext? lastContext;
 
   @override
   Future<PortfolioOverview> getIpsBalance({
     SdkPortfolioContext? context,
   }) async {
     getIpsBalanceCallCount += 1;
+    lastContext = context;
     return overview;
   }
 
@@ -126,6 +181,33 @@ class _FakePortfolioService implements PortfolioService {
     SdkPortfolioContext? context,
   }) {
     throw UnimplementedError();
+  }
+}
+
+class _FakeBootstrapService implements InvestmentBootstrapService {
+  _FakeBootstrapService({required this.state});
+
+  final AcntBootstrapState state;
+
+  @override
+  Future<SecAcntRequestResult> addSecuritiesAcntReq({
+    SecAcntPersonalInfoData? personalInfo,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AcntBootstrapState> getSecAcntBalanceState({
+    required AcntBootstrapState currentState,
+  }) async {
+    return state;
+  }
+
+  @override
+  Future<AcntBootstrapState> getSecAcntListState({
+    bool forceRefresh = false,
+  }) async {
+    return state;
   }
 }
 

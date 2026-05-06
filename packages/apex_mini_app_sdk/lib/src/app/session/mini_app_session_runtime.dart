@@ -20,6 +20,8 @@ class MiniAppSessionRuntime {
 MiniAppSessionRuntime buildMiniAppSessionRuntime({
   String? initialUserToken,
   MiniAppLogger logger = const DebugMiniAppLogger(),
+  MiniAppUserDataSourceMode userDataSourceMode =
+      MiniAppUserDataSourceMode.contract,
 }) {
   final SdkBackendConfig backendConfig = SdkBackendConfig.fromConfig();
   final MiniAppSessionStore store = MiniAppSessionStore(
@@ -68,6 +70,7 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
         runtimeConfig: backendConfig.runtime,
       ),
       runtimeConfig: backendConfig.runtime,
+      userDataSourceMode: userDataSourceMode,
     ),
     currentUserTokenProvider: currentUserTokenProvider,
     protectedTokenProvider: protectedTokenProvider,

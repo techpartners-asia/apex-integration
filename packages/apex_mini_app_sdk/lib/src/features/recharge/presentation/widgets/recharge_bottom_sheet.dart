@@ -12,6 +12,8 @@ Future<IpsRechargeState?> showRechargeBottomSheet(
   BuildContext context, {
   required OrdersService ordersService,
   PortfolioService? portfolioService,
+  InvestmentBootstrapService? bootstrapService,
+  SdkPortfolioContext? pricingContext,
   required MiniAppPaymentExecutor paymentExecutor,
   required SdkLocalizations l10n,
   MiniAppLogger logger = const SilentMiniAppLogger(),
@@ -21,12 +23,16 @@ Future<IpsRechargeState?> showRechargeBottomSheet(
     isScrollControlled: true,
     requestFocus: false,
     useSafeArea: true,
+    isDismissible: false,
+    enableDrag: false,
     backgroundColor: Colors.transparent,
     builder: (BuildContext sheetContext) {
       return BlocProvider<IpsRechargeCubit>(
         create: (_) => IpsRechargeCubit(
           service: ordersService,
           portfolioService: portfolioService,
+          bootstrapService: bootstrapService,
+          pricingContext: pricingContext,
           paymentExecutor: paymentExecutor,
           l10n: l10n,
           logger: logger,
@@ -120,9 +126,19 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     // final bool hasKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
-      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) => prev.paymentRes != curr.paymentRes && curr.paymentRes != null,
+      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
+          (prev.paymentRes != curr.paymentRes && curr.paymentRes != null) ||
+          prev.errorMessage != curr.errorMessage,
       listener: (BuildContext context, IpsRechargeState state) {
-        Navigator.of(context).pop(state);
+        if (state.paymentRes != null) {
+          Navigator.of(context).pop(state);
+          return;
+        }
+
+        final String? message = state.errorMessage?.trim();
+        if (message != null && message.isNotEmpty) {
+          MiniAppToast.showError(context, message: message);
+        }
       },
       builder: (BuildContext context, IpsRechargeState state) {
         return Theme(
@@ -133,13 +149,15 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
                 title: l10n.ipsPaymentRechargeTitle,
                 showDivider: false,
                 backgroundColor: DesignTokens.softSurface,
-                btmPad: 0 , // MediaQuery.of(context).viewInsets.bottom,
+                btmPad: 0, // MediaQuery.of(context).viewInsets.bottom,
                 child: _RechargeSheetBody(
                   controller: _controller,
                   focusNode: _focusNode,
                   state: state,
                   onRequestFocus: _focusQuantityInput,
-                  onQuantityChanged: context.read<IpsRechargeCubit>().updatePackQty,
+                  onQuantityChanged: context
+                      .read<IpsRechargeCubit>()
+                      .updatePackQty,
                 ),
               );
             },
@@ -220,7 +238,9 @@ class _RechargeSheetBody extends StatelessWidget {
         SizedBox(height: responsive.spacing.sectionSpacing),
         PrimaryButton(
           label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
-          onPressed: state.canSubmit ? context.read<IpsRechargeCubit>().submit : null,
+          onPressed: state.canSubmit
+              ? context.read<IpsRechargeCubit>().submit
+              : null,
         ),
         SizedBox(height: responsive.spacing.inlineSpacing),
       ],

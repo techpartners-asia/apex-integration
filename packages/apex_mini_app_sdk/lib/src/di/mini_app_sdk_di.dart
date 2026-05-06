@@ -6,6 +6,7 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
   final MiniAppSessionRuntime appSession = buildMiniAppSessionRuntime(
     initialUserToken: config.userToken,
     logger: logger,
+    userDataSourceMode: config.userDataSourceMode,
   );
   final MiniAppApiRepository appApi = appSession.appApi;
   final MiniAppPaymentExecutor paymentExecutor = MiniAppPaymentExecutor(
@@ -35,6 +36,7 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
           config: appSession.backendConfig,
           session: appSession.controller,
           fiBomInstRepository: fiBomInstRepository,
+          userDataSourceMode: config.userDataSourceMode,
         );
   final QuestionnaireService? questionnaireService = ipsApi == null
       ? null

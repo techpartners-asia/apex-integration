@@ -22,9 +22,7 @@ class ApiQuestionnaireService implements QuestionnaireService {
            );
 
   @override
-  Future<QuestionnaireRes> calculateScore(
-    List<QuestionnaireAnswer> answers,
-  ) async {
+  Future<QuestionnaireRes> calculateScore(List<QuestionnaireAnswer> answers) async {
     await session.ensureLoginSession();
 
     final QuestionnaireResDto res = await api.calculateScore(
@@ -32,7 +30,7 @@ class ApiQuestionnaireService implements QuestionnaireService {
       srcFiCode: config.runtime.defaultSrcFiCode,
     );
 
-    return res.toDomain();
+    return res.toDomain(true);
   }
 
   @override
