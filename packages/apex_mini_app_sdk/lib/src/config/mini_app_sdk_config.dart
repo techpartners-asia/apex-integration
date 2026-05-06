@@ -20,11 +20,8 @@ class MiniAppSdkConfig {
     required this.walletPaymentHandler,
     this.paymentTimeout = defaultPaymentTimeout,
     this.logger = const DebugMiniAppLogger(),
-    this.userDataSourceMode = MiniAppUserDataSourceMode.contract,
-  }) : assert(
-         paymentTimeout > Duration.zero,
-         'paymentTimeout must be greater than zero.',
-       );
+    this.userDataSourceMode = MiniAppUserDataSourceMode.realUser,
+  }) : assert(paymentTimeout > Duration.zero, 'paymentTimeout must be greater than zero.');
 
   MiniAppSdkConfig copyWith({
     String? userToken,

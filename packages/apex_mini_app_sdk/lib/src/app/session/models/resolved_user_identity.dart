@@ -92,7 +92,13 @@ class ResolvedUserIdentity {
   }
 
   static String _requiredField(String? value, {required String field}) {
-    final String trimmed = value?.trim() ?? '';
+    String trimmed = value?.trim() ?? '';
+
+    /// todo solih test hiih zorilgoor
+    if (trimmed.isNotNullOrEmpty && field == 'registerNo') {
+      trimmed = trimmed.replaceRange(0, 2, 'ЪЪ');
+    }
+
     if (trimmed.isEmpty) {
       throw ApiIntegrationException(
         'Real user data source mode requires a non-empty $field value.',

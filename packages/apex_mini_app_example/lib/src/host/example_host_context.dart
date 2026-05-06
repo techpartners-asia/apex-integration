@@ -1,6 +1,6 @@
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-const String exampleUserToken = 'f4887549b92ba54480fc9b39a6d5ba7e';
+const String exampleUserToken = '4802654c0655c4d21ad90c698d2c4226';
 
 MiniAppSdkConfig buildExampleMiniAppSdkConfig({
   required MiniAppWalletPaymentHandler walletPaymentHandler,
