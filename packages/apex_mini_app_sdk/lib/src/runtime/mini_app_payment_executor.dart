@@ -6,6 +6,7 @@ class MiniAppPaymentExecutor {
   static const String invalidInvoiceMessageKey = 'invalid_invoice_response';
   static const String hostResponseTimedOutMessageKey = 'host_response_timed_out';
   static const String hostCallbackFailedMessageKey = 'host_callback_failed';
+  static const String paymentCallbackFailedMessageKey = 'payment_callback_failed';
 
   final MiniAppPaymentsRepository appApi;
   final MiniAppWalletPaymentHandler walletPaymentHandler;
@@ -35,7 +36,9 @@ class MiniAppPaymentExecutor {
       return MiniAppPaymentRes.failed(
         message: backendMessage,
         paymentReference: invoiceRequest.refId,
-        metadata: const <String, Object?>{'messageKey': invoiceCreateFailedMessageKey},
+        metadata: const <String, Object?>{
+          'messageKey': invoiceCreateFailedMessageKey,
+        },
         failure: MiniAppFailure(
           code: 'invoice_create_failed',
           message: backendMessage ?? 'invoice_create_failed',
@@ -71,15 +74,17 @@ class MiniAppPaymentExecutor {
       isTransaction: invoiceRequest.isTransaction,
     );
 
+    final MiniAppPaymentRes hostResult;
     try {
-      final MiniAppPaymentRes hostResult = await walletPaymentHandler(request).timeout(
+      hostResult = await walletPaymentHandler(request).timeout(
         paymentTimeout,
         onTimeout: () => MiniAppPaymentRes.timedOut(
-          metadata: <String, Object?>{'messageKey': hostResponseTimedOutMessageKey},
+          metadata: <String, Object?>{
+            'messageKey': hostResponseTimedOutMessageKey,
+          },
           isTransaction: invoiceRequest.isTransaction,
         ),
       );
-      return _attachPaymentContext(hostResult, request: request);
     } catch (error, stackTrace) {
       logger.onError(
         'host_wallet_callback_failed',
@@ -92,7 +97,9 @@ class MiniAppPaymentExecutor {
       );
       return _attachPaymentContext(
         MiniAppPaymentRes.failed(
-          metadata: const <String, Object?>{'messageKey': hostCallbackFailedMessageKey},
+          metadata: const <String, Object?>{
+            'messageKey': hostCallbackFailedMessageKey,
+          },
           failure: MiniAppFailure(
             code: 'host_payment_exception',
             message: 'host_payment_exception',
@@ -102,9 +109,55 @@ class MiniAppPaymentExecutor {
         request: request,
       );
     }
+
+    final MiniAppPaymentRes result = _attachPaymentContext(
+      hostResult,
+      request: request,
+    );
+    if (result.status != MiniAppPaymentStatus.success) {
+      return result;
+    }
+
+    try {
+      await appApi.getPaymentCallback(invoiceId: request.invoiceId);
+      return result;
+    } catch (error, stackTrace) {
+      logger.onError(
+        'payment_callback_failed_after_wallet_success',
+        error: error,
+        stackTrace: stackTrace,
+        data: <String, Object?>{
+          'invoiceId': request.invoiceId,
+          'flow': request.flow.name,
+        },
+      );
+
+      final String? backendMessage = switch (error) {
+        ApiException(:final String message) when message.trim().isNotEmpty => message.trim(),
+        _ => null,
+      };
+
+      return _attachPaymentContext(
+        MiniAppPaymentRes.failed(
+          message: backendMessage,
+          metadata: const <String, Object?>{
+            'messageKey': paymentCallbackFailedMessageKey,
+          },
+          failure: MiniAppFailure(
+            code: 'payment_callback_failed',
+            message: backendMessage ?? 'payment_callback_failed',
+          ),
+          isTransaction: invoiceRequest.isTransaction,
+        ),
+        request: request,
+      );
+    }
   }
 
-  MiniAppPaymentRes _attachPaymentContext(MiniAppPaymentRes result, {required MiniAppWalletPaymentRequest request}) {
+  MiniAppPaymentRes _attachPaymentContext(
+    MiniAppPaymentRes result, {
+    required MiniAppWalletPaymentRequest request,
+  }) {
     final Map<String, Object?> metadata = <String, Object?>{
       ...result.metadata,
       'invoiceId': request.invoiceId,
@@ -172,7 +225,10 @@ class MiniAppPaymentExecutor {
           message: result.message,
           transactionId: result.transactionId,
           paymentReference: paymentReference,
-          metadata: <String, Object?>{...metadata, 'originalStatus': MiniAppPaymentStatus.paid.name},
+          metadata: <String, Object?>{
+            ...metadata,
+            'originalStatus': MiniAppPaymentStatus.paid.name,
+          },
           isTransaction: request.isTransaction,
         );
       case MiniAppPaymentStatus.unknown:

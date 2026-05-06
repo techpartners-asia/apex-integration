@@ -32,6 +32,8 @@ String? resolvePaymentResultMessage(
       l10n.ipsPaymentHostResponseTimedOut,
     MiniAppPaymentExecutor.hostCallbackFailedMessageKey =>
       l10n.ipsPaymentHostCallbackFailed,
+    MiniAppPaymentExecutor.paymentCallbackFailedMessageKey =>
+      l10n.ipsPaymentHostCallbackFailed,
     _ => null,
   };
 
