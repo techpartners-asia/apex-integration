@@ -1,12 +1,16 @@
-import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:mini_app_ui/mini_app_ui.dart';
+
+import '../host/apex_mini_app_host_context.dart';
 
 class MiniAppPaymentExecutor {
   static const String invoiceCreateFailedMessageKey = 'invoice_create_failed';
   static const String invalidInvoiceMessageKey = 'invalid_invoice_response';
-  static const String hostResponseTimedOutMessageKey = 'host_response_timed_out';
+  static const String hostResponseTimedOutMessageKey =
+      'host_response_timed_out';
   static const String hostCallbackFailedMessageKey = 'host_callback_failed';
-  static const String paymentCallbackFailedMessageKey = 'payment_callback_failed';
+  static const String paymentCallbackFailedMessageKey =
+      'payment_callback_failed';
 
   final MiniAppPaymentsRepository appApi;
   final MiniAppWalletPaymentHandler walletPaymentHandler;
@@ -29,7 +33,8 @@ class MiniAppPaymentExecutor {
       invoice = await appApi.createInvoice(invoiceRequest);
     } catch (error) {
       final String? backendMessage = switch (error) {
-        ApiException(:final String message) when message.trim().isNotEmpty => message.trim(),
+        ApiException(:final String message) when message.trim().isNotEmpty =>
+          message.trim(),
         _ => null,
       };
 
@@ -79,11 +84,14 @@ class MiniAppPaymentExecutor {
       hostResult = await walletPaymentHandler(request).timeout(
         paymentTimeout,
         onTimeout: () => MiniAppPaymentRes.timedOut(
-          metadata: <String, Object?>{'messageKey': hostResponseTimedOutMessageKey},
+          metadata: <String, Object?>{
+            'messageKey': hostResponseTimedOutMessageKey,
+          },
           isTransaction: invoiceRequest.isTransaction,
         ),
       );
     } catch (error, stackTrace) {
+      ApexMiniAppHostContext.emitError(error, stackTrace);
       logger.onError(
         'host_wallet_callback_failed',
         error: error,
@@ -131,7 +139,8 @@ class MiniAppPaymentExecutor {
       );
 
       final String? backendMessage = switch (error) {
-        ApiException(:final String message) when message.trim().isNotEmpty => message.trim(),
+        ApiException(:final String message) when message.trim().isNotEmpty =>
+          message.trim(),
         _ => null,
       };
 
@@ -167,7 +176,8 @@ class MiniAppPaymentExecutor {
       'externalInvoiceId': request.externalInvoiceId,
       'uuid': request.uuid,
     };
-    final String paymentReference = _normalized(result.paymentReference) ?? request.invoiceId;
+    final String paymentReference =
+        _normalized(result.paymentReference) ?? request.invoiceId;
 
     switch (result.status) {
       case MiniAppPaymentStatus.success:

@@ -34,7 +34,12 @@ class BankSelectorField extends StatelessWidget {
       enabled: enabled,
       errorText: errorText,
       onTap: onTap,
-      trailing: trailing ?? const Icon(Icons.keyboard_arrow_down_rounded, color: DesignTokens.muted),
+      trailing:
+          trailing ??
+          const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: DesignTokens.muted,
+          ),
       child: Row(
         children: <Widget>[
           if (selectedValue != null && selectedValue!.logoUrl.isNotEmpty) ...[
@@ -42,20 +47,27 @@ class BankSelectorField extends StatelessWidget {
               selectedValue?.logoUrl ?? '',
               width: 16,
               height: 16,
-              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                return const Icon(
-                  Icons.apartment,
-                  color: DesignTokens.muted,
-                  size: 20,
-                );
-              },
+              errorBuilder:
+                  (
+                    BuildContext context,
+                    Object exception,
+                    StackTrace? stackTrace,
+                  ) {
+                    return const Icon(
+                      Icons.apartment,
+                      color: DesignTokens.muted,
+                      size: 20,
+                    );
+                  },
             ),
             SizedBox(width: responsive.spacingMd),
           ],
           Expanded(
             child: CustomText(
               value,
-              variant: hasValue ? MiniAppTextVariant.subtitle3 : MiniAppTextVariant.body3,
+              variant: hasValue
+                  ? MiniAppTextVariant.subtitle3
+                  : MiniAppTextVariant.body3,
               color: hasValue ? DesignTokens.ink : DesignTokens.muted,
             ),
           ),

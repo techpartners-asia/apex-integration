@@ -15,8 +15,11 @@ void main() {
       ),
       act: (cubit) => cubit.load(),
       expect: () => <dynamic>[
-        isA<LoadableState<MiniAppBootstrapRes>>()
-            .having((s) => s.isLoading, 'isLoading', true),
+        isA<LoadableState<MiniAppBootstrapRes>>().having(
+          (s) => s.isLoading,
+          'isLoading',
+          true,
+        ),
         isA<LoadableState<MiniAppBootstrapRes>>()
             .having((s) => s.isSuccess, 'isSuccess', true)
             .having((s) => s.data, 'data', isNotNull),
@@ -31,8 +34,11 @@ void main() {
       ),
       act: (cubit) => cubit.load(),
       expect: () => <dynamic>[
-        isA<LoadableState<MiniAppBootstrapRes>>()
-            .having((s) => s.isLoading, 'isLoading', true),
+        isA<LoadableState<MiniAppBootstrapRes>>().having(
+          (s) => s.isLoading,
+          'isLoading',
+          true,
+        ),
         isA<LoadableState<MiniAppBootstrapRes>>()
             .having((s) => s.isFailure, 'isFailure', true)
             .having((s) => s.errorMessage, 'errorMessage', isNotNull),
@@ -43,17 +49,20 @@ void main() {
 
 class _SuccessBootstrapFlow extends MiniAppBootstrapFlow {
   _SuccessBootstrapFlow()
-      : super(
-          sessionController: _NoopSessionController(),
-          bootstrapService: _NoopBootstrapService(),
-        );
+    : super(
+        sessionController: _NoopSessionController(),
+        bootstrapService: _NoopBootstrapService(),
+      );
 
   @override
   Future<MiniAppBootstrapRes> resolve() async {
     return MiniAppBootstrapRes(
       bootstrapState: const AcntBootstrapState(
         response: GetSecuritiesAcntListResDto(
-          detail: GetSecuritiesAcntListDetailDto(hasAcnt: false, hasIpsAcnt: false),
+          detail: GetSecuritiesAcntListDetailDto(
+            hasAcnt: false,
+            hasIpsAcnt: false,
+          ),
           acnts: <GetSecAcntListAccountDto>[],
           stlAcnts: <GetSecAcntSettlementAccountDto>[],
           responseCode: 0,
@@ -66,10 +75,10 @@ class _SuccessBootstrapFlow extends MiniAppBootstrapFlow {
 
 class _FailingBootstrapFlow extends MiniAppBootstrapFlow {
   _FailingBootstrapFlow()
-      : super(
-          sessionController: _NoopSessionController(),
-          bootstrapService: _NoopBootstrapService(),
-        );
+    : super(
+        sessionController: _NoopSessionController(),
+        bootstrapService: _NoopBootstrapService(),
+      );
 
   @override
   Future<MiniAppBootstrapRes> resolve() async {
@@ -125,13 +134,17 @@ class _NoopSessionController implements MiniAppSessionController {
 
 class _NoopBootstrapService implements InvestmentBootstrapService {
   @override
-  Future<SecAcntRequestResult> addSecuritiesAcntReq({SecAcntPersonalInfoData? personalInfo}) {
+  Future<SecAcntRequestResult> addSecuritiesAcntReq({
+    SecAcntPersonalInfoData? personalInfo,
+  }) {
     // TODO: implement addSecuritiesAcntReq
     throw UnimplementedError();
   }
 
   @override
-  Future<AcntBootstrapState> getSecAcntBalanceState({required AcntBootstrapState currentState}) {
+  Future<AcntBootstrapState> getSecAcntBalanceState({
+    required AcntBootstrapState currentState,
+  }) {
     // TODO: implement getSecAcntBalanceState
     throw UnimplementedError();
   }

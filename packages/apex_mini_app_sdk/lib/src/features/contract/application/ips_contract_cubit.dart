@@ -36,10 +36,13 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     emit(state.copyWith(isInitializing: true, errorMessage: null));
 
     try {
-      final ContractRes contractRes = state.contractRes ?? await contractService.addBrokerCustContract();
+      final ContractRes contractRes =
+          state.contractRes ?? await contractService.addBrokerCustContract();
       final AcntBootstrapState bootstrapState = await _waitForIpsAccounts();
       final PortfolioOverview overview = await portfolioService.getIpsBalance(
-        context: const PortfolioContextResolver().resolve(bootstrapState: bootstrapState),
+        context: const PortfolioContextResolver().resolve(
+          bootstrapState: bootstrapState,
+        ),
       );
 
       emit(
@@ -48,7 +51,9 @@ class IpsContractCubit extends Cubit<IpsContractState> {
           contractRes: contractRes,
           bootstrapState: bootstrapState,
           overview: overview,
-          errorMessage: overview.packAmount == null ? l10n.ipsContractPackPricingUnavailable : null,
+          errorMessage: overview.packAmount == null
+              ? l10n.ipsContractPackPricingUnavailable
+              : null,
         ),
       );
     } catch (error) {
@@ -63,7 +68,8 @@ class IpsContractCubit extends Cubit<IpsContractState> {
 
   Future<AcntBootstrapState> _waitForIpsAccounts() async {
     for (int attempt = 0; attempt < _accountLoadAttempts; attempt += 1) {
-      final AcntBootstrapState currentState = await bootstrapService.getSecAcntListState(forceRefresh: true);
+      final AcntBootstrapState currentState = await bootstrapService
+          .getSecAcntListState(forceRefresh: true);
       if (currentState.hasRequiredIpsAccounts) {
         return currentState;
       }
@@ -81,7 +87,9 @@ class IpsContractCubit extends Cubit<IpsContractState> {
       return;
     }
 
-    final String currentValue = state.purchaseQty <= 0 ? '' : state.purchaseQty.toString();
+    final String currentValue = state.purchaseQty <= 0
+        ? ''
+        : state.purchaseQty.toString();
     final String nextValue = '${currentValue == '0' ? '' : currentValue}$digit';
     final int parsed = int.tryParse(nextValue) ?? state.purchaseQty;
     _updatePurchaseQty(parsed);
@@ -97,7 +105,9 @@ class IpsContractCubit extends Cubit<IpsContractState> {
       return;
     }
 
-    final String nextValue = currentValue.length <= 1 ? '' : currentValue.substring(0, currentValue.length - 1);
+    final String nextValue = currentValue.length <= 1
+        ? ''
+        : currentValue.substring(0, currentValue.length - 1);
     _updatePurchaseQty(int.tryParse(nextValue) ?? 0);
   }
 
@@ -143,7 +153,8 @@ class IpsContractCubit extends Cubit<IpsContractState> {
         amount: state.totalPayable,
       );
       await ordersService.chargeIpsAcnt(req);
-      final PortfolioOverview? refreshedOverview = await _refreshBalanceAfterSuccess();
+      final PortfolioOverview? refreshedOverview =
+          await _refreshBalanceAfterSuccess();
 
       emit(
         state.copyWith(
@@ -177,7 +188,11 @@ class IpsContractCubit extends Cubit<IpsContractState> {
 
     try {
       return await portfolioService.getIpsBalance(
-        context: bootstrapState == null ? null : const PortfolioContextResolver().resolve(bootstrapState: bootstrapState),
+        context: bootstrapState == null
+            ? null
+            : const PortfolioContextResolver().resolve(
+                bootstrapState: bootstrapState,
+              ),
       );
     } catch (error, stackTrace) {
       logger.onError(

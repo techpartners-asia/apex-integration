@@ -37,7 +37,10 @@ extension IpsBackendOrdersApi on IpsBackendApi {
     );
   }
 
-  Future<List<IpsOrderDto>> getIpsOrderList({String? srcFiCode, int packQty = 0}) async {
+  Future<List<IpsOrderDto>> getIpsOrderList({
+    String? srcFiCode,
+    int packQty = 0,
+  }) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getIpsOrderList,
       body: GetIpsOrderListApiReq(

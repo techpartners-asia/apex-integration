@@ -5,7 +5,9 @@ abstract interface class PortfolioService {
 
   Future<PortfolioOverview> getOverview({SdkPortfolioContext? context});
 
-  Future<PortfolioDashboardData> getDashboardData({SdkPortfolioContext? context});
+  Future<PortfolioDashboardData> getDashboardData({
+    SdkPortfolioContext? context,
+  });
 
   Future<PortfolioStatementsData> getStatements({SdkPortfolioContext? context});
 

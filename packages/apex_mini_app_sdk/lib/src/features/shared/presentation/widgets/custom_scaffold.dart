@@ -77,7 +77,8 @@ class CustomScaffold extends StatelessWidget {
           final responsive = context.responsive;
           final double bottomInset = responsive.safeBottom;
           final NavigatorState navigator = Navigator.of(context);
-          final bool effectiveShowBackButton = showBackButton ?? navigator.canPop();
+          final bool effectiveShowBackButton =
+              showBackButton ?? navigator.canPop();
           final EdgeInsets bodyPadding = EdgeInsets.fromLTRB(
             responsive.spacing.financialCardSpacing,
             0,
@@ -114,10 +115,13 @@ class CustomScaffold extends StatelessWidget {
                 refreshIndicatorColor: DesignTokens.rose,
                 children: children,
               );
-          final AdaptiveBottomNavigationBar? resolvedAdaptiveBottomNavigationBar = adaptiveBottomNavigationBar;
+          final AdaptiveBottomNavigationBar?
+          resolvedAdaptiveBottomNavigationBar = adaptiveBottomNavigationBar;
           final Widget? resolvedBottomNavigationBar = bottomNavigationBar;
-          final bool hasAdaptiveShell = resolvedAdaptiveBottomNavigationBar != null;
-          final bool resolvedAdaptiveUseNativeToolbar = adaptiveUseNativeToolbar && effectiveAppBar == null;
+          final bool hasAdaptiveShell =
+              resolvedAdaptiveBottomNavigationBar != null;
+          final bool resolvedAdaptiveUseNativeToolbar =
+              adaptiveUseNativeToolbar && effectiveAppBar == null;
 
           if (hasAdaptiveShell) {
             return AdaptiveScaffold(
@@ -126,7 +130,10 @@ class CustomScaffold extends StatelessWidget {
                   : AdaptiveAppBar(
                       useNativeToolbar: resolvedAdaptiveUseNativeToolbar,
                       appBar: effectiveAppBar,
-                      cupertinoNavigationBar: effectiveAppBar is ObstructingPreferredSizeWidget ? effectiveAppBar : null,
+                      cupertinoNavigationBar:
+                          effectiveAppBar is ObstructingPreferredSizeWidget
+                          ? effectiveAppBar
+                          : null,
                     ),
               minimizeBehavior: TabBarMinimizeBehavior.never,
               body: ColoredBox(

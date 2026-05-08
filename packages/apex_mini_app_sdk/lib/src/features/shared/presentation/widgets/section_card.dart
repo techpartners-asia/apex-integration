@@ -9,7 +9,7 @@ class SectionCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final bool hasBorder;
   final bool hasShadow;
-  final Color?  backgroundColor;
+  final Color? backgroundColor;
 
   const SectionCard({
     super.key,

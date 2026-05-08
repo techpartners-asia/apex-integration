@@ -9,10 +9,12 @@ class QuestionnaireCalculationScreen extends StatefulWidget {
   const QuestionnaireCalculationScreen({super.key});
 
   @override
-  State<QuestionnaireCalculationScreen> createState() => _QuestionnaireCalculationScreenState();
+  State<QuestionnaireCalculationScreen> createState() =>
+      _QuestionnaireCalculationScreenState();
 }
 
-class _QuestionnaireCalculationScreenState extends State<QuestionnaireCalculationScreen> {
+class _QuestionnaireCalculationScreenState
+    extends State<QuestionnaireCalculationScreen> {
   bool _isRouting = false;
 
   @override
@@ -51,11 +53,17 @@ class _QuestionnaireCalculationScreenState extends State<QuestionnaireCalculatio
     return PopScope(
       canPop: false,
       child: BlocConsumer<IpsQuestionnaireCubit, IpsQuestionnaireState>(
-        listenWhen: (IpsQuestionnaireState previous, IpsQuestionnaireState current) {
-          final bool hasFreshResult = previous.res != current.res && current.res != null;
-          final bool submitFailed = previous.isSubmitting && !current.isSubmitting && current.res == null && current.errorMessage != null;
-          return hasFreshResult || submitFailed;
-        },
+        listenWhen:
+            (IpsQuestionnaireState previous, IpsQuestionnaireState current) {
+              final bool hasFreshResult =
+                  previous.res != current.res && current.res != null;
+              final bool submitFailed =
+                  previous.isSubmitting &&
+                  !current.isSubmitting &&
+                  current.res == null &&
+                  current.errorMessage != null;
+              return hasFreshResult || submitFailed;
+            },
         listener: (BuildContext context, IpsQuestionnaireState state) {
           final QuestionnaireRes? res = state.res;
           if (res != null) {
@@ -73,7 +81,8 @@ class _QuestionnaireCalculationScreenState extends State<QuestionnaireCalculatio
               appBarTitle: l10n.ipsContractTitle,
               showCloseButton: false,
               showBackButton: true,
-              onBack: () => Navigator.of(context, rootNavigator: true).maybePop(),
+              onBack: () =>
+                  Navigator.of(context, rootNavigator: true).maybePop(),
               backgroundColor: DesignTokens.softSurface,
               appBarBackgroundColor: DesignTokens.softSurface,
               appBarShowBottomBorder: false,

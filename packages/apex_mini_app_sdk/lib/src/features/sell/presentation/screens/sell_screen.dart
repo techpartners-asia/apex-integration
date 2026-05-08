@@ -9,7 +9,8 @@ class SellScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<IpsSellCubit, IpsSellState>(
       listenWhen: (IpsSellState previous, IpsSellState current) {
-        return previous.refreshErrorMessage != current.refreshErrorMessage && (current.refreshErrorMessage?.trim().isNotEmpty ?? false);
+        return previous.refreshErrorMessage != current.refreshErrorMessage &&
+            (current.refreshErrorMessage?.trim().isNotEmpty ?? false);
       },
       listener: (BuildContext context, IpsSellState state) {
         final String? message = state.refreshErrorMessage?.trim();

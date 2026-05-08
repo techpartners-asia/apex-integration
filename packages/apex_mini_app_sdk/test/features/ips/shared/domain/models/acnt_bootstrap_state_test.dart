@@ -47,7 +47,10 @@ void main() {
   test('copyWithBalanceState overlays refreshed balance values', () {
     final AcntBootstrapState currentState = AcntBootstrapState(
       response: GetSecuritiesAcntListResDto(
-        detail: const GetSecuritiesAcntListDetailDto(hasAcnt: true, hasIpsAcnt: true),
+        detail: const GetSecuritiesAcntListDetailDto(
+          hasAcnt: true,
+          hasIpsAcnt: true,
+        ),
         acnts: const <GetSecAcntListAccountDto>[
           GetSecAcntListAccountDto(
             flag: 3,

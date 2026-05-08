@@ -25,16 +25,27 @@ class GetSecuritiesAcntListResDto {
 
   factory GetSecuritiesAcntListResDto.fromJson(Map<String, Object?> json) {
     final int responseCode = ApiParser.asNullableInt(json['responseCode']) ?? 1;
-    final String? responseDesc = ApiParser.asNullableString(json['responseDesc']);
+    final String? responseDesc = ApiParser.asNullableString(
+      json['responseDesc'],
+    );
 
     if (responseCode != 0) {
-      throw ApiBusinessException(responseCode: responseCode, message: responseDesc ?? 'Failed to load securities account list.');
+      throw ApiBusinessException(
+        responseCode: responseCode,
+        message: responseDesc ?? 'Failed to load securities account list.',
+      );
     }
 
     return GetSecuritiesAcntListResDto(
-      detail: GetSecuritiesAcntListDetailDto.fromJson(ApiParser.asObjectMap(json['detail'])),
-      acnts: ApiParser.asObjectMapList(json['acnts']).map(GetSecAcntListAccountDto.fromJson).toList(growable: false),
-      stlAcnts: ApiParser.asObjectMapList(json['stlAcnts']).map(GetSecAcntSettlementAccountDto.fromJson).toList(growable: false),
+      detail: GetSecuritiesAcntListDetailDto.fromJson(
+        ApiParser.asObjectMap(json['detail']),
+      ),
+      acnts: ApiParser.asObjectMapList(
+        json['acnts'],
+      ).map(GetSecAcntListAccountDto.fromJson).toList(growable: false),
+      stlAcnts: ApiParser.asObjectMapList(
+        json['stlAcnts'],
+      ).map(GetSecAcntSettlementAccountDto.fromJson).toList(growable: false),
       responseCode: responseCode,
       responseDesc: responseDesc,
     );
@@ -62,9 +73,11 @@ class GetSecuritiesAcntListResDto {
 
   GetSecAcntListAccountDto? get ipsCasaAccount => accountByFlag(12);
 
-  GetSecAcntListAccountDto? get primaryAccount => securitiesAccount ?? ipsCasaAccount ?? ipsMasterAccount ?? firstAccount;
+  GetSecAcntListAccountDto? get primaryAccount =>
+      securitiesAccount ?? ipsCasaAccount ?? ipsMasterAccount ?? firstAccount;
 
-  GetSecAcntListAccountDto? get firstAccount => acnts.isEmpty ? null : acnts.first;
+  GetSecAcntListAccountDto? get firstAccount =>
+      acnts.isEmpty ? null : acnts.first;
 
   GetSecAcntListAccountDto? accountByFlag(int flag) {
     for (final GetSecAcntListAccountDto account in acnts) {

@@ -22,7 +22,9 @@ class ApiQuestionnaireService implements QuestionnaireService {
            );
 
   @override
-  Future<QuestionnaireRes> calculateScore(List<QuestionnaireAnswer> answers) async {
+  Future<QuestionnaireRes> calculateScore(
+    List<QuestionnaireAnswer> answers,
+  ) async {
     await session.ensureLoginSession();
 
     final QuestionnaireResDto res = await api.calculateScore(
@@ -34,17 +36,22 @@ class ApiQuestionnaireService implements QuestionnaireService {
   }
 
   @override
-  Future<List<QuestionnaireQuestion>> getQuestions({bool forceRefresh = false}) async {
+  Future<List<QuestionnaireQuestion>> getQuestions({
+    bool forceRefresh = false,
+  }) async {
     return _questionsCache.getOrLoad(
       () async {
         await session.ensureLoginSession();
 
-        final List<QuestionnaireQuestionDto> questionsList = await api.getQuestionList(
-          srcFiCode: config.runtime.defaultSrcFiCode,
-        );
+        final List<QuestionnaireQuestionDto> questionsList = await api
+            .getQuestionList(
+              srcFiCode: config.runtime.defaultSrcFiCode,
+            );
 
         final List<QuestionnaireQuestion> questions = <QuestionnaireQuestion>[
-          ...questionsList.map((QuestionnaireQuestionDto dto) => dto.toDomain()),
+          ...questionsList.map(
+            (QuestionnaireQuestionDto dto) => dto.toDomain(),
+          ),
           ...await appApi.getAllGoals(),
         ];
 

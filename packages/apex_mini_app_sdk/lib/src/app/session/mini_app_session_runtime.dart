@@ -22,16 +22,51 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
   MiniAppLogger logger = const DebugMiniAppLogger(),
   MiniAppUserDataSourceMode userDataSourceMode =
       MiniAppUserDataSourceMode.contract,
+  String? baseUrl,
+  String? techInvestXBaseUrl,
+  String? loginSessionBaseUrl,
+  String? ipsApiBaseUrl,
+  String? appId,
+  String? appSecret,
+  String? accessToken,
+  String? neSession,
+  String? defaultSrcFiCode,
+  String? defaultFiCode,
+  String? language,
+  bool? enableDebugLogs,
+  ApexMiniAppHostUser? hostUser,
+  ApexMiniAppHostSession? hostSession,
 }) {
-  final SdkBackendConfig backendConfig = SdkBackendConfig.fromConfig();
+  final UserEntityDto? initialCurrentUser = _hostUserToDto(hostUser);
+  final LoginSession? initialLoginSession = _hostSessionToLoginSession(
+    hostSession,
+  );
+  final SdkBackendConfig backendConfig = SdkBackendConfig.fromConfig(
+    runtime: SdkRuntimeConfig.fromConfig(
+      baseUrl: baseUrl,
+      techInvestXUrl: techInvestXBaseUrl,
+      loginSessionBaseUrl: loginSessionBaseUrl,
+      ipsApiBaseUrl: ipsApiBaseUrl,
+      appId: appId,
+      appSecret: appSecret,
+      accessToken: initialLoginSession?.accessToken ?? accessToken,
+      neSession: hostSession?.neSession ?? neSession,
+      defaultSrcFiCode: defaultSrcFiCode,
+      defaultFiCode: defaultFiCode,
+      language: language,
+      enableDebugLogs: enableDebugLogs,
+    ),
+  );
   final MiniAppSessionStore store = MiniAppSessionStore(
     initialUserToken: initialUserToken,
+    initialCurrentUser: initialCurrentUser,
+    initialLoginSession: initialLoginSession,
   );
   final MutableTokenProvider currentUserTokenProvider = MutableTokenProvider(
-    initialUserToken,
+    initialCurrentUser?.admSession ?? initialUserToken,
   );
   final MutableTokenProvider protectedTokenProvider = MutableTokenProvider(
-    backendConfig.runtime.accessToken,
+    initialLoginSession?.accessToken ?? backendConfig.runtime.accessToken,
   );
   final signUpRuntime = backendConfig.runtime.createCurrentUserRuntime(
     tokenProvider: currentUserTokenProvider,
@@ -88,5 +123,51 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
     controller: controller,
     protectedExecutor: protectedRuntime?.executor,
     appApi: appApi,
+  );
+}
+
+UserEntityDto? _hostUserToDto(ApexMiniAppHostUser? user) {
+  if (user == null) {
+    return null;
+  }
+
+  return UserEntityDto(
+    id: user.id,
+    registerNo: user.registerNo,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    phone: user.phone,
+    email: user.email,
+    gender: user.gender,
+    token: user.adminSession ?? user.accessToken,
+    accessToken: user.accessToken,
+    admSession: user.adminSession ?? user.accessToken,
+    bank: _hostBankToDto(user.bank),
+  );
+}
+
+BankDto? _hostBankToDto(ApexMiniAppHostBank? bank) {
+  if (bank == null) {
+    return null;
+  }
+
+  return BankDto(
+    accountNumber: bank.accountNumber,
+    accountName: bank.accountName,
+    bankId: bank.bankId,
+    bankCode: bank.bankCode,
+    bankName: bank.bankName,
+  );
+}
+
+LoginSession? _hostSessionToLoginSession(ApexMiniAppHostSession? session) {
+  final String accessToken = session?.accessToken?.trim() ?? '';
+  if (accessToken.isEmpty) {
+    return null;
+  }
+
+  return LoginSession(
+    accessToken: accessToken,
+    customerToken: session?.customerToken,
   );
 }

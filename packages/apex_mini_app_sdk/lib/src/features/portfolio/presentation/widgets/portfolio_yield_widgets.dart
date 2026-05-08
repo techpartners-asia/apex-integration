@@ -117,7 +117,8 @@ class PortfolioYieldChart extends StatelessWidget {
         .asMap()
         .entries
         .map(
-          (MapEntry<int, PortfolioYieldChartPoint> e) => FlSpot(e.key.toDouble(), e.value.primaryValue),
+          (MapEntry<int, PortfolioYieldChartPoint> e) =>
+              FlSpot(e.key.toDouble(), e.value.primaryValue),
         )
         .toList(growable: false);
 
@@ -126,10 +127,12 @@ class PortfolioYieldChart extends StatelessWidget {
               .asMap()
               .entries
               .where(
-                (MapEntry<int, PortfolioYieldChartPoint> e) => e.value.secondaryValue != null,
+                (MapEntry<int, PortfolioYieldChartPoint> e) =>
+                    e.value.secondaryValue != null,
               )
               .map(
-                (MapEntry<int, PortfolioYieldChartPoint> e) => FlSpot(e.key.toDouble(), e.value.secondaryValue!),
+                (MapEntry<int, PortfolioYieldChartPoint> e) =>
+                    FlSpot(e.key.toDouble(), e.value.secondaryValue!),
               )
               .toList(growable: false)
         : const <FlSpot>[];
@@ -220,7 +223,9 @@ class PortfolioYieldChart extends StatelessWidget {
 
   Widget _buildBottomTitle(double value, TitleMeta meta) {
     final int index = value.toInt();
-    if (index < 0 || index >= data.points.length || value != value.roundToDouble()) {
+    if (index < 0 ||
+        index >= data.points.length ||
+        value != value.roundToDouble()) {
       return const SizedBox.shrink();
     }
     return Padding(
@@ -331,10 +336,19 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final String currency = overview.currency;
-    final double resolvedAvailableBalance = overview.availableBalance ?? overview.cashTotal ?? 0;
-    final double resolvedInvestedBalance = overview.investedBalance ?? chartData.primaryTotal ?? 0;
-    final double resolvedTotalAllocation = ((overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)) > 0 ? (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0) : (chartData.primaryTotal ?? 0);
-    final double resolvedProfitLoss = overview.profitOrLoss ?? chartData.secondaryTotal ?? overview.yieldAmount ?? 0;
+    final double resolvedAvailableBalance =
+        overview.availableBalance ?? overview.cashTotal ?? 0;
+    final double resolvedInvestedBalance =
+        overview.investedBalance ?? chartData.primaryTotal ?? 0;
+    final double resolvedTotalAllocation =
+        ((overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)) > 0
+        ? (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)
+        : (chartData.primaryTotal ?? 0);
+    final double resolvedProfitLoss =
+        overview.profitOrLoss ??
+        chartData.secondaryTotal ??
+        overview.yieldAmount ??
+        0;
 
     return Column(
       children: <Widget>[
@@ -343,7 +357,11 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioAvailableBalance,
-                value: formatIpsPaymentAmount(resolvedAvailableBalance, currency, showDecimal: true),
+                value: formatIpsPaymentAmount(
+                  resolvedAvailableBalance,
+                  currency,
+                  showDecimal: true,
+                ),
                 hasBorder: true,
               ),
             ),
@@ -351,7 +369,11 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioInvestedBalance,
-                value: formatIpsPaymentAmount(resolvedInvestedBalance, currency, showDecimal: true),
+                value: formatIpsPaymentAmount(
+                  resolvedInvestedBalance,
+                  currency,
+                  showDecimal: true,
+                ),
                 hasBorder: true,
               ),
             ),
@@ -363,7 +385,11 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsOverviewDashboardAllocationTotal,
-                value: formatIpsPaymentAmount(resolvedTotalAllocation, currency, showDecimal: true),
+                value: formatIpsPaymentAmount(
+                  resolvedTotalAllocation,
+                  currency,
+                  showDecimal: true,
+                ),
                 hasBorder: true,
               ),
             ),
@@ -371,7 +397,11 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
             Expanded(
               child: PortfolioCompactMetricTile(
                 label: l10n.ipsPortfolioProfitLoss,
-                value: formatIpsPaymentAmount(resolvedProfitLoss, currency, showDecimal: true),
+                value: formatIpsPaymentAmount(
+                  resolvedProfitLoss,
+                  currency,
+                  showDecimal: true,
+                ),
                 hasBorder: true,
               ),
             ),

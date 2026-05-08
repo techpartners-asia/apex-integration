@@ -12,7 +12,9 @@ final class DateTimeFormatter {
   }
 
   static String toDateTimeWithStr(String dt) {
-    return DateFormat("yyyy-MM-dd").format(DateTime.tryParse(dt) ?? DateTime.now());
+    return DateFormat(
+      "yyyy-MM-dd",
+    ).format(DateTime.tryParse(dt) ?? DateTime.now());
   }
 
   static String normalizeDateOnlyOrDateTime(String raw) {

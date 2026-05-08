@@ -4,9 +4,16 @@ String formatIpsAmount(double amount, String currency) {
   return '${amount.toStringAsFixed(2)} ${convertCurrencyToSymbol(currency)}';
 }
 
-String formatIpsPaymentAmount(double amount, String currency, {bool showDecimal = false}) {
+String formatIpsPaymentAmount(
+  double amount,
+  String currency, {
+  bool showDecimal = false,
+}) {
   final String normalizedCurrency = currency.trim().toUpperCase();
-  if ((normalizedCurrency.isEmpty || normalizedCurrency == 'MNT' || normalizedCurrency == '₮') && !showDecimal) {
+  if ((normalizedCurrency.isEmpty ||
+          normalizedCurrency == 'MNT' ||
+          normalizedCurrency == '₮') &&
+      !showDecimal) {
     return NumberFormat.currency(
       locale: 'mn_MN',
       symbol: '₮',

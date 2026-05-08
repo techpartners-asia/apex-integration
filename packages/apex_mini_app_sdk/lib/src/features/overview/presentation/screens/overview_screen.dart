@@ -183,7 +183,10 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     return account?.isInvestContract == true && packageCode.isNotEmpty;
   }
 
-  Future<void> _showActionSheet(BuildContext context, IpsOverviewViewData data) async {
+  Future<void> _showActionSheet(
+    BuildContext context,
+    IpsOverviewViewData data,
+  ) async {
     final AcntBootstrapState bootstrapState = data.bootstrapState;
 
     await showModalBottomSheet<void>(

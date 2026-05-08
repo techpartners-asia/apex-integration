@@ -5,22 +5,29 @@ import '../module/ui_mini_app_module.dart';
 import '../widget/mini_app_host_shell.dart';
 import 'mini_app_animated_page_route.dart';
 import 'mini_app_host_controller.dart';
-import 'mini_app_host_controller_provider.dart';
+import 'mini_app_host_controller_scope.dart';
 import 'silent_mini_app_logger.dart';
 
 const double modalBorderRadius = 20.0;
 const Color modalBarrierColor = Color(0x8A000000);
 const bool modalBarrierDismissible = true;
-const bool useRootNavigator = true;
+const bool useRootNavigator = false;
 const bool showDragHandle = true;
 const bool isScrollControlled = true;
 const bool enableDrag = true;
 const SilentMiniAppLogger logger = SilentMiniAppLogger();
 
-class DefaultMiniAppHostController implements MiniAppHostController {
-  DefaultMiniAppHostController();
+class DefaultMiniAppHostController
+    implements MiniAppHostController, MiniAppHostControllerLifecycle {
+  DefaultMiniAppHostController({
+    this.onNavigate,
+    this.onError,
+  });
 
   final MiniAppRegistry registry = MiniAppRegistry();
+  final void Function(String? routeName, Object? arguments)? onNavigate;
+  final void Function(Object error, StackTrace? stackTrace)? onError;
+  @override
   bool isDisposed = false;
 
   @override
@@ -37,7 +44,9 @@ class DefaultMiniAppHostController implements MiniAppHostController {
 
   @override
   bool canLaunch(MiniAppLaunchReq req) {
-    ensureNotDisposed();
+    if (isDisposed) {
+      return false;
+    }
     return resolveLaunchReq(req) != null;
   }
 
@@ -46,11 +55,15 @@ class DefaultMiniAppHostController implements MiniAppHostController {
     BuildContext context,
     MiniAppLaunchReq req,
   ) async {
-    ensureNotDisposed();
+    if (isDisposed) {
+      return buildDisposedFailure(req);
+    }
 
     final ResolvedLaunch? resolved = resolveLaunchReq(req);
     if (resolved == null) {
-      return buildValidationFailure(req);
+      final MiniAppLaunchRes failure = buildValidationFailure(req);
+      onError?.call(failure, null);
+      return failure;
     }
 
     if (!context.mounted) {
@@ -62,23 +75,13 @@ class DefaultMiniAppHostController implements MiniAppHostController {
 
     try {
       resolved.module.onLaunchStarted(req);
+      onNavigate?.call(resolved.routeSpec.path, req.arguments);
       logger.onInfo(
         'mini_app_launch_started',
         data: <String, Object?>{
           'module': resolved.module.displayName,
           'route': resolved.routeSpec.path,
         },
-      );
-
-      final Widget page = MiniAppHostControllerProvider(
-        controller: this,
-        child: MiniAppHostShell(
-          child: resolved.module.buildPage(
-            context,
-            resolved.routeSpec.path,
-            req.arguments,
-          ),
-        ),
       );
 
       final NavigatorState navigator = Navigator.of(
@@ -89,7 +92,20 @@ class DefaultMiniAppHostController implements MiniAppHostController {
       Object? data = await navigator.push<Object?>(
         MiniAppAnimatedPageRoute<Object?>(
           settings: RouteSettings(name: resolved.routeSpec.path),
-          builder: (BuildContext context) => page,
+          builder: (_) => MiniAppHostControllerScope(
+            controller: this,
+            child: MiniAppHostShell(
+              child: Builder(
+                builder: (BuildContext pageContext) {
+                  return resolved.module.buildPage(
+                    pageContext,
+                    resolved.routeSpec.path,
+                    req.arguments,
+                  );
+                },
+              ),
+            ),
+          ),
         ),
       );
 
@@ -112,6 +128,7 @@ class DefaultMiniAppHostController implements MiniAppHostController {
 
       return res;
     } catch (error, stackTrace) {
+      onError?.call(error, stackTrace);
       logger.onError(
         'mini_app_launch_failed',
         error: error,
@@ -136,11 +153,15 @@ class DefaultMiniAppHostController implements MiniAppHostController {
     BuildContext context,
     MiniAppLaunchReq req,
   ) async {
-    ensureNotDisposed();
+    if (isDisposed) {
+      return buildDisposedFailure(req);
+    }
 
     final ResolvedLaunch? resolved = resolveLaunchReq(req);
     if (resolved == null) {
-      return buildValidationFailure(req);
+      final MiniAppLaunchRes failure = buildValidationFailure(req);
+      onError?.call(failure, null);
+      return failure;
     }
 
     if (!context.mounted) {
@@ -152,6 +173,7 @@ class DefaultMiniAppHostController implements MiniAppHostController {
 
     try {
       resolved.module.onLaunchStarted(req);
+      onNavigate?.call(resolved.routeSpec.path, req.arguments);
       logger.onInfo(
         'mini_app_launch_replaced',
         data: <String, Object?>{
@@ -160,16 +182,6 @@ class DefaultMiniAppHostController implements MiniAppHostController {
         },
       );
 
-      final Widget page = MiniAppHostControllerProvider(
-        controller: this,
-        child: MiniAppHostShell(
-          child: resolved.module.buildPage(
-            context,
-            resolved.routeSpec.path,
-            req.arguments,
-          ),
-        ),
-      );
       final NavigatorState navigator = Navigator.of(
         context,
         rootNavigator: useRootNavigator,
@@ -177,7 +189,20 @@ class DefaultMiniAppHostController implements MiniAppHostController {
       final Object? data = await navigator.pushReplacement<Object?, Object?>(
         MiniAppAnimatedPageRoute<Object?>(
           settings: RouteSettings(name: resolved.routeSpec.path),
-          builder: (BuildContext context) => page,
+          builder: (_) => MiniAppHostControllerScope(
+            controller: this,
+            child: MiniAppHostShell(
+              child: Builder(
+                builder: (BuildContext pageContext) {
+                  return resolved.module.buildPage(
+                    pageContext,
+                    resolved.routeSpec.path,
+                    req.arguments,
+                  );
+                },
+              ),
+            ),
+          ),
         ),
       );
 
@@ -191,6 +216,7 @@ class DefaultMiniAppHostController implements MiniAppHostController {
 
       return res;
     } catch (error, stackTrace) {
+      onError?.call(error, stackTrace);
       logger.onError(
         'mini_app_launch_replace_failed',
         error: error,
@@ -260,6 +286,16 @@ class DefaultMiniAppHostController implements MiniAppHostController {
       errorCode: MiniAppLaunchErrorCode.runtimeError,
       errorMessage: 'Module "${module.displayName}" is not a UI module.',
     );
+  }
+
+  MiniAppLaunchRes buildDisposedFailure(MiniAppLaunchReq req) {
+    final MiniAppLaunchRes failure = MiniAppLaunchRes.failure(
+      route: req.route,
+      errorCode: MiniAppLaunchErrorCode.runtimeError,
+      errorMessage: 'Mini app runtime is no longer active.',
+    );
+    onError?.call(failure, null);
+    return failure;
   }
 
   void ensureNotDisposed() {

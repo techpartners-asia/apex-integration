@@ -53,9 +53,19 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
 
   @override
   void prepareLaunch({String? userToken}) {
-    sessionStore.prepareLaunch(userToken: userToken);
-    currentUserTokenProvider.updateAccessToken(userToken);
-    protectedTokenProvider.updateAccessToken(null);
+    final bool tokenChanged =
+        _normalized(userToken) != _normalized(sessionStore.userToken);
+    sessionStore.prepareLaunch(
+      userToken: userToken,
+      resetSession: tokenChanged,
+    );
+    final String? adminSession = tokenChanged
+        ? null
+        : _normalizedAdminSession(sessionStore.currentUser);
+    currentUserTokenProvider.updateAccessToken(adminSession ?? userToken);
+    if (tokenChanged) {
+      protectedTokenProvider.updateAccessToken(null);
+    }
     currentUserInFlight = null;
     loginSessionInFlight = null;
   }
@@ -181,5 +191,10 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
     }
 
     return null;
+  }
+
+  String? _normalized(String? value) {
+    final String trimmed = value?.trim() ?? '';
+    return trimmed.isEmpty ? null : trimmed;
   }
 }

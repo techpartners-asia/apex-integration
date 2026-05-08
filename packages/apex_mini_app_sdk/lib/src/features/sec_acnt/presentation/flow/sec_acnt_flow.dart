@@ -14,9 +14,11 @@ enum SecAcntFlowStep {
 
 bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 
-bool requiresSecAcntOpeningPayment(AcntBootstrapState? state) => (state?.requiresSecAcntPayment ?? false);
+bool requiresSecAcntOpeningPayment(AcntBootstrapState? state) =>
+    (state?.requiresSecAcntPayment ?? false);
 
-bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && state?.hasIpsAcnt == false;
+bool isShortSecAcntFlow(AcntBootstrapState? state) =>
+    state?.hasAcnt == true && state?.hasIpsAcnt == false;
 
 List<SecAcntFlowStep> resolveSecAcntFlowSteps(AcntBootstrapState? state) {
   if (isShortSecAcntFlow(state)) {
@@ -45,7 +47,8 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(AcntBootstrapState? state) {
   ];
 }
 
-SecAcntFlowStep resolveInitialSecAcntFlowStep(AcntBootstrapState? state) => resolveSecAcntFlowSteps(state).first;
+SecAcntFlowStep resolveInitialSecAcntFlowStep(AcntBootstrapState? state) =>
+    resolveSecAcntFlowSteps(state).first;
 
 SecAcntFlowStep? resolveNextSecAcntFlowStep(
   SecAcntFlowStep currentStep,
@@ -68,7 +71,11 @@ class SecAcntBankOption {
   const SecAcntBankOption(this.id, this.label, this.shortLabel, this.logoUrl);
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SecAcntBankOption && runtimeType == other.runtimeType && id == other.id;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SecAcntBankOption &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -135,7 +142,9 @@ class SecAcntFlowDraft {
       email: email ?? this.email,
       iban: iban ?? this.iban,
       acntName: acntName ?? this.acntName,
-      selectedBank: selectedBank == _sentinel ? this.selectedBank : selectedBank as SecAcntBankOption?,
+      selectedBank: selectedBank == _sentinel
+          ? this.selectedBank
+          : selectedBank as SecAcntBankOption?,
     );
   }
 
@@ -201,12 +210,15 @@ String? _resolveBootstrapIban(
 }
 
 String? _sanitizeIbanDigits(String? value) {
-  final String normalized = value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
+  final String normalized =
+      value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
   if (normalized.isEmpty) {
     return null;
   }
 
-  final String withoutPrefix = normalized.toUpperCase().startsWith('MN') ? normalized.substring(2) : normalized;
+  final String withoutPrefix = normalized.toUpperCase().startsWith('MN')
+      ? normalized.substring(2)
+      : normalized;
   final String digitsOnly = withoutPrefix.replaceAll(RegExp(r'\D'), '');
   return digitsOnly.isEmpty ? null : digitsOnly;
 }

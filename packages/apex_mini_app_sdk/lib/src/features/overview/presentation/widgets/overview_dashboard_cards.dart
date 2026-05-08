@@ -52,7 +52,9 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                     ),
                     SizedBox(height: responsive.dp(8)),
                     CustomText(
-                      l10n.ipsOverviewDashboardProfitMessage(metrics.profitLabel),
+                      l10n.ipsOverviewDashboardProfitMessage(
+                        metrics.profitLabel,
+                      ),
                       variant: MiniAppTextVariant.body2,
                       color: metrics.profitTone,
                     ),
@@ -191,7 +193,9 @@ class OverviewDashboardRewardCard extends StatelessWidget {
     final responsive = context.responsive;
     final l10n = context.l10n;
     final int clampedStreakMonths = streakMonths.clamp(0, 12).toInt();
-    final BorderRadius cardRadius = BorderRadius.circular(responsive.radius(16));
+    final BorderRadius cardRadius = BorderRadius.circular(
+      responsive.radius(16),
+    );
 
     return Container(
       decoration: BoxDecoration(
@@ -324,7 +328,9 @@ class _RewardProgressBar extends StatelessWidget {
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final double maxWidth = constraints.maxWidth;
-          final double markerLeft = (maxWidth * progress - markerSize / 2).clamp(0.0, maxWidth - markerSize).toDouble();
+          final double markerLeft = (maxWidth * progress - markerSize / 2)
+              .clamp(0.0, maxWidth - markerSize)
+              .toDouble();
 
           return Stack(
             clipBehavior: Clip.none,
@@ -350,7 +356,11 @@ class _RewardProgressBar extends StatelessWidget {
 
                         return Expanded(
                           child: ColoredBox(
-                            color: completed ? DesignTokens.rose : DesignTokens.softPeach.withValues(alpha: 0.55),
+                            color: completed
+                                ? DesignTokens.rose
+                                : DesignTokens.softPeach.withValues(
+                                    alpha: 0.55,
+                                  ),
                             child: SizedBox(height: barHeight),
                           ),
                         );

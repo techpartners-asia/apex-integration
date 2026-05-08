@@ -4,7 +4,6 @@ class StaticApiConfig {
   //─── Backend URL-ууд ───────────────────────────────────────────────────────
   ///signup bootstrap endpoint-ийн base URL
   static const String techInvestXUrl = 'https://api.admin.investx.mn';
-  static const String techInvestXUrlDev = 'http://192.168.88.120:7001';
 
   ///getLoginSession endpoint-ийн base URL (:40654 port)
   static const String loginSessionBaseUrl = 'http://202.21.105.150:40654';

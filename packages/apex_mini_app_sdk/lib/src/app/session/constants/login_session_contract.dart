@@ -7,10 +7,6 @@ final class LoginSessionContract {
   static const String birthDate = '2000-06-16';
   static const String mobile = '88993076';
   static const String email = 'test@test.com';
-  static const String language = '';
 
   const LoginSessionContract._();
 }
-
-/// ЪЪ71121212 ene regno deer dans n amjilttai uussen
-/// ЪЪ70121212 ene regno deer dans n uuseegui

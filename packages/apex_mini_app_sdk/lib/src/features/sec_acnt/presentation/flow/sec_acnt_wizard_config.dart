@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-SecAcntWizardHeaderData buildSecAcntHeader(BuildContext context, SecAcntFlowStep currentStep) {
+SecAcntWizardHeaderData buildSecAcntHeader(
+  BuildContext context,
+  SecAcntFlowStep currentStep,
+) {
   final l10n = context.l10n;
 
   return switch (currentStep) {
@@ -113,7 +116,11 @@ SecAcntWizardFooterData buildSecAcntFooter(
     SecAcntFlowStep.payment => SecAcntWizardFooterData(
       buttonLabel: state.isSubmitting ? loadingLabel : l10n.commonPay,
       onPressed: onPrimaryAction,
-      enabled: !state.isSubmitting && payableCommission != null && payableCommission.isFinite && payableCommission > 0,
+      enabled:
+          !state.isSubmitting &&
+          payableCommission != null &&
+          payableCommission.isFinite &&
+          payableCommission > 0,
     ),
     SecAcntFlowStep.calculation => SecAcntWizardFooterData(
       buttonLabel: l10n.commonGoHome,
@@ -122,9 +129,16 @@ SecAcntWizardFooterData buildSecAcntFooter(
   };
 }
 
-TextStyle? buildSecAcntHeaderTitleStyle(BuildContext context, SecAcntWizardHeaderData header) {
-  final Color titleColor = header.highlightBrand ? DesignTokens.rose : DesignTokens.ink;
-  final TextStyle baseStyle = header.highlightBrand ? MiniAppTypography.title1 : MiniAppTypography.subtitle2;
+TextStyle? buildSecAcntHeaderTitleStyle(
+  BuildContext context,
+  SecAcntWizardHeaderData header,
+) {
+  final Color titleColor = header.highlightBrand
+      ? DesignTokens.rose
+      : DesignTokens.ink;
+  final TextStyle baseStyle = header.highlightBrand
+      ? MiniAppTypography.title1
+      : MiniAppTypography.subtitle2;
 
   return baseStyle.copyWith(color: titleColor);
 }

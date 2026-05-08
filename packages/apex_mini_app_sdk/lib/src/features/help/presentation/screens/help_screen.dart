@@ -26,7 +26,8 @@ class HelpScreen extends StatelessWidget {
                 title: l10n.ipsHelpTitle,
                 message: state.errorMessage ?? l10n.errorsActionFailed,
                 actionLabel: l10n.commonRetry,
-                onAction: () => context.read<HelpCubit>().load(forceRefresh: true),
+                onAction: () =>
+                    context.read<HelpCubit>().load(forceRefresh: true),
               ),
             );
           }
@@ -38,7 +39,8 @@ class HelpScreen extends StatelessWidget {
                 title: l10n.ipsHelpTitle,
                 message: l10n.commonNoData,
                 actionLabel: l10n.commonRefresh,
-                onAction: () => context.read<HelpCubit>().load(forceRefresh: true),
+                onAction: () =>
+                    context.read<HelpCubit>().load(forceRefresh: true),
               ),
             );
           }
@@ -47,7 +49,9 @@ class HelpScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.spacing.financialCardSpacing),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: responsive.spacing.financialCardSpacing,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
@@ -66,7 +70,11 @@ class HelpScreen extends StatelessWidget {
                       ],
 
                       /// Location
-                      if (company.hasLocationInfo) HelpLocationSection(l10n: l10n, location: company.location!),
+                      if (company.hasLocationInfo)
+                        HelpLocationSection(
+                          l10n: l10n,
+                          location: company.location!,
+                        ),
                       SizedBox(height: responsive.spacing.sectionSpacing * 2),
                     ],
                   ),

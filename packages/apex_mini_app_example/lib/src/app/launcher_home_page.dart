@@ -1,12 +1,21 @@
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:mini_app_ui/mini_app_ui.dart';
 
 import 'example_app_tokens.dart';
 
 class LauncherHomePage extends StatelessWidget {
-  final MiniAppSdk sdk;
+  final ApexMiniAppHostConfig hostConfig;
+  final ValueListenable<List<String>> hostEvents;
+  final VoidCallback onLaunchMiniApp;
 
-  const LauncherHomePage({required this.sdk, super.key});
+  const LauncherHomePage({
+    required this.hostConfig,
+    required this.hostEvents,
+    required this.onLaunchMiniApp,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,54 +46,88 @@ class LauncherHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               CustomText(
-                'Reference host for the partner-facing SDK surface.'
-                'Tap once to open the ${sdk.miniAppDisplayName} mini app directly.',
+                'Reference host for the partner-facing SDK surface. '
+                'Tap once to open the ${MiniAppSdk.investXDisplayName} mini app directly.',
                 variant: MiniAppTextVariant.body2,
                 color: ExampleAppTokens.mutedText,
               ),
               const SizedBox(height: 24),
-              HeroCard(sdk: sdk, onLaunchMiniApp: () => launchMiniApp(context)),
+              HeroCard(onLaunchMiniApp: onLaunchMiniApp),
               const SizedBox(height: 16),
               DetailsCard(
-                sdk: sdk,
-                onLaunchMiniApp: () => launchMiniApp(context),
+                hostConfig: hostConfig,
+                onLaunchMiniApp: onLaunchMiniApp,
               ),
+              const SizedBox(height: 16),
+              HostEventsCard(hostEvents: hostEvents),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Future<void> launchMiniApp(BuildContext context) async {
-    final MiniAppLaunchRes res = await sdk.launchRoute(context);
+class HostEventsCard extends StatelessWidget {
+  const HostEventsCard({super.key, required this.hostEvents});
 
-    if (!context.mounted || res.status == MiniAppLaunchStatus.success) {
-      return;
-    }
+  final ValueListenable<List<String>> hostEvents;
 
-    final String title = res.errorCode?.title ?? 'Launch error';
-    final String message = toSafeUserMessage(res);
-    MiniAppToast.showError(
-      context,
-      title: title,
-      message: message,
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CustomText('Host events', variant: MiniAppTextVariant.subtitle2),
+            const SizedBox(height: 12),
+            ValueListenableBuilder<List<String>>(
+              valueListenable: hostEvents,
+              builder:
+                  (
+                    BuildContext context,
+                    List<String> events,
+                    Widget? child,
+                  ) {
+                    if (events.isEmpty) {
+                      return CustomText(
+                        'No mini app events yet.',
+                        variant: MiniAppTextVariant.body2,
+                        color: ExampleAppTokens.mutedText,
+                      );
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: events
+                          .map(
+                            (String event) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: CustomText(
+                                event,
+                                variant: MiniAppTextVariant.caption1,
+                                color: ExampleAppTokens.mutedText,
+                              ),
+                            ),
+                          )
+                          .toList(growable: false),
+                    );
+                  },
+            ),
+          ],
+        ),
+      ),
     );
-  }
-
-  String toSafeUserMessage(MiniAppLaunchRes res) {
-    return switch (res.errorCode) {
-      MiniAppLaunchErrorCode.routeNotFound => 'Сонгосон дэлгэц нээгдэх боломжгүй байна.',
-      MiniAppLaunchErrorCode.invalidReq => 'Илгээсэн хүсэлт буруу форматтай байна.',
-      _ => 'Системийн алдаа гарлаа. Дараа дахин оролдоно уу.',
-    };
   }
 }
 
 class HeroCard extends StatelessWidget {
-  const HeroCard({super.key, required this.sdk, required this.onLaunchMiniApp});
+  const HeroCard({super.key, required this.onLaunchMiniApp});
 
-  final MiniAppSdk sdk;
   final VoidCallback onLaunchMiniApp;
 
   @override
@@ -127,7 +170,7 @@ class HeroCard extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           CustomText(
-            sdk.miniAppDisplayName,
+            MiniAppSdk.investXDisplayName,
             variant: MiniAppTextVariant.h8,
             color: colors.onPrimary,
           ),
@@ -147,7 +190,7 @@ class HeroCard extends StatelessWidget {
             ),
             icon: const Icon(Icons.play_arrow_rounded),
             label: CustomText(
-              'Open ${sdk.miniAppDisplayName}',
+              'Open ${MiniAppSdk.investXDisplayName}',
               variant: MiniAppTextVariant.buttonMedium,
               color: colors.primary,
             ),
@@ -159,12 +202,12 @@ class HeroCard extends StatelessWidget {
 }
 
 class DetailsCard extends StatelessWidget {
-  final MiniAppSdk sdk;
+  final ApexMiniAppHostConfig hostConfig;
   final VoidCallback onLaunchMiniApp;
 
   const DetailsCard({
     super.key,
-    required this.sdk,
+    required this.hostConfig,
     required this.onLaunchMiniApp,
   });
 
@@ -190,13 +233,13 @@ class DetailsCard extends StatelessWidget {
               InfoRow(
                 icon: Icons.route_outlined,
                 label: 'Initial route',
-                value: sdk.initialRoute,
+                value: hostConfig.normalizedInitialRoute,
               ),
               const SizedBox(height: 12),
               InfoRow(
                 icon: Icons.apps_outlined,
                 label: 'Active mini app',
-                value: sdk.miniAppDisplayName,
+                value: MiniAppSdk.investXDisplayName,
               ),
             ],
           ),

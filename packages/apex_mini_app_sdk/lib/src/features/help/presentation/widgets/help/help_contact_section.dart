@@ -4,7 +4,11 @@ class HelpContactSection extends StatelessWidget {
   final SdkLocalizations l10n;
   final BranchInfoEntity company;
 
-  const HelpContactSection({super.key, required this.l10n, required this.company});
+  const HelpContactSection({
+    super.key,
+    required this.l10n,
+    required this.company,
+  });
 
   @override
   Widget build(BuildContext context) {

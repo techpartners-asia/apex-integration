@@ -3,6 +3,7 @@ export 'config/config.dart';
 export 'core/core.dart';
 export 'di/di.dart';
 export 'features/features.dart';
+export 'host/host.dart';
 export 'payment/payment.dart';
 export 'routes/routes.dart';
 export 'runtime/runtime.dart';

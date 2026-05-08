@@ -14,7 +14,24 @@ final class MiniAppRoutes {
   static const String feedback = '/feedback';
   static const String reward = '/reward';
   static const String personalInfo = '/personal-info';
-  static const String liquidGlassDemo = '/liquid-glass-demo';
 
   static const String investX = splash;
+
+  static const List<String> publicRoutes = <String>[
+    splash,
+    overview,
+    secAcnt,
+    questionnaire,
+    packs,
+    contract,
+    portfolio,
+    orders,
+    recharge,
+    sell,
+    statements,
+    help,
+    feedback,
+    reward,
+    personalInfo,
+  ];
 }

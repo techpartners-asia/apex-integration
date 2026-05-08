@@ -11,7 +11,12 @@ class MiniAppRuntime {
 
   MiniAppRuntime({
     Iterable<UiMiniAppModule> modules = const <UiMiniAppModule>[],
-  }) : controller = DefaultMiniAppHostController(),
+    void Function(String? routeName, Object? arguments)? onNavigate,
+    void Function(Object error, StackTrace? stackTrace)? onError,
+  }) : controller = DefaultMiniAppHostController(
+         onNavigate: onNavigate,
+         onError: onError,
+       ),
        registeredModules = List<UiMiniAppModule>.unmodifiable(modules) {
     controller.registerModules(modules);
   }

@@ -1,29 +1,13 @@
 # mini_app_example
 
-Reference host app for `_mini_app_sdk`.
+Reference host app for `mini_app_sdk`.
 
-This package is not the product SDK.It demonstrates the intended partner integration shape:
+The example demonstrates the intended host integration shape:
 
- create `MiniAppSdkConfig`
- pass a single `paymentHandler`
- let the SDK fetch the current user internally before `getLoginSession()`
- open the single `investX` mini app entry flow directly
-
-The example does not provide DAN/KYC/session/region gating and does not provide invoice creation logic from the host side.
-
-## integration
-
-```dart
-final sdk = MiniAppSdk(
-    config: MiniAppSdkConfig(
-        paymentHandler: (String invoiceId, {double? amount}) async {
-            return hostWalletPay(invoiceId, amount: amount);
-        },
-    ),
-);
-
-await sdk.launchRoute(
-    context,
-    route: MiniAppRoutes.investX,
-);
-```
+- opens `ApexMiniAppSdk` directly from the host app
+- pushes the SDK on the host navigator from `openMiniApp`
+- passes a host token, locale, and initial route
+- enables `MiniAppUserDataSourceMode.contract`
+- implements `MiniAppWalletPaymentHandler`
+- receives close, navigation, token-expired, error, and payment result events
+- opens the active `investX` mini app entry flow directly

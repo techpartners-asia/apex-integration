@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
+class CustomAppBar extends StatelessWidget
+    implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
   final String? title;
   final Widget? trailing;
   final bool showBackButton;
@@ -41,7 +42,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, Obstr
   });
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + (tab != null ? kToolbarHeight : 1.0));
+  Size get preferredSize {
+    final double bottomHeight = tab != null
+        ? kToolbarHeight
+        : showBottomBorder
+        ? 1.0
+        : 0.0;
+
+    return Size.fromHeight(kToolbarHeight + bottomHeight);
+  }
 
   @override
   bool shouldFullyObstruct(BuildContext context) => backgroundColor.a == 1;
@@ -68,8 +77,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, Obstr
       toolbarHeight: kToolbarHeight,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: centerTitle,
-      titleSpacing: titleSpacing ?? (centerTitle ? responsive.space(AppSpacing.sm) : responsive.dp(20)),
-      leadingWidth: showLeadingSlot ? actionSlotWidth + responsive.space(AppSpacing.md) : 0,
+      titleSpacing:
+          titleSpacing ??
+          (centerTitle ? responsive.space(AppSpacing.sm) : responsive.dp(20)),
+      leadingWidth: showLeadingSlot
+          ? actionSlotWidth + responsive.space(AppSpacing.md)
+          : 0,
       leading: showLeadingSlot
           ? _CustomAppBarActionSlot(
               leftPadding: responsive.space(AppSpacing.md),

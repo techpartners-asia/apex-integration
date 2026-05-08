@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:mini_app_ui/mini_app_ui.dart';
 
 MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
-  GlobalKey<NavigatorState> navigatorKey,
-) {
+  GlobalKey<NavigatorState> navigatorKey, {
+  void Function(MiniAppPaymentRes result)? onResult,
+}) {
   return (MiniAppWalletPaymentRequest request) async {
     final BuildContext? context = navigatorKey.currentContext;
     if (context == null) {
-      return MiniAppPaymentRes.failed(
+      final MiniAppPaymentRes result = MiniAppPaymentRes.failed(
         message: 'Wallet host is not available.',
         paymentReference: request.invoiceId,
         failure: MiniAppFailure(
@@ -17,24 +19,30 @@ MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
         ),
         isTransaction: request.isTransaction,
       );
+      onResult?.call(result);
+      return result;
     }
 
-    final MiniAppPaymentRes? result = await showModalBottomSheet<MiniAppPaymentRes>(
-      context: context,
-      useRootNavigator: true,
-      isScrollControlled: true,
-      backgroundColor: const Color(0xFFF2F4F7),
-      builder: (BuildContext context) {
-        return _ExampleWalletPaymentSheet(request: request);
-      },
-    );
+    final MiniAppPaymentRes? result =
+        await showModalBottomSheet<MiniAppPaymentRes>(
+          context: context,
+          useRootNavigator: true,
+          isScrollControlled: true,
+          backgroundColor: const Color(0xFFF2F4F7),
+          builder: (BuildContext context) {
+            return _ExampleWalletPaymentSheet(request: request);
+          },
+        );
 
-    return result ??
+    final MiniAppPaymentRes resolved =
+        result ??
         MiniAppPaymentRes.cancelled(
           message: 'Payment was cancelled by the host wallet.',
           paymentReference: request.invoiceId,
           isTransaction: request.isTransaction,
         );
+    onResult?.call(resolved);
+    return resolved;
   };
 }
 
@@ -98,7 +106,8 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     context,
                     MiniAppPaymentRes.success(
                       message: 'Payment completed in the host wallet.',
-                      transactionId: 'wallet_${DateTime.now().millisecondsSinceEpoch}',
+                      transactionId:
+                          'wallet_${DateTime.now().millisecondsSinceEpoch}',
                       paymentReference: request.invoiceId,
                       isTransaction: request.isTransaction,
                     ),

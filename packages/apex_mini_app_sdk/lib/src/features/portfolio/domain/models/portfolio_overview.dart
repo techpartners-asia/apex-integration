@@ -71,27 +71,57 @@ class PortfolioOverview {
     Object? packDetail = _sentinel,
   }) {
     return PortfolioOverview(
-      responseCode: responseCode == _sentinel ? this.responseCode : responseCode as int?,
-      responseDesc: responseDesc == _sentinel ? this.responseDesc : responseDesc as String?,
+      responseCode: responseCode == _sentinel
+          ? this.responseCode
+          : responseCode as int?,
+      responseDesc: responseDesc == _sentinel
+          ? this.responseDesc
+          : responseDesc as String?,
       resultValue: resultValue == _sentinel ? this.resultValue : resultValue,
       currency: currency ?? this.currency,
-      availableBalance: availableBalance == _sentinel ? this.availableBalance : availableBalance as double?,
-      investedBalance: investedBalance == _sentinel ? this.investedBalance : investedBalance as double?,
-      profitOrLoss: profitOrLoss == _sentinel ? this.profitOrLoss : profitOrLoss as double?,
-      yieldAmount: yieldAmount == _sentinel ? this.yieldAmount : yieldAmount as double?,
-      profitPercent: profitPercent == _sentinel ? this.profitPercent : profitPercent as double?,
-      statementSummary: statementSummary == _sentinel ? this.statementSummary : statementSummary as String?,
-      stockTotal: stockTotal == _sentinel ? this.stockTotal : stockTotal as double?,
+      availableBalance: availableBalance == _sentinel
+          ? this.availableBalance
+          : availableBalance as double?,
+      investedBalance: investedBalance == _sentinel
+          ? this.investedBalance
+          : investedBalance as double?,
+      profitOrLoss: profitOrLoss == _sentinel
+          ? this.profitOrLoss
+          : profitOrLoss as double?,
+      yieldAmount: yieldAmount == _sentinel
+          ? this.yieldAmount
+          : yieldAmount as double?,
+      profitPercent: profitPercent == _sentinel
+          ? this.profitPercent
+          : profitPercent as double?,
+      statementSummary: statementSummary == _sentinel
+          ? this.statementSummary
+          : statementSummary as String?,
+      stockTotal: stockTotal == _sentinel
+          ? this.stockTotal
+          : stockTotal as double?,
       bondTotal: bondTotal == _sentinel ? this.bondTotal : bondTotal as double?,
-      stockPercent: stockPercent == _sentinel ? this.stockPercent : stockPercent as double?,
-      bondPercent: bondPercent == _sentinel ? this.bondPercent : bondPercent as double?,
+      stockPercent: stockPercent == _sentinel
+          ? this.stockPercent
+          : stockPercent as double?,
+      bondPercent: bondPercent == _sentinel
+          ? this.bondPercent
+          : bondPercent as double?,
       cashTotal: cashTotal == _sentinel ? this.cashTotal : cashTotal as double?,
       packQty: packQty == _sentinel ? this.packQty : packQty as double?,
-      packAmount: packAmount == _sentinel ? this.packAmount : packAmount as double?,
+      packAmount: packAmount == _sentinel
+          ? this.packAmount
+          : packAmount as double?,
       packFee: packFee == _sentinel ? this.packFee : packFee as double?,
-      description: description == _sentinel ? this.description : description as String?,
-      security: security == _sentinel ? this.security : security as List<PortfolioSecurity>,
-      packDetail: packDetail == _sentinel ? this.packDetail : packDetail as PortfolioPackDetail?,
+      description: description == _sentinel
+          ? this.description
+          : description as String?,
+      security: security == _sentinel
+          ? this.security
+          : security as List<PortfolioSecurity>,
+      packDetail: packDetail == _sentinel
+          ? this.packDetail
+          : packDetail as PortfolioPackDetail?,
     );
   }
 }

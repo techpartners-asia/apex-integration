@@ -220,7 +220,9 @@ class _HDesignTextField extends StatelessWidget {
         : focusNode.hasFocus
         ? DesignTokens.rose
         : Colors.transparent;
-    final Color fillColor = enabled ? Colors.white : Colors.white.withValues(alpha: 0.62);
+    final Color fillColor = enabled
+        ? Colors.white
+        : Colors.white.withValues(alpha: 0.62);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -257,10 +259,14 @@ class _HDesignTextField extends StatelessWidget {
                       curve: Curves.easeOutCubic,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: (isFloating ? MiniAppTypography.caption2 : MiniAppTypography.body2).copyWith(
-                        color: DesignTokens.muted,
-                        height: 1.1,
-                      ),
+                      style:
+                          (isFloating
+                                  ? MiniAppTypography.caption2
+                                  : MiniAppTypography.body2)
+                              .copyWith(
+                                color: DesignTokens.muted,
+                                height: 1.1,
+                              ),
                       child: Text(isFloating ? label : (hintText ?? label)),
                     ),
                   ),
@@ -269,14 +275,20 @@ class _HDesignTextField extends StatelessWidget {
                   top: isFloating ? responsive.dp(10) : 0,
                   right: suffixIcon == null ? 0 : responsive.dp(40),
                   child: Align(
-                    alignment: isMultiline ? Alignment.topLeft : Alignment.centerLeft,
+                    alignment: isMultiline
+                        ? Alignment.topLeft
+                        : Alignment.centerLeft,
                     child: TextField(
                       controller: controller,
                       focusNode: focusNode,
                       enabled: enabled,
                       readOnly: readOnly,
                       obscureText: obscureText,
-                      keyboardType: keyboardType ?? (isMultiline ? TextInputType.multiline : TextInputType.text),
+                      keyboardType:
+                          keyboardType ??
+                          (isMultiline
+                              ? TextInputType.multiline
+                              : TextInputType.text),
                       textInputAction: textInputAction,
                       minLines: obscureText ? 1 : effectiveMinLines,
                       maxLines: obscureText ? 1 : effectiveMaxLines,
@@ -404,7 +416,9 @@ class FloatingLabelFieldShell extends StatelessWidget {
             height: fieldHeight,
             padding: EdgeInsets.symmetric(horizontal: responsive.dp(18)),
             decoration: BoxDecoration(
-              color: enabled ? Colors.white : Colors.white.withValues(alpha: 0.62),
+              color: enabled
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.62),
               borderRadius: borderRadius,
               border: Border.all(
                 color: _hasError ? DesignTokens.danger : Colors.transparent,
@@ -427,11 +441,18 @@ class FloatingLabelFieldShell extends StatelessWidget {
                       curve: Curves.easeOutCubic,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: (_isFloating ? MiniAppTypography.caption2 : MiniAppTypography.body2).copyWith(
-                        color: DesignTokens.muted,
-                        height: 1.1,
+                      style:
+                          (_isFloating
+                                  ? MiniAppTypography.caption2
+                                  : MiniAppTypography.body2)
+                              .copyWith(
+                                color: DesignTokens.muted,
+                                height: 1.1,
+                              ),
+                      child: CustomText(
+                        _isFloating ? label : (placeholder ?? label),
+                        variant: MiniAppTextVariant.caption2,
                       ),
-                      child: CustomText(_isFloating ? label : (placeholder ?? label), variant: MiniAppTextVariant.caption2),
                     ),
                   ),
                 ),

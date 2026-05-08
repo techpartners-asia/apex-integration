@@ -147,7 +147,9 @@ class _SellAmountSummaryCardState extends State<SellAmountSummaryCard> {
                 value: formatIpsPaymentAmount(state.serviceFee, currency),
               ),
             ),
-            crossFadeState: _feeExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            crossFadeState: _feeExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
           ),
           Padding(
@@ -280,7 +282,8 @@ class SellDashedLinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(SellDashedLinePainter oldDelegate) => color != oldDelegate.color;
+  bool shouldRepaint(SellDashedLinePainter oldDelegate) =>
+      color != oldDelegate.color;
 }
 
 class SellBottomAction extends StatelessWidget {
@@ -317,8 +320,12 @@ class SellBottomAction extends StatelessWidget {
               ),
             ),
           PrimaryButton(
-            label: state.isSubmitting ? l10n.commonLoading : l10n.ipsSellSubmitRequest,
-            onPressed: state.canSubmit ? context.read<IpsSellCubit>().submit : null,
+            label: state.isSubmitting
+                ? l10n.commonLoading
+                : l10n.ipsSellSubmitRequest,
+            onPressed: state.canSubmit
+                ? context.read<IpsSellCubit>().submit
+                : null,
           ),
         ],
       ),
@@ -332,7 +339,9 @@ class SellSuccessView extends StatelessWidget {
   final IpsSellState state;
 
   Future<void> _goToPackList(BuildContext context) async {
-    final List<IpsPack>? packs = await context.read<IpsSellCubit>().refreshPacksAfterSuccess();
+    final List<IpsPack>? packs = await context
+        .read<IpsSellCubit>()
+        .refreshPacksAfterSuccess();
     if (!context.mounted || packs == null) {
       return;
     }
@@ -356,7 +365,9 @@ class SellSuccessView extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: responsive.spacing.financialCardSpacing),
+                padding: EdgeInsets.symmetric(
+                  horizontal: responsive.spacing.financialCardSpacing,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -400,8 +411,12 @@ class SellSuccessView extends StatelessWidget {
                 responsive.spacing.inlineSpacing,
               ),
               child: PrimaryButton(
-                label: state.isRefreshingPacks ? l10n.commonLoading : l10n.commonGoHome,
-                onPressed: state.canCompleteSuccessFlow ? () => _goToPackList(context) : null,
+                label: state.isRefreshingPacks
+                    ? l10n.commonLoading
+                    : l10n.commonGoHome,
+                onPressed: state.canCompleteSuccessFlow
+                    ? () => _goToPackList(context)
+                    : null,
               ),
             ),
           ],

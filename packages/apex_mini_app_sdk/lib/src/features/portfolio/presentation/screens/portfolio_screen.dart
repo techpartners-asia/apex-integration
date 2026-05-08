@@ -37,8 +37,10 @@ class PortfolioScreen extends StatelessWidget {
 
         final IpsPortfolioViewData? data = state.data;
         final PortfolioOverview? overview = data?.overview;
-        final List<PortfolioHolding> yieldProfitHoldings = data?.yieldProfitHoldings ?? const <PortfolioHolding>[];
-        final List<PortfolioHolding> stockYieldDetails = data?.stockYieldDetails ?? const <PortfolioHolding>[];
+        final List<PortfolioHolding> yieldProfitHoldings =
+            data?.yieldProfitHoldings ?? const <PortfolioHolding>[];
+        final List<PortfolioHolding> stockYieldDetails =
+            data?.stockYieldDetails ?? const <PortfolioHolding>[];
 
         if (overview == null) {
           return CustomScaffold(
@@ -53,10 +55,11 @@ class PortfolioScreen extends StatelessWidget {
           );
         }
 
-        final PortfolioYieldChartData chartData = PortfolioYieldChartDataMapper.fromResponses(
-          yieldProfitHoldings: yieldProfitHoldings,
-          stockYieldDetails: stockYieldDetails,
-        );
+        final PortfolioYieldChartData chartData =
+            PortfolioYieldChartDataMapper.fromResponses(
+              yieldProfitHoldings: yieldProfitHoldings,
+              stockYieldDetails: stockYieldDetails,
+            );
 
         return CustomScaffold(
           appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
@@ -119,13 +122,19 @@ class PortfolioScreen extends StatelessWidget {
   }
 }
 
-AllocationSummaryData _buildAllocationSummaryData(PortfolioOverview overview, SdkLocalizations l10n) {
+AllocationSummaryData _buildAllocationSummaryData(
+  PortfolioOverview overview,
+  SdkLocalizations l10n,
+) {
   final double stockValue = overview.stockTotal ?? 0;
   final double bondValue = overview.bondTotal ?? 0;
   final List<AllocationBadgeData> yieldBadges = <AllocationBadgeData>[
     AllocationBadgeData(
-      label: '${(overview.profitOrLoss ?? 0.0) >= 0 ? '+' : ''}${formatIpsPaymentAmount((overview.profitOrLoss ?? 0.0), overview.currency)}',
-      tone: (overview.profitOrLoss ?? 0.0) >= 0 ? DesignTokens.success : DesignTokens.danger,
+      label:
+          '${(overview.profitOrLoss ?? 0.0) >= 0 ? '+' : ''}${formatIpsPaymentAmount((overview.profitOrLoss ?? 0.0), overview.currency)}',
+      tone: (overview.profitOrLoss ?? 0.0) >= 0
+          ? DesignTokens.success
+          : DesignTokens.danger,
     ),
     AllocationBadgeData(
       label: '+${(overview.profitPercent ?? 0.0).toStringAsFixed(0)}%',

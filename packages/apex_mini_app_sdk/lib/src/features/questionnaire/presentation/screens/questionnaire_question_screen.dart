@@ -9,10 +9,12 @@ class QuestionnaireQuestionScreen extends StatefulWidget {
   final int stepIndex;
 
   @override
-  State<QuestionnaireQuestionScreen> createState() => _QuestionnaireQuestionScreenState();
+  State<QuestionnaireQuestionScreen> createState() =>
+      _QuestionnaireQuestionScreenState();
 }
 
-class _QuestionnaireQuestionScreenState extends State<QuestionnaireQuestionScreen> {
+class _QuestionnaireQuestionScreenState
+    extends State<QuestionnaireQuestionScreen> {
   late int _currentStepIndex = widget.stepIndex;
 
   bool _hasCurrentAnswer(IpsQuestionnaireState state) {
@@ -24,10 +26,13 @@ class _QuestionnaireQuestionScreenState extends State<QuestionnaireQuestionScree
   }
 
   Future<void> _goNext(IpsQuestionnaireState state) async {
-    final QuestionnaireQuestion currentQuestion = state.questions[_currentStepIndex];
+    final QuestionnaireQuestion currentQuestion =
+        state.questions[_currentStepIndex];
     final bool shouldSaveGoal = currentQuestion.isGoal;
     if (shouldSaveGoal) {
-      final bool saved = await context.read<IpsQuestionnaireCubit>().saveSelectedTargetGoal(questionId: currentQuestion.id);
+      final bool saved = await context
+          .read<IpsQuestionnaireCubit>()
+          .saveSelectedTargetGoal(questionId: currentQuestion.id);
       if (!mounted || !saved) {
         return;
       }
@@ -164,14 +169,20 @@ class _QuestionnaireQuestionScreenState extends State<QuestionnaireQuestionScree
                 if (state.isLoading || state.isSavingTargetGoal)
                   BlockingLoadingOverlay(
                     title: l10n.commonLoading,
-                    message: state.isSavingTargetGoal ? l10n.commonLoading : l10n.ipsQuestionnaireLoading,
+                    message: state.isSavingTargetGoal
+                        ? l10n.commonLoading
+                        : l10n.ipsQuestionnaireLoading,
                   ),
               ],
             ),
             bottomNavigationBar: BottomActionBar(
               child: PrimaryButton(
-                label: isLastStep ? l10n.ipsQuestionnaireViewPacks : l10n.commonContinue,
-                onPressed: _hasCurrentAnswer(state) && !state.isSavingTargetGoal ? () => _goNext(state) : null,
+                label: isLastStep
+                    ? l10n.ipsQuestionnaireViewPacks
+                    : l10n.commonContinue,
+                onPressed: _hasCurrentAnswer(state) && !state.isSavingTargetGoal
+                    ? () => _goNext(state)
+                    : null,
               ),
             ),
           );

@@ -34,10 +34,19 @@ class QuestionnaireOptionDto {
     );
   }
 
-  factory QuestionnaireOptionDto.fromQuestionApiJson(Map<String, Object?> json) {
-    final String id = ApiParser.asNullableString(json['id']) ?? ApiParser.asNullableString(json['answerId']) ?? '';
+  factory QuestionnaireOptionDto.fromQuestionApiJson(
+    Map<String, Object?> json,
+  ) {
+    final String id =
+        ApiParser.asNullableString(json['id']) ??
+        ApiParser.asNullableString(json['answerId']) ??
+        '';
     final double? amount = ApiParser.asNullableDouble(json['amount']);
-    final String label = ApiParser.asNullableString(json['title']) ?? ApiParser.asNullableString(json['name']) ?? ApiParser.asNullableString(json['answer']) ?? (amount?.toString() ?? '');
+    final String label =
+        ApiParser.asNullableString(json['title']) ??
+        ApiParser.asNullableString(json['name']) ??
+        ApiParser.asNullableString(json['answer']) ??
+        (amount?.toString() ?? '');
 
     return QuestionnaireOptionDto(
       id: id,
@@ -105,8 +114,13 @@ class QuestionnaireQuestionDto {
     );
   }
 
-  factory QuestionnaireQuestionDto.fromQuestionApiJson(Map<String, Object?> json) {
-    final String id = ApiParser.asNullableString(json['id']) ?? ApiParser.asNullableString(json['questionId']) ?? '';
+  factory QuestionnaireQuestionDto.fromQuestionApiJson(
+    Map<String, Object?> json,
+  ) {
+    final String id =
+        ApiParser.asNullableString(json['id']) ??
+        ApiParser.asNullableString(json['questionId']) ??
+        '';
 
     return QuestionnaireQuestionDto(
       id: id,
@@ -116,7 +130,10 @@ class QuestionnaireQuestionDto {
       isGoal: ApiParser.asFlag(json['is_goal']),
       createdAt: ApiParser.asNullableString(json['created_at']),
       updatedAt: ApiParser.asNullableString(json['updated_at']),
-      options: ApiParser.asObjectMapList(json['answers']).map(QuestionnaireOptionDto.fromQuestionApiJson).where((QuestionnaireOptionDto option) => option.id.trim().isNotEmpty).toList(growable: false),
+      options: ApiParser.asObjectMapList(json['answers'])
+          .map(QuestionnaireOptionDto.fromQuestionApiJson)
+          .where((QuestionnaireOptionDto option) => option.id.trim().isNotEmpty)
+          .toList(growable: false),
     );
   }
 
@@ -146,7 +163,9 @@ class QuestionnaireQuestionDto {
       isGoal: isGoal,
       createdAt: createdAt,
       updatedAt: updatedAt,
-      options: options.map((QuestionnaireOptionDto option) => option.toDomain()).toList(growable: false),
+      options: options
+          .map((QuestionnaireOptionDto option) => option.toDomain())
+          .toList(growable: false),
     );
   }
 }
@@ -163,7 +182,9 @@ class QuestionnaireResDto {
     if (responseCode != 0) {
       throw ApiBusinessException(
         responseCode: responseCode,
-        message: ApiParser.asNullableString(json['responseDesc']) ?? 'Score calculation failed.',
+        message:
+            ApiParser.asNullableString(json['responseDesc']) ??
+            'Score calculation failed.',
       );
     }
 

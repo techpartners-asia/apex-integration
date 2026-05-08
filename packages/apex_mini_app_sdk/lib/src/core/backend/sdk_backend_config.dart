@@ -13,9 +13,11 @@ class SdkBackendConfig {
     this.contract = const SdkContractDefaults(),
   });
 
-  factory SdkBackendConfig.fromConfig() {
+  factory SdkBackendConfig.fromConfig({
+    SdkRuntimeConfig? runtime,
+  }) {
     return SdkBackendConfig(
-      runtime: SdkRuntimeConfig.fromConfig(),
+      runtime: runtime ?? SdkRuntimeConfig.fromConfig(),
       bootstrap: const SdkBootstrapContext(),
       portfolio: const SdkPortfolioContext(),
       contract: const SdkContractDefaults(),

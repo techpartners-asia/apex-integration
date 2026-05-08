@@ -14,7 +14,10 @@ class HelpLocationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final String? workingHours = _buildWorkingHoursLabel(context, location);
-    final String? imageUrl = location.images.map((FileEntity image) => image.physicalPath).whereType<String>().firstOrNull;
+    final String? imageUrl = location.images
+        .map((FileEntity image) => image.physicalPath)
+        .whereType<String>()
+        .firstOrNull;
     final Uri? mapsUri = _googleMapsUri(location);
 
     return Column(
@@ -22,14 +25,23 @@ class HelpLocationSection extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: responsive.dp(4)),
-          child: CustomText(l10n.ipsHelpLocationTitle, variant: MiniAppTextVariant.subtitle2),
+          child: CustomText(
+            l10n.ipsHelpLocationTitle,
+            variant: MiniAppTextVariant.subtitle2,
+          ),
         ),
         SizedBox(height: responsive.spacing.cardGap),
         Material(
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(responsive.radius(20)),
-            onTap: mapsUri == null ? null : () => _launchUri(context, mapsUri, mode: LaunchMode.externalApplication),
+            onTap: mapsUri == null
+                ? null
+                : () => _launchUri(
+                    context,
+                    mapsUri,
+                    mode: LaunchMode.externalApplication,
+                  ),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -48,9 +60,11 @@ class HelpLocationSection extends StatelessWidget {
                         height: responsive.dp(160),
                         child: imageUrl != null
                             ? CachedNetworkImage(
-                                imageUrl: '${StaticApiConfig.techInvestXStorageUrl}$imageUrl',
+                                imageUrl:
+                                    '${StaticApiConfig.techInvestXStorageUrl}$imageUrl',
                                 fit: BoxFit.cover,
-                                errorWidget: (_, _, _) => const _LocationPlaceholder(),
+                                errorWidget: (_, _, _) =>
+                                    const _LocationPlaceholder(),
                               )
                             : const _LocationPlaceholder(),
                       ),
@@ -66,7 +80,8 @@ class HelpLocationSection extends StatelessWidget {
                             location.title!,
                             variant: MiniAppTextVariant.subtitle2,
                           ),
-                        if (workingHours?.trim().isNotEmpty == true) ...<Widget>[
+                        if (workingHours?.trim().isNotEmpty ==
+                            true) ...<Widget>[
                           SizedBox(height: responsive.dp(4)),
                           CustomText(
                             workingHours!,
@@ -74,7 +89,8 @@ class HelpLocationSection extends StatelessWidget {
                             color: DesignTokens.muted,
                           ),
                         ],
-                        if (location.description?.trim().isNotEmpty == true) ...<Widget>[
+                        if (location.description?.trim().isNotEmpty ==
+                            true) ...<Widget>[
                           SizedBox(height: responsive.dp(15)),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,

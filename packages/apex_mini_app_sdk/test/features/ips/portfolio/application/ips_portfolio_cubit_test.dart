@@ -123,14 +123,14 @@ class _FakePortfolioService implements PortfolioService {
     SdkPortfolioContext? context,
   }) async {
     return const <PortfolioHolding>[
-    //   PortfolioHolding(
-    //     code: 'TEST',
-    //     name: 'Test Holding',
-    //     quantity: 10,
-    //     currentValue: 200,
-    //     profitAmount: 15,
-    //     pointLabel: 'Jan',
-    //   ),
+      //   PortfolioHolding(
+      //     code: 'TEST',
+      //     name: 'Test Holding',
+      //     quantity: 10,
+      //     currentValue: 200,
+      //     profitAmount: 15,
+      //     pointLabel: 'Jan',
+      //   ),
     ];
   }
 

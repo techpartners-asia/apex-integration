@@ -26,8 +26,12 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     );
 
     try {
-      final AcntBootstrapState bootstrapState = state.bootstrapState ?? initialBootstrapState ?? await BootstrapStateResolver(service: bootstrapService!).load();
-      final List<QuestionnaireQuestion> questions = await service.getQuestions();
+      final AcntBootstrapState bootstrapState =
+          state.bootstrapState ??
+          initialBootstrapState ??
+          await BootstrapStateResolver(service: bootstrapService!).load();
+      final List<QuestionnaireQuestion> questions = await service
+          .getQuestions();
 
       emit(
         state.copyWith(
@@ -50,7 +54,9 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
   }
 
   void selectAnswer({required String questionId, required String optionId}) {
-    final Map<String, String> nextAnswers = Map<String, String>.from(state.answers)..[questionId] = optionId;
+    final Map<String, String> nextAnswers = Map<String, String>.from(
+      state.answers,
+    )..[questionId] = optionId;
     emit(state.copyWith(answers: nextAnswers, errorMessage: null));
   }
 
@@ -77,7 +83,9 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     );
 
     try {
-      await appApi.updateTargetGoal(UpdateTargetGoalApiReq(goalId: selectedGoalId));
+      await appApi.updateTargetGoal(
+        UpdateTargetGoalApiReq(goalId: selectedGoalId),
+      );
       emit(
         state.copyWith(
           isSavingTargetGoal: false,

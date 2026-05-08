@@ -3,32 +3,43 @@ import 'package:mini_app_sdk/mini_app_sdk.dart';
 class AcntBootstrapState {
   final GetSecuritiesAcntListResDto _response;
 
-  const AcntBootstrapState({required GetSecuritiesAcntListResDto response}) : _response = response;
+  const AcntBootstrapState({required GetSecuritiesAcntListResDto response})
+    : _response = response;
 
   GetSecuritiesAcntListDetailDto get _detail => _response.detail;
 
-  GetSecAcntListAccountDto? get _securitiesAccount => _response.securitiesAccount;
+  GetSecAcntListAccountDto? get _securitiesAccount =>
+      _response.securitiesAccount;
 
   GetSecAcntListAccountDto? get _ipsMasterAccount => _response.ipsMasterAccount;
 
   GetSecAcntListAccountDto? get _ipsCasaAccount => _response.ipsCasaAccount;
 
-  bool get hasRequiredIpsAccounts => _ipsMasterAccount != null && _ipsCasaAccount != null;
+  bool get hasRequiredIpsAccounts =>
+      _ipsMasterAccount != null && _ipsCasaAccount != null;
 
   bool get hasAcnt => _detail.hasAcnt;
 
-  bool get hasIpsAcnt => _detail.hasIpsAcnt || _ipsMasterAccount != null || _ipsCasaAccount != null;
+  bool get hasIpsAcnt =>
+      _detail.hasIpsAcnt ||
+      _ipsMasterAccount != null ||
+      _ipsCasaAccount != null;
 
-  AcntStatus get acntStatus => !hasAcnt ? AcntStatus.none : (hasIpsAcnt ? AcntStatus.active : AcntStatus.pending);
+  AcntStatus get acntStatus => !hasAcnt
+      ? AcntStatus.none
+      : (hasIpsAcnt ? AcntStatus.active : AcntStatus.pending);
 
   int? get secAcntStatusCode => _securitiesAccount?.status;
 
-  String? get secAcntCode => _securitiesAccount?.scAcntCode ?? _securitiesAccount?.acntCode;
+  String? get secAcntCode =>
+      _securitiesAccount?.scAcntCode ?? _securitiesAccount?.acntCode;
 
-  String? get ipsAcntCode => _ipsMasterAccount?.scAcntCode ?? _ipsMasterAccount?.acntCode;
+  String? get ipsAcntCode =>
+      _ipsMasterAccount?.scAcntCode ?? _ipsMasterAccount?.acntCode;
 
   String? get portfolioBrokerId {
-    return _trimToNull(_securitiesAccount?.brokerId) ?? _trimToNull(_detail.brokerCode);
+    return _trimToNull(_securitiesAccount?.brokerId) ??
+        _trimToNull(_detail.brokerCode);
   }
 
   // String? get portfolioSecurityCode {
@@ -38,25 +49,34 @@ class AcntBootstrapState {
   int? get portfolioCasaAcntId => _ipsCasaAccount?.acntId;
 
   int? get portfolioStatementMaxDays {
-    return _parsePositiveInt(_ipsCasaAccount?.statementMaxDay) ?? _parsePositiveInt(_securitiesAccount?.statementMaxDay);
+    return _parsePositiveInt(_ipsCasaAccount?.statementMaxDay) ??
+        _parsePositiveInt(_securitiesAccount?.statementMaxDay);
   }
 
-  double? get secBalance => _securitiesAccount?.availableBalance ?? _securitiesAccount?.balance;
+  double? get secBalance =>
+      _securitiesAccount?.availableBalance ?? _securitiesAccount?.balance;
 
-  double? get ipsBalance => _ipsCasaAccount?.availableBalance ?? _ipsCasaAccount?.balance;
+  double? get ipsBalance =>
+      _ipsCasaAccount?.availableBalance ?? _ipsCasaAccount?.balance;
 
   double? get commission => _detail.commission;
 
-  String get currency => _response.primaryAccount?.symbol ?? _ipsCasaAccount?.symbol ?? IpsDefaults.defaultCurrency;
+  String get currency =>
+      _response.primaryAccount?.symbol ??
+      _ipsCasaAccount?.symbol ??
+      IpsDefaults.defaultCurrency;
 
-  String? get statusMessage => _detail.introIps ?? _detail.intro ?? _detail.info;
+  String? get statusMessage =>
+      _detail.introIps ?? _detail.intro ?? _detail.info;
 
   String? get intro => _detail.intro;
 
   String? get introIps => _detail.introIps;
 
   String? get bootstrapBankCode {
-    final String? detailBankCode = _trimToNull(_detail.bankCode ?? _securitiesAccount?.bankCode);
+    final String? detailBankCode = _trimToNull(
+      _detail.bankCode ?? _securitiesAccount?.bankCode,
+    );
     if (detailBankCode != null) {
       return detailBankCode;
     }
@@ -71,7 +91,9 @@ class AcntBootstrapState {
   }
 
   String? get bootstrapBankName {
-    final String? detailBankName = _trimToNull(_detail.bankName ?? _securitiesAccount?.bankName);
+    final String? detailBankName = _trimToNull(
+      _detail.bankName ?? _securitiesAccount?.bankName,
+    );
     if (detailBankName != null) {
       return detailBankName;
     }
@@ -119,8 +141,11 @@ class AcntBootstrapState {
 
   bool get requiresSecAcntPayment => hasAcnt && !hasOpenSecAcnt;
 
-  AcntBootstrapState copyWithBalanceState(GetSecuritiesAcntListResDto balanceState) {
-    final GetSecAcntListAccountDto? updatedBalanceAccount = balanceState.acnts.isEmpty ? null : balanceState.acnts.first;
+  AcntBootstrapState copyWithBalanceState(
+    GetSecuritiesAcntListResDto balanceState,
+  ) {
+    final GetSecAcntListAccountDto? updatedBalanceAccount =
+        balanceState.acnts.isEmpty ? null : balanceState.acnts.first;
     if (updatedBalanceAccount == null) {
       return this;
     }

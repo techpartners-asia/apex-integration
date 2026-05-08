@@ -96,36 +96,4 @@ class RemoteSignupBootstrapRepository implements CurrentUserRepository {
       return bootstrapUser;
     }
   }
-
-  // UserEntityDto _mergeUsers(
-  //   UserEntityDto bootstrapUser,
-  //   UserEntityDto profileUser, {
-  //   required String adminToken,
-  // }) {
-  //   return UserEntityDto(
-  //     registerNo: _preferText(profileUser.registerNo, bootstrapUser.registerNo),
-  //     firstName: _preferText(profileUser.firstName, bootstrapUser.firstName),
-  //     lastName: _preferText(profileUser.lastName, bootstrapUser.lastName),
-  //     mobile: _preferText(profileUser.mobile, bootstrapUser.mobile),
-  //     familyName: profileUser.familyName ?? bootstrapUser.familyName,
-  //
-  //     email: _preferOptional(profileUser.email, bootstrapUser.email),
-  //     sexCode: _preferOptional(profileUser.sexCode, bootstrapUser.sexCode),
-  //     birthDate: _preferOptional(
-  //       profileUser.birthDate,
-  //       bootstrapUser.birthDate,
-  //     ),
-  //     fiCode: _preferOptional(profileUser.fiCode, bootstrapUser.fiCode),
-  //     admSession: adminToken,
-  //     language: _preferOptional(profileUser.language, bootstrapUser.language),
-  //   );
-  // }
-
-  // String _preferText(String preferred, String fallback) {
-  //   final String normalizedPreferred = preferred.trim();
-  //   if (normalizedPreferred.isNotEmpty) {
-  //     return normalizedPreferred;
-  //   }
-  //   return fallback.trim();
-  // }
 }

@@ -206,7 +206,9 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
               SizedBox(width: responsive.dp(12)),
               Expanded(
                 child: PrimaryButton(
-                  label: l10n.ipsStatementFilterSearch(_currentFilter.activeFilterCount),
+                  label: l10n.ipsStatementFilterSearch(
+                    _currentFilter.activeFilterCount,
+                  ),
                   onPressed: () {
                     widget.onApply?.call(_currentFilter);
                     Navigator.pop(context);

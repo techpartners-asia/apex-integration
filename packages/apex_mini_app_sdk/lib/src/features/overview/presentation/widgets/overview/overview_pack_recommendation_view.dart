@@ -237,7 +237,9 @@ class _PackRecommendationHero extends StatelessWidget {
             right: responsive.dp(18),
             top: responsive.dp(12),
             child: _PackRecommendationStackPlate(
-              color: _isWarmVariant ? const Color(0x1EE96E96) : const Color(0x143F7E9F),
+              color: _isWarmVariant
+                  ? const Color(0x1EE96E96)
+                  : const Color(0x143F7E9F),
             ),
           ),
           Positioned(
@@ -245,7 +247,9 @@ class _PackRecommendationHero extends StatelessWidget {
             right: responsive.dp(10),
             top: responsive.dp(6),
             child: _PackRecommendationStackPlate(
-              color: _isWarmVariant ? const Color(0x24F59CB5) : const Color(0x1E5A93AD),
+              color: _isWarmVariant
+                  ? const Color(0x24F59CB5)
+                  : const Color(0x1E5A93AD),
             ),
           ),
           Positioned.fill(

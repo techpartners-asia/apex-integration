@@ -41,7 +41,10 @@ class OverviewVerificationViewModel {
   });
 }
 
-OverviewVerificationViewModel buildOverviewVerificationViewModel(BuildContext context, AcntBootstrapState state) {
+OverviewVerificationViewModel buildOverviewVerificationViewModel(
+  BuildContext context,
+  AcntBootstrapState state,
+) {
   final l10n = context.l10n;
 
   if (!state.hasAcnt) {
@@ -55,7 +58,8 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(BuildContext co
           title: l10n.ipsOverviewProfileMenuPersonalInfo,
           subtitle: l10n.ipsOverviewProfilePersonalInfoMissing,
           status: StepStatus.active,
-          onTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+          onTap: () =>
+              launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
         ),
         OverviewVerificationStep(
           title: l10n.ipsAcntOpenAcnt,
@@ -72,7 +76,8 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(BuildContext co
       promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
       promoTitle: l10n.ipsOverviewFirstPackTitle,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+      onPromoTap: () =>
+          launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
     );
   }
 
@@ -104,7 +109,11 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(BuildContext co
       promoEyebrow: l10n.ipsOverviewActionTitle,
       promoTitle: l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.secAcnt, arguments: state),
+      onPromoTap: () => launchIpsRoute(
+        context,
+        route: MiniAppRoutes.secAcnt,
+        arguments: state,
+      ),
     );
   }
 
@@ -128,13 +137,15 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(BuildContext co
         title: l10n.ipsQuestionnaireTitle,
         subtitle: l10n.ipsQuestionnaireSubtitle,
         status: StepStatus.active,
-        onTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+        onTap: () =>
+            launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
         isLast: true,
       ),
     ],
     promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
     promoTitle: l10n.ipsHomeRecommendedPackCta,
     promoButtonLabel: l10n.commonContinue,
-    onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+    onPromoTap: () =>
+        launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
   );
 }

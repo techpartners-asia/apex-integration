@@ -20,6 +20,7 @@ class RemoteLoginSessionRepository implements LoginSessionRepository {
     final LoginSessionResponseDto response = await api.getLoginSession(
       GetLoginSessionApiReqFactory.build(
         admSession: runtimeConfig.neSession!,
+        fiCode: runtimeConfig.defaultFiCode,
         userDataSourceMode: userDataSourceMode,
         user: user,
       ),

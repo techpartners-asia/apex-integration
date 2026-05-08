@@ -25,19 +25,46 @@ class SdkRuntimeConfig {
     this.neSession,
   });
 
-  factory SdkRuntimeConfig.fromConfig() {
-    return const SdkRuntimeConfig(
-      techInvestXUrl: StaticApiConfig.techInvestXUrl,
-      loginSessionBaseUrl: StaticApiConfig.loginSessionBaseUrl,
-      ipsApiBaseUrl: StaticApiConfig.ipsApiBaseUrl,
-      credentials: AppCredentials(
-        appId: StaticApiConfig.appId,
-        appSecret: StaticApiConfig.appSecret,
-      ),
-      neSession: StaticApiConfig.neSession,
-      defaultSrcFiCode: StaticApiConfig.defaultSrcFiCode,
-      defaultFiCode: StaticApiConfig.defaultFiCode,
-      language: StaticApiConfig.defaultLanguage,
+  factory SdkRuntimeConfig.fromConfig({
+    String? baseUrl,
+    String? techInvestXUrl,
+    String? loginSessionBaseUrl,
+    String? ipsApiBaseUrl,
+    AppCredentials? credentials,
+    String? appId,
+    String? appSecret,
+    String? accessToken,
+    String? neSession,
+    String? defaultSrcFiCode,
+    String? defaultFiCode,
+    String? language,
+    bool? enableDebugLogs,
+  }) {
+    final String resolvedAppId = _nonBlank(appId) ?? StaticApiConfig.appId;
+    final String resolvedAppSecret =
+        _nonBlank(appSecret) ?? StaticApiConfig.appSecret;
+
+    return SdkRuntimeConfig(
+      techInvestXUrl:
+          _nonBlank(techInvestXUrl) ??
+          _nonBlank(baseUrl) ??
+          StaticApiConfig.techInvestXUrl,
+      loginSessionBaseUrl:
+          _nonBlank(loginSessionBaseUrl) ?? StaticApiConfig.loginSessionBaseUrl,
+      ipsApiBaseUrl: _nonBlank(ipsApiBaseUrl) ?? StaticApiConfig.ipsApiBaseUrl,
+      credentials:
+          credentials ??
+          AppCredentials(
+            appId: resolvedAppId,
+            appSecret: resolvedAppSecret,
+          ),
+      accessToken: _nonBlank(accessToken),
+      neSession: _nonBlank(neSession) ?? StaticApiConfig.neSession,
+      defaultSrcFiCode:
+          _nonBlank(defaultSrcFiCode) ?? StaticApiConfig.defaultSrcFiCode,
+      defaultFiCode: _nonBlank(defaultFiCode) ?? StaticApiConfig.defaultFiCode,
+      language: _nonBlank(language) ?? StaticApiConfig.defaultLanguage,
+      enableDebugLogs: enableDebugLogs ?? false,
     );
   }
 
@@ -106,5 +133,10 @@ class SdkRuntimeConfig {
       ),
       tokenProvider: const StaticTokenProvider(null),
     );
+  }
+
+  static String? _nonBlank(String? value) {
+    final String trimmed = value?.trim() ?? '';
+    return trimmed.isEmpty ? null : trimmed;
   }
 }

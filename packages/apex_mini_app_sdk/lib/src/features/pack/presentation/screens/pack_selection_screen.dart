@@ -47,7 +47,9 @@ class PackSelectionScreen extends StatelessWidget {
                   )
                 else
                   PackSelectionContent(
-                    packs: questionnaireRes!.showRecomended ? packs.where((el) => el.isRecommended == 1).toList() : packs,
+                    packs: questionnaireRes!.showRecomended
+                        ? packs.where((el) => el.isRecommended == 1).toList()
+                        : packs,
                     questionnaireRes: questionnaireRes,
                   ),
               ],
@@ -170,7 +172,8 @@ List<Widget> buildPackBenefits(BuildContext context, IpsPack pack) {
     if (pack.bondPercent >= pack.stockPercent) l10n.ipsPackBenefitStableYield,
     if (pack.stockPercent > 0) l10n.ipsPackBenefitStockGrowth,
     if (pack.assetPercent > 0) l10n.ipsPackBenefitBalancedStructure,
-    if (pack.bondPercent == 0 && pack.assetPercent == 0) l10n.ipsPackBenefitGrowthFocused,
+    if (pack.bondPercent == 0 && pack.assetPercent == 0)
+      l10n.ipsPackBenefitGrowthFocused,
   ];
 
   return points

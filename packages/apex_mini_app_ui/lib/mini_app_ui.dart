@@ -10,6 +10,7 @@ export 'src/theme/mini_app_typography.dart';
 export 'src/runtime/default_mini_app_host_controller.dart';
 export 'src/runtime/mini_app_host_controller.dart';
 export 'src/runtime/mini_app_host_controller_provider.dart';
+export 'src/runtime/mini_app_host_controller_scope.dart';
 export 'src/runtime/debug_mini_app_logger.dart';
 export 'src/runtime/mini_app_logger.dart';
 export 'src/runtime/mini_app_runtime.dart';

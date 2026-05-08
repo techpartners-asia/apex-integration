@@ -111,7 +111,9 @@ class _RechargeBody extends StatelessWidget {
                           RechargeQuantityInput(
                             controller: controller,
                             focusNode: focusNode,
-                            onChanged: context.read<IpsRechargeCubit>().updatePackQty,
+                            onChanged: context
+                                .read<IpsRechargeCubit>()
+                                .updatePackQty,
                           ),
                           SizedBox(height: responsive.spacing.inlineSpacing),
 
@@ -161,7 +163,9 @@ class _BottomActionArea extends StatelessWidget {
       ),
       child: PrimaryButton(
         label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
-        onPressed: state.canSubmit ? context.read<IpsRechargeCubit>().submit : null,
+        onPressed: state.canSubmit
+            ? context.read<IpsRechargeCubit>().submit
+            : null,
       ),
     );
   }

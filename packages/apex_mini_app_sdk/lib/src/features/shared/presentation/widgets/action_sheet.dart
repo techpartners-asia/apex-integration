@@ -32,7 +32,9 @@ class ActionSheet extends StatelessWidget {
     final double safeBottom = mediaQuery.padding.bottom;
     final bool hasKeyboard = bottomInset > 0;
     final double contentMaxHeight = mediaQuery.size.height * 0.8;
-    final double bottomPad = (hasKeyboard ? bottomInset : safeBottom) + responsive.space(AppSpacing.lg);
+    final double bottomPad =
+        (hasKeyboard ? bottomInset : safeBottom) +
+        responsive.space(AppSpacing.lg);
     final Widget resolvedTrailing =
         trailing ??
         ActionButton(

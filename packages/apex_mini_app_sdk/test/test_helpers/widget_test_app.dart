@@ -4,14 +4,14 @@ import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 
 Widget buildSdkTestApp(Widget child, {MiniAppHostController? hostController}) {
-  return MiniAppHostControllerProvider(
-    controller: hostController ?? TestMiniAppHostController(),
-    child: MiniAppPlatformApp(
-      title: 'SDK Test',
-      theme: ThemeData(useMaterial3: true),
-      localizationsDelegates: SdkLocalizations.localizationsDelegates,
-      supportedLocales: SdkLocalizations.supportedLocales,
-      home: child,
+  return MiniAppPlatformApp(
+    title: 'SDK Test',
+    theme: ThemeData(useMaterial3: true),
+    localizationsDelegates: SdkLocalizations.localizationsDelegates,
+    supportedLocales: SdkLocalizations.supportedLocales,
+    home: MiniAppHostControllerScope(
+      controller: hostController ?? TestMiniAppHostController(),
+      child: child,
     ),
   );
 }

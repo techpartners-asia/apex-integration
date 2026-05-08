@@ -2,8 +2,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class MiniAppSessionStore extends Cubit<MiniAppSessionState> {
-  MiniAppSessionStore({String? initialUserToken})
-    : super(MiniAppSessionState(userToken: initialUserToken));
+  MiniAppSessionStore({
+    String? initialUserToken,
+    UserEntityDto? initialCurrentUser,
+    LoginSession? initialLoginSession,
+  }) : super(
+         MiniAppSessionState(
+           userToken: initialUserToken,
+           currentUser: initialCurrentUser,
+           loginSession: initialLoginSession,
+         ),
+       );
 
   String? get userToken => state.userToken;
 
@@ -11,8 +20,13 @@ class MiniAppSessionStore extends Cubit<MiniAppSessionState> {
 
   LoginSession? get loginSession => state.loginSession;
 
-  void prepareLaunch({String? userToken}) {
-    emit(MiniAppSessionState(userToken: userToken));
+  void prepareLaunch({String? userToken, bool resetSession = true}) {
+    if (resetSession) {
+      emit(MiniAppSessionState(userToken: userToken));
+      return;
+    }
+
+    emit(state.copyWith(userToken: userToken));
   }
 
   void setCurrentUser(UserEntityDto user) {

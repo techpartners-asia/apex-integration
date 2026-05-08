@@ -44,8 +44,11 @@ void main() {
           fallback: 'Custom fallback',
         ),
         throwsA(
-          isA<ApiBusinessException>()
-              .having((e) => e.message, 'message', 'Custom fallback'),
+          isA<ApiBusinessException>().having(
+            (e) => e.message,
+            'message',
+            'Custom fallback',
+          ),
         ),
       );
     });
@@ -100,8 +103,11 @@ void main() {
       expect(
         () => ensureDefault(const <String, Object?>{'responseCode': 5}),
         throwsA(
-          isA<ApiBusinessException>()
-              .having((e) => e.responseCode, 'responseCode', 5),
+          isA<ApiBusinessException>().having(
+            (e) => e.responseCode,
+            'responseCode',
+            5,
+          ),
         ),
       );
     });
@@ -112,8 +118,11 @@ void main() {
           const <String, Object?>{'responseCode': 1, 'message': 'Server err'},
         ),
         throwsA(
-          isA<ApiBusinessException>()
-              .having((e) => e.message, 'message', 'Server err'),
+          isA<ApiBusinessException>().having(
+            (e) => e.message,
+            'message',
+            'Server err',
+          ),
         ),
       );
     });

@@ -15,10 +15,14 @@ class CreateInvoiceApiReq {
        note = note.trim(),
        refId = refId.trim() {
     if (!this.amount.isFinite || this.amount <= 0) {
-      throw const ApiIntegrationException('createInvoice requires a positive amount.');
+      throw const ApiIntegrationException(
+        'createInvoice requires a positive amount.',
+      );
     }
     if (this.note.isEmpty || this.refId.isEmpty) {
-      throw const ApiIntegrationException('createInvoice requires note and refId.');
+      throw const ApiIntegrationException(
+        'createInvoice requires note and refId.',
+      );
     }
   }
 

@@ -7,6 +7,20 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
     initialUserToken: config.userToken,
     logger: logger,
     userDataSourceMode: config.userDataSourceMode,
+    baseUrl: config.baseUrl,
+    techInvestXBaseUrl: config.techInvestXBaseUrl,
+    loginSessionBaseUrl: config.loginSessionBaseUrl,
+    ipsApiBaseUrl: config.ipsApiBaseUrl,
+    appId: config.appId,
+    appSecret: config.appSecret,
+    accessToken: config.accessToken,
+    neSession: config.neSession,
+    defaultSrcFiCode: config.defaultSrcFiCode,
+    defaultFiCode: config.defaultFiCode,
+    language: config.language,
+    enableDebugLogs: config.enableDebugLogs,
+    hostUser: config.hostUser,
+    hostSession: config.hostSession,
   );
   final MiniAppApiRepository appApi = appSession.appApi;
   final MiniAppPaymentExecutor paymentExecutor = MiniAppPaymentExecutor(

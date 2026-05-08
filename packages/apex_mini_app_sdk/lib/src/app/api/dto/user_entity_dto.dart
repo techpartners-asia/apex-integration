@@ -68,7 +68,9 @@ class UserEntityDto {
 
   factory UserEntityDto.fromJson(Map<String, Object?> json) {
     final Map<String, Object?> payload = ApiParser.asObjectMap(json['body']);
-    final Map<String, Object?> nestedUser = ApiParser.asObjectMap(payload['user']);
+    final Map<String, Object?> nestedUser = ApiParser.asObjectMap(
+      payload['user'],
+    );
     final bool isBootstrapUserPayload = nestedUser.isNotEmpty;
     final Map<String, Object?> source = nestedUser.isNotEmpty
         ? nestedUser
@@ -77,17 +79,27 @@ class UserEntityDto {
         : json;
     final Map<String, Object?> image = ApiParser.asObjectMap(source['image']);
     final Map<String, Object?> region = ApiParser.asObjectMap(source['region']);
-    final String? resolvedToken = ApiParser.asNullableString(payload['token']) ?? ApiParser.asNullableString(json['token']);
+    final String? resolvedToken =
+        ApiParser.asNullableString(payload['token']) ??
+        ApiParser.asNullableString(json['token']);
 
     return UserEntityDto(
       account: AccountDto.fromJson(ApiParser.asObjectMap(source['account'])),
       bank: BankDto.fromJson(ApiParser.asObjectMap(source['bank'])),
       id: ApiParser.asNullableInt(source['id']),
-      registerNo: isBootstrapUserPayload ? _asRequiredBootstrapText(source['rd']) : ApiParser.asNullableString(source['rd']),
+      registerNo: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['rd'])
+          : ApiParser.asNullableString(source['rd']),
       token: resolvedToken,
-      firstName: isBootstrapUserPayload ? _asRequiredBootstrapText(source['first_name']) : ApiParser.asNullableString(source['first_name']),
-      lastName: isBootstrapUserPayload ? _asRequiredBootstrapText(source['last_name']) : ApiParser.asNullableString(source['last_name']),
-      phone: isBootstrapUserPayload ? _asRequiredBootstrapText(source['phone']) : ApiParser.asNullableString(source['phone']),
+      firstName: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['first_name'])
+          : ApiParser.asNullableString(source['first_name']),
+      lastName: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['last_name'])
+          : ApiParser.asNullableString(source['last_name']),
+      phone: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['phone'])
+          : ApiParser.asNullableString(source['phone']),
       phoneAddition: ApiParser.asNullableString(source['phone_addition']),
       email: ApiParser.asNullableString(source['email']),
       gender: ApiParser.asNullableString(source['gender']),
@@ -105,7 +117,10 @@ class UserEntityDto {
       residenceCountry: ApiParser.asNullableString(source['residence_country']),
       createdAt: ApiParser.asNullableDateTime(source['created_at']),
       updatedAt: ApiParser.asNullableDateTime(source['updated_at']),
-      admSession: resolvedToken ?? ApiParser.asNullableString(source['adm_session']) ?? ApiParser.asNullableString(source['admSession']),
+      admSession:
+          resolvedToken ??
+          ApiParser.asNullableString(source['adm_session']) ??
+          ApiParser.asNullableString(source['admSession']),
     );
   }
 

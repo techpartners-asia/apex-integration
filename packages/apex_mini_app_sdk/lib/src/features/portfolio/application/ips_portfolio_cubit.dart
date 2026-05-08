@@ -21,8 +21,12 @@ class IpsPortfolioCubit extends Cubit<LoadableState<IpsPortfolioViewData>> {
     emit(state.copyWith(status: LoadableStatus.loading, errorMessage: null));
 
     try {
-      final PortfolioDashboardData dashboardData = await service.getDashboardData();
-      final List<PortfolioHolding> holdings = dashboardData.yieldProfitHoldings.isNotEmpty ? dashboardData.yieldProfitHoldings : dashboardData.stockYieldDetails;
+      final PortfolioDashboardData dashboardData = await service
+          .getDashboardData();
+      final List<PortfolioHolding> holdings =
+          dashboardData.yieldProfitHoldings.isNotEmpty
+          ? dashboardData.yieldProfitHoldings
+          : dashboardData.stockYieldDetails;
 
       emit(
         LoadableState<IpsPortfolioViewData>(
@@ -37,8 +41,17 @@ class IpsPortfolioCubit extends Cubit<LoadableState<IpsPortfolioViewData>> {
         ),
       );
     } catch (error, stackTrace) {
-      logger.onError('portfolio_load_failed', error: error, stackTrace: stackTrace);
-      emit(state.copyWith(status: LoadableStatus.failure, errorMessage: formatIpsError(error, l10n)));
+      logger.onError(
+        'portfolio_load_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      emit(
+        state.copyWith(
+          status: LoadableStatus.failure,
+          errorMessage: formatIpsError(error, l10n),
+        ),
+      );
     }
   }
 }

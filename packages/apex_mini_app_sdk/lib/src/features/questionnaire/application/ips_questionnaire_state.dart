@@ -37,11 +37,15 @@ class IpsQuestionnaireState {
       isLoading: isLoading ?? this.isLoading,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSavingTargetGoal: isSavingTargetGoal ?? this.isSavingTargetGoal,
-      bootstrapState: bootstrapState == sentinel ? this.bootstrapState : bootstrapState as AcntBootstrapState?,
+      bootstrapState: bootstrapState == sentinel
+          ? this.bootstrapState
+          : bootstrapState as AcntBootstrapState?,
       questions: questions ?? this.questions,
       answers: answers ?? this.answers,
       res: res == sentinel ? this.res : res as QuestionnaireRes?,
-      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
+      errorMessage: errorMessage == sentinel
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 }

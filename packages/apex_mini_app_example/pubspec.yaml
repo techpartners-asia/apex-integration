@@ -13,6 +13,8 @@ dependencies:
   cupertino_icons: ^1.0.9
   mini_app_sdk:
     path: ../apex_mini_app_sdk
+  mini_app_ui:
+    path: ../apex_mini_app_ui
 
 dev_dependencies:
   flutter_test:

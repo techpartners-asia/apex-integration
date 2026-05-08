@@ -38,8 +38,12 @@ class QuestionnaireStepView extends StatelessWidget {
         )
         .toList(growable: false);
     final String? selectedOptionId = state.answers[question.id];
-    final String questionTitle = question.title.trim().isEmpty ? l10n.ipsQuestionnaireQuestionPrefix(currentIndex + 1) : question.title;
-    final String? subtitle = question.subtitle?.trim().isEmpty ?? true ? null : question.subtitle?.trim();
+    final String questionTitle = question.title.trim().isEmpty
+        ? l10n.ipsQuestionnaireQuestionPrefix(currentIndex + 1)
+        : question.title;
+    final String? subtitle = question.subtitle?.trim().isEmpty ?? true
+        ? null
+        : question.subtitle?.trim();
     final String? visibleErrorMessage = state.errorMessage;
 
     return SingleChildScrollView(
@@ -74,7 +78,9 @@ class QuestionnaireStepView extends StatelessWidget {
           else
             ...options.map(
               (_QuestionnaireChoice option) => Padding(
-                padding: EdgeInsets.only(bottom: responsive.spacing.inlineSpacing),
+                padding: EdgeInsets.only(
+                  bottom: responsive.spacing.inlineSpacing,
+                ),
                 child: _QuestionnaireOptionTile(
                   label: option.label,
                   number: option.number,
@@ -88,7 +94,9 @@ class QuestionnaireStepView extends StatelessWidget {
                 ),
               ),
             ),
-          if (options.isNotEmpty && visibleErrorMessage != null && visibleErrorMessage.trim().isNotEmpty) ...<Widget>[
+          if (options.isNotEmpty &&
+              visibleErrorMessage != null &&
+              visibleErrorMessage.trim().isNotEmpty) ...<Widget>[
             SizedBox(height: responsive.spacing.sectionSpacing),
             NoticeBanner(
               title: l10n.errorsActionFailed,
@@ -211,7 +219,9 @@ class _QuestionnaireRadioIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: selected ? DesignTokens.coral : DesignTokens.selectionBlueMuted.withValues(alpha: 0.55),
+          color: selected
+              ? DesignTokens.coral
+              : DesignTokens.selectionBlueMuted.withValues(alpha: 0.55),
           width: responsive.dp(selected ? 1.6 : 1.3),
         ),
         color: Colors.white,

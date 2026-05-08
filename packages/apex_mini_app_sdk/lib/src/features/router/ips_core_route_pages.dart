@@ -70,7 +70,9 @@ Widget buildIpsSecAcntPage(
         l10n: l10n,
       ),
       child: SecAcntScreen(
-        initialBootstrapState: arguments is AcntBootstrapState ? arguments : null,
+        initialBootstrapState: arguments is AcntBootstrapState
+            ? arguments
+            : null,
         bankOptionsRepository: dependencies.bankOptionsRepository,
         bankAccountLookupRepository: dependencies.bankAccountLookupRepository,
         appApi: dependencies.appApi,

@@ -16,3 +16,7 @@ abstract interface class MiniAppHostController {
 
   void dispose();
 }
+
+abstract interface class MiniAppHostControllerLifecycle {
+  bool get isDisposed;
+}

@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
+import '../../host/apex_mini_app_host_context.dart';
+
 class ApiExecutor {
   final ApiClient client;
   final ApiHeadersBuilder headersBuilder;
@@ -210,42 +212,59 @@ class ApiExecutor {
     final String? serverMessage = extractServerMessage(error.response?.data);
 
     if (statusCode == 401 || statusCode == 403) {
-      return ApiUnauthorizedException(
+      final ApiUnauthorizedException exception = ApiUnauthorizedException(
         serverMessage ?? 'Authentication failed for $operName.',
         cause: error,
         stackTrace: stackTrace,
       );
+      ApexMiniAppHostContext.emitTokenExpired();
+      ApexMiniAppHostContext.emitError(exception, stackTrace);
+      return exception;
     }
-    if (error.type == DioExceptionType.connectionTimeout || error.type == DioExceptionType.sendTimeout || error.type == DioExceptionType.receiveTimeout) {
-      return ApiNetworkException(
+    if (error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.sendTimeout ||
+        error.type == DioExceptionType.receiveTimeout) {
+      final ApiNetworkException exception = ApiNetworkException(
         'Req timed out for $operName.',
         cause: error,
         stackTrace: stackTrace,
       );
+      ApexMiniAppHostContext.emitError(exception, stackTrace);
+      return exception;
     }
 
     if (statusCode != null) {
       if (serverMessage != null && serverMessage.isNotEmpty) {
-        return ApiBusinessException(
+        final ApiBusinessException exception = ApiBusinessException(
           responseCode: statusCode,
           message: serverMessage,
           cause: error,
           stackTrace: stackTrace,
         );
+        if (statusCode >= 500 && statusCode != 504) {
+          ApexMiniAppHostContext.emitError(exception, stackTrace);
+        }
+        return exception;
       }
 
-      return ApiNetworkException(
+      final ApiNetworkException exception = ApiNetworkException(
         'HTTP $statusCode for $operName.',
         cause: error,
         stackTrace: stackTrace,
       );
+      if (statusCode >= 500 && statusCode != 504) {
+        ApexMiniAppHostContext.emitError(exception, stackTrace);
+      }
+      return exception;
     }
 
-    return ApiNetworkException(
+    final ApiNetworkException exception = ApiNetworkException(
       'Network req failed for $operName.',
       cause: error,
       stackTrace: stackTrace,
     );
+    ApexMiniAppHostContext.emitError(exception, stackTrace);
+    return exception;
   }
 
   String? extractServerMessage(Object? raw) {
@@ -319,14 +338,19 @@ class ApiExecutor {
       return await action();
     } on DioException catch (error, stackTrace) {
       throw mapDioException(path, context, error, stackTrace);
+    } on ApiParsingException catch (error, stackTrace) {
+      ApexMiniAppHostContext.emitError(error, stackTrace);
+      rethrow;
     } on ApiException {
       rethrow;
     } catch (error, stackTrace) {
-      throw ApiUnknownException(
+      final ApiUnknownException exception = ApiUnknownException(
         'Unexpected error during ${context.operName ?? path}.',
         cause: error,
         stackTrace: stackTrace,
       );
+      ApexMiniAppHostContext.emitError(exception, stackTrace);
+      throw exception;
     }
   }
 }

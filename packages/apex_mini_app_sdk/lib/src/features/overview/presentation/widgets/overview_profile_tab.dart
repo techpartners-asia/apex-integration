@@ -103,16 +103,6 @@ class OverviewProfileTab extends StatelessWidget {
                 title: l10n.ipsHelpTitle,
                 onTap: () => launchIpsRoute(context, route: MiniAppRoutes.help),
               ),
-
-              /// Liquid Glass Demo Screen
-              // OverviewProfileMenuItemData(
-              //   image: Img.callBlue,
-              //   title: 'Liquid Glass Demo Screen',
-              //   onTap: () => launchIpsRoute(
-              //     context,
-              //     route: MiniAppRoutes.liquidGlassDemo,
-              //   ),
-              // ),
             ],
           ),
           SizedBox(height: responsive.space(AppSpacing.lg)),

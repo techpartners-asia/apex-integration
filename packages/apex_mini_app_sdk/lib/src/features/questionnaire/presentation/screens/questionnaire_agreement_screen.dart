@@ -12,10 +12,12 @@ class QuestionnaireAgreementScreen extends StatefulWidget {
   final SignatureUploadService signatureUploadService;
 
   @override
-  State<QuestionnaireAgreementScreen> createState() => _QuestionnaireAgreementScreenState();
+  State<QuestionnaireAgreementScreen> createState() =>
+      _QuestionnaireAgreementScreenState();
 }
 
-class _QuestionnaireAgreementScreenState extends State<QuestionnaireAgreementScreen> {
+class _QuestionnaireAgreementScreenState
+    extends State<QuestionnaireAgreementScreen> {
   bool _accepted = false;
 
   void _openNextStep() {
@@ -61,7 +63,9 @@ class _QuestionnaireAgreementScreenState extends State<QuestionnaireAgreementScr
           appBarTitle: l10n.ipsContractTitle,
           title: l10n.secAcntInvestxAgreementTitle,
           body: AgreementHtmlBody(
-            agreementText: state.bootstrapState?.introIps ?? l10n.secAcntInvestxAgreementText,
+            agreementText:
+                state.bootstrapState?.introIps ??
+                l10n.secAcntInvestxAgreementText,
           ),
           consentLabel: l10n.secAcntAgreementConsent,
           accepted: _accepted,

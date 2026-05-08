@@ -29,8 +29,12 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
     final PortfolioSecurity security = widget.security;
     final double yieldPercent = security.percent ?? 0;
     final bool isPositive = yieldPercent >= 0;
-    final Color toneColor = isPositive ? DesignTokens.success : DesignTokens.danger;
-    final String displayName = '${security.securityCode} ${_portfolioSecurityTypeLabel(security.securityType, upper: true)}'.trim();
+    final Color toneColor = isPositive
+        ? DesignTokens.success
+        : DesignTokens.danger;
+    final String displayName =
+        '${security.securityCode} ${_portfolioSecurityTypeLabel(security.securityType, upper: true)}'
+            .trim();
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: responsive.dp(8)),
@@ -184,7 +188,11 @@ class _SecurityDetails extends StatelessWidget {
         children: <Widget>[
           PortfolioCompactMetricTile(
             label: l10n.ipsPortfolioHoldingValueLabel,
-            value: formatIpsPaymentAmount(security.currentPrice ?? 0, currency, showDecimal: true),
+            value: formatIpsPaymentAmount(
+              security.currentPrice ?? 0,
+              currency,
+              showDecimal: true,
+            ),
             showHorizontal: true,
           ),
           SizedBox(height: responsive.dp(10)),
@@ -223,7 +231,11 @@ class _SecurityClosedPriceWidget extends StatelessWidget {
           Expanded(
             child: PortfolioCompactMetricTile(
               label: l10n.closedPrice,
-              value: formatIpsPaymentAmount(closedPrice.closePrice, currency, showDecimal: true),
+              value: formatIpsPaymentAmount(
+                closedPrice.closePrice,
+                currency,
+                showDecimal: true,
+              ),
               showHorizontal: false,
               variant: MiniAppTextVariant.caption1,
             ),
@@ -232,7 +244,9 @@ class _SecurityClosedPriceWidget extends StatelessWidget {
           Expanded(
             child: PortfolioCompactMetricTile(
               label: l10n.closedDate,
-              value: (DateTimeFormatter.toDateTime(closedPrice.tradeDate ?? DateTime.now())),
+              value: (DateTimeFormatter.toDateTime(
+                closedPrice.tradeDate ?? DateTime.now(),
+              )),
               // showHorizontal: true,
               variant: MiniAppTextVariant.caption1,
             ),
