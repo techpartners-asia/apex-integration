@@ -68,10 +68,6 @@ dependencies:
       ref: v0.0.1
 ```
 
-## Basic Integration Example
-
-Host app can open the mini app from any screen, for example when the user taps a button.
-
 ### Example: Open Mini App from a Button
 
 ```dart
