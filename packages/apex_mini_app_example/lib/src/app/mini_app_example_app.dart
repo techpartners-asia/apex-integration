@@ -49,7 +49,7 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
           },
         );
     hostConfig = widget.hostConfig ?? _hostConfigFromSdkConfig(widget.sdkConfig) ?? exampleHostConfig;
-    userDataSourceMode = widget.sdkConfig?.userDataSourceMode ?? MiniAppUserDataSourceMode.contract;
+    userDataSourceMode = widget.sdkConfig?.userDataSourceMode ?? MiniAppUserDataSourceMode.realUser;
   }
 
   @override

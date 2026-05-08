@@ -12,7 +12,7 @@ class RemoteLoginSessionRepository implements LoginSessionRepository {
   const RemoteLoginSessionRepository({
     required this.api,
     required this.runtimeConfig,
-    this.userDataSourceMode = MiniAppUserDataSourceMode.contract,
+    this.userDataSourceMode = MiniAppUserDataSourceMode.realUser,
   });
 
   @override

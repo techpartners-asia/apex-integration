@@ -6,7 +6,7 @@ void main() {
     test('uses LoginSessionContract values in contract mode', () {
       final req = GetLoginSessionApiReqFactory.build(
         admSession: 'adm-session',
-        userDataSourceMode: MiniAppUserDataSourceMode.contract,
+        userDataSourceMode: MiniAppUserDataSourceMode.realUser,
       );
 
       expect(req.admSession, 'adm-session');

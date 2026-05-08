@@ -17,7 +17,7 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
     required this.config,
     required this.session,
     required this.fiBomInstRepository,
-    this.userDataSourceMode = MiniAppUserDataSourceMode.contract,
+    this.userDataSourceMode = MiniAppUserDataSourceMode.realUser,
     TimedMemoryCache<GetSecuritiesAcntListResDto>? secAcntListCache,
   }) : _secAcntListCache =
            secAcntListCache ??

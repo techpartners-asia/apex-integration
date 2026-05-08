@@ -1,30 +1,25 @@
-# InvestX Mini App SDK
+# Apex Mini App SDK холбох заавар
 
-## Overview
+Зөвхөн public SDK import-ыг ашиглана:
 
-`mini_app_sdk` is a Flutter SDK package for embedding the InvestX/Apex
-investment mini app inside a host Flutter application.
-
-This repository is a Melos monorepo. The repository root is only the workspace;
-the actual SDK package is located here:
-
-```text
-packages/apex_mini_app_sdk
+```dart
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 ```
 
-Use the package name from that package's `pubspec.yaml`:
+## 1. Overview
 
-```yaml
-name: mini_app_sdk
-```
+Host app дараах мэдээллийг өгнө:
 
-## Installation
+- Хүчинтэй хэрэглэгчийн token.
+- Environment/base URL тохиргоо.
+- Locale буюу хэлний тохиргоо.
+- Боломжтой бол хэрэглэгч болон session мэдээлэл.
+- Close, navigation, token expiration, error, payment callback-ууд.
+- Mini app төлбөр/гүйлгээ хийх шаардлагатай үед wallet/payment handler.
 
-### 1. Using Git Tag
+## 2. Installation / Setup
 
-Recommended for host apps.
-
-Add this to the host app's `pubspec.yaml`:
+Host app-ийн `pubspec.yaml` файлд SDK package-ийг нэмнэ.
 
 ```yaml
 dependencies:
@@ -35,58 +30,29 @@ dependencies:
       ref: v0.0.1
 ```
 
---- Getting Dependencies --- 
+Дараа нь:
 
-For host apps using the Git tag dependency, run only:
-
-```bash
+```sh
 flutter pub get
 ```
 
-Notes:
+### `callbacks`
 
-- Use `mini_app_sdk` as the dependency key because that is the package name.
-- `path: packages/apex_mini_app_sdk` is required because the repository root is
-  a workspace, not the SDK package.
-- Prefer a stable Git tag such as `v0.0.1` for production usage.
+Callback-уудыг `ApexMiniAppSdk` руу шууд дамжуулна:
 
+- `onClose`
+- `onCloseWithResult`
+- `onNavigate`
+- `onError`
+- `onTokenExpired`
 
+### `walletPaymentHandler`
 
-### 2. Using Local Path
+Заавал шаардлагатай. Mini app төлбөр эсвэл гүйлгээ хийх шаардлагатай үед энэ handler-ийг дуудна.
 
-Recommended for SDK development or local testing.
+Handler нь `MiniAppPaymentRes` буцаах ёстой.
 
-```yaml
-dependencies:
-  mini_app_sdk:
-    path: ../apex-integration/packages/apex_mini_app_sdk
-```
-
-Make sure the relative path matches your local folder structure.
-
---- Getting Dependencies ---
-
-For local SDK development, run from the repository root when needed:
-
-```bash
-flutter pub get
-melos bootstrap
-```
-
-## Import
-
-```dart
-import 'package:mini_app_sdk/mini_app_sdk.dart';
-```
-
-## Notes
-
-- Do not use `apex_integration` as the dependency key.
-- Use `mini_app_sdk` because the SDK package defines `name: mini_app_sdk`.
-- Always include `path: packages/apex_mini_app_sdk` when using the Git
-  dependency.
-- Prefer release tags over `main` for production usage.
-- Use `main` only when testing the latest unreleased changes.
+## 3. Үндсэн integration жишээ
 
 ## Example `pubspec.yaml`
 
@@ -101,3 +67,103 @@ dependencies:
       path: packages/apex_mini_app_sdk
       ref: v0.0.1
 ```
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
+
+void openApexMiniApp(BuildContext context) {
+  final NavigatorState navigator = Navigator.of(context);
+  var isMiniAppOpen = true;
+
+  navigator
+      .push<void>(
+        MaterialPageRoute<void>(
+          settings: const RouteSettings(name: 'apex-mini-app'),
+          builder: (_) {
+            return ApexMiniAppSdk(
+              token: hostToken,
+              baseUrl: 'https://your-api.example.com',
+              locale: const Locale('mn'),
+              entryRoute: MiniAppRoutes.investX,
+              userDataSourceMode: MiniAppUserDataSourceMode.realUser,
+              user: ApexMiniAppHostUser(
+                id: hostUser.id,
+                registerNo: hostUser.registerNo,
+                firstName: hostUser.firstName,
+                lastName: hostUser.lastName,
+                phone: hostUser.phone,
+                email: hostUser.email,
+              ),
+              session: ApexMiniAppHostSession(
+                accessToken: hostSession.accessToken,
+                customerToken: hostSession.customerToken,
+                neSession: hostSession.neSession,
+              ),
+              walletPaymentHandler: (MiniAppWalletPaymentRequest request) async {
+                final bool paid = await hostWallet.pay(
+                  invoiceId: request.invoiceId,
+                  amount: request.amount,
+                  description: request.note,
+                );
+
+                if (paid) {
+                  return MiniAppPaymentRes.success(
+                    isTransaction: request.isTransaction,
+                    paymentReference: request.invoiceId,
+                  );
+                }
+
+                return MiniAppPaymentRes.failed(
+                  isTransaction: request.isTransaction,
+                  message: 'Payment failed.',
+                );
+              },
+              onClose: () {
+                if (!isMiniAppOpen || !navigator.canPop()) {
+                  return;
+                }
+                isMiniAppOpen = false;
+                navigator.pop();
+              },
+              onCloseWithResult: (Object? result) {
+                debugPrint('Apex mini app closed with result: $result');
+              },
+              onNavigate: (String? route, Object? arguments) {
+                debugPrint('Apex mini app route: $route');
+              },
+              onTokenExpired: () {
+                // Host auth state цэвэрлэх эсвэл token refresh хийх.
+                // Шинэ token авсны дараа шаардлагатай бол mini app-ийг дахин нээнэ.
+              },
+              onError: (Object error, StackTrace? stackTrace) {
+                debugPrint('Apex mini app error: $error');
+              },
+            );
+          },
+        ),
+      )
+      .whenComplete(() {
+        isMiniAppOpen = false;
+      });
+}
+```
+
+## 4. Payment Flow
+
+Mini app дараах үед payment хүснэ:
+
+- IPS recharge.
+- Securities account opening payment.
+
+Host app `MiniAppWalletPaymentRequest` object хүлээн авна. Үүнд:
+
+- `flow`
+- `invoiceId`
+- `amount`
+- `note`
+- `refId`
+- `paymentRecordId`
+- `externalInvoiceId`
+- `uuid`
+- `isTransaction`

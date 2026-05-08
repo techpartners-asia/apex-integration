@@ -21,7 +21,7 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
   String? initialUserToken,
   MiniAppLogger logger = const DebugMiniAppLogger(),
   MiniAppUserDataSourceMode userDataSourceMode =
-      MiniAppUserDataSourceMode.contract,
+      MiniAppUserDataSourceMode.realUser,
   String? baseUrl,
   String? techInvestXBaseUrl,
   String? loginSessionBaseUrl,
