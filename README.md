@@ -68,39 +68,77 @@ dependencies:
       ref: v0.0.1
 ```
 
+## Basic Integration Example
+
+Host app can open the mini app from any screen, for example when the user taps a button.
+
+### Example: Open Mini App from a Button
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 
-void openApexMiniApp(BuildContext context) {
-  final NavigatorState navigator = Navigator.of(context);
-  var isMiniAppOpen = true;
+class HostHomePage extends StatefulWidget {
+  const HostHomePage({super.key});
 
-  navigator
-      .push<void>(
-        MaterialPageRoute<void>(
-          settings: const RouteSettings(name: 'apex-mini-app'),
-          builder: (_) {
-            return ApexMiniAppSdk(
-              token: hostToken,
-              baseUrl: 'https://your-api.example.com',
-              locale: const Locale('mn'),
-              entryRoute: MiniAppRoutes.investX,
-              userDataSourceMode: MiniAppUserDataSourceMode.realUser,
-              user: ApexMiniAppHostUser(
-                id: hostUser.id,
-                registerNo: hostUser.registerNo,
-                firstName: hostUser.firstName,
-                lastName: hostUser.lastName,
-                phone: hostUser.phone,
-                email: hostUser.email,
-              ),
-              session: ApexMiniAppHostSession(
-                accessToken: hostSession.accessToken,
-                customerToken: hostSession.customerToken,
-                neSession: hostSession.neSession,
-              ),
-              walletPaymentHandler: (MiniAppWalletPaymentRequest request) async {
+  @override
+  State<HostHomePage> createState() => _HostHomePageState();
+}
+
+class _HostHomePageState extends State<HostHomePage> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> miniAppNavigatorKey =
+      GlobalKey<NavigatorState>();
+
+  bool _miniAppRouteOpen = false;
+
+  late final ApexMiniAppHostConfig hostConfig;
+
+  @override
+  void initState() {
+    super.initState();
+
+    hostConfig = ApexMiniAppHostConfig(
+      token: '<USER_TOKEN>'
+    );
+  }
+
+  void openMiniApp() {
+    if (_miniAppRouteOpen) {
+      return;
+    }
+
+    final NavigatorState? navigator = navigatorKey.currentState;
+
+    if (navigator == null) {
+      debugPrint('Mini app open failed: host navigator unavailable');
+      return;
+    }
+
+    _miniAppRouteOpen = true;
+
+    navigator
+        .push<void>(
+          MaterialPageRoute<void>(
+            settings: const RouteSettings(name: 'apex-mini-app'),
+            builder: (BuildContext context) {
+              return ApexMiniAppSdk.config(
+                hostConfig: hostConfig,
+                navigatorKey: miniAppNavigatorKey,
+                onClose: closeMiniApp,
+                onCloseWithResult: (Object? result) {
+                  debugPrint('Mini app closed with result: $result');
+                },
+                onTokenExpired: () {
+                  debugPrint('Mini app token expired');
+                },
+                onNavigate: (String? route, Object? arguments) {
+                  debugPrint('Mini app navigate: $route');
+                },
+                onError: (Object error, StackTrace? stackTrace) {
+                  debugPrint('Mini app error: $error');
+                },
+                walletPaymentHandler: (MiniAppWalletPaymentRequest request) async {
                 final bool paid = await hostWallet.pay(
                   invoiceId: request.invoiceId,
                   amount: request.amount,
@@ -119,33 +157,48 @@ void openApexMiniApp(BuildContext context) {
                   message: 'Payment failed.',
                 );
               },
-              onClose: () {
-                if (!isMiniAppOpen || !navigator.canPop()) {
-                  return;
-                }
-                isMiniAppOpen = false;
-                navigator.pop();
-              },
-              onCloseWithResult: (Object? result) {
-                debugPrint('Apex mini app closed with result: $result');
-              },
-              onNavigate: (String? route, Object? arguments) {
-                debugPrint('Apex mini app route: $route');
-              },
-              onTokenExpired: () {
-                // Host auth state цэвэрлэх эсвэл token refresh хийх.
-                // Шинэ token авсны дараа шаардлагатай бол mini app-ийг дахин нээнэ.
-              },
-              onError: (Object error, StackTrace? stackTrace) {
-                debugPrint('Apex mini app error: $error');
-              },
-            );
-          },
+              );
+            },
+          ),
+        )
+        .whenComplete(() {
+          _miniAppRouteOpen = false;
+        });
+  }
+
+  void closeMiniApp() {
+    if (!_miniAppRouteOpen) {
+      return;
+    }
+
+    final NavigatorState? navigator = navigatorKey.currentState;
+
+    if (navigator == null || !navigator.canPop()) {
+      _miniAppRouteOpen = false;
+      return;
+    }
+
+    _miniAppRouteOpen = false;
+    navigator.pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Host App'),
         ),
-      )
-      .whenComplete(() {
-        isMiniAppOpen = false;
-      });
+        body: Center(
+          child: ElevatedButton(
+            onPressed: openMiniApp,
+            child: const Text('Open Mini App'),
+          ),
+        ),
+      ),
+    );
+  }
 }
 ```
 
