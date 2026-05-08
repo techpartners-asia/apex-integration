@@ -1,142 +1,103 @@
 # InvestX Mini App SDK
 
-Melos monorepo containing the Apex investment mini-app SDK and supporting packages.
+## Overview
 
-## Project Overview
+`mini_app_sdk` is a Flutter SDK package for embedding the InvestX/Apex
+investment mini app inside a host Flutter application.
 
-InvestX Mini App is an **investment mini-app** that runs inside a host (super) app, enabling users to open securities accounts, complete risk assessments, select investment packs, manage portfolios, and submit feedback — all through a Flutter SDK.
+This repository is a Melos monorepo. The repository root is only the workspace;
+the actual SDK package is located here:
 
-### Packages
-
-| Package | Path | Description |
-|---------|------|-------------|
-| `mini_app_core` | `packages/apex_mini_app_core` | Pure Dart contracts, models, and route specs — zero dependencies |
-| `mini_app_ui` | `packages/apex_mini_app_ui` | Shared Flutter UI: theme, typography, responsive layout, host runtime |
-| `mini_app_sdk` | `packages/apex_mini_app_sdk` | Main SDK: IPS features, networking, BLoC/Cubit state, localization |
-| `mini_app_example` | `packages/apex_mini_app_example` | Reference host app demonstrating SDK integration |
-
-## UI Flow Summary
-
-```
-Host App → /splash (bootstrap)
-  ├─ No account    → /sec-acnt (wizard with step indicator)
-  │                   consent → personal-info → agreement → signature → payment → calculation
-  ├─ No IPS acnt   → /questionnaire → /packs → /contract
-  └─ Has IPS acnt  → /overview (Home | Profile tabs, 3rd tab opens action sheet)
-                       ├─ /portfolio (holdings, allocation, pull-to-refresh, skeleton loading)
-                       ├─ /orders (list + cancel, pull-to-refresh, skeleton loading)
-                       ├─ /recharge (top-up)
-                       ├─ /sell (sell order)
-                       ├─ /statements (transaction history + date filter)
-                       ├─ /feedback (list + create → POST API)
-                       ├─ /help (contact info)
-                       ├─ /reward (achievements - static)
-                       └─ /personal-info (profile edit)
+```text
+packages/apex_mini_app_sdk
 ```
 
-## Business Logic Summary
+Use the package name from that package's `pubspec.yaml`:
 
-- **Auth**: Host `userToken` → signUp → `admSession` → `getLoginSession` → protected `accessToken`
-- **Session refresh**: 401/403 → auto-refresh via `SessionRefreshInterceptor` (1 retry with `x-retry` header)
-- **API response guard**: Unified `ApiActionResultParser.ensureSuccess()` handles both broker API (`strictResponseCode: true`) and admin API (checks `success` flag + `responseCode`)
-- **Feedback**: Title + description required; submit disabled while in-flight; items accumulated in-memory
-- **Orders**: Only `pending` orders can be cancelled; concurrent cancel prevented; balance refreshed after cancel
-- **Pull-to-refresh**: Portfolio and Orders screens support swipe-down to reload from API
-- **Wizard step indicator**: SecAcnt flow shows a segmented progress bar that fills based on current step position
-
-## Data / Entity Summary
-
-| Entity | Key Fields | Lifecycle |
-|--------|-----------|-----------|
-| `UserEntityDto` | id, name, phone, email, bank, admSession | signUp → updateProfile |
-| `FeedbackEntity` | id, title, description, status (pending/resolved/closed) | createFeedback → admin resolves |
-| `PortfolioOverview` | currency, balances, allocation %, profit/loss | getIpsBalance (read) |
-| `IpsOrder` | orderNo, type, status, amount, createdAt | charge/sell → cancel |
-| `IpsPack` | packCode, name, bond/stock/asset %, isRecommended | getPack (read) |
-| `AcntBootstrapState` | hasAcnt, hasIpsAcnt, balances, bankInfo | getSecAcntList (read) |
-
-## Module / Folder Structure
-
-```
-packages/apex_mini_app_sdk/lib/src/
-├── core/
-│   ├── api/          # ApiExecutor, ApiActionResultParser, ApiParser, endpoints
-│   ├── backend/      # SdkBackendConfig
-│   └── exception/    # ApiException hierarchy
-├── app/
-│   ├── investx_api/  # MiniAppApiBackend, DTOs, request models
-│   ├── session/      # Session controller, store, login flow
-│   └── bootstrap/    # MiniAppBootstrapFlow, MiniAppBootstrapCubit
-├── features/
-│   ├── di/           # IpsDependencies, IpsServicesFactory
-│   ├── router/       # Route builder, route pages, InvestXFeature
-│   ├── shared/       # Domain models, services, DTOs, shared widgets
-│   │   └── presentation/widgets/
-│   │       ├── investx_page_scaffold.dart      # App scaffold with onRefresh support
-│   │       ├── investx_skeleton_loader.dart     # Shimmer loading placeholders
-│   │       └── bottom_navbar.dart               # 3-item nav with action interception
-│   ├── overview/     # Dashboard home + profile tabs
-│   ├── portfolio/    # Portfolio detail screen (pull-to-refresh)
-│   ├── orders/       # Order list + cancel (pull-to-refresh, skeleton)
-│   ├── contract/     # Contract purchase flow
-│   ├── questionnaire/# Risk assessment wizard
-│   ├── pack/         # Pack selection
-│   ├── recharge/     # Top-up flow
-│   ├── sell/         # Sell order flow
-│   ├── statements/   # Transaction history
-│   ├── feedback/     # Feedback create (API-connected), entity, cubit
-│   ├── help/         # Contact info (static)
-│   ├── reward/       # Achievements (static)
-│   ├── profile/      # Personal info edit
-│   └── sec_acnt/     # Securities account wizard (with step indicator)
-│       └── presentation/widgets/
-│           └── sec_acnt_step_indicator.dart    # Segmented progress bar
-└── routes/           # MiniAppRoutes constants
+```yaml
+name: mini_app_sdk
 ```
 
-## State Management Conventions
+## Installation
 
-| Pattern | Used By | Description |
-|---------|---------|-------------|
-| `LoadableState<T>` | Portfolio, Overview, Statements, PackSelection, Bootstrap | Simple load → display cubits |
-| Custom state class | Orders, Feedback, Contract, Recharge, Sell, SecAcnt, Questionnaire | Multi-action cubits with submission tracking, cancel states, etc. |
+### 1. Using Git Tag
 
-## Setup and Run
+Recommended for host apps.
 
-### Prerequisites
+Add this to the host app's `pubspec.yaml`:
 
-- Flutter SDK `^3.10.1`
-- Melos `^7.4.1` (`dart pub global activate melos`)
+```yaml
+dependencies:
+  mini_app_sdk:
+    git:
+      url: https://github.com/techpartners-asia/apex-integration.git
+      path: packages/apex_mini_app_sdk
+      ref: v0.0.1
+```
 
-### Commands
+--- Getting Dependencies --- 
+
+For host apps using the Git tag dependency, run only:
 
 ```bash
-# Bootstrap all packages
-melos bootstrap
-
-# Run all tests (86 tests across the SDK package)
-melos run test
-
-# Run the example app
-cd packages/apex_mini_app_example
-flutter run
-
-# Regenerate localization
-cd packages/apex_mini_app_sdk
-flutter gen-l10n
-
-# Static analysis
-cd packages/apex_mini_app_sdk
-flutter analyze --no-pub
+flutter pub get
 ```
 
-## Configuration / Environment
+Notes:
 
-| Config | Source | Description |
-|--------|--------|-------------|
-| `userToken` | Host app | User authentication token passed at launch |
-| `MiniAppSdkConfig` | Host app | SDK configuration (base URL, credentials, payment handler) |
-| `APPID` / `APPSECRET` | API headers | Broker API authentication credentials |
-| `loginSessionBaseUrl` | Config | Base URL for login session endpoint |
-| Admin API | `api.admin.investx.mn` | User profile, feedback, invoices |
-| Broker API | `/api/v1.0/*` | Securities, orders, portfolio, questionnaire |
+- Use `mini_app_sdk` as the dependency key because that is the package name.
+- `path: packages/apex_mini_app_sdk` is required because the repository root is
+  a workspace, not the SDK package.
+- Prefer a stable Git tag such as `v0.0.1` for production usage.
+
+
+
+### 2. Using Local Path
+
+Recommended for SDK development or local testing.
+
+```yaml
+dependencies:
+  mini_app_sdk:
+    path: ../apex-integration/packages/apex_mini_app_sdk
+```
+
+Make sure the relative path matches your local folder structure.
+
+--- Getting Dependencies ---
+
+For local SDK development, run from the repository root when needed:
+
+```bash
+flutter pub get
+melos bootstrap
+```
+
+## Import
+
+```dart
+import 'package:mini_app_sdk/mini_app_sdk.dart';
+```
+
+## Notes
+
+- Do not use `apex_integration` as the dependency key.
+- Use `mini_app_sdk` because the SDK package defines `name: mini_app_sdk`.
+- Always include `path: packages/apex_mini_app_sdk` when using the Git
+  dependency.
+- Prefer release tags over `main` for production usage.
+- Use `main` only when testing the latest unreleased changes.
+
+## Example `pubspec.yaml`
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  mini_app_sdk:
+    git:
+      url: https://github.com/techpartners-asia/apex-integration.git
+      path: packages/apex_mini_app_sdk
+      ref: v0.0.1
+```
