@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mini_app_core/mini_app_core.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
@@ -11,6 +12,7 @@ import '../../../../test_helpers/widget_test_app.dart';
 
 const String _overviewRoute = '/overview';
 const String _rechargeRoute = '/recharge';
+const String _secAcntRoute = MiniAppRoutes.secAcnt;
 
 void main() {
   setUp(() {
@@ -462,6 +464,135 @@ void main() {
   });
 
   group('replaceIpsRoute', () {
+    testWidgets(
+      'reports a clear error when local provider is disposed and no fallback exists',
+      (WidgetTester tester) async {
+        final DefaultMiniAppHostController disposedController =
+            DefaultMiniAppHostController()..dispose();
+        Object? reportedError;
+        ApexMiniAppHostContext.bind(
+          nextCallbacks: ApexMiniAppHostCallbacks(
+            onError: (Object error, StackTrace? stackTrace) {
+              reportedError = error;
+            },
+          ),
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: MiniAppHostControllerProvider(
+              controller: disposedController,
+              child: Builder(
+                builder: (BuildContext context) {
+                  return TextButton(
+                    key: const Key('disposed-provider-sec-acnt'),
+                    onPressed: () {
+                      unawaited(replaceIpsRoute(context, route: _secAcntRoute));
+                    },
+                    child: const Text('Replace'),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.byKey(const Key('disposed-provider-sec-acnt')));
+        await tester.pump();
+
+        expect(tester.takeException(), isNull);
+        expect(
+          reportedError,
+          isA<MiniAppNavigationControllerMissingException>(),
+        );
+        final String diagnostic = reportedError.toString();
+        expect(diagnostic, contains('action: replace'));
+        expect(diagnostic, contains('route: $_secAcntRoute'));
+        expect(diagnostic, contains('localProviderFound: true'));
+        expect(diagnostic, contains('localControllerDisposed: true'));
+        expect(diagnostic, contains('localControllerUsable: false'));
+        expect(diagnostic, contains('registryControllerFound: false'));
+        expect(diagnostic, contains('hostControllerFound: false'));
+        expect(diagnostic, contains('navigationAttemptedAfterDispose: true'));
+      },
+    );
+
+    testWidgets(
+      'uses registry fallback when local provider is disposed',
+      (WidgetTester tester) async {
+        final DefaultMiniAppHostController disposedController =
+            DefaultMiniAppHostController()..dispose();
+        final TestMiniAppHostController registryController =
+            TestMiniAppHostController();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: MiniAppHostControllerScope(
+              controller: registryController,
+              child: MiniAppHostControllerProvider(
+                controller: disposedController,
+                child: Builder(
+                  builder: (BuildContext context) {
+                    return TextButton(
+                      key: const Key('registry-fallback-sec-acnt'),
+                      onPressed: () {
+                        unawaited(
+                          replaceIpsRoute(context, route: _secAcntRoute),
+                        );
+                      },
+                      child: const Text('Replace'),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.byKey(const Key('registry-fallback-sec-acnt')));
+        await tester.pump();
+
+        expect(registryController.replaceRequests, hasLength(1));
+        expect(registryController.replaceRequests.single.route, _secAcntRoute);
+      },
+    );
+
+    testWidgets(
+      'uses host fallback when local provider is disposed and registry is empty',
+      (WidgetTester tester) async {
+        final DefaultMiniAppHostController disposedController =
+            DefaultMiniAppHostController()..dispose();
+        final TestMiniAppHostController hostController =
+            TestMiniAppHostController();
+        ApexMiniAppHostContext.activeController = hostController;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: MiniAppHostControllerProvider(
+              controller: disposedController,
+              child: Builder(
+                builder: (BuildContext context) {
+                  return TextButton(
+                    key: const Key('host-fallback-sec-acnt'),
+                    onPressed: () {
+                      unawaited(replaceIpsRoute(context, route: _secAcntRoute));
+                    },
+                    child: const Text('Replace'),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.byKey(const Key('host-fallback-sec-acnt')));
+        await tester.pump();
+
+        expect(hostController.replaceRequests, hasLength(1));
+        expect(hostController.replaceRequests.single.route, _secAcntRoute);
+      },
+    );
+
     testWidgets('uses the same active controller fallback behavior', (
       WidgetTester tester,
     ) async {
@@ -502,6 +633,48 @@ void main() {
       expect(find.text('route:$_rechargeRoute'), findsOneWidget);
       expect(module.startedRoutes, contains(_rechargeRoute));
     });
+
+    testWidgets(
+      'splash delayed replacement is skipped after its controller is disposed',
+      (WidgetTester tester) async {
+        final DefaultMiniAppHostController controller =
+            DefaultMiniAppHostController();
+        final _TestBootstrapCubit cubit = _TestBootstrapCubit();
+        Object? reportedError;
+        ApexMiniAppHostContext.bind(
+          nextCallbacks: ApexMiniAppHostCallbacks(
+            onError: (Object error, StackTrace? stackTrace) {
+              reportedError = error;
+            },
+          ),
+        );
+
+        await tester.pumpWidget(
+          buildSdkTestApp(
+            BlocProvider<MiniAppBootstrapCubit>.value(
+              value: cubit,
+              child: const IpsSplashScreen(),
+            ),
+            hostController: controller,
+          ),
+        );
+
+        cubit.emitSuccess(
+          MiniAppBootstrapRes(
+            bootstrapState: _bootstrapState(hasIpsAcnt: false),
+            nextRoute: _secAcntRoute,
+          ),
+        );
+        await tester.pump();
+
+        controller.dispose();
+        ApexMiniAppHostContext.clearController(controller);
+        await tester.pump(const Duration(milliseconds: 400));
+
+        expect(tester.takeException(), isNull);
+        expect(reportedError, isNull);
+      },
+    );
   });
 
   group('MiniAppHostControllerScope', () {
@@ -578,6 +751,7 @@ class _TestMiniAppModule extends UiMiniAppModule {
   List<MiniAppRouteSpec> get routes => <MiniAppRouteSpec>[
     MiniAppRouteSpec(path: _overviewRoute),
     MiniAppRouteSpec(path: _rechargeRoute),
+    MiniAppRouteSpec(path: _secAcntRoute),
   ];
 
   @override
@@ -600,6 +774,94 @@ class _TestMiniAppModule extends UiMiniAppModule {
         ),
       ),
     );
+  }
+}
+
+class _TestBootstrapCubit extends MiniAppBootstrapCubit {
+  _TestBootstrapCubit()
+    : super(
+        bootstrapFlow: _NoopBootstrapFlow(),
+        l10n: lookupSdkLocalizations(const Locale('en')),
+      );
+
+  void emitSuccess(MiniAppBootstrapRes res) {
+    emit(
+      LoadableState<MiniAppBootstrapRes>(
+        status: LoadableStatus.success,
+        data: res,
+      ),
+    );
+  }
+}
+
+class _NoopBootstrapFlow extends MiniAppBootstrapFlow {
+  _NoopBootstrapFlow()
+    : super(
+        sessionController: _NoopSessionController(),
+        bootstrapService: _NoopBootstrapService(),
+      );
+
+  @override
+  Future<MiniAppBootstrapRes> resolve() {
+    throw UnimplementedError();
+  }
+}
+
+class _NoopSessionController implements MiniAppSessionController {
+  @override
+  void cacheCurrentUser(UserEntityDto user) {}
+
+  @override
+  UserEntityDto? get currentUser => null;
+
+  @override
+  Future<UserEntityDto> ensureCurrentUser() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoginSession> ensureLoginSession() {
+    throw UnimplementedError();
+  }
+
+  @override
+  LoginSession? get loginSession => null;
+
+  @override
+  void prepareLaunch({String? userToken}) {}
+
+  @override
+  Future<LoginSession> refreshLoginSession() {
+    throw UnimplementedError();
+  }
+
+  @override
+  MiniAppSessionStore get store {
+    throw UnimplementedError();
+  }
+
+  @override
+  String? get userToken => null;
+}
+
+class _NoopBootstrapService implements InvestmentBootstrapService {
+  @override
+  Future<SecAcntRequestResult> addSecuritiesAcntReq({
+    SecAcntPersonalInfoData? personalInfo,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AcntBootstrapState> getSecAcntBalanceState({
+    required AcntBootstrapState currentState,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AcntBootstrapState> getSecAcntListState({bool forceRefresh = false}) {
+    throw UnimplementedError();
   }
 }
 

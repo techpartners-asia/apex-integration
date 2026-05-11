@@ -23,6 +23,14 @@ class MiniAppHostControllerRegistry {
     _registrations.remove(registration);
   }
 
+  static void detachController(MiniAppHostController controller) {
+    _registrations.removeWhere((
+      MiniAppHostControllerRegistration registration,
+    ) {
+      return identical(registration.controller, controller);
+    });
+  }
+
   static MiniAppHostController? resolveActiveController([
     MiniAppHostController? preferred,
   ]) {

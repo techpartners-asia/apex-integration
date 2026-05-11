@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:mini_app_ui/mini_app_ui.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,47 @@ class IpsSplashScreen extends StatefulWidget {
 class IpsSplashScreenState extends State<IpsSplashScreen> {
   bool navigated = false;
   bool errorDialogVisible = false;
+  Timer? _navigationTimer;
+
+  @override
+  void dispose() {
+    _cancelPendingNavigation();
+    super.dispose();
+  }
+
+  void _cancelPendingNavigation() {
+    _navigationTimer?.cancel();
+    _navigationTimer = null;
+  }
+
+  Future<void> _closeSplash(BuildContext context) async {
+    _cancelPendingNavigation();
+    await Navigator.of(context, rootNavigator: true).maybePop();
+  }
+
+  void _scheduleResolvedNavigation(MiniAppBootstrapRes resolution) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+
+      _navigationTimer?.cancel();
+      _navigationTimer = Timer(const Duration(milliseconds: 300), () {
+        _navigationTimer = null;
+        if (!mounted || !isIpsNavigationControllerAvailable(context)) {
+          return;
+        }
+
+        unawaited(
+          replaceIpsRoute(
+            context,
+            route: resolution.nextRoute,
+            arguments: resolution.bootstrapState,
+          ),
+        );
+      });
+    });
+  }
 
   Future<void> showErrorDialog(
     BuildContext context,
@@ -93,16 +136,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
 
             navigated = true;
 
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Future<void>.delayed(const Duration(milliseconds: 300), () {
-                if (!mounted) return;
-                replaceIpsRoute(
-                  this.context,
-                  route: resolution.nextRoute,
-                  arguments: resolution.bootstrapState,
-                );
-              });
-            });
+            _scheduleResolvedNavigation(resolution);
           },
       builder:
           (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
@@ -144,10 +178,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
                         top: closeTop,
                         right: responsive.space(AppSpacing.md),
                         child: ActionButton(
-                          onPressed: () => Navigator.of(
-                            context,
-                            rootNavigator: true,
-                          ).maybePop(),
+                          onPressed: () => _closeSplash(context),
                           icon: Icons.close_rounded,
                           iosIcon: CupertinoIcons.xmark,
                           foregroundColor: Colors.white,

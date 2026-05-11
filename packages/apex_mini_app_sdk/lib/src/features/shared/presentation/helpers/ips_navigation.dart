@@ -44,6 +44,28 @@ Future<void> replaceIpsRoute(
   );
 }
 
+bool isIpsNavigationControllerAvailable(BuildContext context) {
+  if (!context.mounted) {
+    return false;
+  }
+
+  final MiniAppHostController? localController =
+      MiniAppHostControllerProvider.maybeOf(context);
+  if (_usableController(localController) != null) {
+    return true;
+  }
+
+  final MiniAppHostController? registryController =
+      MiniAppHostControllerProvider.activeController;
+  if (_usableController(registryController) != null) {
+    return true;
+  }
+
+  final MiniAppHostController? hostController =
+      ApexMiniAppHostContext.activeController;
+  return _usableController(hostController) != null;
+}
+
 _ResolvedMiniAppNavigation? _resolveMiniAppNavigation(
   BuildContext context, {
   required String route,
@@ -59,12 +81,20 @@ _ResolvedMiniAppNavigation? _resolveMiniAppNavigation(
   final MiniAppHostController? registryController = _usableController(
     MiniAppHostControllerProvider.activeController,
   );
+  final MiniAppHostController? rawHostController =
+      ApexMiniAppHostContext.activeController;
   final MiniAppHostController? hostController = _usableController(
-    ApexMiniAppHostContext.activeController,
+    rawHostController,
   );
   final MiniAppHostController? controller =
       usableLocalController ?? registryController ?? hostController;
   final bool localControllerDisposed = _isDisposed(localController);
+  final bool hostControllerDisposed = _isDisposed(rawHostController);
+  final bool navigationAttemptedAfterDispose =
+      contextMounted &&
+      localControllerDisposed &&
+      registryController == null &&
+      hostController == null;
 
   if (controller == null) {
     _reportNavigationResolutionFailure(
@@ -77,6 +107,8 @@ _ResolvedMiniAppNavigation? _resolveMiniAppNavigation(
         localControllerUsable: usableLocalController != null,
         registryControllerFound: registryController != null,
         hostControllerFound: hostController != null,
+        hostControllerDisposed: hostControllerDisposed,
+        navigationAttemptedAfterDispose: navigationAttemptedAfterDispose,
       ),
     );
     return null;
@@ -96,6 +128,8 @@ _ResolvedMiniAppNavigation? _resolveMiniAppNavigation(
         localControllerUsable: usableLocalController != null,
         registryControllerFound: registryController != null,
         hostControllerFound: hostController != null,
+        hostControllerDisposed: hostControllerDisposed,
+        navigationAttemptedAfterDispose: navigationAttemptedAfterDispose,
         reason: 'mini_app_navigation_context_unmounted',
       ),
     );
@@ -136,6 +170,8 @@ class MiniAppNavigationControllerMissingException implements Exception {
   final bool localControllerUsable;
   final bool registryControllerFound;
   final bool hostControllerFound;
+  final bool hostControllerDisposed;
+  final bool navigationAttemptedAfterDispose;
   final String reason;
 
   const MiniAppNavigationControllerMissingException({
@@ -147,6 +183,8 @@ class MiniAppNavigationControllerMissingException implements Exception {
     required this.localControllerUsable,
     required this.registryControllerFound,
     required this.hostControllerFound,
+    this.hostControllerDisposed = false,
+    this.navigationAttemptedAfterDispose = false,
     this.reason = 'mini_app_navigation_controller_missing',
   });
 
@@ -160,7 +198,9 @@ class MiniAppNavigationControllerMissingException implements Exception {
         'localControllerDisposed: $localControllerDisposed, '
         'localControllerUsable: $localControllerUsable, '
         'registryControllerFound: $registryControllerFound, '
-        'hostControllerFound: $hostControllerFound'
+        'hostControllerFound: $hostControllerFound, '
+        'hostControllerDisposed: $hostControllerDisposed, '
+        'navigationAttemptedAfterDispose: $navigationAttemptedAfterDispose'
         ')';
   }
 }

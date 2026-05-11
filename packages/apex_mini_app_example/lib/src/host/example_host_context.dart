@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 
-const String exampleUserToken = '225b962a21a9fb0418720b2c4220d803';
+const String exampleUserToken = '8dd73641d93633e8878eceb7e6f46f36';
 
 const ApexMiniAppHostConfig exampleHostConfig = ApexMiniAppHostConfig(
   token: exampleUserToken,
@@ -25,6 +25,6 @@ MiniAppSdkConfig buildExampleMiniAppSdkConfig({
     hostConfig: hostConfig,
     walletPaymentHandler: walletPaymentHandler,
     callbacks: callbacks,
-    userDataSourceMode: MiniAppUserDataSourceMode.contract,
+    userDataSourceMode: MiniAppUserDataSourceMode.realUser,
   );
 }

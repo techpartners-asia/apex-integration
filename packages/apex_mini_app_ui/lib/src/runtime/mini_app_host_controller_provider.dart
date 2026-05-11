@@ -43,6 +43,10 @@ class MiniAppHostControllerProvider extends InheritedWidget {
     return MiniAppHostControllerRegistry.activeContextFor(controller);
   }
 
+  static void detachController(MiniAppHostController controller) {
+    MiniAppHostControllerRegistry.detachController(controller);
+  }
+
   @visibleForTesting
   static int get debugActiveControllerCount {
     return MiniAppHostControllerRegistry.debugActiveRegistrationCount;

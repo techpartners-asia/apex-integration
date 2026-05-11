@@ -5,8 +5,7 @@ class ApiEndpoints {
   static const String profileInfo = '/api/v1/user/profile/info';
   static const String getAllGoals = '/api/v1/user/question/get-all';
   static const String updateProfile = '/api/v1/user/profile/update';
-  static const String updateTargetGoal =
-      '/api/v1/user/profile/update-target-goal';
+  static const String updateTargetGoal = '/api/v1/user/profile/update-target-goal';
   static const String updateSignature = '/api/v1/user/profile/update-signature';
   static const String createFeedback = '/api/v1/user/feedback/create';
   static const String feedbackList = '/api/v1/user/feedback/list';
@@ -24,8 +23,7 @@ class ApiEndpoints {
   static const String getPack = '/api/v1.0/getPack';
   static const String addBkrCustContract = '/api/v1.0/addBkrCustContract';
   static const String getIpsBalance = '/api/v1.0/getIpsBalance';
-  static const String getBkrPublicCasaAcntStmt =
-      '/api/v1.0/getBkrPublicCasaAcntStmt';
+  static const String getBkrPublicCasaAcntStmt = '/api/v1.0/getBkrPublicCasaAcntStmt';
   static const String createIpsSellOrder = '/api/v1.0/createIpsSellOrder';
   static const String chargeIpsAcnt = '/api/v1.0/chargeIpsAcnt';
   static const String getIpsOrderList = '/api/v1.0/getIpsOrderList';

@@ -105,6 +105,7 @@ class MiniAppSdk {
 
   void dispose() {
     ApexMiniAppHostContext.clearController(runtime.controller);
+    MiniAppHostControllerProvider.detachController(runtime.controller);
     ApexMiniAppHostContext.clear(config.callbacks);
     runtime.dispose();
   }

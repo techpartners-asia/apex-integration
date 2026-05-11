@@ -93,11 +93,12 @@ class ResolvedUserIdentity {
 
   static String _requiredField(String? value, {required String field}) {
     final String trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) {
-      throw ApiIntegrationException(
-        'Real user data source mode requires a non-empty $field value.',
-      );
-    }
+    // if (trimmed.isEmpty) {
+    //   throw ApiIntegrationException(
+    //     'Real user data source mode requires a non-empty $field value.',
+    //   );
+    // }
+
     return trimmed;
   }
 }

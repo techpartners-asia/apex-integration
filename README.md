@@ -27,7 +27,7 @@ dependencies:
     git:
       url: https://github.com/techpartners-asia/apex-integration.git
       path: packages/apex_mini_app_sdk
-      ref: v0.0.1
+      ref: v0.0.3
 ```
 
 Дараа нь:
@@ -65,7 +65,7 @@ dependencies:
     git:
       url: https://github.com/techpartners-asia/apex-integration.git
       path: packages/apex_mini_app_sdk
-      ref: v0.0.2
+      ref: v0.0.3
 ```
 
 ## Basic Integration Example
