@@ -1,19 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
   test('calls payment callback after successful wallet payment', () async {
-    final _FakePaymentsRepository paymentsRepository =
-        _FakePaymentsRepository();
+    final _FakePaymentsRepository paymentsRepository = _FakePaymentsRepository();
     final MiniAppPaymentExecutor executor = MiniAppPaymentExecutor(
       appApi: paymentsRepository,
       walletPaymentHandler: (_) async {
-        return const MiniAppPaymentRes.success(isTransaction: true);
+        return MiniAppPaymentRes.success(
+          req: MiniAppPaymentReq(
+            flow: MiniAppPaymentFlow.ipsRecharge,
+            invoiceId: '',
+            amount: 0,
+            note: '',
+            refId: '',
+            paymentRecordId: 0,
+            isTransaction: true,
+          ),
+        );
       },
     );
 
     final MiniAppPaymentRes result = await executor.execute(
-      flow: MiniAppWalletPaymentFlow.ipsRecharge,
+      flow: MiniAppPaymentFlow.ipsRecharge,
       invoiceRequest: _invoiceRequest(),
     );
 
@@ -22,17 +32,26 @@ void main() {
   });
 
   test('does not call payment callback when wallet payment fails', () async {
-    final _FakePaymentsRepository paymentsRepository =
-        _FakePaymentsRepository();
+    final _FakePaymentsRepository paymentsRepository = _FakePaymentsRepository();
     final MiniAppPaymentExecutor executor = MiniAppPaymentExecutor(
       appApi: paymentsRepository,
       walletPaymentHandler: (_) async {
-        return const MiniAppPaymentRes.failed(isTransaction: true);
+        return MiniAppPaymentRes.failed(
+          req: MiniAppPaymentReq(
+            flow: MiniAppPaymentFlow.ipsRecharge,
+            invoiceId: '',
+            amount: 0,
+            note: '',
+            refId: '',
+            paymentRecordId: 0,
+            isTransaction: true,
+          ),
+        );
       },
     );
 
     final MiniAppPaymentRes result = await executor.execute(
-      flow: MiniAppWalletPaymentFlow.ipsRecharge,
+      flow: MiniAppPaymentFlow.ipsRecharge,
       invoiceRequest: _invoiceRequest(),
     );
 
@@ -50,21 +69,27 @@ void main() {
     final MiniAppPaymentExecutor executor = MiniAppPaymentExecutor(
       appApi: paymentsRepository,
       walletPaymentHandler: (_) async {
-        return const MiniAppPaymentRes.success(isTransaction: true);
+        return MiniAppPaymentRes.success(
+          req: MiniAppPaymentReq(
+            flow: MiniAppPaymentFlow.ipsRecharge,
+            invoiceId: '',
+            amount: 0,
+            note: '',
+            refId: '',
+            paymentRecordId: 0,
+            isTransaction: true,
+          ),
+        );
       },
     );
 
     final MiniAppPaymentRes result = await executor.execute(
-      flow: MiniAppWalletPaymentFlow.ipsRecharge,
+      flow: MiniAppPaymentFlow.ipsRecharge,
       invoiceRequest: _invoiceRequest(),
     );
 
     expect(result.status, MiniAppPaymentStatus.failed);
     expect(result.message, 'Callback failed');
-    expect(
-      result.metadata['messageKey'],
-      MiniAppPaymentExecutor.paymentCallbackFailedMessageKey,
-    );
     expect(paymentsRepository.callbackInvoiceIds, <String>['INV-123']);
   });
 }
@@ -89,7 +114,7 @@ class _FakePaymentsRepository implements MiniAppPaymentsRepository {
     return const MiniAppPayment(
       id: 1,
       amount: 1000,
-      status: MiniAppPaymentStatus.pending,
+      status: MiniAppPaymentStatus.unknown,
       externalInvoiceId: 'INV-123',
       note: 'test_payment',
     );

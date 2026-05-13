@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
@@ -35,7 +36,7 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
       }
 
       final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
-        flow: MiniAppWalletPaymentFlow.secAcntOpening,
+        flow: MiniAppPaymentFlow.secAcntOpening,
         invoiceRequest: CreateInvoiceApiReq(
           amount: payableAmount,
           note: 'sec_acnt_opening_fee',

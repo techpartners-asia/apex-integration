@@ -37,9 +37,7 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
     if (!context.mounted || result == null) return;
 
     final MiniAppPaymentStatus? status = result.paymentRes?.status;
-    final bool didSucceed =
-        status == MiniAppPaymentStatus.success ||
-        status == MiniAppPaymentStatus.paid;
+    final bool didSucceed = status == MiniAppPaymentStatus.success;
     if (!didSucceed) return;
 
     await replaceIpsRoute(context, route: MiniAppRoutes.overview);
@@ -48,8 +46,7 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<IpsContractCubit, IpsContractState>(
-      listenWhen: (IpsContractState previous, IpsContractState current) =>
-          previous.isReady != current.isReady && current.isReady,
+      listenWhen: (IpsContractState previous, IpsContractState current) => previous.isReady != current.isReady && current.isReady,
       listener: (BuildContext context, IpsContractState state) async {
         if (_didOpenRechargeSheet) {
           return;
@@ -60,9 +57,7 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
       child: BlocBuilder<IpsContractCubit, IpsContractState>(
         builder: (BuildContext context, IpsContractState state) {
           final l10n = context.l10n;
-          final bool showLoading =
-              state.isInitializing ||
-              (!state.isReady && state.errorMessage == null);
+          final bool showLoading = state.isInitializing || (!state.isReady && state.errorMessage == null);
 
           return CustomScaffold(
             showBackButton: true,

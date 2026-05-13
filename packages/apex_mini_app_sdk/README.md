@@ -134,7 +134,7 @@ class _HostHomePageState extends State<HostHomePage> {
                 onError: (Object error, StackTrace? stackTrace) {
                   debugPrint('Mini app error: $error');
                 },
-                walletPaymentHandler: (MiniAppWalletPaymentRequest request) async {
+                walletPaymentHandler: (MiniAppPaymentReq request) async {
                 final bool paid = await hostWallet.pay(
                   invoiceId: request.invoiceId,
                   amount: request.amount,
@@ -143,14 +143,14 @@ class _HostHomePageState extends State<HostHomePage> {
 
                 if (paid) {
                   return MiniAppPaymentRes.success(
-                    isTransaction: request.isTransaction,
-                    paymentReference: request.invoiceId,
+                    message: 'Payment success.',
+                    req: request,
                   );
                 }
 
                 return MiniAppPaymentRes.failed(
-                  isTransaction: request.isTransaction,
                   message: 'Payment failed.',
+                  req: request,
                 );
               },
               );

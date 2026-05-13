@@ -1,16 +1,14 @@
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
 
 import '../host/apex_mini_app_host_context.dart';
 
 class MiniAppPaymentExecutor {
   static const String invoiceCreateFailedMessageKey = 'invoice_create_failed';
   static const String invalidInvoiceMessageKey = 'invalid_invoice_response';
-  static const String hostResponseTimedOutMessageKey =
-      'host_response_timed_out';
+  static const String hostResponseTimedOutMessageKey = 'host_response_timed_out';
   static const String hostCallbackFailedMessageKey = 'host_callback_failed';
-  static const String paymentCallbackFailedMessageKey =
-      'payment_callback_failed';
+  static const String paymentCallbackFailedMessageKey = 'payment_callback_failed';
 
   final MiniAppPaymentsRepository appApi;
   final MiniAppWalletPaymentHandler walletPaymentHandler;
@@ -25,7 +23,7 @@ class MiniAppPaymentExecutor {
   });
 
   Future<MiniAppPaymentRes> execute({
-    required MiniAppWalletPaymentFlow flow,
+    required MiniAppPaymentFlow flow,
     required CreateInvoiceApiReq invoiceRequest,
   }) async {
     final MiniAppPayment invoice;
@@ -33,41 +31,49 @@ class MiniAppPaymentExecutor {
       invoice = await appApi.createInvoice(invoiceRequest);
     } catch (error) {
       final String? backendMessage = switch (error) {
-        ApiException(:final String message) when message.trim().isNotEmpty =>
-          message.trim(),
+        ApiException(:final String message) when message.trim().isNotEmpty => message.trim(),
         _ => null,
       };
 
-      return MiniAppPaymentRes.failed(
-        message: backendMessage,
-        paymentReference: invoiceRequest.refId,
-        metadata: const <String, Object?>{
-          'messageKey': invoiceCreateFailedMessageKey,
-        },
-        failure: MiniAppFailure(
-          code: 'invoice_create_failed',
-          message: backendMessage ?? 'invoice_create_failed',
-        ),
+      var req = MiniAppPaymentReq(
+        flow: flow,
+        invoiceId: '',
+        amount: invoiceRequest.amount,
+        note: invoiceRequest.note,
+        refId: invoiceRequest.refId,
+        paymentRecordId: 0,
         isTransaction: invoiceRequest.isTransaction,
       );
+
+      return MiniAppPaymentRes.failed(
+        message: backendMessage,
+        failure: MiniAppFailure(code: 'invoice_create_failed', message: backendMessage ?? 'invoice_create_failed'),
+        req: req,
+      );
     }
+
+    var req = MiniAppPaymentReq(
+      flow: flow,
+      invoiceId: '',
+      amount: invoiceRequest.amount,
+      note: invoiceRequest.note,
+      refId: invoiceRequest.refId,
+      paymentRecordId: 0,
+      isTransaction: invoiceRequest.isTransaction,
+    );
 
     final String? invoiceId = invoice.resolvedInvoiceId;
     if (invoiceId == null || invoiceId.trim().isEmpty) {
       return MiniAppPaymentRes.failed(
-        paymentReference: invoiceRequest.refId,
-        metadata: const <String, Object?>{
-          'messageKey': invalidInvoiceMessageKey,
-        },
         failure: MiniAppFailure(
           code: 'invalid_invoice_response',
           message: 'invalid_invoice_response',
         ),
-        isTransaction: invoiceRequest.isTransaction,
+        req: req,
       );
     }
 
-    final MiniAppWalletPaymentRequest request = MiniAppWalletPaymentRequest(
+    final MiniAppPaymentReq request = MiniAppPaymentReq(
       flow: flow,
       invoiceId: invoiceId,
       amount: invoice.amount,
@@ -83,12 +89,7 @@ class MiniAppPaymentExecutor {
     try {
       hostResult = await walletPaymentHandler(request).timeout(
         paymentTimeout,
-        onTimeout: () => MiniAppPaymentRes.timedOut(
-          metadata: <String, Object?>{
-            'messageKey': hostResponseTimedOutMessageKey,
-          },
-          isTransaction: invoiceRequest.isTransaction,
-        ),
+        onTimeout: () => MiniAppPaymentRes.failed(req: request),
       );
     } catch (error, stackTrace) {
       ApexMiniAppHostContext.emitError(error, stackTrace);
@@ -103,14 +104,8 @@ class MiniAppPaymentExecutor {
       );
       return _attachPaymentContext(
         MiniAppPaymentRes.failed(
-          metadata: const <String, Object?>{
-            'messageKey': hostCallbackFailedMessageKey,
-          },
-          failure: MiniAppFailure(
-            code: 'host_payment_exception',
-            message: 'host_payment_exception',
-          ),
-          isTransaction: invoiceRequest.isTransaction,
+          failure: MiniAppFailure(code: 'host_payment_exception', message: 'host_payment_exception'),
+          req: request,
         ),
         request: request,
       );
@@ -139,22 +134,15 @@ class MiniAppPaymentExecutor {
       );
 
       final String? backendMessage = switch (error) {
-        ApiException(:final String message) when message.trim().isNotEmpty =>
-          message.trim(),
+        ApiException(:final String message) when message.trim().isNotEmpty => message.trim(),
         _ => null,
       };
 
       return _attachPaymentContext(
         MiniAppPaymentRes.failed(
           message: backendMessage,
-          metadata: const <String, Object?>{
-            'messageKey': paymentCallbackFailedMessageKey,
-          },
-          failure: MiniAppFailure(
-            code: 'payment_callback_failed',
-            message: backendMessage ?? 'payment_callback_failed',
-          ),
-          isTransaction: invoiceRequest.isTransaction,
+          failure: MiniAppFailure(code: 'payment_callback_failed', message: backendMessage ?? 'payment_callback_failed'),
+          req: request,
         ),
         request: request,
       );
@@ -163,99 +151,28 @@ class MiniAppPaymentExecutor {
 
   MiniAppPaymentRes _attachPaymentContext(
     MiniAppPaymentRes result, {
-    required MiniAppWalletPaymentRequest request,
+    required MiniAppPaymentReq request,
   }) {
-    final Map<String, Object?> metadata = <String, Object?>{
-      ...result.metadata,
-      'invoiceId': request.invoiceId,
-      'flow': request.flow.name,
-      'amount': request.amount,
-      'note': request.note,
-      'refId': request.refId,
-      'paymentRecordId': request.paymentRecordId,
-      'externalInvoiceId': request.externalInvoiceId,
-      'uuid': request.uuid,
-    };
-    final String paymentReference =
-        _normalized(result.paymentReference) ?? request.invoiceId;
-
     switch (result.status) {
       case MiniAppPaymentStatus.success:
         return MiniAppPaymentRes.success(
           message: result.message,
           transactionId: result.transactionId,
-          paymentReference: paymentReference,
-          metadata: metadata,
-          isTransaction: request.isTransaction,
+          req: request,
         );
       case MiniAppPaymentStatus.failed:
         return MiniAppPaymentRes.failed(
           message: result.message,
           transactionId: result.transactionId,
-          paymentReference: paymentReference,
           failure: result.failure,
-          metadata: metadata,
-          isTransaction: request.isTransaction,
-        );
-      case MiniAppPaymentStatus.cancelled:
-        return MiniAppPaymentRes.cancelled(
-          message: result.message,
-          transactionId: result.transactionId,
-          paymentReference: paymentReference,
-          metadata: metadata,
-          isTransaction: request.isTransaction,
-        );
-      case MiniAppPaymentStatus.timedOut:
-        return MiniAppPaymentRes.timedOut(
-          message: result.message,
-          transactionId: result.transactionId,
-          paymentReference: paymentReference,
-          metadata: metadata,
-          isTransaction: request.isTransaction,
-        );
-      case MiniAppPaymentStatus.unsupported:
-        return MiniAppPaymentRes.unsupported(
-          message: result.message,
-          failure: result.failure,
-          metadata: metadata,
-          isTransaction: request.isTransaction,
-        );
-      case MiniAppPaymentStatus.pending:
-        return MiniAppPaymentRes.pending(
-          message: result.message,
-          transactionId: result.transactionId,
-          paymentReference: paymentReference,
-          metadata: metadata,
-          isTransaction: request.isTransaction,
-        );
-      case MiniAppPaymentStatus.paid:
-        return MiniAppPaymentRes.success(
-          message: result.message,
-          transactionId: result.transactionId,
-          paymentReference: paymentReference,
-          metadata: <String, Object?>{
-            ...metadata,
-            'originalStatus': MiniAppPaymentStatus.paid.name,
-          },
-          isTransaction: request.isTransaction,
+          req: request,
         );
       case MiniAppPaymentStatus.unknown:
         return MiniAppPaymentRes.unknown(
           message: result.message,
           transactionId: result.transactionId,
-          paymentReference: paymentReference,
-          failure: result.failure,
-          metadata: metadata,
-          isTransaction: request.isTransaction,
+          req: request,
         );
     }
-  }
-
-  String? _normalized(String? value) {
-    final String? trimmed = value?.trim();
-    if (trimmed == null || trimmed.isEmpty) {
-      return null;
-    }
-    return trimmed;
   }
 }

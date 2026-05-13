@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 class IpsContractCubit extends Cubit<IpsContractState> {
@@ -128,7 +128,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
 
     try {
       final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
-        flow: MiniAppWalletPaymentFlow.ipsRecharge,
+        flow: MiniAppPaymentFlow.ipsRecharge,
         invoiceRequest: CreateInvoiceApiReq(
           amount: state.totalPayable,
           note: 'ips_pack_purchase',

@@ -31,9 +31,7 @@ class _PaymentResStateState extends State<PaymentResState> {
 
   void _scheduleOrdersRedirectIfNeeded() {
     final MiniAppPaymentRes res = widget.res;
-    if (_ordersRedirectScheduled ||
-        res.status != MiniAppPaymentStatus.success ||
-        !res.isTransaction) {
+    if (_ordersRedirectScheduled || res.status != MiniAppPaymentStatus.success || !res.req.isTransaction) {
       return;
     }
 
@@ -49,40 +47,21 @@ class _PaymentResStateState extends State<PaymentResState> {
     final l10n = context.l10n;
     final MiniAppPaymentRes res = widget.res;
     final String? resolvedMessage = resolvePaymentResultMessage(l10n, res);
-    final String? invoiceId =
-        res.paymentReference ?? (res.metadata['invoiceId'] as String?)?.trim();
+    final String invoiceId = res.req.invoiceId;
     final String message = <String>[
-      if (invoiceId != null && invoiceId.isNotEmpty)
-        '${l10n.ipsPaymentInvoiceId}: $invoiceId',
+      if (invoiceId.isNotEmpty) '${l10n.ipsPaymentInvoiceId}: $invoiceId',
       if (resolvedMessage case final String value) value,
     ].join('\n');
 
     switch (res.status) {
       case MiniAppPaymentStatus.success:
         return MiniAppSuccessState(title: l10n.commonSuccess, message: message);
-      case MiniAppPaymentStatus.cancelled:
-        return MiniAppEmptyState(
-          title: l10n.ipsStatusCancelled,
-          message: message,
-          icon: Icons.cancel_outlined,
-        );
-      case MiniAppPaymentStatus.unsupported:
-      case MiniAppPaymentStatus.timedOut:
       case MiniAppPaymentStatus.failed:
       case MiniAppPaymentStatus.unknown:
         return MiniAppErrorState(
           title: l10n.errorsActionFailed,
-          message:
-              '${l10n.commonStatus}: ${resolvePaymentStatusLabel(l10n, res.status)}\n$message',
+          message: '${l10n.commonStatus}: ${resolvePaymentStatusLabel(l10n, res.status)}\n$message',
         );
-      case MiniAppPaymentStatus.pending:
-        return MiniAppEmptyState(
-          title: l10n.ipsStatusPending,
-          message: message,
-          icon: Icons.schedule_outlined,
-        );
-      case MiniAppPaymentStatus.paid:
-        return MiniAppSuccessState(title: l10n.commonSuccess, message: message);
     }
   }
 }

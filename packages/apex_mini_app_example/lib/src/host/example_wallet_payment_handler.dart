@@ -7,39 +7,36 @@ MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
   GlobalKey<NavigatorState> navigatorKey, {
   void Function(MiniAppPaymentRes result)? onResult,
 }) {
-  return (MiniAppWalletPaymentRequest request) async {
+  return (MiniAppPaymentReq request) async {
     final BuildContext? context = navigatorKey.currentContext;
     if (context == null) {
       final MiniAppPaymentRes result = MiniAppPaymentRes.failed(
         message: 'Wallet host is not available.',
-        paymentReference: request.invoiceId,
         failure: MiniAppFailure(
           code: 'example_wallet_unavailable',
           message: 'example_wallet_unavailable',
         ),
-        isTransaction: request.isTransaction,
+        req: request,
       );
       onResult?.call(result);
       return result;
     }
 
-    final MiniAppPaymentRes? result =
-        await showModalBottomSheet<MiniAppPaymentRes>(
-          context: context,
-          useRootNavigator: true,
-          isScrollControlled: true,
-          backgroundColor: const Color(0xFFF2F4F7),
-          builder: (BuildContext context) {
-            return _ExampleWalletPaymentSheet(request: request);
-          },
-        );
+    final MiniAppPaymentRes? result = await showModalBottomSheet<MiniAppPaymentRes>(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: const Color(0xFFF2F4F7),
+      builder: (BuildContext context) {
+        return _ExampleWalletPaymentSheet(request: request);
+      },
+    );
 
     final MiniAppPaymentRes resolved =
         result ??
-        MiniAppPaymentRes.cancelled(
+        MiniAppPaymentRes.failed(
           message: 'Payment was cancelled by the host wallet.',
-          paymentReference: request.invoiceId,
-          isTransaction: request.isTransaction,
+          req: request,
         );
     onResult?.call(resolved);
     return resolved;
@@ -49,7 +46,7 @@ MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
 class _ExampleWalletPaymentSheet extends StatelessWidget {
   const _ExampleWalletPaymentSheet({required this.request});
 
-  final MiniAppWalletPaymentRequest request;
+  final MiniAppPaymentReq request;
 
   @override
   Widget build(BuildContext context) {
@@ -106,10 +103,8 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     context,
                     MiniAppPaymentRes.success(
                       message: 'Payment completed in the host wallet.',
-                      transactionId:
-                          'wallet_${DateTime.now().millisecondsSinceEpoch}',
-                      paymentReference: request.invoiceId,
-                      isTransaction: request.isTransaction,
+                      transactionId: 'wallet_${DateTime.now().millisecondsSinceEpoch}',
+                      req: request,
                     ),
                   ),
                   icon: const Icon(Icons.check_circle_outline_rounded),
@@ -127,12 +122,11 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                   onPressed: () => Navigator.of(context).pop(
                     MiniAppPaymentRes.failed(
                       message: 'Payment failed in the host wallet.',
-                      paymentReference: request.invoiceId,
                       failure: MiniAppFailure(
                         code: 'example_wallet_failed',
                         message: 'example_wallet_failed',
                       ),
-                      isTransaction: request.isTransaction,
+                      req: request,
                     ),
                   ),
                   icon: Icon(Icons.error_outline_rounded, color: colors.error),
@@ -145,25 +139,24 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     minimumSize: const Size.fromHeight(52),
                   ),
                 ),
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
-                  onPressed: () => Navigator.of(context).pop(
-                    MiniAppPaymentRes.cancelled(
-                      message: 'Payment was cancelled by the user.',
-                      paymentReference: request.invoiceId,
-                      isTransaction: request.isTransaction,
-                    ),
-                  ),
-                  icon: const Icon(Icons.close_rounded),
-                  label: CustomText(
-                    'Cancel payment',
-                    variant: MiniAppTextVariant.buttonMedium,
-                    color: colors.primary,
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(52),
-                  ),
-                ),
+                // const SizedBox(height: 12),
+                // OutlinedButton.icon(
+                //   onPressed: () => Navigator.of(context).pop(
+                //     MiniAppPaymentRes.cancelled(
+                //       message: 'Payment was cancelled by the user.',
+                //       req: request,
+                //     ),
+                //   ),
+                //   icon: const Icon(Icons.close_rounded),
+                //   label: CustomText(
+                //     'Cancel payment',
+                //     variant: MiniAppTextVariant.buttonMedium,
+                //     color: colors.primary,
+                //   ),
+                //   style: OutlinedButton.styleFrom(
+                //     minimumSize: const Size.fromHeight(52),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -172,10 +165,10 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
     );
   }
 
-  String _flowLabel(MiniAppWalletPaymentFlow flow) {
+  String _flowLabel(MiniAppPaymentFlow flow) {
     return switch (flow) {
-      MiniAppWalletPaymentFlow.secAcntOpening => 'Securities account opening',
-      MiniAppWalletPaymentFlow.ipsRecharge => 'IPS recharge',
+      MiniAppPaymentFlow.secAcntOpening => 'Securities account opening',
+      MiniAppPaymentFlow.ipsRecharge => 'IPS recharge',
     };
   }
 }

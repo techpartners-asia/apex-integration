@@ -137,7 +137,17 @@ void main() {
           session: ApexMiniAppHostSession(accessToken: 'session-token'),
         ),
         walletPaymentHandler: (_) async {
-          return const MiniAppPaymentRes.success(isTransaction: true);
+          return MiniAppPaymentRes.success(
+            req: MiniAppPaymentReq(
+              flow: MiniAppPaymentFlow.ipsRecharge,
+              invoiceId: '',
+              amount: 0,
+              note: '',
+              refId: '',
+              paymentRecordId: 0,
+              isTransaction: true,
+            ),
+          );
         },
       );
 
@@ -156,7 +166,17 @@ void main() {
             locale: Locale('en'),
           ),
           walletPaymentHandler: (_) async {
-            return const MiniAppPaymentRes.success(isTransaction: true);
+            return MiniAppPaymentRes.success(
+              req: MiniAppPaymentReq(
+                flow: MiniAppPaymentFlow.ipsRecharge,
+                invoiceId: '',
+                amount: 0,
+                note: '',
+                refId: '',
+                paymentRecordId: 0,
+                isTransaction: true,
+              ),
+            );
           },
         );
 
@@ -172,8 +192,7 @@ void main() {
         final MiniAppSdk second = MiniAppSdk(
           config: _sdkConfig('second-token'),
         );
-        final MiniAppHostController secondController =
-            second.runtime.controller;
+        final MiniAppHostController secondController = second.runtime.controller;
 
         expect(ApexMiniAppHostContext.activeController, same(secondController));
 
@@ -203,7 +222,17 @@ void main() {
           ApexMiniAppSdk(
             token: '',
             walletPaymentHandler: (_) async {
-              return const MiniAppPaymentRes.success(isTransaction: true);
+              return MiniAppPaymentRes.success(
+                req: MiniAppPaymentReq(
+                  flow: MiniAppPaymentFlow.ipsRecharge,
+                  invoiceId: '',
+                  amount: 0,
+                  note: '',
+                  refId: '',
+                  paymentRecordId: 0,
+                  isTransaction: true,
+                ),
+              );
             },
             onClose: () {
               closed = true;
@@ -231,14 +260,23 @@ void main() {
           token: 'host-token',
           initialRoute: MiniAppRoutes.reward,
           walletPaymentHandler: (_) async {
-            return const MiniAppPaymentRes.success(isTransaction: true);
+            return MiniAppPaymentRes.success(
+              req: MiniAppPaymentReq(
+                flow: MiniAppPaymentFlow.ipsRecharge,
+                invoiceId: '',
+                amount: 0,
+                note: '',
+                refId: '',
+                paymentRecordId: 0,
+                isTransaction: true,
+              ),
+            );
           },
         ),
       );
       await tester.pump();
 
-      final MiniAppHostController? activeController =
-          ApexMiniAppHostContext.activeController;
+      final MiniAppHostController? activeController = ApexMiniAppHostContext.activeController;
 
       expect(activeController, isNotNull);
       expect(_isDisposed(activeController), isFalse);
@@ -253,7 +291,17 @@ MiniAppSdkConfig _sdkConfig(String token) {
   return MiniAppSdkConfig(
     userToken: token,
     walletPaymentHandler: (_) async {
-      return const MiniAppPaymentRes.success(isTransaction: true);
+      return MiniAppPaymentRes.success(
+        req: MiniAppPaymentReq(
+          flow: MiniAppPaymentFlow.ipsRecharge,
+          invoiceId: '',
+          amount: 0,
+          note: '',
+          refId: '',
+          paymentRecordId: 0,
+          isTransaction: true,
+        ),
+      );
     },
   );
 }

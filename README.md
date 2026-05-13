@@ -88,7 +88,7 @@ class HostHomePage extends StatefulWidget {
 class _HostHomePageState extends State<HostHomePage> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> miniAppNavigatorKey =
-      GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState>();
 
   bool _miniAppRouteOpen = false;
 
@@ -99,7 +99,7 @@ class _HostHomePageState extends State<HostHomePage> {
     super.initState();
 
     hostConfig = ApexMiniAppHostConfig(
-      token: '<USER_TOKEN>'
+        token: '<USER_TOKEN>'
     );
   }
 
@@ -119,51 +119,51 @@ class _HostHomePageState extends State<HostHomePage> {
 
     navigator
         .push<void>(
-          MaterialPageRoute<void>(
-            settings: const RouteSettings(name: 'apex-mini-app'),
-            builder: (BuildContext context) {
-              return ApexMiniAppSdk.config(
-                hostConfig: hostConfig,
-                navigatorKey: miniAppNavigatorKey,
-                onClose: closeMiniApp,
-                onCloseWithResult: (Object? result) {
-                  debugPrint('Mini app closed with result: $result');
-                },
-                onTokenExpired: () {
-                  debugPrint('Mini app token expired');
-                },
-                onNavigate: (String? route, Object? arguments) {
-                  debugPrint('Mini app navigate: $route');
-                },
-                onError: (Object error, StackTrace? stackTrace) {
-                  debugPrint('Mini app error: $error');
-                },
-                walletPaymentHandler: (MiniAppWalletPaymentRequest request) async {
-                final bool paid = await hostWallet.pay(
-                  invoiceId: request.invoiceId,
-                  amount: request.amount,
-                  description: request.note,
-                );
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: 'apex-mini-app'),
+        builder: (BuildContext context) {
+          return ApexMiniAppSdk.config(
+            hostConfig: hostConfig,
+            navigatorKey: miniAppNavigatorKey,
+            onClose: closeMiniApp,
+            onCloseWithResult: (Object? result) {
+              debugPrint('Mini app closed with result: $result');
+            },
+            onTokenExpired: () {
+              debugPrint('Mini app token expired');
+            },
+            onNavigate: (String? route, Object? arguments) {
+              debugPrint('Mini app navigate: $route');
+            },
+            onError: (Object error, StackTrace? stackTrace) {
+              debugPrint('Mini app error: $error');
+            },
+            walletPaymentHandler: (MiniAppPaymentReq request) async {
+              final bool paid = await hostWallet.pay(
+                invoiceId: request.invoiceId,
+                amount: request.amount,
+                description: request.note,
+              );
 
-                if (paid) {
-                  return MiniAppPaymentRes.success(
-                    isTransaction: request.isTransaction,
-                    paymentReference: request.invoiceId,
-                  );
-                }
-
-                return MiniAppPaymentRes.failed(
-                  isTransaction: request.isTransaction,
-                  message: 'Payment failed.',
+              if (paid) {
+                return MiniAppPaymentRes.success(
+                  message: 'Payment success.',
+                  req: request,
                 );
-              },
+              }
+
+              return MiniAppPaymentRes.failed(
+                message: 'Payment failed.',
+                req: request,
               );
             },
-          ),
-        )
+          );
+        },
+      ),
+    )
         .whenComplete(() {
-          _miniAppRouteOpen = false;
-        });
+      _miniAppRouteOpen = false;
+    });
   }
 
   void closeMiniApp() {

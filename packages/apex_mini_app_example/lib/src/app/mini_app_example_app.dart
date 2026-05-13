@@ -27,9 +27,7 @@ class MiniAppExampleApp extends StatefulWidget {
 class MiniAppExampleAppState extends State<MiniAppExampleApp> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> miniAppNavigatorKey = GlobalKey<NavigatorState>();
-  final ValueNotifier<List<String>> hostEvents = ValueNotifier<List<String>>(
-    <String>[],
-  );
+  final ValueNotifier<List<String>> hostEvents = ValueNotifier<List<String>>(<String>[]);
   late final ApexMiniAppHostConfig hostConfig;
   late final MiniAppWalletPaymentHandler walletPaymentHandler;
   late final MiniAppUserDataSourceMode userDataSourceMode;
@@ -45,7 +43,7 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
         buildExampleWalletPaymentHandler(
           navigatorKey,
           onResult: (MiniAppPaymentRes result) {
-            recordHostEvent('payment: ${result.status.name}');
+            recordHostEvent('payment status: ${result.status}');
           },
         );
     hostConfig = widget.hostConfig ?? _hostConfigFromSdkConfig(widget.sdkConfig) ?? exampleHostConfig;

@@ -139,9 +139,7 @@ class _ContractPurchaseScreenState extends State<ContractPurchaseScreen> {
           resolvePaymentResultMessage(context.l10n, paymentRes) ??
           paymentRes.message ??
           context.l10n.errorsActionFailed,
-      icon: paymentRes.status == MiniAppPaymentStatus.cancelled
-          ? Icons.info_outline_rounded
-          : Icons.error_outline_rounded,
+      icon: Icons.error_outline_rounded,
     );
   }
 }

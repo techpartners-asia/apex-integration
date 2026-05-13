@@ -7,6 +7,8 @@ export 'package:mini_app_core/mini_app_core.dart'
         MiniAppLaunchReq,
         MiniAppLaunchRes,
         MiniAppLaunchStatus,
+        MiniAppPaymentFlow,
+        MiniAppPaymentReq,
         MiniAppPaymentRes,
         MiniAppPaymentStatus;
 export 'package:mini_app_ui/mini_app_ui.dart'
@@ -35,8 +37,6 @@ export 'src/host/host.dart'
 export 'src/payment/payment.dart'
     show
         MiniAppPaymentHandler,
-        MiniAppWalletPaymentFlow,
-        MiniAppWalletPaymentHandler,
-        MiniAppWalletPaymentRequest;
+        MiniAppWalletPaymentHandler;
 export 'src/routes/routes.dart' show MiniAppRoutes;
 export 'src/runtime/runtime.dart' show MiniAppSdk;

@@ -222,9 +222,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     );
   }
 
-  Future<MiniAppPaymentRes> _handleWalletPayment(
-    MiniAppWalletPaymentRequest request,
-  ) {
+  Future<MiniAppPaymentRes> _handleWalletPayment(MiniAppPaymentReq request) {
     return widget.walletPaymentHandler(request);
   }
 
@@ -316,11 +314,8 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       navigatorKey: _navigatorKey,
       title: 'Apex Mini App',
       locale: widget.hostConfig.locale,
-      localizationsDelegates:
-          widget.localizationsDelegates ??
-          SdkLocalizations.localizationsDelegates,
-      supportedLocales:
-          widget.supportedLocales ?? SdkLocalizations.supportedLocales,
+      localizationsDelegates: widget.localizationsDelegates ?? SdkLocalizations.localizationsDelegates,
+      supportedLocales: widget.supportedLocales ?? SdkLocalizations.supportedLocales,
       theme: widget.theme ?? _defaultTheme(Brightness.light),
       darkTheme: widget.darkTheme ?? _defaultTheme(Brightness.dark),
       builder: widget.builder,
@@ -375,11 +370,8 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   void _prepareInitialLaunch(UiMiniAppModule module, MiniAppLaunchReq req) {
     final Object? arguments = req.arguments;
     final Object? publicArguments = _publicLaunchArguments(arguments);
-    final String? userToken = arguments is MiniAppLaunchContext
-        ? arguments.userToken
-        : widget.hostConfig.normalizedToken;
-    final String signature =
-        '${req.route}|$userToken|${identityHashCode(publicArguments)}';
+    final String? userToken = arguments is MiniAppLaunchContext ? arguments.userToken : widget.hostConfig.normalizedToken;
+    final String signature = '${req.route}|$userToken|${identityHashCode(publicArguments)}';
     if (_preparedLaunchSignature == signature) {
       return;
     }

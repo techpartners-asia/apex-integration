@@ -1,51 +1,25 @@
+enum MiniAppPaymentFlow { secAcntOpening, ipsRecharge }
+
 class MiniAppPaymentReq {
+  final MiniAppPaymentFlow flow;
   final String invoiceId;
-  final double? amount;
-  final String? currency;
-  final String? description;
-  final String? sourceRoute;
-  final Map<String, Object?> metadata;
+  final double amount;
+  final String note;
+  final String refId;
+  final int paymentRecordId;
+  final String? externalInvoiceId;
+  final String? uuid;
+  final bool isTransaction;
 
   MiniAppPaymentReq({
-    required String invoiceId,
-    this.amount,
-    String? currency,
-    String? description,
-    String? sourceRoute,
-    this.metadata = const <String, Object?>{},
-  }) : invoiceId = normalizeRequired(invoiceId, 'invoiceId'),
-       currency = normalizeOptional(currency),
-       description = normalizeOptional(description),
-       sourceRoute = normalizeOptional(sourceRoute) {
-    final double? resolvedAmount = amount;
-    if (resolvedAmount != null && resolvedAmount <= 0) {
-      throw ArgumentError.value(
-        resolvedAmount,
-        'amount',
-        'MiniAppPaymentReq.amount must be greater than zero when provided.',
-      );
-    }
-  }
-
-  static String normalizeRequired(String value, String fieldName) {
-    final String normalized = value.trim();
-    if (normalized.isEmpty) {
-      throw ArgumentError.value(
-        value,
-        fieldName,
-        'MiniAppPaymentReq.$fieldName must not be empty.',
-      );
-    }
-
-    return normalized;
-  }
-
-  static String? normalizeOptional(String? value) {
-    final String? normalized = value?.trim();
-    if (normalized == null || normalized.isEmpty) {
-      return null;
-    }
-
-    return normalized;
-  }
+    required this.flow,
+    required this.invoiceId,
+    required num amount,
+    required this.note,
+    required this.refId,
+    required this.paymentRecordId,
+    this.externalInvoiceId,
+    this.uuid,
+    required this.isTransaction,
+  }) : amount = amount.toDouble();
 }

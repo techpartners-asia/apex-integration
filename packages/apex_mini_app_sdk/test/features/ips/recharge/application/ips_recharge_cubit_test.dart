@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:mini_app_sdk/mini_app_sdk.dart';
 
 void main() {
@@ -17,7 +18,17 @@ void main() {
       service: _FakeOrdersService(),
       portfolioService: portfolioService,
       paymentExecutor: _FakePaymentExecutor(
-        result: const MiniAppPaymentRes.success(isTransaction: true),
+        result: MiniAppPaymentRes.success(
+          req: MiniAppPaymentReq(
+            flow: MiniAppPaymentFlow.ipsRecharge,
+            invoiceId: '',
+            amount: 0,
+            note: '',
+            refId: '',
+            paymentRecordId: 0,
+            isTransaction: true,
+          ),
+        ),
       ),
       l10n: lookupSdkLocalizations(const Locale('en')),
     );
@@ -68,7 +79,17 @@ void main() {
           ),
         ),
         paymentExecutor: _FakePaymentExecutor(
-          result: const MiniAppPaymentRes.success(isTransaction: true),
+          result: MiniAppPaymentRes.success(
+            req: MiniAppPaymentReq(
+              flow: MiniAppPaymentFlow.ipsRecharge,
+              invoiceId: '',
+              amount: 0,
+              note: '',
+              refId: '',
+              paymentRecordId: 0,
+              isTransaction: true,
+            ),
+          ),
         ),
         l10n: lookupSdkLocalizations(const Locale('en')),
       );
@@ -96,7 +117,17 @@ void main() {
       service: ordersService,
       portfolioService: portfolioService,
       paymentExecutor: _FakePaymentExecutor(
-        result: const MiniAppPaymentRes.success(isTransaction: true),
+        result: MiniAppPaymentRes.success(
+          req: MiniAppPaymentReq(
+            flow: MiniAppPaymentFlow.ipsRecharge,
+            invoiceId: '',
+            amount: 0,
+            note: '',
+            refId: '',
+            paymentRecordId: 0,
+            isTransaction: true,
+          ),
+        ),
       ),
       l10n: lookupSdkLocalizations(const Locale('en')),
       unitPrice: 150000,
@@ -295,15 +326,25 @@ class _FakePaymentExecutor extends MiniAppPaymentExecutor {
 
   @override
   Future<MiniAppPaymentRes> execute({
-    required MiniAppWalletPaymentFlow flow,
+    required MiniAppPaymentFlow flow,
     required CreateInvoiceApiReq invoiceRequest,
   }) async {
     return result;
   }
 
   static Future<MiniAppPaymentRes> _unusedWalletHandler(
-    MiniAppWalletPaymentRequest request,
+    MiniAppPaymentReq request,
   ) async {
-    return const MiniAppPaymentRes.unsupported(isTransaction: true);
+    return MiniAppPaymentRes.unknown(
+      req: MiniAppPaymentReq(
+        flow: MiniAppPaymentFlow.ipsRecharge,
+        invoiceId: '',
+        amount: 0,
+        note: '',
+        refId: '',
+        paymentRecordId: 0,
+        isTransaction: true,
+      ),
+    );
   }
 }

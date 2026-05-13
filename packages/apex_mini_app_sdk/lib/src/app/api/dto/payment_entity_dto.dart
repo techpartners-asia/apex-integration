@@ -28,8 +28,7 @@ class PaymentEntityDto {
   factory PaymentEntityDto.fromJson(Map<String, Object?> json) {
     final int? id = ApiParser.asNullableInt(json['id']);
     final double? amount = ApiParser.asNullableDouble(json['amount']);
-    final String statusText =
-        ApiParser.asNullableString(json['status'])?.toLowerCase() ?? '';
+    final String statusText = ApiParser.asNullableString(json['status'])?.toLowerCase() ?? '';
 
     if (id == null || amount == null) {
       throw const ApiParsingException(
@@ -41,8 +40,6 @@ class PaymentEntityDto {
       id: id,
       amount: amount,
       status: switch (statusText) {
-        'pending' => MiniAppPaymentStatus.pending,
-        'paid' => MiniAppPaymentStatus.paid,
         _ => MiniAppPaymentStatus.unknown,
       },
       note: ApiParser.asNullableString(json['note']),
