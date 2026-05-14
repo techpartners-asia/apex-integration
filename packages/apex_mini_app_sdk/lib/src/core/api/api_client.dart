@@ -63,7 +63,7 @@ class _ApiDebugLogInterceptor extends Interceptor {
       '${options.method.toUpperCase()} ${options.uri}',
       // 'ContentType: ${options.contentType ?? options.headers['Content-Type'] ?? '-'}',
       // 'DataType: ${options.data.runtimeType}',
-      // 'Headers: ${_formatValue(options.headers)}',
+      'Headers: ${_formatValue(options.headers)}',
       // 'Query: ${_formatValue(options.queryParameters)}',
       'Body: ${_formatValue(options.data)}',
     ]);
@@ -129,10 +129,6 @@ class _ApiDebugLogInterceptor extends Interceptor {
   }
 
   Object? _sanitizeValue(Object? value, {String? key}) {
-    if (_isSensitiveKey(key)) {
-      return '[redacted]';
-    }
-
     if (value is FormData) {
       return <String, Object?>{
         'fields': value.fields
