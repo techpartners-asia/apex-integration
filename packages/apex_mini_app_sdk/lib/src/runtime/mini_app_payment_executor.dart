@@ -40,7 +40,6 @@ class MiniAppPaymentExecutor {
         invoiceId: '',
         amount: invoiceRequest.amount,
         note: invoiceRequest.note,
-        refId: invoiceRequest.refId,
         paymentRecordId: 0,
         isTransaction: invoiceRequest.isTransaction,
       );
@@ -57,7 +56,6 @@ class MiniAppPaymentExecutor {
       invoiceId: '',
       amount: invoiceRequest.amount,
       note: invoiceRequest.note,
-      refId: invoiceRequest.refId,
       paymentRecordId: 0,
       isTransaction: invoiceRequest.isTransaction,
     );
@@ -78,7 +76,6 @@ class MiniAppPaymentExecutor {
       invoiceId: invoiceId,
       amount: invoice.amount,
       note: invoice.note ?? invoiceRequest.note,
-      refId: invoiceRequest.refId,
       paymentRecordId: invoice.id,
       externalInvoiceId: invoice.externalInvoiceId,
       uuid: invoice.uuid,
@@ -120,7 +117,7 @@ class MiniAppPaymentExecutor {
     }
 
     try {
-      await appApi.getPaymentCallback(invoiceId: request.invoiceId);
+      await appApi.getPaymentCallback(uuid: invoice.uuid ?? '');
       return result;
     } catch (error, stackTrace) {
       logger.onError(
@@ -149,10 +146,7 @@ class MiniAppPaymentExecutor {
     }
   }
 
-  MiniAppPaymentRes _attachPaymentContext(
-    MiniAppPaymentRes result, {
-    required MiniAppPaymentReq request,
-  }) {
+  MiniAppPaymentRes _attachPaymentContext(MiniAppPaymentRes result, {required MiniAppPaymentReq request}) {
     switch (result.status) {
       case MiniAppPaymentStatus.success:
         return MiniAppPaymentRes.success(

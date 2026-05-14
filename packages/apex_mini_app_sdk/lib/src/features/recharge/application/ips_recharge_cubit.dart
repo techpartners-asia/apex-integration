@@ -110,7 +110,6 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
         invoiceRequest: CreateInvoiceApiReq(
           amount: req.amount!.toInt(),
           note: 'ips_recharge',
-          refId: _buildRechargeRefId(req),
           isTransaction: true,
         ),
       );

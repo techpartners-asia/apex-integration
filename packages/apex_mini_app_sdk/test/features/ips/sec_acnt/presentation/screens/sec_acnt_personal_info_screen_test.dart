@@ -102,7 +102,7 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<String> getPaymentCallback({required String invoiceId}) {
+  Future<String> getPaymentCallback({required String uuid}) {
     throw UnimplementedError();
   }
 

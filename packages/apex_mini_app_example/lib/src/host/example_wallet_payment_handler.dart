@@ -96,7 +96,6 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                   value: request.amount.toStringAsFixed(2),
                 ),
                 _InfoRow(label: 'Note', value: request.note),
-                _InfoRow(label: 'Reference ID', value: request.refId),
                 const SizedBox(height: 24),
                 FilledButton.icon(
                   onPressed: () => Navigator.pop(

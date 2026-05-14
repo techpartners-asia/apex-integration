@@ -5,7 +5,6 @@ class MiniAppPaymentReq {
   final String invoiceId;
   final double amount;
   final String note;
-  final String refId;
   final int paymentRecordId;
   final String? externalInvoiceId;
   final String? uuid;
@@ -16,7 +15,6 @@ class MiniAppPaymentReq {
     required this.invoiceId,
     required num amount,
     required this.note,
-    required this.refId,
     required this.paymentRecordId,
     this.externalInvoiceId,
     this.uuid,

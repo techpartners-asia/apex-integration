@@ -17,7 +17,6 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
     required bool requiresOpeningPaymentFlow,
-    required String fallbackRefId,
   }) async {
     if (state.isSubmitting) {
       return state.paymentRes;
@@ -28,34 +27,28 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     );
 
     try {
-      SecAcntRequestResult? requestResult;
-      if (!requiresOpeningPaymentFlow) {
-        requestResult = await service.addSecuritiesAcntReq(
-          personalInfo: personalInfo,
-        );
-      }
-
       final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
         flow: MiniAppPaymentFlow.secAcntOpening,
         invoiceRequest: CreateInvoiceApiReq(
           amount: payableAmount,
           note: 'sec_acnt_opening_fee',
-          refId: _resolveOpeningPaymentRefId(
-            requestResult: requestResult,
-            fallbackRefId: fallbackRefId,
-          ),
           isTransaction: false,
         ),
       );
+
+      SecAcntRequestResult? requestResult;
+      if (paymentRes.success) {
+        if (!requiresOpeningPaymentFlow) {
+          requestResult = await service.addSecuritiesAcntReq(personalInfo: personalInfo);
+        }
+      }
 
       emit(
         state.copyWith(
           isSubmitting: false,
           requestResult: requestResult,
           paymentRes: paymentRes,
-          errorMessage: paymentRes.status == MiniAppPaymentStatus.success
-              ? null
-              : resolvePaymentResultMessage(l10n, paymentRes),
+          errorMessage: paymentRes.status == MiniAppPaymentStatus.success ? null : resolvePaymentResultMessage(l10n, paymentRes),
         ),
       );
 
@@ -69,19 +62,6 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
       );
       return null;
     }
-  }
-
-  String _resolveOpeningPaymentRefId({
-    required SecAcntRequestResult? requestResult,
-    required String fallbackRefId,
-  }) {
-    final String? refNo = requestResult?.refNo?.toString().trim();
-    if (refNo != null && refNo.isNotEmpty) {
-      return refNo;
-    }
-
-    final String normalizedFallback = fallbackRefId.trim();
-    return normalizedFallback.isEmpty ? 'sec_acnt_opening' : normalizedFallback;
   }
 
   Future<AcntBootstrapState?> refreshBootstrapState({

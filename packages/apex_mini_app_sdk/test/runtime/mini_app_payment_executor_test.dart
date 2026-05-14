@@ -14,7 +14,6 @@ void main() {
             invoiceId: '',
             amount: 0,
             note: '',
-            refId: '',
             paymentRecordId: 0,
             isTransaction: true,
           ),
@@ -42,7 +41,6 @@ void main() {
             invoiceId: '',
             amount: 0,
             note: '',
-            refId: '',
             paymentRecordId: 0,
             isTransaction: true,
           ),
@@ -75,7 +73,6 @@ void main() {
             invoiceId: '',
             amount: 0,
             note: '',
-            refId: '',
             paymentRecordId: 0,
             isTransaction: true,
           ),
@@ -98,7 +95,6 @@ CreateInvoiceApiReq _invoiceRequest() {
   return CreateInvoiceApiReq(
     amount: 1000,
     note: 'test_payment',
-    refId: 'ref-1',
     isTransaction: true,
   );
 }
@@ -121,8 +117,8 @@ class _FakePaymentsRepository implements MiniAppPaymentsRepository {
   }
 
   @override
-  Future<String> getPaymentCallback({required String invoiceId}) async {
-    callbackInvoiceIds.add(invoiceId);
+  Future<String> getPaymentCallback({required String uuid}) async {
+    callbackInvoiceIds.add(uuid);
     final Object? error = callbackError;
     if (error != null) {
       throw error;

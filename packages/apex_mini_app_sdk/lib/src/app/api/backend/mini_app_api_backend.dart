@@ -128,9 +128,7 @@ class MiniAppApiBackend {
     return CompanyInfoResponseDto.fromJson(json);
   }
 
-  Future<PaymentCallbackResponseDto> getPaymentCallback(
-    PaymentCallbackQuery query,
-  ) async {
+  Future<PaymentCallbackResponseDto> getPaymentCallback(PaymentCallbackQuery query) async {
     final ApiExecutor executor = _requirePublicExecutor('getPaymentCallback');
     final Map<String, Object?> json = await executor.getJson(
       ApiEndpoints.paymentCallback,

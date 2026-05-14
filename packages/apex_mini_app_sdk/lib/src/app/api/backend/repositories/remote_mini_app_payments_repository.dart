@@ -28,12 +28,10 @@ class RemoteMiniAppPaymentsRepository implements MiniAppPaymentsRepository {
   }
 
   @override
-  Future<String> getPaymentCallback({required String invoiceId}) async {
+  Future<String> getPaymentCallback({required String uuid}) async {
     try {
       await _ensureAdminAuthToken(session);
-      final response = await api.getPaymentCallback(
-        PaymentCallbackQuery(invoiceId: invoiceId),
-      );
+      final response = await api.getPaymentCallback(PaymentCallbackQuery(uuid: uuid));
       return response.body;
     } catch (error, stackTrace) {
       logger.onError(

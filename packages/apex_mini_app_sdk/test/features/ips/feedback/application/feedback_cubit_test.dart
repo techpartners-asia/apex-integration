@@ -228,7 +228,7 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
-  Future<String> getPaymentCallback({required String invoiceId}) {
+  Future<String> getPaymentCallback({required String uuid}) {
     // TODO: implement getPaymentCallback
     throw UnimplementedError();
   }
@@ -300,7 +300,7 @@ class _FailingApi implements MiniAppApiRepository {
   }
 
   @override
-  Future<String> getPaymentCallback({required String invoiceId}) {
+  Future<String> getPaymentCallback({required String uuid}) {
     // TODO: implement getPaymentCallback
     throw UnimplementedError();
   }

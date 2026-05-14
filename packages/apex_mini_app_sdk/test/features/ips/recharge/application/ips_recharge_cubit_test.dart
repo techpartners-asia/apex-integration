@@ -24,7 +24,6 @@ void main() {
             invoiceId: '',
             amount: 0,
             note: '',
-            refId: '',
             paymentRecordId: 0,
             isTransaction: true,
           ),
@@ -85,7 +84,6 @@ void main() {
               invoiceId: '',
               amount: 0,
               note: '',
-              refId: '',
               paymentRecordId: 0,
               isTransaction: true,
             ),
@@ -123,7 +121,6 @@ void main() {
             invoiceId: '',
             amount: 0,
             note: '',
-            refId: '',
             paymentRecordId: 0,
             isTransaction: true,
           ),
@@ -274,7 +271,7 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<String> getPaymentCallback({required String invoiceId}) {
+  Future<String> getPaymentCallback({required String uuid}) {
     // TODO: implement getPaymentCallback
     throw UnimplementedError();
   }
@@ -341,7 +338,6 @@ class _FakePaymentExecutor extends MiniAppPaymentExecutor {
         invoiceId: '',
         amount: 0,
         note: '',
-        refId: '',
         paymentRecordId: 0,
         isTransaction: true,
       ),
