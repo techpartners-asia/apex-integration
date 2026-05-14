@@ -1,5 +1,5 @@
 final class LoginSessionContract {
-  static const String registerNo = 'ЪЪ61121212';
+  static const String registerNo = 'ЪЪ63121212';
   static const String firstName = 'Noro';
   static const String lastName = 'Tenger';
   static const String familyName = 'Ургын овог';

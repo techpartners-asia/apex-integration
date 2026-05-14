@@ -6,6 +6,11 @@ import 'package:mini_app_ui/mini_app_ui.dart';
 
 import '../helpers/design_tokens.dart';
 
+const Color _inputTextColor = DesignTokens.ink;
+const Color _inputLabelColor = DesignTokens.ink;
+const Color _inputHintColor = DesignTokens.muted;
+const Color _inputDisabledTextColor = Color(0xFF9AA0AA);
+
 class CustomTextField extends StatefulWidget {
   final String label;
   final TextEditingController controller;
@@ -62,7 +67,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   bool get _hasValue => widget.controller.text.isNotEmpty;
 
-  bool get _isFloating => _focusNode.hasFocus || _hasValue;
+  bool get _hasHintText => widget.hintText?.trim().isNotEmpty ?? false;
+
+  bool get _isFloating => _focusNode.hasFocus || _hasValue || _hasHintText;
 
   @override
   void initState() {
@@ -223,6 +230,19 @@ class _HDesignTextField extends StatelessWidget {
     final Color fillColor = enabled
         ? Colors.white
         : Colors.white.withValues(alpha: 0.62);
+    final Color labelColor = !enabled
+        ? _inputDisabledTextColor
+        : _hasError
+        ? DesignTokens.danger
+        : isFloating
+        ? _inputLabelColor
+        : _inputHintColor;
+    final Color valueColor = enabled
+        ? _inputTextColor
+        : _inputDisabledTextColor;
+    final Color hintColor = enabled
+        ? _inputHintColor.withValues(alpha: 0.78)
+        : _inputDisabledTextColor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -264,7 +284,7 @@ class _HDesignTextField extends StatelessWidget {
                                   ? MiniAppTypography.caption2
                                   : MiniAppTypography.body2)
                               .copyWith(
-                                color: DesignTokens.muted,
+                                color: labelColor,
                                 height: 1.1,
                               ),
                       child: Text(isFloating ? label : (hintText ?? label)),
@@ -298,7 +318,7 @@ class _HDesignTextField extends StatelessWidget {
                       onTap: onTap,
                       onTapOutside: (_) => FocusScope.of(context).unfocus(),
                       style: MiniAppTypography.body2.copyWith(
-                        color: DesignTokens.ink,
+                        color: valueColor,
                         height: 1.2,
                       ),
                       decoration: InputDecoration(
@@ -311,11 +331,11 @@ class _HDesignTextField extends StatelessWidget {
                         counterText: '',
                         hintText: isFloating ? hintText : null,
                         hintStyle: MiniAppTypography.body1.copyWith(
-                          color: DesignTokens.muted.withValues(alpha: 0.72),
+                          color: hintColor,
                         ),
                         prefixText: isFloating ? prefixText : null,
                         prefixStyle: MiniAppTypography.body2.copyWith(
-                          color: DesignTokens.ink,
+                          color: valueColor,
                         ),
                       ),
                     ),
@@ -392,7 +412,9 @@ class FloatingLabelFieldShell extends StatelessWidget {
     this.minHeight,
   });
 
-  bool get _isFloating => isFocused || hasValue;
+  bool get _hasPlaceholder => placeholder?.trim().isNotEmpty ?? false;
+
+  bool get _isFloating => isFocused || hasValue || _hasPlaceholder;
 
   bool get _hasError => errorText != null && errorText!.trim().isNotEmpty;
 
@@ -403,6 +425,13 @@ class FloatingLabelFieldShell extends StatelessWidget {
     final BorderRadius borderRadius = BorderRadius.circular(
       responsive.radiusLg,
     );
+    final Color labelColor = !enabled
+        ? _inputDisabledTextColor
+        : _hasError
+        ? DesignTokens.danger
+        : _isFloating
+        ? _inputLabelColor
+        : _inputHintColor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -446,12 +475,13 @@ class FloatingLabelFieldShell extends StatelessWidget {
                                   ? MiniAppTypography.caption2
                                   : MiniAppTypography.body2)
                               .copyWith(
-                                color: DesignTokens.muted,
+                                color: labelColor,
                                 height: 1.1,
                               ),
-                      child: CustomText(
+                      child: Text(
                         _isFloating ? label : (placeholder ?? label),
-                        variant: MiniAppTextVariant.caption2,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -461,7 +491,10 @@ class FloatingLabelFieldShell extends StatelessWidget {
                   right: trailing == null ? 0 : responsive.dp(38),
                   child: Opacity(
                     opacity: _isFloating ? 1 : 0,
-                    child: Align(alignment: Alignment.centerLeft, child: child),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: child,
+                    ),
                   ),
                 ),
                 if (trailing != null)

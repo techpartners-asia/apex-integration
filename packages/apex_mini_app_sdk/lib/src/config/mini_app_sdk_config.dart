@@ -125,8 +125,7 @@ class MiniAppSdkConfig {
     required MiniAppWalletPaymentHandler walletPaymentHandler,
     Duration paymentTimeout = defaultPaymentTimeout,
     MiniAppLogger logger = const DebugMiniAppLogger(),
-    MiniAppUserDataSourceMode userDataSourceMode =
-        MiniAppUserDataSourceMode.realUser,
+    MiniAppUserDataSourceMode userDataSourceMode = MiniAppUserDataSourceMode.realUser,
     ApexMiniAppHostCallbacks callbacks = ApexMiniAppHostCallbacks.empty,
   }) {
     return MiniAppSdkConfig(
@@ -148,9 +147,7 @@ class MiniAppSdkConfig {
       neSession: hostConfig.session?.neSession,
       defaultSrcFiCode: hostConfig.defaultSrcFiCode,
       defaultFiCode: hostConfig.defaultFiCode,
-      language:
-          _normalized(hostConfig.language) ??
-          _languageFromLocale(hostConfig.locale),
+      language: _normalized(hostConfig.language) ?? _languageFromLocale(hostConfig.locale),
       enableDebugLogs: hostConfig.enableDebugLogs,
       hostUser: hostConfig.user,
       hostSession: hostConfig.session,
