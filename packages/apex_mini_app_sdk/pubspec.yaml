@@ -28,7 +28,7 @@ dependencies:
   email_validator: ^3.0.0
   cupertino_icons: ^1.0.9
   adaptive_platform_ui: ^0.1.107
-  liquid_glass_widgets: ^0.7.4
+  liquid_glass_widgets: ^0.10.4
   path_provider: ^2.1.5
   url_launcher: ^6.3.2
   marquee_widget: ^1.2.0
