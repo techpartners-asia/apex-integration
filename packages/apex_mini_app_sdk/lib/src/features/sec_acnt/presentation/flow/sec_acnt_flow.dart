@@ -14,47 +14,78 @@ enum SecAcntFlowStep {
 
 bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 
-bool requiresSecAcntOpeningPayment(AcntBootstrapState? state) =>
-    (state?.requiresSecAcntPayment ?? false);
+bool requiresSecAcntOpeningPayment(
+  AcntBootstrapState? state, {
+  UserEntityDto? currentUser,
+}) =>
+    (state?.requiresSecAcntPayment ?? false) &&
+    !hasPaidSecAcntContract(currentUser);
 
 bool isShortSecAcntFlow(AcntBootstrapState? state) =>
     state?.hasAcnt == true && state?.hasIpsAcnt == false;
 
-List<SecAcntFlowStep> resolveSecAcntFlowSteps(AcntBootstrapState? state) {
+bool hasPaidSecAcntContract(UserEntityDto? user) =>
+    user?.account?.hasPaidContract ?? false;
+
+bool hasSavedSecAcntSignature(UserEntityDto? user) =>
+    user?.account?.hasSavedSignature ?? false;
+
+bool hasCompleteSecAcntPersonalInfo(
+  AcntBootstrapState? state, {
+  UserEntityDto? user,
+}) => SecAcntFlowDraft.fromBootstrap(state, user: user).hasCompletePersonalInfo;
+
+List<SecAcntFlowStep> resolveSecAcntFlowSteps(
+  AcntBootstrapState? state, {
+  UserEntityDto? currentUser,
+}) {
+  final bool hasCompletePersonalInfo = hasCompleteSecAcntPersonalInfo(
+    state,
+    user: currentUser,
+  );
+  final bool hasSignature = hasSavedSecAcntSignature(currentUser);
+  final bool hasPaidContract = hasPaidSecAcntContract(currentUser);
+
   if (isShortSecAcntFlow(state)) {
-    return const <SecAcntFlowStep>[
+    return <SecAcntFlowStep>[
       SecAcntFlowStep.consent,
-      SecAcntFlowStep.personalInformation,
+      if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
       SecAcntFlowStep.success,
       SecAcntFlowStep.serviceAgreement,
     ];
   }
 
-  if (requiresSecAcntOpeningPayment(state)) {
-    return const <SecAcntFlowStep>[
-      SecAcntFlowStep.payment,
+  if (state?.requiresSecAcntPayment ?? false) {
+    return <SecAcntFlowStep>[
+      if (!hasPaidContract) SecAcntFlowStep.payment,
       SecAcntFlowStep.calculation,
     ];
   }
 
-  return const <SecAcntFlowStep>[
+  return <SecAcntFlowStep>[
     SecAcntFlowStep.consent,
-    SecAcntFlowStep.personalInformation,
-    SecAcntFlowStep.secAgreement,
-    SecAcntFlowStep.signature,
-    SecAcntFlowStep.payment,
+    if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
+    if (!hasSignature) SecAcntFlowStep.secAgreement,
+    if (!hasSignature) SecAcntFlowStep.signature,
+    if (!hasPaidContract) SecAcntFlowStep.payment,
     SecAcntFlowStep.calculation,
   ];
 }
 
-SecAcntFlowStep resolveInitialSecAcntFlowStep(AcntBootstrapState? state) =>
-    resolveSecAcntFlowSteps(state).first;
+SecAcntFlowStep resolveInitialSecAcntFlowStep(
+  AcntBootstrapState? state, {
+  UserEntityDto? currentUser,
+}) => resolveSecAcntFlowSteps(state, currentUser: currentUser).first;
 
 SecAcntFlowStep? resolveNextSecAcntFlowStep(
   SecAcntFlowStep currentStep,
-  AcntBootstrapState? state,
-) {
-  final List<SecAcntFlowStep> steps = resolveSecAcntFlowSteps(state);
+  AcntBootstrapState? state, {
+  UserEntityDto? currentUser,
+}) {
+  final List<SecAcntFlowStep> steps = resolveSecAcntFlowSteps(
+    state,
+    currentUser: currentUser,
+  );
   final int index = steps.indexOf(currentStep);
   if (index == -1 || index >= steps.length - 1) {
     return null;
@@ -107,7 +138,7 @@ class SecAcntFlowDraft {
     final String? iban = _sanitizeIbanDigits(
       _resolveBootstrapIban(state, user: user),
     );
-    final String? acntName = _sanitizeIbanDigits(
+    final String? acntName = _trimToNull(
       _resolveBootstrapAcntName(state, user: user),
     );
 
@@ -158,7 +189,38 @@ class SecAcntFlowDraft {
     bankLabel: _trimToNull(selectedBank?.label),
   );
 
+  bool get hasCompletePersonalInfo {
+    return hasCompleteContactInfo &&
+        _isValidIban(iban) &&
+        _trimToNull(selectedBank?.id) != null &&
+        _trimToNull(acntName) != null;
+  }
+
+  bool get hasCompleteContactInfo {
+    return _isValidPhone(mobile) &&
+        _isValidPhone(secondaryMobile) &&
+        _isValidEmail(email);
+  }
+
   static const Object _sentinel = Object();
+}
+
+bool _isValidPhone(String? value) {
+  final String? normalized = _trimToNull(value);
+  return normalized != null && RegExp(r'^\d{8}$').hasMatch(normalized);
+}
+
+bool _isValidEmail(String? value) {
+  final String? normalized = _trimToNull(value);
+  if (normalized == null) {
+    return false;
+  }
+  return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(normalized);
+}
+
+bool _isValidIban(String? value) {
+  final String? normalized = _trimToNull(value);
+  return normalized != null && RegExp(r'^\d{8,18}$').hasMatch(normalized);
 }
 
 String? _resolveBootstrapBankCode(
@@ -182,7 +244,9 @@ String? _resolveBootstrapBankName(
     return bankName;
   }
 
-  return _trimToNull(user?.bank?.bankId ?? user?.bank?.bankCode);
+  return _trimToNull(
+    user?.bank?.bankName ?? user?.bank?.bankId ?? user?.bank?.bankCode,
+  );
 }
 
 String? _resolveBootstrapAcntName(
@@ -194,7 +258,7 @@ String? _resolveBootstrapAcntName(
     return acntName;
   }
 
-  return _trimToNull(user?.bank?.accountName ?? user?.bank?.accountName);
+  return _trimToNull(user?.bank?.accountName);
 }
 
 String? _resolveBootstrapIban(

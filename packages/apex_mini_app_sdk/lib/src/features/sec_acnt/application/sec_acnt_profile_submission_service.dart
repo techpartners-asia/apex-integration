@@ -61,6 +61,11 @@ class SecAcntProfileSubmissionService {
       }
     }
 
+    final String enteredAccountName = _trimToEmpty(personalInfo.acntName);
+    if (enteredAccountName.isNotEmpty) {
+      return enteredAccountName;
+    }
+
     return _trimToEmpty(currentUser?.bank?.accountName);
   }
 

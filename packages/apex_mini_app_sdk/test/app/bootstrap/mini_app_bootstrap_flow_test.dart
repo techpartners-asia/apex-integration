@@ -17,7 +17,7 @@ void main() {
     });
 
     test(
-      'routes users with main account and bank account to questionnaire',
+      'routes users with main account and complete profile to questionnaire',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -28,9 +28,7 @@ void main() {
         expect(
           MiniAppBootstrapFlow.resolveNextRoute(
             state,
-            currentUser: UserEntityDto(
-              bank: const BankDto(accountNumber: '325005005800716755'),
-            ),
+            currentUser: _completeUser(),
           ),
           MiniAppRoutes.questionnaire,
         );
@@ -38,7 +36,7 @@ void main() {
     );
 
     test(
-      'routes users with main account but no bank account to sec account',
+      'routes users with main account but incomplete profile to sec account',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -49,9 +47,7 @@ void main() {
         expect(
           MiniAppBootstrapFlow.resolveNextRoute(
             state,
-            currentUser: UserEntityDto(
-              bank: const BankDto(accountNumber: '  '),
-            ),
+            currentUser: _completeUser(email: ''),
           ),
           MiniAppRoutes.secAcnt,
         );
@@ -70,6 +66,28 @@ void main() {
       );
     });
 
+    test(
+      'paid contract does not make a missing securities account routable as opened',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: false,
+          hasIpsAcnt: false,
+        );
+
+        expect(
+          MiniAppBootstrapFlow.resolveNextRoute(
+            state,
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: true),
+            ),
+          ),
+          MiniAppRoutes.secAcnt,
+        );
+        expect(state.hasAcnt, isFalse);
+        expect(state.hasOpenSecAcnt, isFalse);
+      },
+    );
+
     test('does not route to overview when sec account is not open', () {
       final AcntBootstrapState state = _bootstrapState(
         hasAcnt: true,
@@ -83,6 +101,26 @@ void main() {
       );
     });
   });
+}
+
+UserEntityDto _completeUser({
+  String phone = '88993076',
+  String phoneAddition = '99112233',
+  String email = 'investx@example.com',
+  AccountDto? account,
+}) {
+  return UserEntityDto(
+    phone: phone,
+    phoneAddition: phoneAddition,
+    email: email,
+    account: account,
+    bank: const BankDto(
+      accountNumber: '325005005800716755',
+      accountName: 'Investor Name',
+      bankCode: '390000',
+      bankName: 'Хаан банк',
+    ),
+  );
 }
 
 AcntBootstrapState _bootstrapState({

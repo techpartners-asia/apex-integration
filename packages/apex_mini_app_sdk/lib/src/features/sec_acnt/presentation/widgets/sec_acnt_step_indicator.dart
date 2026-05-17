@@ -5,16 +5,21 @@ import 'package:mini_app_sdk/mini_app_sdk.dart';
 class SecAcntStepIndicator extends StatelessWidget {
   final SecAcntFlowStep currentStep;
   final AcntBootstrapState? bootstrapState;
+  final UserEntityDto? currentUser;
 
   const SecAcntStepIndicator({
     super.key,
     required this.currentStep,
     required this.bootstrapState,
+    this.currentUser,
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<SecAcntFlowStep> steps = resolveSecAcntFlowSteps(bootstrapState);
+    final List<SecAcntFlowStep> steps = resolveSecAcntFlowSteps(
+      bootstrapState,
+      currentUser: currentUser,
+    );
     final int currentIndex = steps.indexOf(currentStep);
     if (currentIndex < 0 || steps.length <= 1) {
       return const SizedBox.shrink();

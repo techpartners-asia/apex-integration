@@ -173,15 +173,6 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     }
   }
 
-  String _buildPurchaseRefId() {
-    final String? contractId = state.contractRes?.contractId.trim();
-    if (contractId != null && contractId.isNotEmpty) {
-      return 'ips_pack_purchase_${contractId}_${state.purchaseQty}';
-    }
-
-    return 'ips_pack_purchase_${state.purchaseQty}_${DateTime.now().millisecondsSinceEpoch}';
-  }
-
   Future<PortfolioOverview?> _refreshBalanceAfterSuccess() async {
     final AcntBootstrapState? bootstrapState = state.bootstrapState;
 

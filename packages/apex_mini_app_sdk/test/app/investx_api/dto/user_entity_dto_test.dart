@@ -54,6 +54,7 @@ void main() {
           'streak': '90',
           'is_invest': true,
           'is_invest_contract': true,
+          'is_paid_contract': true,
           'kyc_status': 'verified',
           'signature_id': 31,
           'signature_file': <String, Object?>{
@@ -91,6 +92,9 @@ void main() {
     expect(user.regionId, 7);
     expect(user.region?.name, 'Монгол');
     expect(user.account?.targetGoal, 500000);
+    expect(user.account?.isPaidContract, isTrue);
+    expect(user.account?.hasPaidContract, isTrue);
+    expect(user.account?.hasSavedSignature, isTrue);
     expect(user.account?.signatureId, 31);
     expect(user.account?.signatureFile?.fileName, 'signature.png');
     expect(user.account?.kycStatus, KycStatusType.verified);
@@ -111,5 +115,16 @@ void main() {
 
     expect(user.platform, PlatformType.unknown);
     expect(user.account?.kycStatus, KycStatusType.unknown);
+    expect(user.account?.isPaidContract, isFalse);
+  });
+
+  test('profile dto defaults malformed paid contract flag to false', () {
+    final UserEntityDto user = UserEntityDto.fromJson(<String, Object?>{
+      'body': <String, Object?>{
+        'account': <String, Object?>{'is_paid_contract': 'not-a-flag'},
+      },
+    });
+
+    expect(user.account?.isPaidContract, isFalse);
   });
 }

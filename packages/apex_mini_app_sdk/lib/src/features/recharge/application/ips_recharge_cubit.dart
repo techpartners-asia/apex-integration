@@ -135,10 +135,6 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
     }
   }
 
-  String _buildRechargeRefId(RechargeReq req) {
-    return 'ips_recharge_${req.packQty}_${DateTime.now().millisecondsSinceEpoch}';
-  }
-
   Future<PortfolioOverview?> _refreshBalanceAfterSuccess() async {
     final PortfolioService? service = portfolioService;
     if (service == null) {

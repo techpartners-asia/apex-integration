@@ -20,18 +20,40 @@ class SecAcntConsentScreen extends StatelessWidget {
     required this.initialDraft,
   });
 
-  void _openPersonalInfo(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => SecAcntPersonalInfoScreen(
-          bootstrapState: bootstrapState,
-          bankOptionsRepository: bankOptionsRepository,
-          bankAccountLookupRepository: bankAccountLookupRepository,
-          appApi: appApi,
-          currentUser: currentUser,
-          initialDraft: initialDraft,
+  Future<void> _openNextStep(BuildContext context) async {
+    final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
+      SecAcntFlowStep.consent,
+      bootstrapState,
+      currentUser: currentUser,
+    );
+
+    if (nextStep == SecAcntFlowStep.personalInformation) {
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => SecAcntPersonalInfoScreen(
+            bootstrapState: bootstrapState,
+            bankOptionsRepository: bankOptionsRepository,
+            bankAccountLookupRepository: bankAccountLookupRepository,
+            appApi: appApi,
+            currentUser: currentUser,
+            initialDraft: initialDraft,
+          ),
         ),
-      ),
+      );
+      return;
+    }
+
+    if (nextStep == null) {
+      return;
+    }
+
+    await pushSecAcntFlowStep(
+      context,
+      step: nextStep,
+      bootstrapState: bootstrapState,
+      draft: initialDraft,
+      appApi: appApi,
+      currentUser: currentUser,
     );
   }
 
@@ -105,7 +127,7 @@ class SecAcntConsentScreen extends StatelessWidget {
                 Expanded(
                   child: PrimaryButton(
                     label: l10n.accept,
-                    onPressed: () => _openPersonalInfo(context),
+                    onPressed: () => _openNextStep(context),
                   ),
                 ),
               ],

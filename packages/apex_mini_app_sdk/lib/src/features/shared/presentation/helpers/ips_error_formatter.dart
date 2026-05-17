@@ -11,7 +11,7 @@ String formatIpsError(Object? error, SdkLocalizations l10n) {
     return _resolveApiMessage(error.message, fallback: l10n.errorsActionFailed);
   }
   if (error is ApiIntegrationException) {
-    return l10n.errorsConfig;
+    return '${l10n.errorsConfig} - ${error.message}';
   }
   if (error is ApiException) {
     return _resolveApiMessage(error.message, fallback: l10n.errorsUnexpected);
@@ -25,6 +25,7 @@ String _resolveApiMessage(String? message, {required String fallback}) {
   if (normalized.isEmpty || _looksTechnicalApiMessage(normalized)) {
     return fallback;
   }
+
   return normalized;
 }
 

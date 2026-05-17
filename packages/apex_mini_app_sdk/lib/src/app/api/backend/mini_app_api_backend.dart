@@ -28,9 +28,7 @@ class MiniAppApiBackend {
     return QuestionnaireQuestionDto.listFromQuestionApiRaw(json);
   }
 
-  Future<CreateInvoiceResponseDto> createInvoice(
-    CreateInvoiceApiReq req,
-  ) async {
+  Future<CreateInvoiceResponseDto> createInvoice(CreateInvoiceApiReq req) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('createInvoice');
     final Map<String, Object?> json = await executor.postJson(
       ApiEndpoints.createInvoice,

@@ -24,11 +24,18 @@ class SecAcntScreen extends StatelessWidget {
       user: currentUser,
     );
 
-    return switch (resolveInitialSecAcntFlowStep(initialBootstrapState)) {
+    return switch (resolveInitialSecAcntFlowStep(
+      initialBootstrapState,
+      currentUser: currentUser,
+    )) {
       SecAcntFlowStep.payment => SecAcntPaymentScreen(
         bootstrapState: initialBootstrapState,
         draft: initialDraft,
+        currentUser: currentUser,
         isInitialStep: true,
+      ),
+      SecAcntFlowStep.calculation => SecAcntCalculationScreen(
+        bootstrapState: initialBootstrapState,
       ),
       _ => SecAcntConsentScreen(
         bootstrapState: initialBootstrapState,

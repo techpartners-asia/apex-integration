@@ -129,6 +129,10 @@ class _ApiDebugLogInterceptor extends Interceptor {
   }
 
   Object? _sanitizeValue(Object? value, {String? key}) {
+    if (_isSensitiveKey(key)) {
+      return '<redacted>';
+    }
+
     if (value is FormData) {
       return <String, Object?>{
         'fields': value.fields

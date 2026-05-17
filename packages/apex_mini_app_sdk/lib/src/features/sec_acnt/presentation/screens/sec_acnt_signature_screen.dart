@@ -8,11 +8,13 @@ class SecAcntSignatureScreen extends StatefulWidget {
     required this.bootstrapState,
     required this.draft,
     required this.appApi,
+    this.currentUser,
   });
 
   final AcntBootstrapState? bootstrapState;
   final SecAcntFlowDraft draft;
   final MiniAppProfileRepository appApi;
+  final UserEntityDto? currentUser;
 
   @override
   State<SecAcntSignatureScreen> createState() => _SecAcntSignatureScreenState();
@@ -60,13 +62,21 @@ class _SecAcntSignatureScreenState extends State<SecAcntSignatureScreen> {
     }
 
     setState(() => _isUploading = false);
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => SecAcntPaymentScreen(
-          bootstrapState: widget.bootstrapState,
-          draft: widget.draft,
-        ),
-      ),
+    final SecAcntFlowStep nextStep =
+        resolveNextSecAcntFlowStep(
+          SecAcntFlowStep.signature,
+          widget.bootstrapState,
+          currentUser: widget.currentUser,
+        ) ??
+        SecAcntFlowStep.payment;
+
+    await pushSecAcntFlowStep(
+      context,
+      step: nextStep,
+      bootstrapState: widget.bootstrapState,
+      draft: widget.draft,
+      appApi: widget.appApi,
+      currentUser: widget.currentUser,
     );
   }
 
@@ -93,6 +103,7 @@ class _SecAcntSignatureScreenState extends State<SecAcntSignatureScreen> {
         child: SecAcntStepIndicator(
           currentStep: SecAcntFlowStep.signature,
           bootstrapState: widget.bootstrapState,
+          currentUser: widget.currentUser,
         ),
       ),
       title: context.l10n.commonDrawSignaturePrompt,

@@ -8,11 +8,13 @@ class SecAcntPaymentScreen extends StatefulWidget {
     super.key,
     required this.bootstrapState,
     required this.draft,
+    this.currentUser,
     this.isInitialStep = false,
   });
 
   final AcntBootstrapState? bootstrapState;
   final SecAcntFlowDraft draft;
+  final UserEntityDto? currentUser;
   final bool isInitialStep;
 
   @override
@@ -41,7 +43,10 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
     final MiniAppPaymentRes? res = await cubit.submitOpeningPayment(
       payableAmount: amount,
       personalInfo: widget.draft.toPersonalInfoData(),
-      requiresOpeningPaymentFlow: requiresSecAcntOpeningPayment(_bootstrapState),
+      requiresOpeningPaymentFlow: requiresSecAcntOpeningPayment(
+        _bootstrapState,
+        currentUser: widget.currentUser,
+      ),
     );
     if (!mounted) {
       return;
@@ -53,7 +58,8 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
 
     setState(() => _isRefreshingBootstrap = true);
     try {
-      final AcntBootstrapState? refreshedState = await cubit.refreshBootstrapState(currentState: _bootstrapState);
+      final AcntBootstrapState? refreshedState = await cubit
+          .refreshBootstrapState(currentState: _bootstrapState);
       if (!mounted) {
         return;
       }
@@ -72,7 +78,8 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
 
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => SecAcntCalculationScreen(bootstrapState: _bootstrapState),
+        builder: (_) =>
+            SecAcntCalculationScreen(bootstrapState: _bootstrapState),
       ),
     );
   }
@@ -88,7 +95,11 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final double footerClearance = responsive.dp(24) + responsive.spacing.buttonHeight + 4 + responsive.safeBottom;
+    final double footerClearance =
+        responsive.dp(24) +
+        responsive.spacing.buttonHeight +
+        4 +
+        responsive.safeBottom;
     final SecAcntWizardHeaderData header = buildSecAcntHeader(
       context,
       SecAcntFlowStep.payment,
@@ -97,7 +108,11 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
     return BlocBuilder<IpsSecAcntCubit, IpsSecAcntState>(
       builder: (BuildContext context, IpsSecAcntState state) {
         final double? payableCommission = _payableCommission;
-        final bool canPay = !state.isSubmitting && payableCommission != null && payableCommission.isFinite && payableCommission > 0;
+        final bool canPay =
+            !state.isSubmitting &&
+            payableCommission != null &&
+            payableCommission.isFinite &&
+            payableCommission > 0;
 
         return CustomScaffold(
           appBarTitle: header.title,
@@ -130,6 +145,7 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
                       // SecAcntStepIndicator(
                       //   currentStep: SecAcntFlowStep.payment,
                       //   bootstrapState: _bootstrapState,
+                      //   currentUser: widget.currentUser,
                       // ),
                       SecAcntPaymentStep(
                         errorMessage: state.errorMessage,
@@ -148,7 +164,9 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
             ],
           ),
           bottomNavigationBar: SecAcntWizardFooter(
-            buttonLabel: state.isSubmitting ? context.l10n.commonLoading : context.l10n.commonPay,
+            buttonLabel: state.isSubmitting
+                ? context.l10n.commonLoading
+                : context.l10n.commonPay,
             onPressed: _submitOpeningPayment,
             enabled: canPay,
           ),

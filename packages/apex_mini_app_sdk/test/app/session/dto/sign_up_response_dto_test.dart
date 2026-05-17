@@ -16,6 +16,9 @@ void main() {
           'phone': '88993076',
           'email': '',
           'gender': null,
+          'account': <String, Object?>{
+            'is_paid_contract': 1,
+          },
         },
       },
     });
@@ -29,5 +32,17 @@ void main() {
     expect(user.lastName, '');
     expect(user.email, isNull);
     expect(user.gender, isNull);
+    expect(user.account?.isPaidContract, isTrue);
+  });
+
+  test('signUp defaults missing paid contract flag to false', () {
+    final UserEntityDto response = UserEntityDto.fromJson(<String, Object?>{
+      'body': <String, Object?>{
+        'token': 'signup-jwt-token',
+        'user': <String, Object?>{'id': 2},
+      },
+    });
+
+    expect(response.account?.isPaidContract, isFalse);
   });
 }

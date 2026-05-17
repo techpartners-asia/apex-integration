@@ -47,15 +47,14 @@ class MiniAppBootstrapFlow {
     }
 
     if (bootstrapState.hasAcnt && !bootstrapState.hasIpsAcnt) {
-      return _hasProfileBankAccount(currentUser)
-          ? MiniAppRoutes.overview
+      return hasCompleteSecAcntPersonalInfo(
+            bootstrapState,
+            user: currentUser,
+          )
+          ? MiniAppRoutes.questionnaire
           : MiniAppRoutes.secAcnt;
     }
 
     return MiniAppRoutes.secAcnt;
-  }
-
-  static bool _hasProfileBankAccount(UserEntityDto? user) {
-    return user?.bank?.accountNumber?.trim().isNotEmpty ?? false;
   }
 }

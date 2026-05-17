@@ -17,3 +17,75 @@ Future<void> routeAfterSecAcntFlow(
 
   await replaceIpsRoute(context, route: nextRoute, arguments: state);
 }
+
+Widget buildSecAcntFlowStepScreen({
+  required SecAcntFlowStep step,
+  required AcntBootstrapState? bootstrapState,
+  required SecAcntFlowDraft draft,
+  required MiniAppProfileRepository? appApi,
+  UserEntityDto? currentUser,
+}) {
+  return switch (step) {
+    SecAcntFlowStep.success => SecAcntSuccessScreen(
+      bootstrapState: bootstrapState,
+      draft: draft,
+      currentUser: currentUser,
+    ),
+    SecAcntFlowStep.serviceAgreement => SecAcntAgreementScreen(
+      step: SecAcntFlowStep.serviceAgreement,
+      bootstrapState: bootstrapState,
+      draft: draft,
+      appApi: appApi,
+      currentUser: currentUser,
+    ),
+    SecAcntFlowStep.secAgreement => SecAcntAgreementScreen(
+      step: SecAcntFlowStep.secAgreement,
+      bootstrapState: bootstrapState,
+      draft: draft,
+      appApi: appApi,
+      currentUser: currentUser,
+    ),
+    SecAcntFlowStep.signature => SecAcntSignatureScreen(
+      bootstrapState: bootstrapState,
+      draft: draft,
+      appApi: appApi!,
+      currentUser: currentUser,
+    ),
+    SecAcntFlowStep.payment => SecAcntPaymentScreen(
+      bootstrapState: bootstrapState,
+      draft: draft,
+      currentUser: currentUser,
+    ),
+    SecAcntFlowStep.calculation => SecAcntCalculationScreen(
+      bootstrapState: bootstrapState,
+    ),
+    SecAcntFlowStep.consent ||
+    SecAcntFlowStep.personalInformation ||
+    SecAcntFlowStep.terms => throw ArgumentError.value(
+      step,
+      'step',
+      'Only post-consent/post-personal-information steps can be built here.',
+    ),
+  };
+}
+
+Future<void> pushSecAcntFlowStep(
+  BuildContext context, {
+  required SecAcntFlowStep step,
+  required AcntBootstrapState? bootstrapState,
+  required SecAcntFlowDraft draft,
+  required MiniAppProfileRepository? appApi,
+  UserEntityDto? currentUser,
+}) async {
+  await Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => buildSecAcntFlowStepScreen(
+        step: step,
+        bootstrapState: bootstrapState,
+        draft: draft,
+        appApi: appApi,
+        currentUser: currentUser,
+      ),
+    ),
+  );
+}

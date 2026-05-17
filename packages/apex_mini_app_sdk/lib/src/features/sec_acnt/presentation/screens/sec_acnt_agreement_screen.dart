@@ -9,6 +9,7 @@ class SecAcntAgreementScreen extends StatefulWidget {
     required this.bootstrapState,
     required this.draft,
     this.appApi,
+    this.currentUser,
   }) : assert(
          step == SecAcntFlowStep.serviceAgreement ||
              step == SecAcntFlowStep.secAgreement,
@@ -18,6 +19,7 @@ class SecAcntAgreementScreen extends StatefulWidget {
   final AcntBootstrapState? bootstrapState;
   final SecAcntFlowDraft draft;
   final MiniAppProfileRepository? appApi;
+  final UserEntityDto? currentUser;
 
   @override
   State<SecAcntAgreementScreen> createState() => _SecAcntAgreementScreenState();
@@ -32,14 +34,21 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
       return;
     }
 
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => SecAcntSignatureScreen(
-          bootstrapState: widget.bootstrapState,
-          draft: widget.draft,
-          appApi: widget.appApi!,
-        ),
-      ),
+    final SecAcntFlowStep nextStep =
+        resolveNextSecAcntFlowStep(
+          SecAcntFlowStep.secAgreement,
+          widget.bootstrapState,
+          currentUser: widget.currentUser,
+        ) ??
+        SecAcntFlowStep.signature;
+
+    await pushSecAcntFlowStep(
+      context,
+      step: nextStep,
+      bootstrapState: widget.bootstrapState,
+      draft: widget.draft,
+      appApi: widget.appApi,
+      currentUser: widget.currentUser,
     );
   }
 
@@ -74,6 +83,7 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
         child: SecAcntStepIndicator(
           currentStep: widget.step,
           bootstrapState: widget.bootstrapState,
+          currentUser: widget.currentUser,
         ),
       ),
       title: title,

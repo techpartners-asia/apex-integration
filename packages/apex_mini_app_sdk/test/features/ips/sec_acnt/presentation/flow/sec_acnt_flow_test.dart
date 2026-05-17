@@ -51,6 +51,109 @@ void main() {
         ],
       );
     });
+
+    test('skips personal information when profile fields are complete', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+          currentUser: _completeUser(),
+        ),
+        const <SecAcntFlowStep>[
+          SecAcntFlowStep.consent,
+          SecAcntFlowStep.secAgreement,
+          SecAcntFlowStep.signature,
+          SecAcntFlowStep.payment,
+          SecAcntFlowStep.calculation,
+        ],
+      );
+    });
+
+    test(
+      'keeps personal information when one required profile field is missing',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+            currentUser: _completeUser(email: ''),
+          ),
+          contains(SecAcntFlowStep.personalInformation),
+        );
+      },
+    );
+
+    test(
+      'skips account contract and signature when saved signature exists',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+            currentUser: _completeUser(
+              account: const AccountDto(signatureId: 31),
+            ),
+          ),
+          const <SecAcntFlowStep>[
+            SecAcntFlowStep.consent,
+            SecAcntFlowStep.payment,
+            SecAcntFlowStep.calculation,
+          ],
+        );
+      },
+    );
+
+    test('keeps signature flow when saved signature is missing', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+          currentUser: _completeUser(),
+        ),
+        containsAllInOrder(<SecAcntFlowStep>[
+          SecAcntFlowStep.secAgreement,
+          SecAcntFlowStep.signature,
+        ]),
+      );
+    });
+
+    test(
+      'paid contract skips payment without treating missing account as opened',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: false,
+          hasIpsAcnt: false,
+        );
+
+        expect(
+          resolveSecAcntFlowSteps(
+            state,
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: true),
+            ),
+          ),
+          const <SecAcntFlowStep>[
+            SecAcntFlowStep.consent,
+            SecAcntFlowStep.secAgreement,
+            SecAcntFlowStep.signature,
+            SecAcntFlowStep.calculation,
+          ],
+        );
+        expect(state.hasAcnt, isFalse);
+        expect(state.hasOpenSecAcnt, isFalse);
+      },
+    );
+
+    test(
+      'unpaid contract keeps payment step when account is still missing',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: false),
+            ),
+          ),
+          contains(SecAcntFlowStep.payment),
+        );
+      },
+    );
   });
 
   test(
@@ -72,6 +175,26 @@ void main() {
       expect(draft.selectedBank!.label, 'Khan Bank');
       expect(draft.iban, '991122334455');
     },
+  );
+}
+
+UserEntityDto _completeUser({
+  String phone = '88993076',
+  String phoneAddition = '99112233',
+  String email = 'investx@example.com',
+  AccountDto? account,
+}) {
+  return UserEntityDto(
+    phone: phone,
+    phoneAddition: phoneAddition,
+    email: email,
+    account: account,
+    bank: const BankDto(
+      accountNumber: '325005005800716755',
+      accountName: 'Investor Name',
+      bankCode: '390000',
+      bankName: 'Хаан банк',
+    ),
   );
 }
 

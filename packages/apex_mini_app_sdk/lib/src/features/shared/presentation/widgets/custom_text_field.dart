@@ -243,6 +243,10 @@ class _HDesignTextField extends StatelessWidget {
     final Color hintColor = enabled
         ? _inputHintColor.withValues(alpha: 0.78)
         : _inputDisabledTextColor;
+    final TextStyle valueStyle = MiniAppTypography.body2.copyWith(
+      color: valueColor,
+      height: 1.2,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -317,15 +321,26 @@ class _HDesignTextField extends StatelessWidget {
                       onChanged: onChanged,
                       onTap: onTap,
                       onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                      style: MiniAppTypography.body2.copyWith(
-                        color: valueColor,
-                        height: 1.2,
+                      textAlignVertical: isMultiline
+                          ? TextAlignVertical.top
+                          : TextAlignVertical.center,
+                      style: valueStyle,
+                      strutStyle: StrutStyle.fromTextStyle(
+                        valueStyle,
+                        forceStrutHeight: true,
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                        filled: false,
+                        fillColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
                         isDense: true,
                         isCollapsed: true,
                         counterText: '',
@@ -334,9 +349,7 @@ class _HDesignTextField extends StatelessWidget {
                           color: hintColor,
                         ),
                         prefixText: isFloating ? prefixText : null,
-                        prefixStyle: MiniAppTypography.body2.copyWith(
-                          color: valueColor,
-                        ),
+                        prefixStyle: valueStyle,
                       ),
                     ),
                   ),

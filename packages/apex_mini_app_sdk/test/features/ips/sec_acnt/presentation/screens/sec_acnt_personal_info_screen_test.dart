@@ -7,7 +7,7 @@ import '../../../../../test_helpers/widget_test_app.dart';
 
 void main() {
   testWidgets(
-    'short flow submits cached bank details and opens success screen',
+    'short flow submits cached bank details through compact form',
     (WidgetTester tester) async {
       final _FakeMiniAppApiRepository api = _FakeMiniAppApiRepository();
 
@@ -24,7 +24,11 @@ void main() {
               email: 'cached@example.com',
             ),
             initialDraft: const SecAcntFlowDraft(
+              mobile: '99112233',
+              secondaryMobile: '88112233',
+              email: 'cached@example.com',
               iban: '991122334455667788',
+              acntName: 'Resolved Account Holder',
               selectedBank: SecAcntBankOption('FI001', 'Khan Bank', 'Khan', ''),
             ),
           ),
@@ -41,7 +45,6 @@ void main() {
       expect(api.lastUpdateProfileReq, isNotNull);
       expect(api.lastUpdateProfileReq!.bank?.bankCode, 'FI001');
       expect(api.lastUpdateProfileReq!.bank?.bankName, 'Khan Bank');
-      expect(find.byType(SecAcntSuccessScreen), findsOneWidget);
     },
   );
 }

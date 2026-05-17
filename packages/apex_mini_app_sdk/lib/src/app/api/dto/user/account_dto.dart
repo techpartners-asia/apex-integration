@@ -8,6 +8,7 @@ class AccountDto {
   final num? investAmount;
   final bool? isInvest;
   final bool? isInvestContract;
+  final bool isPaidContract;
   final String kycStatus;
   final String? packageCode;
   final num? profitAmount;
@@ -29,6 +30,7 @@ class AccountDto {
     this.investAmount,
     this.isInvest,
     this.isInvestContract,
+    this.isPaidContract = false,
     this.kycStatus = KycStatusType.unknown,
     this.packageCode,
     this.profitAmount,
@@ -62,7 +64,8 @@ class AccountDto {
       isInvestContract: json.containsKey('is_invest_contract')
           ? ApiParser.asFlag(json['is_invest_contract'])
           : null,
-      kycStatus: ApiParser.asNullableString(json['kyc_status']) ?? '',
+      isPaidContract: ApiParser.asFlag(json['is_paid_contract']),
+      kycStatus: _parseKycStatus(json['kyc_status']),
       packageCode: ApiParser.asNullableString(json['package_code']),
       profitAmount: ApiParser.asNullableDouble(json['profit_amount']),
       profitPercent: ApiParser.asNullableDouble(json['profit_percent']),
@@ -87,6 +90,7 @@ class AccountDto {
     num? investAmount,
     bool? isInvest,
     bool? isInvestContract,
+    bool? isPaidContract,
     String? kycStatus,
     String? packageCode,
     num? profitAmount,
@@ -108,6 +112,7 @@ class AccountDto {
       investAmount: investAmount ?? this.investAmount,
       isInvest: isInvest ?? this.isInvest,
       isInvestContract: isInvestContract ?? this.isInvestContract,
+      isPaidContract: isPaidContract ?? this.isPaidContract,
       kycStatus: kycStatus ?? this.kycStatus,
       packageCode: packageCode ?? this.packageCode,
       profitAmount: profitAmount ?? this.profitAmount,
@@ -121,5 +126,29 @@ class AccountDto {
       userId: userId ?? this.userId,
       signatureFile: signatureFile ?? this.signatureFile,
     );
+  }
+
+  bool get hasPaidContract => isPaidContract;
+
+  bool get hasDrawableSignature => hasSavedSignature;
+
+  bool get hasSavedSignature {
+    final int? signatureFileId = signatureFile?.id;
+    return (signatureId != null && signatureId! > 0) ||
+        (signatureFileId != null && signatureFileId > 0) ||
+        _hasText(signatureFile?.physicalPath) ||
+        _hasText(signatureFile?.fileName);
+  }
+
+  bool _hasText(String? value) => value?.trim().isNotEmpty ?? false;
+
+  static String _parseKycStatus(Object? value) {
+    final String? status = ApiParser.asNullableString(value);
+    return switch (status) {
+      KycStatusType.pending ||
+      KycStatusType.verified ||
+      KycStatusType.rejected => status!,
+      _ => KycStatusType.unknown,
+    };
   }
 }

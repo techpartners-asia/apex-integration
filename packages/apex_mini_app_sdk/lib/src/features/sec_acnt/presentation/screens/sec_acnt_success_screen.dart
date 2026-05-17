@@ -7,10 +7,12 @@ class SecAcntSuccessScreen extends StatelessWidget {
     super.key,
     required this.bootstrapState,
     required this.draft,
+    this.currentUser,
   });
 
   final AcntBootstrapState? bootstrapState;
   final SecAcntFlowDraft draft;
+  final UserEntityDto? currentUser;
 
   void _openNextStep(BuildContext context) {
     Navigator.of(context).push(
@@ -19,6 +21,7 @@ class SecAcntSuccessScreen extends StatelessWidget {
           step: SecAcntFlowStep.serviceAgreement,
           bootstrapState: bootstrapState,
           draft: draft,
+          currentUser: currentUser,
         ),
       ),
     );
