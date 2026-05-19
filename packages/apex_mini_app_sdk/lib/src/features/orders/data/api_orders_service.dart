@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class ApiOrdersService implements OrdersService {
   final IpsBackendApi api;
@@ -56,8 +56,6 @@ class ApiOrdersService implements OrdersService {
       srcFiCode: config.runtime.defaultSrcFiCode,
     );
 
-    return orders
-        .map((IpsOrderDto dto) => dto.toDomain())
-        .toList(growable: false);
+    return orders.map((IpsOrderDto dto) => dto.toDomain()).toList(growable: false);
   }
 }

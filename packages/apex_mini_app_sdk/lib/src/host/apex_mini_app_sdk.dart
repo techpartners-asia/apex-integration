@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_core/apex_mini_app_core.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 import '../../l10n/sdk_localizations.dart';
 import '../config/mini_app_sdk_config.dart';

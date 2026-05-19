@@ -1,5 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
   final QuestionnaireService service;
@@ -26,12 +26,8 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     );
 
     try {
-      final AcntBootstrapState bootstrapState =
-          state.bootstrapState ??
-          initialBootstrapState ??
-          await BootstrapStateResolver(service: bootstrapService!).load();
-      final List<QuestionnaireQuestion> questions = await service
-          .getQuestions();
+      final AcntBootstrapState bootstrapState = state.bootstrapState ?? initialBootstrapState ?? await BootstrapStateResolver(service: bootstrapService!).load();
+      final List<QuestionnaireQuestion> questions = await service.getQuestions();
 
       emit(
         state.copyWith(

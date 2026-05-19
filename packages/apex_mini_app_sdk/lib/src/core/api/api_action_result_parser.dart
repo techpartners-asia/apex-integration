@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Unified API response guard that validates `responseCode`, optional `success`
 /// flag, and extracts `message`/`body` fields from raw JSON responses.
@@ -43,8 +43,7 @@ final class ApiActionResultParser {
       );
     }
 
-    if (json.containsKey('success') &&
-        !ApiParser.asFlag(json['success'], defaultValue: true)) {
+    if (json.containsKey('success') && !ApiParser.asFlag(json['success'], defaultValue: true)) {
       throw ApiBusinessException(
         responseCode: responseCode ?? 1,
         message: messageOf(json) ?? fallbackErrorMessage,
@@ -53,8 +52,7 @@ final class ApiActionResultParser {
   }
 
   static String? messageOf(Map<String, Object?> json) {
-    return ApiParser.asNullableString(json['responseDesc']) ??
-        ApiParser.asNullableString(json['message']);
+    return ApiParser.asNullableString(json['responseDesc']) ?? ApiParser.asNullableString(json['message']);
   }
 
   static Map<String, Object?> bodyOf(Map<String, Object?> json) {

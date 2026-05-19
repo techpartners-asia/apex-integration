@@ -1,6 +1,6 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 Widget buildIpsSplashPage(
   BuildContext context, {
@@ -70,9 +70,7 @@ Widget buildIpsSecAcntPage(
         l10n: l10n,
       ),
       child: SecAcntScreen(
-        initialBootstrapState: arguments is AcntBootstrapState
-            ? arguments
-            : null,
+        initialBootstrapState: arguments is AcntBootstrapState ? arguments : null,
         bankOptionsRepository: dependencies.bankOptionsRepository,
         bankAccountLookupRepository: dependencies.bankAccountLookupRepository,
         appApi: dependencies.appApi,

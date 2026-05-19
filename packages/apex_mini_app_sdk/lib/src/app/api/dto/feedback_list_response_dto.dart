@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class FeedbackListResponseDto {
   final List<FeedbackEntity> items;
@@ -26,9 +26,7 @@ class FeedbackListResponseDto {
     return FeedbackListResponseDto(
       items: items,
       total: ApiParser.asNullableInt(source['total']) ?? items.length,
-      message:
-          ApiActionResultParser.messageOf(json) ??
-          ApiParser.asNullableString(source['message']),
+      message: ApiActionResultParser.messageOf(json) ?? ApiParser.asNullableString(source['message']),
     );
   }
 

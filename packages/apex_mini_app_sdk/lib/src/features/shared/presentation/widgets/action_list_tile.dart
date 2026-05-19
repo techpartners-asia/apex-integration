@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+
 
 class ActionListTile extends StatelessWidget {
   final String title;

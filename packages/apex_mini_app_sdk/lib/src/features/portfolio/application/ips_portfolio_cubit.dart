@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+
 
 class IpsPortfolioCubit extends Cubit<LoadableState<IpsPortfolioViewData>> {
   final PortfolioService service;

@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class AddSecuritiesAcntResDto {
   final String? message;
@@ -119,8 +119,7 @@ class McsdReqDto {
       receivedDate: ApiParser.asNullableString(json['recievedDate']),
       casaAccounts: ApiParser.asObjectMapList(json['casaAcnt'])
           .map(
-            (Map<String, Object?> item) =>
-                CasaAccountDto.fromNullableJson(item),
+            (Map<String, Object?> item) => CasaAccountDto.fromNullableJson(item),
           )
           .whereType<CasaAccountDto>()
           .toList(growable: false),
@@ -159,9 +158,7 @@ class McsdReqDto {
       birthDate: birthDate,
       createdDate: createdDate,
       receivedDate: receivedDate,
-      casaAccounts: casaAccounts
-          .map((CasaAccountDto account) => account.toDomain())
-          .toList(growable: false),
+      casaAccounts: casaAccounts.map((CasaAccountDto account) => account.toDomain()).toList(growable: false),
     );
   }
 }

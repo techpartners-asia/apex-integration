@@ -1,6 +1,6 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 Widget buildIpsQuestionnairePage(
   BuildContext context, {
@@ -9,20 +9,17 @@ Widget buildIpsQuestionnairePage(
   required IpsDependencies dependencies,
   required SdkLocalizations l10n,
 }) {
-  final QuestionnaireService? questionnaireService =
-      dependencies.questionnaireService;
+  final QuestionnaireService? questionnaireService = dependencies.questionnaireService;
   if (questionnaireService == null) {
     return missingScreen(context, route, l10n.ipsQuestionnaireMissingService);
   }
 
-  final InvestmentBootstrapService? bootstrapService =
-      dependencies.bootstrapService;
+  final InvestmentBootstrapService? bootstrapService = dependencies.bootstrapService;
   if (bootstrapService == null && arguments is! AcntBootstrapState) {
     return missingScreen(context, route, l10n.ipsAcntMissingService);
   }
 
-  final AcntBootstrapState? initialBootstrapState =
-      arguments is AcntBootstrapState ? arguments : null;
+  final AcntBootstrapState? initialBootstrapState = arguments is AcntBootstrapState ? arguments : null;
 
   return BlocProvider<IpsQuestionnaireCubit>(
     create: (BuildContext context) => IpsQuestionnaireCubit(
@@ -47,9 +44,7 @@ Widget buildIpsPackPage(
   required IpsDependencies dependencies,
   required SdkLocalizations l10n,
 }) {
-  final List<IpsPack>? initialPacks = arguments is List<IpsPack>
-      ? List<IpsPack>.unmodifiable(arguments)
-      : null;
+  final List<IpsPack>? initialPacks = arguments is List<IpsPack> ? List<IpsPack>.unmodifiable(arguments) : null;
 
   return buildGuarded(
     context,
@@ -85,9 +80,7 @@ Widget buildIpsContractPage(
   required IpsDependencies dependencies,
   required SdkLocalizations l10n,
 }) {
-  final ContractPayload? payload = arguments is ContractPayload
-      ? arguments
-      : null;
+  final ContractPayload? payload = arguments is ContractPayload ? arguments : null;
   if (payload == null) {
     return missingScreen(context, route, context.l10n.ipsContractMissingPack);
   }
@@ -97,8 +90,7 @@ Widget buildIpsContractPage(
     return missingScreen(context, route, l10n.ipsContractMissingService);
   }
 
-  final InvestmentBootstrapService? bootstrapService =
-      dependencies.bootstrapService;
+  final InvestmentBootstrapService? bootstrapService = dependencies.bootstrapService;
   if (bootstrapService == null) {
     return missingScreen(context, route, l10n.ipsAcntMissingService);
   }

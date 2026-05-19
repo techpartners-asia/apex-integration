@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 typedef StringValidator = String? Function(String? value);
 typedef ValueValidator<T> = String? Function(T value);
@@ -33,8 +33,7 @@ final class Validators {
   }
 
   static StringValidator required(SdkLocalizations l10n) {
-    return (String? value) =>
-        (value?.trim().isEmpty ?? true) ? l10n.validationRequired : null;
+    return (String? value) => (value?.trim().isEmpty ?? true) ? l10n.validationRequired : null;
   }
 
   static StringValidator minLength(SdkLocalizations l10n, int count) {
@@ -83,9 +82,7 @@ final class Validators {
       if (!RegExp(r'^\d+$').hasMatch(normalized)) {
         return l10n.validationInvalidPhone;
       }
-      return normalized.length == exactLength
-          ? null
-          : l10n.validationInvalidPhone;
+      return normalized.length == exactLength ? null : l10n.validationInvalidPhone;
     };
   }
 
@@ -102,15 +99,12 @@ final class Validators {
       if (!RegExp(r'^\d+$').hasMatch(normalized)) {
         return l10n.validationInvalidIban;
       }
-      return normalized.length == exactLength
-          ? null
-          : l10n.validationInvalidIban;
+      return normalized.length == exactLength ? null : l10n.validationInvalidIban;
     };
   }
 
   static ValueValidator<T?> requiredSelection<T>(SdkLocalizations l10n) {
-    return (T? value) =>
-        value == null ? l10n.validationSelectionRequired : null;
+    return (T? value) => value == null ? l10n.validationSelectionRequired : null;
   }
 
   static String? quantity(int value, SdkLocalizations l10n, {int min = 1}) {

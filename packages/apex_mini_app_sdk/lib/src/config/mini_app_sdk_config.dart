@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 import '../host/apex_mini_app_host_callbacks.dart';
 import '../host/apex_mini_app_host_config.dart';

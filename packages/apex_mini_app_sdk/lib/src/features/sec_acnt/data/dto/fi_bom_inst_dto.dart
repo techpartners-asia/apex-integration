@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class FiBomInstDto {
   final String fiCode;
@@ -98,11 +98,10 @@ class GetFiBomInstResDto {
   FiBomInstDto get defaultItem => items.first;
 
   factory GetFiBomInstResDto.fromJson(Map<String, Object?> json) {
-    final ApiEnvelope<List<FiBomInstDto>> envelope =
-        ApiEnvelope<List<FiBomInstDto>>.fromJson(
-          json,
-          FiBomInstDto.listFromRaw,
-        );
+    final ApiEnvelope<List<FiBomInstDto>> envelope = ApiEnvelope<List<FiBomInstDto>>.fromJson(
+      json,
+      FiBomInstDto.listFromRaw,
+    );
     envelope.ensureSuccess();
 
     final List<FiBomInstDto> items = envelope.responseData;

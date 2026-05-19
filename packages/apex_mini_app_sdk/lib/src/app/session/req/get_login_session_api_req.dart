@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class GetLoginSessionApiReq {
   final String fiCode;
@@ -37,9 +37,7 @@ class GetLoginSessionApiReq {
       this.firstName,
       this.lastName,
     ].any((String value) => value.isEmpty)) {
-      throw const ApiIntegrationException(
-        'getLoginSession requires fiCode, admSession, mobile, registerNo, firstName, and lastName.',
-      );
+      throw const ApiIntegrationException('getLoginSession requires fiCode, admSession, mobile, registerNo, firstName, and lastName.');
     }
   }
 
@@ -51,14 +49,10 @@ class GetLoginSessionApiReq {
       'registerNo': registerNo,
       'firstName': firstName,
       'lastName': lastName,
-      if (familyName case final String value when value.trim().isNotEmpty)
-        'familyName': value.trim(),
-      if (email case final String value when value.trim().isNotEmpty)
-        'email': value.trim(),
-      if (sexCode case final String value when value.trim().isNotEmpty)
-        'sexCode': value.trim(),
-      if (birthDate case final String value when value.trim().isNotEmpty)
-        'birthDate': value.trim(),
+      if (familyName case final String value when value.trim().isNotEmpty) 'familyName': value.trim(),
+      if (email case final String value when value.trim().isNotEmpty) 'email': value.trim(),
+      if (sexCode case final String value when value.trim().isNotEmpty) 'sexCode': value.trim(),
+      if (birthDate case final String value when value.trim().isNotEmpty) 'birthDate': value.trim(),
     };
   }
 }

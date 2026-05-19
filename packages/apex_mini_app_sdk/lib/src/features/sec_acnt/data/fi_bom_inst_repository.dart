@@ -1,7 +1,6 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-typedef FiBomInstLoader =
-    Future<List<FiBomInstDto>> Function(GetFiBomInstApiReq req);
+typedef FiBomInstLoader = Future<List<FiBomInstDto>> Function(GetFiBomInstApiReq req);
 
 abstract interface class FiBomInstRepository {
   Future<List<FiBomInstDto>> getFiBomInstList({bool forceRefresh = false});
@@ -23,9 +22,7 @@ class CachedFiBomInstRepository implements FiBomInstRepository {
     this.dicVersion = 0,
     TimedMemoryCache<List<FiBomInstDto>>? fiBomInstCache,
   }) : fiBomInst = fiBomInst.trim(),
-       _fiBomInstCache =
-           fiBomInstCache ??
-           TimedMemoryCache<List<FiBomInstDto>>(ttl: _fiBomInstCacheTtl) {
+       _fiBomInstCache = fiBomInstCache ?? TimedMemoryCache<List<FiBomInstDto>>(ttl: _fiBomInstCacheTtl) {
     if (this.fiBomInst.isEmpty) {
       throw const ApiIntegrationException('A non-empty fiBomInst is required.');
     }

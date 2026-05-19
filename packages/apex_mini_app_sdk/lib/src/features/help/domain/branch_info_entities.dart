@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class SocialMediaType {
   static const String facebook = 'facebook';
@@ -101,18 +101,10 @@ class LocationEntity {
       companyId: ApiParser.asNullableInt(json['company_id']),
       title: ApiParser.asNullableString(json['title']),
       description: ApiParser.asNullableString(json['description']),
-      startDay:
-          ApiParser.asNullableString(json['StartDay']) ??
-          ApiParser.asNullableString(json['startDay']),
-      endDay:
-          ApiParser.asNullableString(json['EndDay']) ??
-          ApiParser.asNullableString(json['endDay']),
-      openTime:
-          ApiParser.asNullableString(json['OpenTime']) ??
-          ApiParser.asNullableString(json['openTime']),
-      closeTime:
-          ApiParser.asNullableString(json['CloseTime']) ??
-          ApiParser.asNullableString(json['closeTime']),
+      startDay: ApiParser.asNullableString(json['StartDay']) ?? ApiParser.asNullableString(json['startDay']),
+      endDay: ApiParser.asNullableString(json['EndDay']) ?? ApiParser.asNullableString(json['endDay']),
+      openTime: ApiParser.asNullableString(json['OpenTime']) ?? ApiParser.asNullableString(json['openTime']),
+      closeTime: ApiParser.asNullableString(json['CloseTime']) ?? ApiParser.asNullableString(json['closeTime']),
       latitude: ApiParser.asNullableDouble(json['latitude']),
       longitude: ApiParser.asNullableDouble(json['longitude']),
       images: ApiParser.asObjectMapList(
@@ -125,11 +117,7 @@ class LocationEntity {
 
   bool get hasCoordinates => latitude != null && longitude != null;
 
-  bool get hasSchedule =>
-      startDay != null ||
-      endDay != null ||
-      openTime?.trim().isNotEmpty == true ||
-      closeTime?.trim().isNotEmpty == true;
+  bool get hasSchedule => startDay != null || endDay != null || openTime?.trim().isNotEmpty == true || closeTime?.trim().isNotEmpty == true;
 }
 
 class BranchInfoEntity {
@@ -153,16 +141,9 @@ class BranchInfoEntity {
     this.message,
   });
 
-  bool get hasContactInfo =>
-      email?.trim().isNotEmpty == true || phone?.trim().isNotEmpty == true;
+  bool get hasContactInfo => email?.trim().isNotEmpty == true || phone?.trim().isNotEmpty == true;
 
-  bool get hasLocationInfo =>
-      location != null &&
-      ((location!.title?.trim().isNotEmpty == true) ||
-          (location!.description?.trim().isNotEmpty == true) ||
-          location!.hasSchedule ||
-          location!.images.isNotEmpty ||
-          location!.hasCoordinates);
+  bool get hasLocationInfo => location != null && ((location!.title?.trim().isNotEmpty == true) || (location!.description?.trim().isNotEmpty == true) || location!.hasSchedule || location!.images.isNotEmpty || location!.hasCoordinates);
 
   bool get hasSocialLinks => socialLinks.isNotEmpty;
 

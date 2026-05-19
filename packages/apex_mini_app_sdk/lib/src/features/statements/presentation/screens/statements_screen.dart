@@ -1,108 +1,100 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class StatementsScreen extends StatelessWidget {
   const StatementsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<
-      IpsStatementsCubit,
-      LoadableState<IpsStatementsViewData>
-    >(
+    return BlocConsumer<IpsStatementsCubit, LoadableState<IpsStatementsViewData>>(
       listenWhen:
           (
             LoadableState<IpsStatementsViewData> previous,
             LoadableState<IpsStatementsViewData> current,
           ) {
-            return current.isSuccess &&
-                (current.errorMessage?.trim().isNotEmpty ?? false);
+            return current.isSuccess && (current.errorMessage?.trim().isNotEmpty ?? false);
           },
-      listener:
-          (BuildContext context, LoadableState<IpsStatementsViewData> state) {
-            final String? message = state.errorMessage?.trim();
-            if (message == null || message.isEmpty) {
-              return;
-            }
-            MiniAppToast.showError(context, message: message);
-          },
-      builder:
-          (BuildContext context, LoadableState<IpsStatementsViewData> state) {
-            final l10n = context.l10n;
+      listener: (BuildContext context, LoadableState<IpsStatementsViewData> state) {
+        final String? message = state.errorMessage?.trim();
+        if (message == null || message.isEmpty) {
+          return;
+        }
+        MiniAppToast.showError(context, message: message);
+      },
+      builder: (BuildContext context, LoadableState<IpsStatementsViewData> state) {
+        final l10n = context.l10n;
 
-            if (state.isInitial || state.isLoading) {
-              return CustomScaffold(
-                appBarTitle: l10n.ipsStatementTitle,
-                showCloseButton: false,
-                children: <Widget>[
-                  MiniAppLoadingState(
-                    title: l10n.commonLoading,
-                    message: l10n.ipsStatementsLoading,
-                  ),
-                ],
-              );
-            }
-
-            if (state.isFailure) {
-              return CustomScaffold(
-                appBarTitle: l10n.ipsStatementTitle,
-                showCloseButton: false,
-                children: <Widget>[
-                  MiniAppErrorState(
-                    title: l10n.errorsGenericTitle,
-                    message: state.errorMessage ?? l10n.errorsActionFailed,
-                    retryLabel: l10n.commonRetry,
-                    onRetry: context.read<IpsStatementsCubit>().load,
-                  ),
-                ],
-              );
-            }
-
-            final PortfolioStatementsData? statements = state.data?.statements;
-            if (statements == null) {
-              return CustomScaffold(
-                appBarTitle: l10n.ipsStatementTitle,
-                showCloseButton: false,
-                children: <Widget>[
-                  MiniAppEmptyState(
-                    title: l10n.ipsStatementTitle,
-                    message: l10n.commonNoData,
-                  ),
-                ],
-              );
-            }
-
-            return CustomScaffold(
-              appBarTitle: l10n.ipsStatementTitle,
-              showCloseButton: false,
-              trailing: Row(
-                children: <Widget>[
-                  // MiniAppAdaptiveIconButton(
-                  //   img: Img.download,
-                  //   onPressed: () {},
-                  // ),
-                  // SizedBox(width: responsive.dp(AppSpacing.md)),
-                  MiniAppAdaptiveIconButton(
-                    img: Img.filter,
-                    onPressed: () => _showFilterSheet(context),
-                  ),
-                ],
+        if (state.isInitial || state.isLoading) {
+          return CustomScaffold(
+            appBarTitle: l10n.ipsStatementTitle,
+            showCloseButton: false,
+            children: <Widget>[
+              MiniAppLoadingState(
+                title: l10n.commonLoading,
+                message: l10n.ipsStatementsLoading,
               ),
-              body: _StatementsBody(
-                l10n: l10n,
-                statements: statements,
+            ],
+          );
+        }
+
+        if (state.isFailure) {
+          return CustomScaffold(
+            appBarTitle: l10n.ipsStatementTitle,
+            showCloseButton: false,
+            children: <Widget>[
+              MiniAppErrorState(
+                title: l10n.errorsGenericTitle,
+                message: state.errorMessage ?? l10n.errorsActionFailed,
+                retryLabel: l10n.commonRetry,
+                onRetry: context.read<IpsStatementsCubit>().load,
               ),
-            );
-          },
+            ],
+          );
+        }
+
+        final PortfolioStatementsData? statements = state.data?.statements;
+        if (statements == null) {
+          return CustomScaffold(
+            appBarTitle: l10n.ipsStatementTitle,
+            showCloseButton: false,
+            children: <Widget>[
+              MiniAppEmptyState(
+                title: l10n.ipsStatementTitle,
+                message: l10n.commonNoData,
+              ),
+            ],
+          );
+        }
+
+        return CustomScaffold(
+          appBarTitle: l10n.ipsStatementTitle,
+          showCloseButton: false,
+          trailing: Row(
+            children: <Widget>[
+              // MiniAppAdaptiveIconButton(
+              //   img: Img.download,
+              //   onPressed: () {},
+              // ),
+              // SizedBox(width: responsive.dp(AppSpacing.md)),
+              MiniAppAdaptiveIconButton(
+                img: Img.filter,
+                onPressed: () => _showFilterSheet(context),
+              ),
+            ],
+          ),
+          body: _StatementsBody(
+            l10n: l10n,
+            statements: statements,
+          ),
+        );
+      },
     );
   }
 
   void _showFilterSheet(BuildContext context) {
     final IpsStatementsCubit cubit = context.read<IpsStatementsCubit>();
-    final IpsStatementFilter initialFilter =
-        cubit.state.data?.filter ?? const IpsStatementFilter();
+    final IpsStatementFilter initialFilter = cubit.state.data?.filter ?? const IpsStatementFilter();
 
     showModalBottomSheet<void>(
       context: context,
@@ -161,8 +153,7 @@ class _StatementsBody extends StatelessWidget {
     return List<Widget>.generate(
       statements.stmtList.length,
       (int index) {
-        final MgBkrCasaAcntStatementResDataDto stmt =
-            statements.stmtList[index];
+        final MgBkrCasaAcntStatementResDataDto stmt = statements.stmtList[index];
 
         return MiniAppSurfaceCard(
           padding: EdgeInsets.all(AppSpacing.md),
@@ -175,9 +166,7 @@ class _StatementsBody extends StatelessWidget {
               statements.currency,
               positive: stmt.isCredit,
             ),
-            statusLabel: stmt.isCredit
-                ? l10n.ipsStatementTypeIncome
-                : l10n.ipsStatementTypeExpense,
+            statusLabel: stmt.isCredit ? l10n.ipsStatementTypeIncome : l10n.ipsStatementTypeExpense,
             positive: stmt.isCredit,
             showDivider: false,
           ),

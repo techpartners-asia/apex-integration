@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class FeedbackCubit extends Cubit<FeedbackState> {
   FeedbackCubit({
@@ -38,9 +37,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
         page: page,
         forceRefresh: forceRefresh,
       );
-      final List<FeedbackEntity> nextItems = isInitialPage
-          ? response.items
-          : <FeedbackEntity>[...state.items, ...response.items];
+      final List<FeedbackEntity> nextItems = isInitialPage ? response.items : <FeedbackEntity>[...state.items, ...response.items];
 
       emit(
         state.copyWith(

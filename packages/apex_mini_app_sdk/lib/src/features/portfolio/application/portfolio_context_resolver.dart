@@ -1,5 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:intl/intl.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class PortfolioContextResolver {
   final SdkPortfolioContext seed;
@@ -21,10 +21,7 @@ class PortfolioContextResolver {
       bootstrapState,
     );
 
-    return seed
-        .merge(userContext)
-        .merge(bootstrapContext)
-        .normalized(fallbackSrcFiCode: defaultSrcFiCode);
+    return seed.merge(userContext).merge(bootstrapContext).normalized(fallbackSrcFiCode: defaultSrcFiCode);
   }
 
   SdkPortfolioContext _fromUser(UserEntityDto? user) {

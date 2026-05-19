@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class LoginSessionResponseDto {
   final String accessToken;
@@ -14,9 +14,7 @@ class LoginSessionResponseDto {
     if (responseCode != 0) {
       throw ApiBusinessException(
         responseCode: responseCode,
-        message:
-            ApiParser.asNullableString(json['responseDesc']) ??
-            'Login session bootstrap failed.',
+        message: ApiParser.asNullableString(json['responseDesc']) ?? 'Login session bootstrap failed.',
       );
     }
 

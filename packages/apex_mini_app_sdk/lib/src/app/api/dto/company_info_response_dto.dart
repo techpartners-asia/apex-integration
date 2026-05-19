@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class CompanyInfoResponseDto {
   final BranchInfoEntity entity;
@@ -24,15 +24,11 @@ class CompanyInfoResponseDto {
         id: ApiParser.asNullableInt(source['id']) ?? 0,
         email: ApiParser.asNullableString(source['email']) ?? '',
         phone: ApiParser.asNullableString(source['phone']) ?? '',
-        location: locationJson.isEmpty
-            ? null
-            : LocationEntity.fromJson(locationJson),
+        location: locationJson.isEmpty ? null : LocationEntity.fromJson(locationJson),
         socialLinks: socialLinks,
         createdAt: ApiParser.asNullableString(source['created_at']) ?? '',
         updatedAt: ApiParser.asNullableString(source['updated_at']) ?? '',
-        message:
-            ApiActionResultParser.messageOf(json) ??
-            ApiParser.asNullableString(source['message']),
+        message: ApiActionResultParser.messageOf(json) ?? ApiParser.asNullableString(source['message']),
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class PaymentCallbackResponseDto {
   final String? message;
@@ -10,8 +10,7 @@ class PaymentCallbackResponseDto {
     final String? body = ApiParser.asNullableString(json['body']);
     if (body == null) {
       throw ApiParsingException(
-        ApiParser.asNullableString(json['message']) ??
-            'paymentCallback returned success without a body payload.',
+        ApiParser.asNullableString(json['message']) ?? 'paymentCallback returned success without a body payload.',
       );
     }
 

@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class FeedbackState {
   final bool isLoading;
@@ -43,12 +43,8 @@ class FeedbackState {
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       items: items ?? this.items,
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      lastCreated: lastCreated == _sentinel
-          ? this.lastCreated
-          : lastCreated as FeedbackEntity?,
-      errorMessage: errorMessage == _sentinel
-          ? this.errorMessage
-          : errorMessage as String?,
+      lastCreated: lastCreated == _sentinel ? this.lastCreated : lastCreated as FeedbackEntity?,
+      errorMessage: errorMessage == _sentinel ? this.errorMessage : errorMessage as String?,
       currentPage: currentPage ?? this.currentPage,
       total: total ?? this.total,
       pageSize: pageSize ?? this.pageSize,

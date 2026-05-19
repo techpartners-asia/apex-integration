@@ -1,10 +1,9 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class MutableTokenProvider implements TokenProvider {
   String? accessToken;
 
-  MutableTokenProvider([String? accessToken])
-    : accessToken = normalize(accessToken);
+  MutableTokenProvider([String? accessToken]) : accessToken = normalize(accessToken);
 
   String? get currentAccessToken => accessToken;
 

@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class AcntNameLookupDto {
   final int? responseCode;
@@ -17,9 +17,7 @@ class AcntNameLookupDto {
     final Map<String, Object?> responseData = ApiParser.asObjectMap(
       json['responseData'],
     );
-    final Map<String, Object?> source = responseData.isEmpty
-        ? json
-        : responseData;
+    final Map<String, Object?> source = responseData.isEmpty ? json : responseData;
 
     return AcntNameLookupDto(
       responseCode: ApiParser.asNullableInt(json['responseCode']),

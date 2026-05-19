@@ -1,5 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class QuestionnaireSignatureScreen extends StatefulWidget {
   final SignatureUploadService signatureUploadService;
@@ -10,12 +10,10 @@ class QuestionnaireSignatureScreen extends StatefulWidget {
   });
 
   @override
-  State<QuestionnaireSignatureScreen> createState() =>
-      _QuestionnaireSignatureScreenState();
+  State<QuestionnaireSignatureScreen> createState() => _QuestionnaireSignatureScreenState();
 }
 
-class _QuestionnaireSignatureScreenState
-    extends State<QuestionnaireSignatureScreen> {
+class _QuestionnaireSignatureScreenState extends State<QuestionnaireSignatureScreen> {
   final List<Offset?> _points = <Offset?>[];
   bool _isUploading = false;
   String? _errorMessage;

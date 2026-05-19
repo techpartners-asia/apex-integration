@@ -17,8 +17,7 @@ const bool isScrollControlled = true;
 const bool enableDrag = true;
 const SilentMiniAppLogger logger = SilentMiniAppLogger();
 
-class DefaultMiniAppHostController
-    implements MiniAppHostController, MiniAppHostControllerLifecycle {
+class DefaultMiniAppHostController implements MiniAppHostController, MiniAppHostControllerLifecycle {
   DefaultMiniAppHostController({
     this.onNavigate,
     this.onError,
@@ -276,8 +275,7 @@ class DefaultMiniAppHostController
       return MiniAppLaunchRes.failure(
         route: req.route,
         errorCode: MiniAppLaunchErrorCode.routeNotFound,
-        errorMessage:
-            'Route "${req.route}" is not declared in module "${module.displayName}".',
+        errorMessage: 'Route "${req.route}" is not declared in module "${module.displayName}".',
       );
     }
 

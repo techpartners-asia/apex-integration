@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:apex_mini_app_core/apex_mini_app_core.dart';
 import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('DefaultMiniAppHostController', () {
@@ -11,12 +11,11 @@ void main() {
       WidgetTester tester,
     ) async {
       final List<Object> errors = <Object>[];
-      final DefaultMiniAppHostController controller =
-          DefaultMiniAppHostController(
-            onError: (Object error, StackTrace? stackTrace) {
-              errors.add(error);
-            },
-          );
+      final DefaultMiniAppHostController controller = DefaultMiniAppHostController(
+        onError: (Object error, StackTrace? stackTrace) {
+          errors.add(error);
+        },
+      );
       late BuildContext buildContext;
 
       await tester.pumpWidget(
@@ -46,8 +45,7 @@ void main() {
     testWidgets('returns a failed replace result after disposal', (
       WidgetTester tester,
     ) async {
-      final DefaultMiniAppHostController controller =
-          DefaultMiniAppHostController();
+      final DefaultMiniAppHostController controller = DefaultMiniAppHostController();
       late BuildContext buildContext;
 
       await tester.pumpWidget(
@@ -76,8 +74,7 @@ void main() {
     testWidgets('replace uses the nearest navigator inside a host app', (
       WidgetTester tester,
     ) async {
-      final DefaultMiniAppHostController controller =
-          DefaultMiniAppHostController();
+      final DefaultMiniAppHostController controller = DefaultMiniAppHostController();
       final _TestMiniAppModule module = _TestMiniAppModule();
       controller.registerModule(module);
 
@@ -145,8 +142,7 @@ class _TestMiniAppModule extends UiMiniAppModule {
 
   @override
   Widget buildPage(BuildContext context, String route, Object? arguments) {
-    final bool hasController =
-        MiniAppHostControllerProvider.maybeOf(context) != null;
+    final bool hasController = MiniAppHostControllerProvider.maybeOf(context) != null;
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Column(

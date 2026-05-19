@@ -1,5 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 SecAcntWizardHeaderData buildSecAcntHeader(
   BuildContext context,
@@ -116,11 +116,7 @@ SecAcntWizardFooterData buildSecAcntFooter(
     SecAcntFlowStep.payment => SecAcntWizardFooterData(
       buttonLabel: state.isSubmitting ? loadingLabel : l10n.commonPay,
       onPressed: onPrimaryAction,
-      enabled:
-          !state.isSubmitting &&
-          payableCommission != null &&
-          payableCommission.isFinite &&
-          payableCommission > 0,
+      enabled: !state.isSubmitting && payableCommission != null && payableCommission.isFinite && payableCommission > 0,
     ),
     SecAcntFlowStep.calculation => SecAcntWizardFooterData(
       buttonLabel: l10n.commonGoHome,
@@ -133,12 +129,8 @@ TextStyle? buildSecAcntHeaderTitleStyle(
   BuildContext context,
   SecAcntWizardHeaderData header,
 ) {
-  final Color titleColor = header.highlightBrand
-      ? DesignTokens.rose
-      : DesignTokens.ink;
-  final TextStyle baseStyle = header.highlightBrand
-      ? MiniAppTypography.title1
-      : MiniAppTypography.subtitle2;
+  final Color titleColor = header.highlightBrand ? DesignTokens.rose : DesignTokens.ink;
+  final TextStyle baseStyle = header.highlightBrand ? MiniAppTypography.title1 : MiniAppTypography.subtitle2;
 
   return baseStyle.copyWith(color: titleColor);
 }

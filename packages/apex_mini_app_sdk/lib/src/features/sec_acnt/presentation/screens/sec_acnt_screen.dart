@@ -1,6 +1,6 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class SecAcntScreen extends StatelessWidget {
   final AcntBootstrapState? initialBootstrapState;
@@ -53,8 +53,7 @@ class SecAcntScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Navigator(
-        onGenerateRoute: (_) =>
-            MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
+        onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
       ),
     );
   }

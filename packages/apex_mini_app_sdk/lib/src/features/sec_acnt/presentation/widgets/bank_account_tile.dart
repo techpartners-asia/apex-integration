@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+
 
 class BankAccountTile extends StatelessWidget {
   final SecAcntBankOption bank;

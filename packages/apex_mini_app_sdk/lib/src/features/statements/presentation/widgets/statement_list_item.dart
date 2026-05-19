@@ -1,6 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class StatementListItem extends StatelessWidget {
   final String title;
@@ -36,8 +35,7 @@ class StatementListItem extends StatelessWidget {
           statusLabel: statusLabel,
           positive: positive,
         ),
-        if (action != null)
-          Align(alignment: Alignment.centerRight, child: action!),
+        if (action != null) Align(alignment: Alignment.centerRight, child: action!),
         if (showDivider) Divider(height: responsive.dp(16)),
       ],
     );

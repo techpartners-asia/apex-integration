@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 void main() {
   group('SilentMiniAppLogger', () {

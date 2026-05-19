@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:apex_mini_app_sdk/src/host/apex_mini_app_host_context.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 void main() {
   setUp(() {

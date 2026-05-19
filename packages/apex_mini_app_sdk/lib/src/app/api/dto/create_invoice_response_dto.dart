@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class CreateInvoiceResponseDto {
   final String? message;
@@ -10,8 +10,7 @@ class CreateInvoiceResponseDto {
     final Map<String, Object?> body = ApiParser.asObjectMap(json['body']);
     if (body.isEmpty) {
       throw ApiParsingException(
-        ApiParser.asNullableString(json['message']) ??
-            'createInvoice returned success without a body payload.',
+        ApiParser.asNullableString(json['message']) ?? 'createInvoice returned success without a body payload.',
       );
     }
 

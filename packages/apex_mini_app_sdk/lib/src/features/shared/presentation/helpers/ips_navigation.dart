@@ -1,5 +1,5 @@
-import 'package:apex_mini_app_core/apex_mini_app_core.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../../host/apex_mini_app_host_context.dart';

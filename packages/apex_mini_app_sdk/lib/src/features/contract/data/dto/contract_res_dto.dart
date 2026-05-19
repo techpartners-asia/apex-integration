@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class ContractResDto {
   final String contractId;
@@ -17,19 +17,13 @@ class ContractResDto {
     if (responseCode != 0) {
       throw ApiBusinessException(
         responseCode: responseCode,
-        message:
-            ApiParser.asNullableString(json['responseDesc']) ??
-            'Contract creation failed.',
+        message: ApiParser.asNullableString(json['responseDesc']) ?? 'Contract creation failed.',
       );
     }
 
     return ContractResDto(
-      contractId:
-          ApiParser.asNullableString(json['refNo']) ??
-          IpsDefaults.contractIdFallback,
-      message:
-          ApiParser.asNullableString(json['responseDesc']) ??
-          'IPS contract created.',
+      contractId: ApiParser.asNullableString(json['refNo']) ?? IpsDefaults.contractIdFallback,
+      message: ApiParser.asNullableString(json['responseDesc']) ?? 'IPS contract created.',
       deepLink: ApiParser.asNullableString(json['deepLink']),
     );
   }

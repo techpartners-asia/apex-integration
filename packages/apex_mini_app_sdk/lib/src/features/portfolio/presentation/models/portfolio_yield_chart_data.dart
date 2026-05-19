@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class PortfolioYieldChartPoint {
   final String label;
@@ -54,9 +54,7 @@ final class PortfolioYieldChartDataMapper {
     absorb(yieldProfitHoldings);
     absorb(stockYieldDetails);
 
-    final List<_ChartSeed> seeds = seedsByKey.values
-        .where((_ChartSeed seed) => seed.hasRenderableData)
-        .toList(growable: false);
+    final List<_ChartSeed> seeds = seedsByKey.values.where((_ChartSeed seed) => seed.hasRenderableData).toList(growable: false);
 
     if (seeds.isEmpty) {
       return const PortfolioYieldChartData();
@@ -142,9 +140,7 @@ class _ChartSeed {
   double? primaryValue;
   double? secondaryValue;
 
-  bool get hasRenderableData =>
-      (primaryValue != null && primaryValue!.isFinite) ||
-      (secondaryValue != null && secondaryValue!.isFinite);
+  bool get hasRenderableData => (primaryValue != null && primaryValue!.isFinite) || (secondaryValue != null && secondaryValue!.isFinite);
 
   String get displayLabel {
     // final String? customLabel = _normalizedText(pointLabel);
@@ -163,9 +159,7 @@ class _ChartSeed {
 
     final String? shortsecurityName = _normalizedText(securityName);
     if (shortsecurityName != null) {
-      return shortsecurityName.length > 6
-          ? shortsecurityName.substring(0, 6)
-          : shortsecurityName;
+      return shortsecurityName.length > 6 ? shortsecurityName.substring(0, 6) : shortsecurityName;
     }
 
     return 'P${order + 1}';
@@ -177,19 +171,12 @@ class _ChartSeed {
     // pointLabel ??= _normalizedText(holding.pointLabel);
     // recordedAt ??= holding.recordedAt;
 
-    final double? resolvedPrimaryValue =
-        holding.holdingType == HoldingType.getStockAcntYieldDtl
-        ? holding.currentValue
-        : holding.buyAmount;
-    if (resolvedPrimaryValue case final double value
-        when value.isFinite && primaryValue == null) {
+    final double? resolvedPrimaryValue = holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.currentValue : holding.buyAmount;
+    if (resolvedPrimaryValue case final double value when value.isFinite && primaryValue == null) {
       primaryValue = value;
     }
 
-    if (holding.holdingType == HoldingType.getStockAcntYieldDtl
-            ? holding.totalYield
-            : holding.profit
-        case final double profit when profit.isFinite) {
+    if (holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.totalYield : holding.profit case final double profit when profit.isFinite) {
       secondaryValue ??= profit;
     }
   }

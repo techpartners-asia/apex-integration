@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class ApiPackService implements PackService {
   static const Duration _packsCacheTtl = Duration(minutes: 10);
@@ -11,18 +11,14 @@ class ApiPackService implements PackService {
     required this.api,
     required this.session,
     TimedMemoryCacheMap<String, List<IpsPack>>? packsCache,
-  }) : _packsCache =
-           packsCache ??
-           TimedMemoryCacheMap<String, List<IpsPack>>(ttl: _packsCacheTtl);
+  }) : _packsCache = packsCache ?? TimedMemoryCacheMap<String, List<IpsPack>>(ttl: _packsCacheTtl);
 
   @override
   Future<List<IpsPack>> getPacks({
     String? srcFiCode,
     bool forceRefresh = false,
   }) async {
-    final String cacheKey = (srcFiCode?.trim().isNotEmpty ?? false)
-        ? srcFiCode!.trim()
-        : '_default_';
+    final String cacheKey = (srcFiCode?.trim().isNotEmpty ?? false) ? srcFiCode!.trim() : '_default_';
     return _packsCache.getOrLoad(
       cacheKey,
       () async {

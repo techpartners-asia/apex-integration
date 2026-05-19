@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class IpsContractState {
   final bool isInitializing;
@@ -23,13 +23,11 @@ class IpsContractState {
 
   static const Object sentinel = Object();
 
-  bool get isReady =>
-      contractRes != null && bootstrapState != null && overview != null;
+  bool get isReady => contractRes != null && bootstrapState != null && overview != null;
 
   bool get hasPricing => (overview?.packAmount ?? 0) > 0;
 
-  bool get canSubmit =>
-      isReady && hasPricing && purchaseQty > 0 && !isSubmitting;
+  bool get canSubmit => isReady && hasPricing && purchaseQty > 0 && !isSubmitting;
 
   double get unitPrice => overview?.packAmount ?? 0;
 
@@ -37,8 +35,7 @@ class IpsContractState {
 
   double get currentPackBalance => overview?.packQty ?? 0;
 
-  double get totalPayable =>
-      purchaseQty <= 0 ? 0 : (purchaseQty * unitPrice) + serviceFee;
+  double get totalPayable => purchaseQty <= 0 ? 0 : (purchaseQty * unitPrice) + serviceFee;
 
   IpsContractState copyWith({
     bool? isInitializing,
@@ -54,21 +51,11 @@ class IpsContractState {
       isInitializing: isInitializing ?? this.isInitializing,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       purchaseQty: purchaseQty ?? this.purchaseQty,
-      contractRes: contractRes == sentinel
-          ? this.contractRes
-          : contractRes as ContractRes?,
-      bootstrapState: bootstrapState == sentinel
-          ? this.bootstrapState
-          : bootstrapState as AcntBootstrapState?,
-      overview: overview == sentinel
-          ? this.overview
-          : overview as PortfolioOverview?,
-      paymentRes: paymentRes == sentinel
-          ? this.paymentRes
-          : paymentRes as MiniAppPaymentRes?,
-      errorMessage: errorMessage == sentinel
-          ? this.errorMessage
-          : errorMessage as String?,
+      contractRes: contractRes == sentinel ? this.contractRes : contractRes as ContractRes?,
+      bootstrapState: bootstrapState == sentinel ? this.bootstrapState : bootstrapState as AcntBootstrapState?,
+      overview: overview == sentinel ? this.overview : overview as PortfolioOverview?,
+      paymentRes: paymentRes == sentinel ? this.paymentRes : paymentRes as MiniAppPaymentRes?,
+      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
     );
   }
 }

@@ -1,12 +1,7 @@
-import 'package:apex_mini_app_core/apex_mini_app_core.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
 import 'package:flutter/widgets.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-import '../config/mini_app_sdk_config.dart';
-import '../di/mini_app_sdk_di.dart';
-import '../features/router/investx_feature_info.dart';
 import '../host/apex_mini_app_host_context.dart';
-import 'mini_app_launch_context.dart';
 
 class MiniAppSdk {
   static const String investXDisplayName = InvestXFeatureInfo.displayName;

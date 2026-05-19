@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:flutter/material.dart';
 
 enum MiniAppToastType { info, success, warning, error }
 
@@ -17,9 +17,7 @@ final class MiniAppToast {
     MiniAppToastType type = MiniAppToastType.info,
     Duration duration = const Duration(seconds: 3),
   }) {
-    final OverlayState? overlay =
-        Navigator.maybeOf(context, rootNavigator: true)?.overlay ??
-        Overlay.maybeOf(context, rootOverlay: true);
+    final OverlayState? overlay = Navigator.maybeOf(context, rootNavigator: true)?.overlay ?? Overlay.maybeOf(context, rootOverlay: true);
 
     if (overlay == null || !context.mounted) {
       return;
@@ -139,8 +137,7 @@ class _MiniAppToastOverlay extends StatefulWidget {
   State<_MiniAppToastOverlay> createState() => _MiniAppToastOverlayState();
 }
 
-class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay>
-    with SingleTickerProviderStateMixin {
+class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay> with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 220),
@@ -252,20 +249,17 @@ class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay>
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      if (widget.title?.trim().isNotEmpty ==
-                                          true)
+                                      if (widget.title?.trim().isNotEmpty == true)
                                         Padding(
                                           padding: const EdgeInsets.only(
                                             bottom: 4,
                                           ),
                                           child: CustomText(
                                             widget.title!.trim(),
-                                            variant:
-                                                MiniAppTextVariant.buttonMedium,
+                                            variant: MiniAppTextVariant.buttonMedium,
                                             color: style.titleColor,
                                           ),
                                         ),

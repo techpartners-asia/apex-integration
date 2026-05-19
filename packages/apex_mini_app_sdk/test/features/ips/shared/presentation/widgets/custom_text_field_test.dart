@@ -1,6 +1,6 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 import '../../../../../test_helpers/widget_test_app.dart';
 
@@ -174,12 +174,10 @@ class _HostileThemeTextFieldHarness extends StatefulWidget {
   const _HostileThemeTextFieldHarness();
 
   @override
-  State<_HostileThemeTextFieldHarness> createState() =>
-      _HostileThemeTextFieldHarnessState();
+  State<_HostileThemeTextFieldHarness> createState() => _HostileThemeTextFieldHarnessState();
 }
 
-class _HostileThemeTextFieldHarnessState
-    extends State<_HostileThemeTextFieldHarness> {
+class _HostileThemeTextFieldHarnessState extends State<_HostileThemeTextFieldHarness> {
   late final TextEditingController _controller;
 
   @override

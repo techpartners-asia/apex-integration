@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class IpsSellState {
   final IpsPack? pack;
@@ -69,12 +69,8 @@ class IpsSellState {
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isRefreshingPacks: isRefreshingPacks ?? this.isRefreshingPacks,
       message: message == sentinel ? this.message : message as String?,
-      errorMessage: errorMessage == sentinel
-          ? this.errorMessage
-          : errorMessage as String?,
-      refreshErrorMessage: refreshErrorMessage == sentinel
-          ? this.refreshErrorMessage
-          : refreshErrorMessage as String?,
+      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
+      refreshErrorMessage: refreshErrorMessage == sentinel ? this.refreshErrorMessage : refreshErrorMessage as String?,
       unitPrice: unitPrice ?? this.unitPrice,
       serviceFee: serviceFee ?? this.serviceFee,
       profit: profit ?? this.profit,

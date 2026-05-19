@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class SecAcntBankAccountLookupResult {
   final int? responseCode;
@@ -23,8 +23,7 @@ abstract interface class SecAcntBankAccountLookupRepository {
   });
 }
 
-class PlaceholderSecAcntBankAccountLookupRepository
-    implements SecAcntBankAccountLookupRepository {
+class PlaceholderSecAcntBankAccountLookupRepository implements SecAcntBankAccountLookupRepository {
   const PlaceholderSecAcntBankAccountLookupRepository();
 
   @override
@@ -38,8 +37,7 @@ class PlaceholderSecAcntBankAccountLookupRepository
   }
 }
 
-class ApiSecAcntBankAccountLookupRepository
-    implements SecAcntBankAccountLookupRepository {
+class ApiSecAcntBankAccountLookupRepository implements SecAcntBankAccountLookupRepository {
   const ApiSecAcntBankAccountLookupRepository({required this.api});
 
   final IpsBackendApi api;
@@ -72,8 +70,7 @@ class ApiSecAcntBankAccountLookupRepository
   }
 }
 
-class UnavailableSecAcntBankAccountLookupRepository
-    implements SecAcntBankAccountLookupRepository {
+class UnavailableSecAcntBankAccountLookupRepository implements SecAcntBankAccountLookupRepository {
   const UnavailableSecAcntBankAccountLookupRepository();
 
   @override

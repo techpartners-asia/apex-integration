@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 enum IpsStatementDateFilter { all, today, week, month, threeMonths }
 
@@ -16,8 +16,7 @@ class IpsStatementFilter {
     this.dateFilter = IpsStatementDateFilter.all,
   });
 
-  bool get hasAmountFilter =>
-      minAmount > defaultMinAmount || maxAmount < defaultMaxAmount;
+  bool get hasAmountFilter => minAmount > defaultMinAmount || maxAmount < defaultMaxAmount;
 
   bool get hasDateFilter => dateFilter != IpsStatementDateFilter.all;
 
@@ -110,10 +109,7 @@ class IpsStatementFilter {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is IpsStatementFilter &&
-        other.minAmount == minAmount &&
-        other.maxAmount == maxAmount &&
-        other.dateFilter == dateFilter;
+    return other is IpsStatementFilter && other.minAmount == minAmount && other.maxAmount == maxAmount && other.dateFilter == dateFilter;
   }
 
   @override

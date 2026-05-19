@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class GetCasaStmtApiReq {
   final int acntId;
@@ -37,16 +37,12 @@ class GetCasaStmtApiReq {
       'currentPage': currentPage,
       'pageCount': pageCount,
       'pack': pack,
-      if (postDate case final String value when value.trim().isNotEmpty)
-        'postDate': value.trim(),
-      if (mode case final String value when value.trim().isNotEmpty)
-        'mode': value.trim(),
+      if (postDate case final String value when value.trim().isNotEmpty) 'postDate': value.trim(),
+      if (mode case final String value when value.trim().isNotEmpty) 'mode': value.trim(),
       if (isLastX case final int value) 'isLastX': value,
       if (txnNo case final int value) 'txnNo': value,
-      if (scrType case final String value when value.trim().isNotEmpty)
-        'scrType': value.trim(),
-      if (exportType case final String value when value.trim().isNotEmpty)
-        'exportType': value.trim(),
+      if (scrType case final String value when value.trim().isNotEmpty) 'scrType': value.trim(),
+      if (exportType case final String value when value.trim().isNotEmpty) 'exportType': value.trim(),
     };
   }
 }

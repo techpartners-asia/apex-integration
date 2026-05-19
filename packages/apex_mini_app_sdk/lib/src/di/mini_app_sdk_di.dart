@@ -1,5 +1,4 @@
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
   final MiniAppLogger logger = config.logger;
@@ -42,8 +41,7 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
           loadFiBomInst: (req) => ipsApi.getFiBomInst(req),
           fiBomInst: appSession.backendConfig.runtime.defaultFiCode,
         );
-  final InvestmentBootstrapService? bootstrapService =
-      ipsApi == null || fiBomInstRepository == null
+  final InvestmentBootstrapService? bootstrapService = ipsApi == null || fiBomInstRepository == null
       ? null
       : ApiInvestmentBootstrapService(
           api: ipsApi,
@@ -66,8 +64,7 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
           api: ipsApi,
           session: appSession.controller,
         );
-  final ContractService? contractService =
-      ipsApi == null || fiBomInstRepository == null
+  final ContractService? contractService = ipsApi == null || fiBomInstRepository == null
       ? null
       : ApiContractService(
           api: ipsApi,
@@ -106,9 +103,7 @@ UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
         : ApiSecAcntBankOptionsRepository(
             fiBomInstRepository: fiBomInstRepository,
           ),
-    bankAccountLookupRepository: ipsApi == null
-        ? const UnavailableSecAcntBankAccountLookupRepository()
-        : ApiSecAcntBankAccountLookupRepository(api: ipsApi),
+    bankAccountLookupRepository: ipsApi == null ? const UnavailableSecAcntBankAccountLookupRepository() : ApiSecAcntBankAccountLookupRepository(api: ipsApi),
     bootstrapFlow: bootstrapService == null
         ? null
         : MiniAppBootstrapFlow(

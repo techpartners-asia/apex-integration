@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 extension IpsBackendPortfolioApi on IpsBackendApi {
   Future<PortfolioOverviewDto> getIpsOverview({String? srcFiCode}) async {
@@ -14,8 +14,7 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
   Future<List<PortfolioHoldingDto>> getYieldProfitHoldings(
     GetAcntYieldProfitApiReq req,
   ) async {
-    final PortfolioYieldProfitResponseDto response =
-        await getYieldProfitResponse(req);
+    final PortfolioYieldProfitResponseDto response = await getYieldProfitResponse(req);
     return response.profit;
   }
 

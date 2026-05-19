@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class IpsRechargeState {
   final int packQty;
@@ -25,13 +25,11 @@ class IpsRechargeState {
 
   static const Object sentinel = Object();
 
-  bool get canSubmit =>
-      packQty > 0 && hasPricing && !isPricingLoading && !isSubmitting;
+  bool get canSubmit => packQty > 0 && hasPricing && !isPricingLoading && !isSubmitting;
 
   bool get hasPricing => unitPrice > 0;
 
-  double get totalPayable =>
-      packQty <= 0 ? 0 : (packQty * unitPrice) + serviceFee;
+  double get totalPayable => packQty <= 0 ? 0 : (packQty * unitPrice) + serviceFee;
 
   IpsRechargeState copyWith({
     int? packQty,
@@ -51,15 +49,9 @@ class IpsRechargeState {
       currency: currency ?? this.currency,
       isPricingLoading: isPricingLoading ?? this.isPricingLoading,
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      paymentRes: paymentRes == sentinel
-          ? this.paymentRes
-          : paymentRes as MiniAppPaymentRes?,
-      refreshedOverview: refreshedOverview == sentinel
-          ? this.refreshedOverview
-          : refreshedOverview as PortfolioOverview?,
-      errorMessage: errorMessage == sentinel
-          ? this.errorMessage
-          : errorMessage as String?,
+      paymentRes: paymentRes == sentinel ? this.paymentRes : paymentRes as MiniAppPaymentRes?,
+      refreshedOverview: refreshedOverview == sentinel ? this.refreshedOverview : refreshedOverview as PortfolioOverview?,
+      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
     );
   }
 }

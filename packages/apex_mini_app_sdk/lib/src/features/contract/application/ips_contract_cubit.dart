@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+
 
 class IpsContractCubit extends Cubit<IpsContractState> {
   static const int _accountLoadAttempts = 5;

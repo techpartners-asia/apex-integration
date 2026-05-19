@@ -1,9 +1,10 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class CreateInvoiceApiReq {
   final double amount;
   final String note;
   final bool isTransaction;
+
   // final String? refId;
 
   CreateInvoiceApiReq({
@@ -12,7 +13,7 @@ class CreateInvoiceApiReq {
     required this.isTransaction,
     // this.refId = 'adsf',
   }) : amount = amount.toDouble(),
-       note = note.trim(){
+       note = note.trim() {
     if (!this.amount.isFinite || this.amount <= 0) {
       throw const ApiIntegrationException(
         'createInvoice requires a positive amount.',
@@ -30,8 +31,8 @@ class CreateInvoiceApiReq {
       'amount': amount,
       'note': note,
       'is_transaction': isTransaction,
+
       // 'ref_id': refId,
-      
     };
   }
 }

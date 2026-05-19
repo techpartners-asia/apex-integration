@@ -1,6 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class TransactionTile extends StatelessWidget {
   final String title;
@@ -35,9 +34,7 @@ class TransactionTile extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              positive
-                  ? Icons.arrow_downward_rounded
-                  : Icons.arrow_upward_rounded,
+              positive ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
               color: accent,
               size: responsive.icon(AppComponentSize.iconSm),
             ),

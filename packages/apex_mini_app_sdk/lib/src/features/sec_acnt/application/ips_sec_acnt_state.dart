@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class IpsSecAcntState {
   final bool isSubmitting;
@@ -23,15 +23,9 @@ class IpsSecAcntState {
   }) {
     return IpsSecAcntState(
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      requestResult: requestResult == sentinel
-          ? this.requestResult
-          : requestResult as SecAcntRequestResult?,
-      paymentRes: paymentRes == sentinel
-          ? this.paymentRes
-          : paymentRes as MiniAppPaymentRes?,
-      errorMessage: errorMessage == sentinel
-          ? this.errorMessage
-          : errorMessage as String?,
+      requestResult: requestResult == sentinel ? this.requestResult : requestResult as SecAcntRequestResult?,
+      paymentRes: paymentRes == sentinel ? this.paymentRes : paymentRes as MiniAppPaymentRes?,
+      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
     );
   }
 }

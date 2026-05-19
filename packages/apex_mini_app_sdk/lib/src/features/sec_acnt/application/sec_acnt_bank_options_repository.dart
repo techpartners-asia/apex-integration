@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 abstract interface class SecAcntBankOptionsRepository {
   Future<List<SecAcntBankOption>> getBankOptions({bool forceRefresh = false});
@@ -23,8 +23,7 @@ class ApiSecAcntBankOptionsRepository implements SecAcntBankOptionsRepository {
   }
 }
 
-class UnavailableSecAcntBankOptionsRepository
-    implements SecAcntBankOptionsRepository {
+class UnavailableSecAcntBankOptionsRepository implements SecAcntBankOptionsRepository {
   const UnavailableSecAcntBankOptionsRepository();
 
   @override

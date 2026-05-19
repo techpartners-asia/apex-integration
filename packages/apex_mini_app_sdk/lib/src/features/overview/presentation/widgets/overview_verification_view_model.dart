@@ -1,5 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class OverviewVerificationStep {
   final String title;
@@ -58,8 +58,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           title: l10n.ipsOverviewProfileMenuPersonalInfo,
           subtitle: l10n.ipsOverviewProfilePersonalInfoMissing,
           status: StepStatus.active,
-          onTap: () =>
-              launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+          onTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
         ),
         OverviewVerificationStep(
           title: l10n.ipsAcntOpenAcnt,
@@ -76,8 +75,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
       promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
       promoTitle: l10n.ipsOverviewFirstPackTitle,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () =>
-          launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+      onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
     );
   }
 
@@ -137,15 +135,13 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
         title: l10n.ipsQuestionnaireTitle,
         subtitle: l10n.ipsQuestionnaireSubtitle,
         status: StepStatus.active,
-        onTap: () =>
-            launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+        onTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
         isLast: true,
       ),
     ],
     promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
     promoTitle: l10n.ipsHomeRecommendedPackCta,
     promoButtonLabel: l10n.commonContinue,
-    onPromoTap: () =>
-        launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+    onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
   );
 }

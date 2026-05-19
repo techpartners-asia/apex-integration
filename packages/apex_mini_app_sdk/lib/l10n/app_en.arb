@@ -25,7 +25,7 @@
   "errorsUnexpected": "An unexpected error occurred.",
   "errorsNetwork": "Network connection failed. Please try again.",
   "errorsSession": "Your session is invalid. Please reopen the mini app.",
-  "errorsConfig": "This mini app integration is not configured correctly.",
+  "errorsConfig": "mini app integration is not configured correctly.",
   "errorsSessionExpired": "Session is invalid or has expired.",
   "errorsUnauthorized": "You are not authorized to perform this action.",
   "errorsApiLoadFailed": "Failed to load data from the backend.",

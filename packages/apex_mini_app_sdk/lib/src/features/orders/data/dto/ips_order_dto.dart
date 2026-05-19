@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class CaspoTransactionType {
   static const String all = 'A';
@@ -33,21 +33,15 @@ class IpsOrderDto {
 
   factory IpsOrderDto.fromJson(Map<String, Object?> json) {
     final int orderNo = ApiParser.asNullableInt(json['orderNo']) ?? 0;
-    final String statusText =
-        ApiParser.asNullableString(json['status']) ?? 'PENDING';
+    final String statusText = ApiParser.asNullableString(json['status']) ?? 'PENDING';
 
     return IpsOrderDto(
       id: orderNo.toString(),
-      title:
-          ApiParser.asNullableString(json['packCode']) ??
-          IpsDefaults.orderTitleFallback,
-      buySell:
-          ApiParser.asNullableString(json['buySell']) ??
-          CaspoTransactionType.buy,
+      title: ApiParser.asNullableString(json['packCode']) ?? IpsDefaults.orderTitleFallback,
+      buySell: ApiParser.asNullableString(json['buySell']) ?? CaspoTransactionType.buy,
       status: mapOrderStatus(statusText),
       amount: ApiParser.asNullableDouble(json['packQty']) ?? 0,
-      createdAt:
-          ApiParser.asNullableDateTime(json['orderDate']) ?? DateTime.now(),
+      createdAt: ApiParser.asNullableDateTime(json['orderDate']) ?? DateTime.now(),
       packCode: ApiParser.asNullableString(json['packCode']),
       packQty: ApiParser.asNullableInt(json['packQty']),
       registerCode: ApiParser.asNullableString(json['registerCode']),
@@ -60,9 +54,7 @@ class IpsOrderDto {
     if (responseCode != 0) {
       throw ApiBusinessException(
         responseCode: responseCode,
-        message:
-            ApiParser.asNullableString(json['responseDesc']) ??
-            'IPS order list req failed.',
+        message: ApiParser.asNullableString(json['responseDesc']) ?? 'IPS order list req failed.',
       );
     }
 
@@ -97,9 +89,7 @@ class IpsOrderDto {
       return IpsOrderStatus.failed;
     }
 
-    if (normalized.contains('done') ||
-        normalized.contains('success') ||
-        normalized.contains('complete')) {
+    if (normalized.contains('done') || normalized.contains('success') || normalized.contains('complete')) {
       return IpsOrderStatus.completed;
     }
 

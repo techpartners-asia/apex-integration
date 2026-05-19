@@ -25,7 +25,7 @@
   "errorsUnexpected": "Санамсаргүй алдаа гарлаа.",
   "errorsNetwork": "Сүлжээний холболт амжилтгүй боллоо. Дахин оролдоно уу.",
   "errorsSession": "Таны session хүчингүй байна. Mini app-аа дахин нээнэ үү.",
-  "errorsConfig": "Энэ mini app integration зөв тохируулагдаагүй байна.",
+  "errorsConfig": "mini app integration өгөгдөл алдаатай байна.",
   "errorsSessionExpired": "Session хүчингүй болсон эсвэл дууссан байна.",
   "errorsUnauthorized": "Танд энэ үйлдлийг хийх эрх алга.",
   "errorsApiLoadFailed": "Backend-ээс өгөгдөл татаж чадсангүй.",

@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
   static const Duration _secAcntListCacheTtl = Duration(minutes: 2);
@@ -44,28 +44,25 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
       _secAcntListCacheScope = cacheScope;
     }
 
-    final GetSecuritiesAcntListResDto secAcntList = await _secAcntListCache
-        .getOrLoad(
-          () async {
-            await session.ensureLoginSession();
-            return api.getSecuritiesAcntList(
-              GetSecuritiesAcntListApiReq(
-                registerCode: registerCode.isNotNullOrEmpty
-                    ? registerCode
-                    : ResolvedUserIdentity.resolveRegisterNo(
-                        mode: userDataSourceMode,
-                        user: user,
-                      ),
-                mobile: phone,
-                acnts: bootstrap.secAcntCode == null
-                    ? const <String>[]
-                    : <String>[bootstrap.secAcntCode!],
-                srcFiCode: runtime.defaultSrcFiCode,
-              ),
-            );
-          },
-          forceRefresh: forceRefresh,
+    final GetSecuritiesAcntListResDto secAcntList = await _secAcntListCache.getOrLoad(
+      () async {
+        await session.ensureLoginSession();
+        return api.getSecuritiesAcntList(
+          GetSecuritiesAcntListApiReq(
+            registerCode: registerCode.isNotNullOrEmpty
+                ? registerCode
+                : ResolvedUserIdentity.resolveRegisterNo(
+                    mode: userDataSourceMode,
+                    user: user,
+                  ),
+            mobile: phone,
+            acnts: bootstrap.secAcntCode == null ? const <String>[] : <String>[bootstrap.secAcntCode!],
+            srcFiCode: runtime.defaultSrcFiCode,
+          ),
         );
+      },
+      forceRefresh: forceRefresh,
+    );
 
     return AcntBootstrapState(response: secAcntList);
   }
@@ -77,10 +74,9 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
     final SdkRuntimeConfig runtime = config.runtime;
 
     await session.ensureLoginSession();
-    final GetSecuritiesAcntListResDto balanceState = await api
-        .getSecAcntBalState(
-          GetSecAcntBalApiReq(srcFiCode: runtime.defaultSrcFiCode, flag: 3),
-        );
+    final GetSecuritiesAcntListResDto balanceState = await api.getSecAcntBalState(
+      GetSecAcntBalApiReq(srcFiCode: runtime.defaultSrcFiCode, flag: 3),
+    );
 
     return currentState.copyWithBalanceState(balanceState);
   }
@@ -95,8 +91,7 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
     final String? enteredBankCode = _normalizedValue(personalInfo?.bankCode);
     final String? enteredBankLabel = _normalizedValue(personalInfo?.bankLabel);
     await session.ensureLoginSession();
-    final FiBomInstDto fiBomInst = await fiBomInstRepository
-        .getDefaultFiBomInst();
+    final FiBomInstDto fiBomInst = await fiBomInstRepository.getDefaultFiBomInst();
 
     final AddSecuritiesAcntResDto response = await api.addSecuritiesAcntReq(
       AddSecuritiesAcntApiReq(

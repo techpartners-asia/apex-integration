@@ -1,9 +1,8 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
-  IpsStatementsCubit({required this.service, required this.l10n})
-    : super(const LoadableState<IpsStatementsViewData>());
+  IpsStatementsCubit({required this.service, required this.l10n}) : super(const LoadableState<IpsStatementsViewData>());
 
   final PortfolioService service;
   final SdkLocalizations l10n;
@@ -17,10 +16,8 @@ class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
       _baseContext = context;
     }
 
-    final IpsStatementFilter currentFilter =
-        filter ?? state.data?.filter ?? const IpsStatementFilter();
-    final SdkPortfolioContext? resolvedContext = currentFilter
-        .resolveRequestContext(context ?? _baseContext);
+    final IpsStatementFilter currentFilter = filter ?? state.data?.filter ?? const IpsStatementFilter();
+    final SdkPortfolioContext? resolvedContext = currentFilter.resolveRequestContext(context ?? _baseContext);
 
     emit(state.copyWith(status: LoadableStatus.loading, errorMessage: null));
     try {
@@ -61,8 +58,7 @@ class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
 
   Future<void> applyFilter(IpsStatementFilter filter) async {
     final IpsStatementsViewData? data = state.data;
-    final bool shouldReload =
-        filter.hasDateFilter || (data?.filter.hasDateFilter ?? false);
+    final bool shouldReload = filter.hasDateFilter || (data?.filter.hasDateFilter ?? false);
 
     if (data == null || shouldReload) {
       await load(filter: filter);

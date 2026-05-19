@@ -1,5 +1,5 @@
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class IpsSellCubit extends Cubit<IpsSellState> {
   final OrdersService service;
@@ -139,18 +139,13 @@ class IpsSellCubit extends Cubit<IpsSellState> {
   }
 
   double _resolveProfit(PortfolioOverview overview, double fallback) {
-    final double? reportedProfit =
-        overview.profitOrLoss ?? overview.yieldAmount;
+    final double? reportedProfit = overview.profitOrLoss ?? overview.yieldAmount;
     if (reportedProfit != null && reportedProfit.isFinite) {
       return reportedProfit;
     }
 
-    final double principal =
-        (overview.packQty ?? 0) * (overview.packAmount ?? 0);
-    final double assetsValue =
-        (overview.stockTotal ?? 0) +
-        (overview.bondTotal ?? 0) +
-        (overview.cashTotal ?? 0);
+    final double principal = (overview.packQty ?? 0) * (overview.packAmount ?? 0);
+    final double assetsValue = (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0) + (overview.cashTotal ?? 0);
     if (principal > 0 && assetsValue.isFinite) {
       return assetsValue - principal;
     }

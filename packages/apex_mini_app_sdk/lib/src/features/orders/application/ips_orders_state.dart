@@ -1,4 +1,4 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class IpsOrdersState {
   final bool isLoading;
@@ -30,18 +30,10 @@ class IpsOrdersState {
     return IpsOrdersState(
       isLoading: isLoading ?? this.isLoading,
       orders: orders ?? this.orders,
-      refreshedOverview: refreshedOverview == sentinel
-          ? this.refreshedOverview
-          : refreshedOverview as PortfolioOverview?,
-      errorMessage: errorMessage == sentinel
-          ? this.errorMessage
-          : errorMessage as String?,
-      cancellingOrderId: cancellingOrderId == sentinel
-          ? this.cancellingOrderId
-          : cancellingOrderId as String?,
-      cancelledOrderId: cancelledOrderId == sentinel
-          ? this.cancelledOrderId
-          : cancelledOrderId as String?,
+      refreshedOverview: refreshedOverview == sentinel ? this.refreshedOverview : refreshedOverview as PortfolioOverview?,
+      errorMessage: errorMessage == sentinel ? this.errorMessage : errorMessage as String?,
+      cancellingOrderId: cancellingOrderId == sentinel ? this.cancellingOrderId : cancellingOrderId as String?,
+      cancelledOrderId: cancelledOrderId == sentinel ? this.cancelledOrderId : cancelledOrderId as String?,
     );
   }
 }

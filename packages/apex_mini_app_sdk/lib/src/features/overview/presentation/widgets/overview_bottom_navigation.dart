@@ -1,7 +1,7 @@
 import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 final class OverviewBottomNavigation {
   static const int homeIndex = 0;
