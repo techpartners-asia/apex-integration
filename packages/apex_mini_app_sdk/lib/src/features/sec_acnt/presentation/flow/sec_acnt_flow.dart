@@ -1,5 +1,3 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 enum SecAcntFlowStep {
@@ -19,18 +17,13 @@ bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 bool requiresSecAcntOpeningPayment(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
-}) =>
-    (state?.requiresSecAcntPayment ?? false) &&
-    !hasPaidSecAcntContract(currentUser);
+}) => (state?.requiresSecAcntPayment ?? false) && !hasPaidSecAcntContract(currentUser);
 
-bool isShortSecAcntFlow(AcntBootstrapState? state) =>
-    state?.hasAcnt == true && state?.hasIpsAcnt == false;
+bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && state?.hasIpsAcnt == false;
 
-bool hasPaidSecAcntContract(UserEntityDto? user) =>
-    user?.account?.hasPaidContract ?? false;
+bool hasPaidSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
 
-bool hasSavedSecAcntSignature(UserEntityDto? user) =>
-    user?.account?.hasSavedSignature ?? false;
+bool hasSavedSecAcntSignature(UserEntityDto? user) => user?.account?.hasSavedSignature ?? false;
 
 bool hasCompleteSecAcntPersonalInfo(
   AcntBootstrapState? state, {
@@ -104,11 +97,7 @@ class SecAcntBankOption {
   const SecAcntBankOption(this.id, this.label, this.shortLabel, this.logoUrl);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SecAcntBankOption &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+  bool operator ==(Object other) => identical(this, other) || other is SecAcntBankOption && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -175,9 +164,7 @@ class SecAcntFlowDraft {
       email: email ?? this.email,
       iban: iban ?? this.iban,
       acntName: acntName ?? this.acntName,
-      selectedBank: selectedBank == _sentinel
-          ? this.selectedBank
-          : selectedBank as SecAcntBankOption?,
+      selectedBank: selectedBank == _sentinel ? this.selectedBank : selectedBank as SecAcntBankOption?,
     );
   }
 
@@ -192,16 +179,11 @@ class SecAcntFlowDraft {
   );
 
   bool get hasCompletePersonalInfo {
-    return hasCompleteContactInfo &&
-        _isValidIban(iban) &&
-        _trimToNull(selectedBank?.id) != null &&
-        _trimToNull(acntName) != null;
+    return hasCompleteContactInfo && _isValidIban(iban) && _trimToNull(selectedBank?.id) != null && _trimToNull(acntName) != null;
   }
 
   bool get hasCompleteContactInfo {
-    return _isValidPhone(mobile) &&
-        _isValidPhone(secondaryMobile) &&
-        _isValidEmail(email);
+    return _isValidPhone(mobile) && _isValidPhone(secondaryMobile) && _isValidEmail(email);
   }
 
   static const Object _sentinel = Object();
@@ -276,15 +258,12 @@ String? _resolveBootstrapIban(
 }
 
 String? _sanitizeIbanDigits(String? value) {
-  final String normalized =
-      value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
+  final String normalized = value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
   if (normalized.isEmpty) {
     return null;
   }
 
-  final String withoutPrefix = normalized.toUpperCase().startsWith('MN')
-      ? normalized.substring(2)
-      : normalized;
+  final String withoutPrefix = normalized.toUpperCase().startsWith('MN') ? normalized.substring(2) : normalized;
   final String digitsOnly = withoutPrefix.replaceAll(RegExp(r'\D'), '');
   return digitsOnly.isEmpty ? null : digitsOnly;
 }
