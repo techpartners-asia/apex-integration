@@ -6,6 +6,14 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 ```
 
+> **Upgrading from v0.0.3?** Package нэрс өөрчлөгдсөн (бусад mini app SDK-уудтай нэр давхцахаас сэргийлэх зорилгоор):
+>
+> - `mini_app_sdk` → `apex_mini_app_sdk`
+> - `mini_app_core` → `apex_mini_app_core`
+> - `mini_app_ui` → `apex_mini_app_ui`
+>
+> `pubspec.yaml` болон бүх Dart import-уудаа шинэ нэрэнд шилжүүлнэ үү.
+
 ## 1. Overview
 
 Host app дараах мэдээллийг өгнө:
@@ -27,7 +35,7 @@ dependencies:
     git:
       url: https://github.com/techpartners-asia/apex-integration.git
       path: packages/apex_mini_app_sdk
-      ref: v0.0.3
+      ref: v0.1.0
 ```
 
 Дараа нь:
@@ -53,22 +61,6 @@ Callback-уудыг `ApexMiniAppSdk` руу шууд дамжуулна:
 Handler нь `MiniAppPaymentRes` буцаах ёстой.
 
 ## 3. Үндсэн integration жишээ
-
-## Example `pubspec.yaml`
-
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-
-  apex_mini_app_sdk:
-    git:
-      url: https://github.com/techpartners-asia/apex-integration.git
-      path: packages/apex_mini_app_sdk
-      ref: v0.0.3
-```
-
-## Basic Integration Example
 
 Host app can open the mini app from any screen, for example when the user taps a button.
 
@@ -209,14 +201,13 @@ Mini app дараах үед payment хүснэ:
 - IPS recharge.
 - Securities account opening payment.
 
-Host app `MiniAppWalletPaymentRequest` object хүлээн авна. Үүнд:
+Host app `MiniAppPaymentReq` object хүлээн авна. Үүнд:
 
-- `flow`
+- `flow` — `MiniAppPaymentFlow.ipsRecharge` эсвэл `MiniAppPaymentFlow.secAcntOpening`
 - `invoiceId`
 - `amount`
 - `note`
-- `refId`
 - `paymentRecordId`
-- `externalInvoiceId`
-- `uuid`
+- `externalInvoiceId` (optional)
+- `uuid` (optional)
 - `isTransaction`
