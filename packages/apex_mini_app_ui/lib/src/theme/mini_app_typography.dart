@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final class MiniAppTypography {
   static const String fontFamily = 'Zona Pro';
-  static const String package = 'mini_app_ui';
+  static const String package = 'apex_mini_app_ui';
   static const FontWeight regular = FontWeight.w400;
   static const FontWeight medium = FontWeight.w500;
   static const FontWeight semiBold = FontWeight.w600;
