@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:apex_mini_app_sdk/l10n/sdk_localizations_mn.dart';
-import 'package:apex_mini_app_sdk/src/features/shared/presentation/helpers/ips_label_resolvers.dart';
 
 void main() {
   final SdkLocalizationsMn l10n = SdkLocalizationsMn();

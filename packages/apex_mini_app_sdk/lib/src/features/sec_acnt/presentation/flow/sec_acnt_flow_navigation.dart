@@ -2,15 +2,18 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
 Future<void> closeSecAcntFlow(BuildContext context) async {
-  await Navigator.of(context, rootNavigator: true).maybePop();
+  await closeMiniAppSafely(context);
 }
 
 Future<void> routeAfterSecAcntFlow(
   BuildContext context,
   AcntBootstrapState? state,
 ) async {
-  final bool shouldOpenQuestionnaire = state != null && state.hasAcnt && !state.hasIpsAcnt;
-  final String nextRoute = shouldOpenQuestionnaire ? MiniAppRoutes.questionnaire : MiniAppRoutes.overview;
+  final bool shouldOpenQuestionnaire =
+      state != null && state.hasAcnt && !state.hasIpsAcnt;
+  final String nextRoute = shouldOpenQuestionnaire
+      ? MiniAppRoutes.questionnaire
+      : MiniAppRoutes.overview;
 
   await replaceIpsRoute(context, route: nextRoute, arguments: state);
 }
@@ -56,7 +59,9 @@ Widget buildSecAcntFlowStepScreen({
     SecAcntFlowStep.calculation => SecAcntCalculationScreen(
       bootstrapState: bootstrapState,
     ),
-    SecAcntFlowStep.consent || SecAcntFlowStep.personalInformation || SecAcntFlowStep.terms => throw ArgumentError.value(
+    SecAcntFlowStep.consent ||
+    SecAcntFlowStep.personalInformation ||
+    SecAcntFlowStep.terms => throw ArgumentError.value(
       step,
       'step',
       'Only post-consent/post-personal-information steps can be built here.',

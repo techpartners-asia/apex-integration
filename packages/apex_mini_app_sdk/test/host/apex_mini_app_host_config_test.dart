@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:apex_mini_app_sdk/src/host/apex_mini_app_host_context.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 void main() {
   setUp(() {
@@ -190,7 +191,8 @@ void main() {
         final MiniAppSdk second = MiniAppSdk(
           config: _sdkConfig('second-token'),
         );
-        final MiniAppHostController secondController = second.runtime.controller;
+        final MiniAppHostController secondController =
+            second.runtime.controller;
 
         expect(ApexMiniAppHostContext.activeController, same(secondController));
 
@@ -244,6 +246,7 @@ void main() {
         expect(find.text('Missing token'), findsOneWidget);
 
         await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pump(const Duration(milliseconds: 150));
 
         expect(closed, isTrue);
       },
@@ -272,15 +275,98 @@ void main() {
       );
       await tester.pump();
 
-      final MiniAppHostController? activeController = ApexMiniAppHostContext.activeController;
+      final MiniAppHostController? activeController =
+          ApexMiniAppHostContext.activeController;
 
       expect(activeController, isNotNull);
       expect(_isDisposed(activeController), isFalse);
       expect(MiniAppHostControllerProvider.debugActiveControllerCount, 1);
 
       await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump(const Duration(milliseconds: 150));
+    });
+
+    testWidgets('safe close dismisses mini app dialog before host close', (
+      WidgetTester tester,
+    ) async {
+      var closeCount = 0;
+
+      await tester.pumpWidget(
+        ApexMiniAppSdk(
+          token: 'host-token',
+          initialRoute: MiniAppRoutes.reward,
+          walletPaymentHandler: _walletPaymentHandler,
+          onClose: () {
+            closeCount += 1;
+          },
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext miniAppContext = tester.element(
+        find.byType(MiniAppHostShell),
+      );
+      unawaited(
+        showMiniAppDialog<void>(
+          context: miniAppContext,
+          barrierDismissible: false,
+          title: 'Алдаа гарлаа',
+          body: const Text('Startup failed'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Алдаа гарлаа'), findsOneWidget);
+      expect(find.text('Startup failed'), findsOneWidget);
+
+      await ApexMiniAppHostContext.requestClose(context: miniAppContext);
+      await tester.pumpAndSettle();
+
+      expect(closeCount, 1);
+      expect(find.text('Алдаа гарлаа'), findsNothing);
+      expect(find.text('Startup failed'), findsNothing);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+
+    testWidgets('safe close ignores duplicate close requests', (
+      WidgetTester tester,
+    ) async {
+      var closeCount = 0;
+
+      await tester.pumpWidget(
+        ApexMiniAppSdk(
+          token: 'host-token',
+          initialRoute: MiniAppRoutes.reward,
+          walletPaymentHandler: _walletPaymentHandler,
+          onClose: () {
+            closeCount += 1;
+          },
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext miniAppContext = tester.element(
+        find.byType(MiniAppHostShell),
+      );
+
+      await Future.wait<void>(<Future<void>>[
+        ApexMiniAppHostContext.requestClose(context: miniAppContext),
+        ApexMiniAppHostContext.requestClose(context: miniAppContext),
+      ]);
+      await tester.pumpAndSettle();
+
+      expect(closeCount, 1);
+
+      await tester.pumpWidget(const SizedBox.shrink());
     });
   });
+}
+
+Future<MiniAppPaymentRes> _walletPaymentHandler(
+  MiniAppPaymentReq request,
+) async {
+  return MiniAppPaymentRes.success(req: request);
 }
 
 MiniAppSdkConfig _sdkConfig(String token) {

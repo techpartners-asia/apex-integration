@@ -1,6 +1,5 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class DependencyMissingScreen extends StatelessWidget {
   final String title;

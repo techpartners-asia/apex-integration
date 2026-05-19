@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 import 'package:apex_mini_app_sdk/src/host/apex_mini_app_host_context.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 import '../../../../test_helpers/widget_test_app.dart';
 

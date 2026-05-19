@@ -1,6 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-import 'apex_mini_app_host_callbacks.dart';
+typedef ApexMiniAppSafeCloseHook =
+    Future<void> Function(BuildContext? context, Object? result);
 
 class ApexMiniAppHostContext {
   ApexMiniAppHostContext._();
@@ -8,11 +10,14 @@ class ApexMiniAppHostContext {
   static ApexMiniAppHostCallbacks callbacks = ApexMiniAppHostCallbacks.empty;
   static MiniAppHostController? activeController;
   static bool _tokenExpiredEmitted = false;
+  static ApexMiniAppSafeCloseHook? _safeClose;
 
   static void bind({
     required ApexMiniAppHostCallbacks nextCallbacks,
+    ApexMiniAppSafeCloseHook? safeClose,
   }) {
     callbacks = nextCallbacks;
+    _safeClose = safeClose;
     _tokenExpiredEmitted = false;
   }
 
@@ -21,6 +26,7 @@ class ApexMiniAppHostContext {
       return;
     }
     callbacks = ApexMiniAppHostCallbacks.empty;
+    _safeClose = null;
     _tokenExpiredEmitted = false;
   }
 
@@ -37,6 +43,19 @@ class ApexMiniAppHostContext {
 
   static void emitClose([Object? result]) {
     callbacks.onClose?.call(result);
+  }
+
+  static Future<void> requestClose({
+    BuildContext? context,
+    Object? result,
+  }) async {
+    final ApexMiniAppSafeCloseHook? safeClose = _safeClose;
+    if (safeClose == null) {
+      emitClose(result);
+      return;
+    }
+
+    await safeClose(context, result);
   }
 
   static void emitNavigate(String? routeName, Object? arguments) {

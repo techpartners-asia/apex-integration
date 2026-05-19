@@ -69,10 +69,12 @@ Future<T?> showMiniAppDialog<T>({
   List<Widget> actions = const <Widget>[],
   Widget? icon,
   bool barrierDismissible = true,
+  bool useRootNavigator = false,
 }) {
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
+    useRootNavigator: useRootNavigator,
     builder: (BuildContext dialogContext) {
       final responsive = dialogContext.responsive;
       return Dialog(

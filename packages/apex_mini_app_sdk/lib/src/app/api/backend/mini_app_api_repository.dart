@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
@@ -48,7 +47,12 @@ abstract interface class MiniAppPaymentsRepository {
   Future<String> getPaymentCallback({required String uuid});
 }
 
-abstract interface class MiniAppApiRepository implements MiniAppProfileRepository, MiniAppFeedbackRepository, MiniAppSupportRepository, MiniAppPaymentsRepository {
+abstract interface class MiniAppApiRepository
+    implements
+        MiniAppProfileRepository,
+        MiniAppFeedbackRepository,
+        MiniAppSupportRepository,
+        MiniAppPaymentsRepository {
   const MiniAppApiRepository();
 }
 
@@ -103,10 +107,12 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
   Future<UserEntityDto> getProfileInfo() => profileRepository.getProfileInfo();
 
   @override
-  Future<List<QuestionnaireQuestion>> getAllGoals() => profileRepository.getAllGoals();
+  Future<List<QuestionnaireQuestion>> getAllGoals() =>
+      profileRepository.getAllGoals();
 
   @override
-  Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) => profileRepository.updateTargetGoal(req);
+  Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) =>
+      profileRepository.updateTargetGoal(req);
 
   @override
   Future<UserEntityDto> updateSignature({
@@ -115,10 +121,12 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
   }) => profileRepository.updateSignature(bytes: bytes, fileName: fileName);
 
   @override
-  Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) => profileRepository.updateProfile(req);
+  Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) =>
+      profileRepository.updateProfile(req);
 
   @override
-  Future<FeedbackEntity> createFeedback(CreateFeedbackApiReq req) => feedbackRepository.createFeedback(req);
+  Future<FeedbackEntity> createFeedback(CreateFeedbackApiReq req) =>
+      feedbackRepository.createFeedback(req);
 
   @override
   Future<FeedbackListResponse> getFeedbackList({
@@ -132,11 +140,14 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
   );
 
   @override
-  Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) => supportRepository.getCompanyInfo(forceRefresh: forceRefresh);
+  Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) =>
+      supportRepository.getCompanyInfo(forceRefresh: forceRefresh);
 
   @override
-  Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) => paymentsRepository.createInvoice(req);
+  Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) =>
+      paymentsRepository.createInvoice(req);
 
   @override
-  Future<String> getPaymentCallback({required String uuid}) => paymentsRepository.getPaymentCallback(uuid: uuid);
+  Future<String> getPaymentCallback({required String uuid}) =>
+      paymentsRepository.getPaymentCallback(uuid: uuid);
 }

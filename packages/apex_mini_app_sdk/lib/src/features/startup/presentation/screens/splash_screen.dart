@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +31,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
 
   Future<void> _closeSplash(BuildContext context) async {
     _cancelPendingNavigation();
-    await Navigator.of(context, rootNavigator: true).maybePop();
+    await closeMiniAppSafely(context);
   }
 
   void _scheduleResolvedNavigation(MiniAppBootstrapRes resolution) {
@@ -92,7 +91,14 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
       /// Buttons
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+          onPressed: () async {
+            Navigator.of(context).pop();
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+            if (!mounted || !context.mounted) {
+              return;
+            }
+            await closeMiniAppSafely(context);
+          },
           child: CustomText(
             l10n.commonClose,
             variant: MiniAppTextVariant.buttonMedium,
@@ -101,7 +107,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
         ),
         FilledButton(
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop();
+            Navigator.of(context).pop();
             cubit.load();
           },
           child: CustomText(
@@ -118,75 +124,80 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MiniAppBootstrapCubit, LoadableState<MiniAppBootstrapRes>>(
-      listener: (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
-        final MiniAppBootstrapRes? resolution = state.data;
-        if (state.isFailure) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            showErrorDialog(context, state);
-          });
-          return;
-        }
+    return BlocConsumer<
+      MiniAppBootstrapCubit,
+      LoadableState<MiniAppBootstrapRes>
+    >(
+      listener:
+          (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
+            final MiniAppBootstrapRes? resolution = state.data;
+            if (state.isFailure) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                showErrorDialog(context, state);
+              });
+              return;
+            }
 
-        if (navigated || resolution == null || !state.isSuccess) return;
+            if (navigated || resolution == null || !state.isSuccess) return;
 
-        navigated = true;
+            navigated = true;
 
-        _scheduleResolvedNavigation(resolution);
-      },
-      builder: (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
-        final ThemeData theme = DesignTokens.theme(
-          Theme.of(context),
-        );
-        final responsive = context.responsive;
-        final double closeTop = responsive.safeTop + responsive.dp(14);
+            _scheduleResolvedNavigation(resolution);
+          },
+      builder:
+          (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
+            final ThemeData theme = DesignTokens.theme(
+              Theme.of(context),
+            );
+            final responsive = context.responsive;
+            final double closeTop = responsive.safeTop + responsive.dp(14);
 
-        return Theme(
-          data: theme,
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.light,
-            child: DecoratedBox(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: <Color>[
-                    DesignTokens.rose,
-                    DesignTokens.coral,
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
+            return Theme(
+              data: theme,
+              child: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: SystemUiOverlayStyle.light,
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        DesignTokens.rose,
+                        DesignTokens.coral,
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                  ),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      Align(
+                        alignment: const Alignment(0, -0.03),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CustomImage(
+                            path: Img.splashInvestX,
+                            height: responsive.dp(60),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: closeTop,
+                        right: responsive.space(AppSpacing.md),
+                        child: ActionButton(
+                          onPressed: () => _closeSplash(context),
+                          icon: Icons.close_rounded,
+                          iosIcon: CupertinoIcons.xmark,
+                          foregroundColor: Colors.white,
+                          backgroundColor: const Color(0x5B3A2834),
+                          boxShadow: const <BoxShadow>[],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  Align(
-                    alignment: const Alignment(0, -0.03),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: CustomImage(
-                        path: Img.splashInvestX,
-                        height: responsive.dp(60),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: closeTop,
-                    right: responsive.space(AppSpacing.md),
-                    child: ActionButton(
-                      onPressed: () => _closeSplash(context),
-                      icon: Icons.close_rounded,
-                      iosIcon: CupertinoIcons.xmark,
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color(0x5B3A2834),
-                      boxShadow: const <BoxShadow>[],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+            );
+          },
     );
   }
 }

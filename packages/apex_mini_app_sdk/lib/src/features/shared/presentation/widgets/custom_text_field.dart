@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-import '../helpers/design_tokens.dart';
-
 const Color _inputTextColor = DesignTokens.ink;
 const Color _inputLabelColor = DesignTokens.ink;
 const Color _inputHintColor = DesignTokens.muted;

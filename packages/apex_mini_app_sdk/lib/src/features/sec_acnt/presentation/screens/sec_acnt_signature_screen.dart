@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 class SecAcntSignatureScreen extends StatefulWidget {
   const SecAcntSignatureScreen({
     super.key,
@@ -96,7 +95,7 @@ class _SecAcntSignatureScreenState extends State<SecAcntSignatureScreen> {
       showBackButton: header.showBack,
       showCloseButton: header.showClose,
       onBack: () => Navigator.of(context).maybePop(),
-      onClose: () => Navigator.of(context, rootNavigator: true).maybePop(),
+      onClose: () => closeMiniAppSafely(context),
       hasSafeArea: false,
       headerWidget: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.responsive.dp(16)),

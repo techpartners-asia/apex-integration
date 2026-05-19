@@ -1,15 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-import '../../l10n/sdk_localizations.dart';
-import '../config/mini_app_sdk_config.dart';
-import '../payment/payment.dart';
-import '../runtime/mini_app_launch_context.dart';
-import '../runtime/mini_app_sdk_runtime.dart';
 import 'apex_mini_app_error_screens.dart';
-import 'apex_mini_app_host_callbacks.dart';
-import 'apex_mini_app_host_config.dart';
 import 'apex_mini_app_host_context.dart';
 
 class ApexMiniAppSdk extends StatefulWidget {
@@ -118,6 +112,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   Object? _initializationError;
   String? _preparedLaunchSignature;
   bool _closeEmitted = false;
+  bool _isClosingMiniApp = false;
 
   @override
   void initState() {
@@ -141,6 +136,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       _callbacks = _buildCallbacks();
       ApexMiniAppHostContext.bind(
         nextCallbacks: _callbacks,
+        safeClose: _closeMiniAppSafely,
       );
     }
   }
@@ -183,11 +179,13 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
 
   void _configure() {
     _closeEmitted = false;
+    _isClosingMiniApp = false;
     _initializationError = null;
     _callbacks = _buildCallbacks();
     _validation = widget.hostConfig.validate();
     ApexMiniAppHostContext.bind(
       nextCallbacks: _callbacks,
+      safeClose: _closeMiniAppSafely,
     );
 
     if (!_validation.isValid) {
@@ -250,12 +248,102 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   }
 
   void _emitClose(Object? result) {
+    unawaited(_closeMiniAppSafely(null, result));
+  }
+
+  Future<void> _closeMiniAppSafely(
+    BuildContext? context,
+    Object? result,
+  ) async {
     if (_closeEmitted) {
       return;
     }
+    if (_isClosingMiniApp) {
+      return;
+    }
+
+    _isClosingMiniApp = true;
+    try {
+      await _dismissAllMiniAppOverlays(context);
+    } catch (error, stackTrace) {
+      debugPrint('Failed to dismiss mini app overlays: $error');
+      debugPrintStack(stackTrace: stackTrace);
+    }
+
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+
+    if (_closeEmitted) {
+      _isClosingMiniApp = false;
+      return;
+    }
+
     _closeEmitted = true;
-    widget.onClose?.call();
-    widget.onCloseWithResult?.call(result);
+    try {
+      widget.onClose?.call();
+      widget.onCloseWithResult?.call(result);
+    } finally {
+      _isClosingMiniApp = false;
+    }
+  }
+
+  Future<void> _dismissAllMiniAppOverlays(BuildContext? context) async {
+    MiniAppToast.hide();
+    final Set<ScaffoldMessengerState> messengers =
+        _resolveMiniAppScaffoldMessengers(context);
+    _clearMiniAppScaffoldMessengers(messengers);
+    await _dismissMiniAppNavigatorRoutes();
+    _clearMiniAppScaffoldMessengers(messengers);
+  }
+
+  Set<ScaffoldMessengerState> _resolveMiniAppScaffoldMessengers(
+    BuildContext? context,
+  ) {
+    final Set<ScaffoldMessengerState> messengers = <ScaffoldMessengerState>{};
+
+    if (context != null && context.mounted) {
+      final ScaffoldMessengerState? messenger = ScaffoldMessenger.maybeOf(
+        context,
+      );
+      if (messenger != null) {
+        messengers.add(messenger);
+      }
+    }
+
+    final BuildContext? navigatorContext = _navigatorKey.currentContext;
+    if (navigatorContext != null && navigatorContext.mounted) {
+      final ScaffoldMessengerState? messenger = ScaffoldMessenger.maybeOf(
+        navigatorContext,
+      );
+      if (messenger != null) {
+        messengers.add(messenger);
+      }
+    }
+
+    return messengers;
+  }
+
+  void _clearMiniAppScaffoldMessengers(
+    Set<ScaffoldMessengerState> messengers,
+  ) {
+    for (final ScaffoldMessengerState messenger in messengers) {
+      messenger
+        ..clearSnackBars()
+        ..clearMaterialBanners();
+    }
+  }
+
+  Future<void> _dismissMiniAppNavigatorRoutes() async {
+    final NavigatorState? navigator = _navigatorKey.currentState;
+    if (navigator == null || !navigator.mounted) {
+      return;
+    }
+
+    var popCount = 0;
+    while (navigator.mounted && navigator.canPop() && popCount < 20) {
+      navigator.pop();
+      popCount += 1;
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    }
   }
 
   void _emitHostError(Object error, [StackTrace? stackTrace]) {
@@ -314,8 +402,11 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       navigatorKey: _navigatorKey,
       title: 'Apex Mini App',
       locale: widget.hostConfig.locale,
-      localizationsDelegates: widget.localizationsDelegates ?? SdkLocalizations.localizationsDelegates,
-      supportedLocales: widget.supportedLocales ?? SdkLocalizations.supportedLocales,
+      localizationsDelegates:
+          widget.localizationsDelegates ??
+          SdkLocalizations.localizationsDelegates,
+      supportedLocales:
+          widget.supportedLocales ?? SdkLocalizations.supportedLocales,
       theme: widget.theme ?? _defaultTheme(Brightness.light),
       darkTheme: widget.darkTheme ?? _defaultTheme(Brightness.dark),
       builder: widget.builder,
@@ -370,8 +461,11 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   void _prepareInitialLaunch(UiMiniAppModule module, MiniAppLaunchReq req) {
     final Object? arguments = req.arguments;
     final Object? publicArguments = _publicLaunchArguments(arguments);
-    final String? userToken = arguments is MiniAppLaunchContext ? arguments.userToken : widget.hostConfig.normalizedToken;
-    final String signature = '${req.route}|$userToken|${identityHashCode(publicArguments)}';
+    final String? userToken = arguments is MiniAppLaunchContext
+        ? arguments.userToken
+        : widget.hostConfig.normalizedToken;
+    final String signature =
+        '${req.route}|$userToken|${identityHashCode(publicArguments)}';
     if (_preparedLaunchSignature == signature) {
       return;
     }

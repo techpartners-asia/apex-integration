@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 class SecAcntPersonalInfoScreen extends StatefulWidget {
   final AcntBootstrapState? bootstrapState;
   final SecAcntBankOptionsRepository bankOptionsRepository;
@@ -331,7 +330,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       showBackButton: header.showBack,
       showCloseButton: header.showClose,
       onBack: () => Navigator.of(context).maybePop(),
-      onClose: () => Navigator.of(context, rootNavigator: true).maybePop(),
+      onClose: () => closeMiniAppSafely(context),
       hasSafeArea: false,
       backgroundColor: DesignTokens.softSurface,
       appBarBackgroundColor: DesignTokens.softSurface,
