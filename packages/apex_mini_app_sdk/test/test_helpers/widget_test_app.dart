@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mini_app_core/mini_app_core.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
+import 'package:apex_mini_app_core/apex_mini_app_core.dart';
+import 'package:apex_mini_app_sdk/l10n/sdk_localizations.dart';
+import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
 
 Widget buildSdkTestApp(Widget child, {MiniAppHostController? hostController}) {
   return MiniAppPlatformApp(

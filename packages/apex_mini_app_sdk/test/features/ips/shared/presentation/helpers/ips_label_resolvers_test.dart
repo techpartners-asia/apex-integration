@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_core/mini_app_core.dart';
-import 'package:mini_app_sdk/l10n/sdk_localizations_mn.dart';
-import 'package:mini_app_sdk/src/features/shared/presentation/helpers/ips_label_resolvers.dart';
+import 'package:apex_mini_app_core/apex_mini_app_core.dart';
+import 'package:apex_mini_app_sdk/l10n/sdk_localizations_mn.dart';
+import 'package:apex_mini_app_sdk/src/features/shared/presentation/helpers/ips_label_resolvers.dart';
 
 void main() {
   final SdkLocalizationsMn l10n = SdkLocalizationsMn();

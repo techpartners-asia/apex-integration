@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
 
 import 'example_app_tokens.dart';
 import '../host/example_host_context.dart';

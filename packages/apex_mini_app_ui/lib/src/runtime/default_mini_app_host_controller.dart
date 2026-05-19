@@ -1,4 +1,4 @@
-import 'package:mini_app_core/mini_app_core.dart';
+import 'package:apex_mini_app_core/apex_mini_app_core.dart';
 import 'package:flutter/material.dart';
 
 import '../module/ui_mini_app_module.dart';

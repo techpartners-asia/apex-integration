@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
+import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
 
 class CustomCloseBtn extends StatelessWidget {
   final VoidCallback onPressed;

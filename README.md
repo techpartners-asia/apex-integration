@@ -3,7 +3,7 @@
 Зөвхөн public SDK import-ыг ашиглана:
 
 ```dart
-import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 ```
 
 ## 1. Overview
@@ -23,7 +23,7 @@ Host app-ийн `pubspec.yaml` файлд SDK package-ийг нэмнэ.
 
 ```yaml
 dependencies:
-  mini_app_sdk:
+  apex_mini_app_sdk:
     git:
       url: https://github.com/techpartners-asia/apex-integration.git
       path: packages/apex_mini_app_sdk
@@ -61,7 +61,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  mini_app_sdk:
+  apex_mini_app_sdk:
     git:
       url: https://github.com/techpartners-asia/apex-integration.git
       path: packages/apex_mini_app_sdk
@@ -76,7 +76,7 @@ Host app can open the mini app from any screen, for example when the user taps a
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 class HostHomePage extends StatefulWidget {
   const HostHomePage({super.key});

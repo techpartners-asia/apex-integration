@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class ApiRuntime {
   final ApiConfig config;

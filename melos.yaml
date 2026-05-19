@@ -1,4 +1,4 @@
-name: mini_app_sdk
+name: apex_mini_app_sdk
 
 packages:
   - packages/**

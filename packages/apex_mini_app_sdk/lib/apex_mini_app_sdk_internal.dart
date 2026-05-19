@@ -1,6 +1,6 @@
 library;
 
-export 'package:mini_app_core/mini_app_core.dart'
+export 'package:apex_mini_app_core/apex_mini_app_core.dart'
     show
         MiniAppFailure,
         MiniAppLaunchErrorCode,
@@ -9,7 +9,7 @@ export 'package:mini_app_core/mini_app_core.dart'
         MiniAppLaunchStatus,
         MiniAppPaymentRes,
         MiniAppPaymentStatus;
-export 'package:mini_app_ui/mini_app_ui.dart'
+export 'package:apex_mini_app_ui/apex_mini_app_ui.dart'
     show
         CustomText,
         MiniAppAdaptiveIconButton,

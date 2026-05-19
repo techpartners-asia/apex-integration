@@ -1,4 +1,4 @@
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 part 'sec_acnt_list/get_sec_acnt_list_account_dto.dart';
 

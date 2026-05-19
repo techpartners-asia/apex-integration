@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
+import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
 
-final String packageName = 'mini_app_sdk';
+final String packageName = 'apex_mini_app_sdk';
 
 class CustomImage extends StatelessWidget {
   final String path;

@@ -1,4 +1,4 @@
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 typedef StringValidator = String? Function(String? value);
 typedef ValueValidator<T> = String? Function(T value);

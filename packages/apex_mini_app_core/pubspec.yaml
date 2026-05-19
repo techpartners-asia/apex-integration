@@ -1,4 +1,4 @@
-name: mini_app_core
+name: apex_mini_app_core
 description: mini app SDK-ийн core contract/model багц (payment SDK model-уудтай).
 version: 0.1.0
 publish_to: none

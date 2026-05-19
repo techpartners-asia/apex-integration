@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class PackCard extends StatelessWidget {
   final IpsPack pack;
@@ -19,7 +19,7 @@ class PackCard extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage(
               pack.isRecommended == 1 ? Img.pack1 : Img.pack2,
-              package: 'mini_app_sdk',
+              package: 'apex_mini_app_sdk',
             ),
             fit: BoxFit.fill,
           ),

@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 void main() {
   test('loadPricing uses the focused IPS balance path', () async {

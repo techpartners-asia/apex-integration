@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class PortfolioYieldSection extends StatelessWidget {
   final PortfolioOverview overview;

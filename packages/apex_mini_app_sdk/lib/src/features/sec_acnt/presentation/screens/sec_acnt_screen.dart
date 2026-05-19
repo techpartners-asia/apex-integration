@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 class SecAcntScreen extends StatelessWidget {
   final AcntBootstrapState? initialBootstrapState;

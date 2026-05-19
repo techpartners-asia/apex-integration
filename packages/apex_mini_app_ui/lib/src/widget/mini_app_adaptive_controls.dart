@@ -1,6 +1,6 @@
 import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:mini_app_ui/mini_app_ui.dart';
+import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
 
 class MiniAppAdaptiveIconButton extends StatelessWidget {
   final String? img;
@@ -84,7 +84,7 @@ class MiniAppAdaptiveIconButton extends StatelessWidget {
             child: (img != null)
                 ? Image.asset(
                     img!,
-                    package: 'mini_app_sdk',
+                    package: 'apex_mini_app_sdk',
                     width: iconSize,
                     height: iconSize,
                   )

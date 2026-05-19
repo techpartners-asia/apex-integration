@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-const String exampleUserToken = 'c6f0c7dcec5d787c77cc7aea3558100b';
+const String exampleUserToken = 'dcaa908e3c6a50cbfda80a59e390c74f';
 
 const ApexMiniAppHostConfig exampleHostConfig = ApexMiniAppHostConfig(
   token: exampleUserToken,

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/core/api/api_action_result_parser.dart';
-import 'package:mini_app_sdk/src/core/exception/api_exception.dart';
+import 'package:apex_mini_app_sdk/src/core/api/api_action_result_parser.dart';
+import 'package:apex_mini_app_sdk/src/core/exception/api_exception.dart';
 
 void main() {
   group('ApiActionResultParser.ensureSuccess (strictResponseCode: true)', () {

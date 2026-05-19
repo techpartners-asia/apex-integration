@@ -1,4 +1,4 @@
-import 'package:mini_app_core/mini_app_core.dart';
+import 'package:apex_mini_app_core/apex_mini_app_core.dart';
 
 class MiniAppPaymentRes {
   final MiniAppPaymentStatus status;

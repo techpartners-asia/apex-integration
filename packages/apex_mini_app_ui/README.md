@@ -1,6 +1,6 @@
-# mini_app_ui
+# apex_mini_app_ui
 
-`_mini_app_core` дээр суурилсан Flutter runtime.
+`apex_mini_app_core` дээр суурилсан Flutter runtime.
 
 ## Энд юу байдаг вэ
 
@@ -30,7 +30,7 @@
 ## Хөгжүүлэлт
 
 ```bash
-cd packages/mini_app_ui
+cd packages/apex_mini_app_ui
 dart analyze
 flutter test
 ```

@@ -1,4 +1,4 @@
-name: mini_app_example
+name: apex_mini_app_example
 description: mini app SDK-ийн reference host апп.
 version: 0.1.0
 publish_to: none
@@ -11,9 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.9
-  mini_app_sdk:
+  apex_mini_app_sdk:
     path: ../apex_mini_app_sdk
-  mini_app_ui:
+  apex_mini_app_ui:
     path: ../apex_mini_app_ui
 
 dev_dependencies:

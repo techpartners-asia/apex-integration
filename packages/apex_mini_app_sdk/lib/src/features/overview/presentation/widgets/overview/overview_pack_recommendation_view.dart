@@ -288,7 +288,7 @@ class _PackRecommendationHero extends StatelessWidget {
                   children: <Widget>[
                     Image.asset(
                       _isWarmVariant ? Img.pack1 : Img.pack2,
-                      package: 'mini_app_sdk',
+                      package: 'apex_mini_app_sdk',
                       fit: BoxFit.cover,
                     ),
                     DecoratedBox(

@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_app_sdk/src/core/api/api_client.dart';
-import 'package:mini_app_sdk/src/core/api/api_config.dart';
-import 'package:mini_app_sdk/src/core/api/api_executor.dart';
-import 'package:mini_app_sdk/src/core/api/api_headers_builder.dart';
-import 'package:mini_app_sdk/src/core/api/app_credentials.dart';
-import 'package:mini_app_sdk/src/core/api/req_context.dart';
-import 'package:mini_app_sdk/src/core/exception/api_exception.dart';
-import 'package:mini_app_sdk/src/core/token/static_token_provider.dart';
+import 'package:apex_mini_app_sdk/src/core/api/api_client.dart';
+import 'package:apex_mini_app_sdk/src/core/api/api_config.dart';
+import 'package:apex_mini_app_sdk/src/core/api/api_executor.dart';
+import 'package:apex_mini_app_sdk/src/core/api/api_headers_builder.dart';
+import 'package:apex_mini_app_sdk/src/core/api/app_credentials.dart';
+import 'package:apex_mini_app_sdk/src/core/api/req_context.dart';
+import 'package:apex_mini_app_sdk/src/core/exception/api_exception.dart';
+import 'package:apex_mini_app_sdk/src/core/token/static_token_provider.dart';
 
 void main() {
   group('ApiExecutor.mapDioException', () {

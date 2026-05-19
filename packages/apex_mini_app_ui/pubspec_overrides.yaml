@@ -1,4 +1,4 @@
-# melos_managed_dependency_overrides: mini_app_core
+# melos_managed_dependency_overrides: apex_mini_app_core
 dependency_overrides:
-  mini_app_core:
+  apex_mini_app_core:
     path: ../apex_mini_app_core

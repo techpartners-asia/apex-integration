@@ -1,6 +1,6 @@
-# mini_app_example
+# apex_mini_app_example
 
-Reference host app for `mini_app_sdk`.
+Reference host app for `apex_mini_app_sdk`.
 
 The example demonstrates the intended host integration shape:
 

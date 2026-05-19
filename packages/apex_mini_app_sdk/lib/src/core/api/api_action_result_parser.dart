@@ -1,4 +1,4 @@
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 /// Unified API response guard that validates `responseCode`, optional `success`
 /// flag, and extracts `message`/`body` fields from raw JSON responses.

@@ -1,5 +1,5 @@
-import 'package:mini_app_core/mini_app_core.dart';
-import 'package:mini_app_sdk/mini_app_sdk.dart';
+import 'package:apex_mini_app_core/apex_mini_app_core.dart';
+import 'package:apex_mini_app_sdk/apex_mini_app_sdk_internal.dart';
 
 const List<String> ipsRoutes = MiniAppRoutes.publicRoutes;
 
