@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 class IpsOverviewScreen extends StatefulWidget {
   const IpsOverviewScreen({super.key});
 
