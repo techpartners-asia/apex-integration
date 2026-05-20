@@ -2,13 +2,24 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// Entry screen for the securities account onboarding nested navigator.
 class SecAcntScreen extends StatelessWidget {
+  /// Bootstrap data fetched before opening the flow.
   final AcntBootstrapState? initialBootstrapState;
+
+  /// Repository used by personal info screens to list banks.
   final SecAcntBankOptionsRepository bankOptionsRepository;
+
+  /// Repository used to resolve account holder names.
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
+
+  /// Profile repository used for profile/signature mutations.
   final MiniAppProfileRepository appApi;
+
+  /// Current profile used by skip logic.
   final UserEntityDto? currentUser;
 
+  /// Creates the securities account flow entry.
   const SecAcntScreen({
     super.key,
     this.initialBootstrapState,
@@ -18,6 +29,7 @@ class SecAcntScreen extends StatelessWidget {
     required this.currentUser,
   });
 
+  /// Chooses the first screen based on bootstrap and profile skip logic.
   Widget _buildInitialScreen() {
     final SecAcntFlowDraft initialDraft = SecAcntFlowDraft.fromBootstrap(
       initialBootstrapState,
@@ -53,7 +65,8 @@ class SecAcntScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Navigator(
-        onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
+        onGenerateRoute: (_) =>
+            MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
       ),
     );
   }

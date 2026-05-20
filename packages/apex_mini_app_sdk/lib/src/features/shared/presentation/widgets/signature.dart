@@ -2,19 +2,42 @@ import 'package:flutter/material.dart';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Signature capture panel with a drawable canvas and clear action.
 class SignaturePanel extends StatelessWidget {
+  /// Panel title shown above the canvas.
   final String title;
+
+  /// Stroke points. `null` entries separate strokes.
   final List<Offset?> points;
+
+  /// Called when the user adds a point while drawing.
   final ValueChanged<Offset> onPointAdd;
+
+  /// Called when the current stroke ends.
   final VoidCallback onStrokeEnd;
+
+  /// Called when the clear button is tapped.
   final VoidCallback onClear;
+
+  /// Optional message/instructions shown above the canvas.
   final Widget? message;
+
+  /// Placeholder text shown while the canvas is empty.
   final String? placeholder;
+
+  /// Fixed canvas height when [expandCanvasToFill] is false.
   final double? height;
+
+  /// Whether the canvas should fill remaining vertical space.
   final bool expandCanvasToFill;
+
+  /// Width of the drawn signature stroke.
   final double strokeWidth;
+
+  /// Whether the placeholder remains visible until drawing starts.
   final bool showPlaceholderWhenEmpty;
 
+  /// Creates a drawable signature panel.
   const SignaturePanel({
     super.key,
     required this.title,
@@ -136,10 +159,15 @@ class SignaturePanel extends StatelessWidget {
   }
 }
 
+/// Painter that renders signature strokes from point lists.
 class SignaturePainter extends CustomPainter {
+  /// Creates a painter for the captured signature strokes.
   const SignaturePainter(this.points, {this.strokeWidth = 2.6});
 
+  /// Stroke points. `null` entries split separate strokes.
   final List<Offset?> points;
+
+  /// Stroke width used by the painter.
   final double strokeWidth;
 
   @override

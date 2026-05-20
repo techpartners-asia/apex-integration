@@ -1,11 +1,21 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Cubit for questionnaire answer selection, score calculation, and target goal save.
 class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
+  /// Questionnaire API service.
   final QuestionnaireService service;
+
+  /// Profile repository used to save selected target goal.
   final MiniAppProfileRepository appApi;
+
+  /// Bootstrap service used when the screen was opened without initial state.
   final InvestmentBootstrapService? bootstrapService;
+
+  /// Optional bootstrap state passed from startup/overview flow.
   final AcntBootstrapState? initialBootstrapState;
+
+  /// Localizations used for user-facing errors.
   final SdkLocalizations l10n;
 
   IpsQuestionnaireCubit({
@@ -16,6 +26,7 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     this.initialBootstrapState,
   }) : super(IpsQuestionnaireState(bootstrapState: initialBootstrapState));
 
+  /// Loads bootstrap state and questionnaire questions.
   Future<void> load() async {
     emit(
       state.copyWith(
@@ -26,8 +37,12 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     );
 
     try {
-      final AcntBootstrapState bootstrapState = state.bootstrapState ?? initialBootstrapState ?? await BootstrapStateResolver(service: bootstrapService!).load();
-      final List<QuestionnaireQuestion> questions = await service.getQuestions();
+      final AcntBootstrapState bootstrapState =
+          state.bootstrapState ??
+          initialBootstrapState ??
+          await BootstrapStateResolver(service: bootstrapService!).load();
+      final List<QuestionnaireQuestion> questions = await service
+          .getQuestions();
 
       emit(
         state.copyWith(
@@ -49,6 +64,7 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     }
   }
 
+  /// Stores the selected option for a question.
   void selectAnswer({required String questionId, required String optionId}) {
     final Map<String, String> nextAnswers = Map<String, String>.from(
       state.answers,
@@ -56,6 +72,7 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     emit(state.copyWith(answers: nextAnswers, errorMessage: null));
   }
 
+  /// Saves the selected investment target goal to the profile API.
   Future<bool> saveSelectedTargetGoal({required String questionId}) async {
     if (state.isSavingTargetGoal) {
       return false;
@@ -100,6 +117,7 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     }
   }
 
+  /// Submits non-goal answers for risk-score calculation.
   Future<void> submit() async {
     if (state.isSubmitting) return;
 

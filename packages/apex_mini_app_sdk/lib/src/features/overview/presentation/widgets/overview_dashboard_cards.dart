@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Top overview card with greeting, investment total, and quick actions.
 class OverviewDashboardSummaryCard extends StatelessWidget {
+  /// Presentation-ready dashboard metrics.
   final OverviewDashboardMetrics metrics;
+
+  /// Recharge action.
   final VoidCallback? onRecharge;
+
+  /// Statements action.
   final VoidCallback? onStatements;
+
+  /// Withdraw action, currently disabled in the UI.
   final VoidCallback? onWithdraw;
 
+  /// Creates the dashboard summary card.
   const OverviewDashboardSummaryCard({
     super.key,
     required this.metrics,
@@ -113,9 +121,12 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
   }
 }
 
+/// Goal progress card on the overview dashboard.
 class OverviewDashboardGoalCard extends StatelessWidget {
+  /// Creates the goal card.
   const OverviewDashboardGoalCard({super.key, required this.metrics});
 
+  /// Metrics used to calculate and label goal progress.
   final OverviewDashboardMetrics metrics;
 
   @override
@@ -183,9 +194,12 @@ class OverviewDashboardGoalCard extends StatelessWidget {
   }
 }
 
+/// Reward/streak card displayed on the overview dashboard.
 class OverviewDashboardRewardCard extends StatelessWidget {
+  /// Number of completed streak months.
   final int streakMonths;
 
+  /// Creates the reward card.
   const OverviewDashboardRewardCard({super.key, required this.streakMonths});
 
   @override
@@ -254,14 +268,18 @@ class OverviewDashboardRewardCard extends StatelessWidget {
   }
 }
 
+/// Reward card body text with optional highlighted coupon wording.
 class _RewardBodyText extends StatelessWidget {
+  /// Creates reward body text.
   const _RewardBodyText({required this.text});
 
+  /// Text fragments that should be highlighted if present in localized copy.
   static const List<String> _highlightCandidates = <String>[
     '5000 Tino Coupon',
     '5000 Tino Coin',
   ];
 
+  /// Full body text.
   final String text;
 
   @override
@@ -309,11 +327,15 @@ class _RewardBodyText extends StatelessWidget {
   }
 }
 
+/// Segmented 12-month reward progress bar.
 class _RewardProgressBar extends StatelessWidget {
+  /// Completed month count.
   final int months;
 
+  /// Creates the reward progress bar.
   const _RewardProgressBar({required this.months});
 
+  /// Number of months represented by the bar.
   static const int _monthCount = 12;
 
   @override
@@ -384,12 +406,21 @@ class _RewardProgressBar extends StatelessWidget {
   }
 }
 
+/// Dashboard quick action icon and label.
 class _DashboardQuickAction extends StatelessWidget {
+  /// Action label.
   final String label;
+
+  /// Image asset path for the icon.
   final String path;
+
+  /// Optional tap callback.
   final VoidCallback? onTap;
+
+  /// Whether the action should render disabled.
   final bool disabled;
 
+  /// Creates a dashboard quick action.
   const _DashboardQuickAction({
     required this.label,
     required this.path,
@@ -436,10 +467,15 @@ class _DashboardQuickAction extends StatelessWidget {
   }
 }
 
+/// Shared white surface card used by dashboard sections.
 class _DashboardSurfaceCard extends StatelessWidget {
+  /// Creates a dashboard surface card.
   const _DashboardSurfaceCard({required this.child, this.padding});
 
+  /// Card content.
   final Widget child;
+
+  /// Optional card padding.
   final EdgeInsetsGeometry? padding;
 
   @override

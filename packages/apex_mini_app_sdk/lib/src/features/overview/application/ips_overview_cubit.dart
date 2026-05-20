@@ -1,12 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Cubit that loads overview/home data for the InvestX dashboard.
 class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
+  /// Bootstrap service used to determine account/onboarding state.
   final InvestmentBootstrapService bootstrapService;
+
+  /// Portfolio service used when the user has active IPS accounts.
   final PortfolioService? portfolioService;
+
+  /// Pack service used for recommended pack data.
   final PackService? packService;
+
+  /// Localizations used for error messages.
   final SdkLocalizations l10n;
+
+  /// Diagnostic logger.
   final MiniAppLogger logger;
 
   IpsOverviewCubit({
@@ -17,6 +26,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     this.logger = const SilentMiniAppLogger(),
   }) : super(const LoadableState<IpsOverviewViewData>());
 
+  /// Loads overview state, optionally starting from an already known bootstrap state.
   Future<void> load({
     AcntBootstrapState? initial,
     bool forceRefresh = false,

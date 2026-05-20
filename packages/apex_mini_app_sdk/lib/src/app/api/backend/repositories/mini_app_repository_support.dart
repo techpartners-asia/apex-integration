@@ -1,5 +1,6 @@
 part of '../mini_app_api_repository.dart';
 
+/// Ensures the session contains the admin token required by backend calls.
 Future<UserEntityDto> _ensureAdminAuthToken(
   MiniAppSessionController session,
 ) async {
@@ -13,6 +14,7 @@ Future<UserEntityDto> _ensureAdminAuthToken(
   );
 }
 
+/// Refreshes profile after a mutation and keeps a local fallback if refresh fails.
 Future<UserEntityDto> _refreshProfileAfterMutation({
   required MiniAppApiBackend api,
   required MiniAppSessionController session,
@@ -35,6 +37,7 @@ Future<UserEntityDto> _refreshProfileAfterMutation({
   }
 }
 
+/// Builds the feedback cache scope so cached lists do not leak across users.
 String _feedbackScope(MiniAppSessionController session) {
   final UserEntityDto? currentUser = session.currentUser;
   return <String>[

@@ -3,29 +3,63 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Layout variants for allocation summary cards.
+enum AllocationSummaryCardVariant {
+  /// Compact dashboard usage.
+  dashboard,
 
-enum AllocationSummaryCardVariant { dashboard, section }
+  /// Full portfolio section usage.
+  section,
+}
 
+/// Small pill/badge value shown in the yield section.
 final class AllocationBadgeData {
+  /// Badge label.
   final String label;
+
+  /// Badge color tone.
   final Color tone;
 
+  /// Creates allocation badge data.
   const AllocationBadgeData({required this.label, required this.tone});
 }
 
+/// Data required to render an allocation summary.
 final class AllocationSummaryData {
+  /// Stock allocation amount.
   final double stockValue;
+
+  /// Bond allocation amount.
   final double bondValue;
+
+  /// Fallback total used when stock/bond totals are missing.
   final double barFallbackTotal;
+
+  /// Stock row label.
   final String stockLabel;
+
+  /// Stock row formatted value.
   final String stockValueLabel;
+
+  /// Bond row label.
   final String bondLabel;
+
+  /// Bond row formatted value.
   final String bondValueLabel;
+
+  /// Total row label.
   final String totalLabel;
+
+  /// Total row formatted value.
   final String totalValueLabel;
+
+  /// Optional label for the yield badge section.
   final String? yieldSectionLabel;
+
+  /// Optional yield badges.
   final List<AllocationBadgeData> yieldBadges;
 
+  /// Creates allocation summary data.
   const AllocationSummaryData({
     required this.stockValue,
     required this.bondValue,
@@ -41,12 +75,21 @@ final class AllocationSummaryData {
   });
 }
 
+/// Card that visualizes stock/bond allocation and yield badges.
 class AllocationSummaryCard extends StatelessWidget {
+  /// Data shown by the card.
   final AllocationSummaryData data;
+
+  /// Layout variant.
   final AllocationSummaryCardVariant variant;
+
+  /// Optional details action.
   final VoidCallback? onViewDetails;
+
+  /// Details action label.
   final String? detailsLabel;
 
+  /// Creates an allocation summary card.
   const AllocationSummaryCard({
     super.key,
     required this.data,
@@ -198,11 +241,18 @@ class AllocationSummaryCard extends StatelessWidget {
   }
 }
 
+/// Horizontal stacked bar for stock and bond allocation.
 class AllocationBar extends StatelessWidget {
+  /// Stock allocation amount.
   final double stockValue;
+
+  /// Bond allocation amount.
   final double bondValue;
+
+  /// Fallback total used when stock/bond totals are zero.
   final double fallbackTotal;
 
+  /// Creates an allocation bar.
   const AllocationBar({
     super.key,
     required this.stockValue,
@@ -266,11 +316,18 @@ class AllocationBar extends StatelessWidget {
   }
 }
 
+/// Label/value row below the allocation bar.
 class AllocationMetricRow extends StatelessWidget {
+  /// Color swatch shown before the label.
   final Color color;
+
+  /// Row label.
   final String label;
+
+  /// Row value.
   final String value;
 
+  /// Creates an allocation metric row.
   const AllocationMetricRow({
     super.key,
     required this.color,
@@ -310,10 +367,15 @@ class AllocationMetricRow extends StatelessWidget {
   }
 }
 
+/// Small rounded badge used for yield/profit labels.
 class AllocationPill extends StatelessWidget {
+  /// Badge label.
   final String label;
+
+  /// Badge tone color.
   final Color tone;
 
+  /// Creates an allocation pill.
   const AllocationPill({
     super.key,
     required this.label,
@@ -343,10 +405,19 @@ class AllocationPill extends StatelessWidget {
 }
 
 final class _AllocationSummaryCardConfig {
+  /// Vertical spacing before the metric grid.
   final double metricTopSpacing;
+
+  /// Gap between metric items.
   final double metricGap;
+
+  /// Whether the total row should draw its own divider.
   final bool showTotalDivider;
+
+  /// Vertical spacing before the yield row.
   final double yieldTopSpacing;
+
+  /// Color used for total values.
   final Color totalValueColor;
 
   const _AllocationSummaryCardConfig({
@@ -357,5 +428,6 @@ final class _AllocationSummaryCardConfig {
     this.totalValueColor = DesignTokens.ink,
   });
 
+  /// Whether yield layout should include the divider instead of total layout.
   bool get showYieldDividerLayout => !showTotalDivider;
 }

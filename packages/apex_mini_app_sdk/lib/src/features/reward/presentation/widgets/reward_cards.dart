@@ -1,8 +1,11 @@
 part of '../reward_screen.dart';
 
+/// Reward goal progress card.
 class _GoalCard extends StatelessWidget {
+  /// Creates the goal progress card.
   const _GoalCard({required this.l10n});
 
+  /// Localized reward labels.
   final SdkLocalizations l10n;
 
   @override
@@ -68,9 +71,12 @@ class _GoalCard extends StatelessWidget {
   }
 }
 
+/// Reward streak progress card.
 class _StreakCard extends StatelessWidget {
+  /// Creates the streak card.
   const _StreakCard({required this.l10n});
 
+  /// Localized streak labels.
   final SdkLocalizations l10n;
 
   @override
@@ -136,15 +142,22 @@ class _StreakCard extends StatelessWidget {
   }
 }
 
+/// Row of dots summarizing completed streak months.
 class _StreakDots extends StatelessWidget {
+  /// Creates the streak-dot row.
   const _StreakDots({
     required this.responsive,
     required this.streakCount,
     required this.total,
   });
 
+  /// Responsive data used to size dots consistently with the parent card.
   final MiniAppResponsiveData responsive;
+
+  /// Number of completed streak units.
   final int streakCount;
+
+  /// Total streak units to represent.
   final int total;
 
   @override
@@ -168,9 +181,12 @@ class _StreakDots extends StatelessWidget {
   }
 }
 
+/// Card that explains the next reward goal.
 class _NextGoalCard extends StatelessWidget {
+  /// Creates the next-goal card.
   const _NextGoalCard({required this.l10n});
 
+  /// Localized next-goal labels.
   final SdkLocalizations l10n;
 
   @override

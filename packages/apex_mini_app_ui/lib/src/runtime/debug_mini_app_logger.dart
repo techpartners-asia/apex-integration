@@ -6,8 +6,10 @@ import 'mini_app_logger.dart';
 /// In release builds all calls are no-ops (the [kDebugMode] constant-folds
 /// the branches away).
 class DebugMiniAppLogger implements MiniAppLogger {
+  /// Creates a debug logger.
   const DebugMiniAppLogger();
 
+  /// Prints a structured error event and optional stack trace in debug mode.
   @override
   void onError(
     String event, {
@@ -30,6 +32,7 @@ class DebugMiniAppLogger implements MiniAppLogger {
     }
   }
 
+  /// Prints a structured informational event in debug mode.
   @override
   void onInfo(
     String event, {

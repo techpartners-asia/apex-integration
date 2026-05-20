@@ -1,5 +1,3 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 part 'sec_acnt_list/get_sec_acnt_list_account_dto.dart';
@@ -10,13 +8,28 @@ part 'sec_acnt_list/get_sec_acnt_settlement_account_dto.dart';
 
 part 'sec_acnt_list/sec_acnt_account_support_dto.dart';
 
+/// Response DTO for the securities account list endpoint.
+///
+/// This response is the source of truth for whether the user has an actual
+/// securities account. Paid contract status must not be treated as a substitute
+/// for this account data.
 class GetSecuritiesAcntListResDto {
+  /// Detail flags and metadata returned by the backend.
   final GetSecuritiesAcntListDetailDto detail;
+
+  /// Securities and related account rows.
   final List<GetSecAcntListAccountDto> acnts;
+
+  /// Settlement accounts associated with the user.
   final List<GetSecAcntSettlementAccountDto> stlAcnts;
+
+  /// Backend response code.
   final int responseCode;
+
+  /// Backend response description.
   final String? responseDesc;
 
+  /// Creates a parsed securities account list response.
   const GetSecuritiesAcntListResDto({
     required this.detail,
     required this.acnts,
@@ -25,6 +38,7 @@ class GetSecuritiesAcntListResDto {
     this.responseDesc,
   });
 
+  /// Parses and validates the account list response.
   factory GetSecuritiesAcntListResDto.fromJson(Map<String, Object?> json) {
     final int responseCode = ApiParser.asNullableInt(json['responseCode']) ?? 1;
     final String? responseDesc = ApiParser.asNullableString(
@@ -53,6 +67,7 @@ class GetSecuritiesAcntListResDto {
     );
   }
 
+  /// Returns a copy with selected fields replaced.
   GetSecuritiesAcntListResDto copyWith({
     GetSecuritiesAcntListDetailDto? detail,
     List<GetSecAcntListAccountDto>? acnts,
@@ -69,18 +84,24 @@ class GetSecuritiesAcntListResDto {
     );
   }
 
+  /// Primary securities account identified by backend flag `3`.
   GetSecAcntListAccountDto? get securitiesAccount => accountByFlag(3);
 
+  /// IPS master account identified by backend flag `11`.
   GetSecAcntListAccountDto? get ipsMasterAccount => accountByFlag(11);
 
+  /// IPS CASA account identified by backend flag `12`.
   GetSecAcntListAccountDto? get ipsCasaAccount => accountByFlag(12);
 
+  /// Best account candidate for APIs that need an account context.
   GetSecAcntListAccountDto? get primaryAccount =>
       securitiesAccount ?? ipsCasaAccount ?? ipsMasterAccount ?? firstAccount;
 
+  /// First account row, if any.
   GetSecAcntListAccountDto? get firstAccount =>
       acnts.isEmpty ? null : acnts.first;
 
+  /// Finds the first account row with the requested backend flag.
   GetSecAcntListAccountDto? accountByFlag(int flag) {
     for (final GetSecAcntListAccountDto account in acnts) {
       if (account.flag == flag) {

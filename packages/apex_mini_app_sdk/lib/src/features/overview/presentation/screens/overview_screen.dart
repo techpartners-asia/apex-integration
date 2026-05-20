@@ -3,60 +3,72 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Main IPS overview shell with dashboard/profile tabs and action navigation.
 class IpsOverviewScreen extends StatefulWidget {
+  /// Creates the overview screen.
   const IpsOverviewScreen({super.key});
 
   @override
   State<IpsOverviewScreen> createState() => _IpsOverviewScreenState();
 }
 
+/// Tracks active overview tab and coordinates overview dashboard actions.
 class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
+  /// Default tab shown when the user lands on the overview screen.
   static const int _homeTabIndex = OverviewBottomNavigation.homeIndex;
 
+  /// Currently selected bottom-navigation tab.
   int _selectedTabIndex = _homeTabIndex;
 
   @override
   Widget build(BuildContext context) {
-    final MiniAppSessionState sessionState = context.watch<MiniAppSessionStore>().state;
+    final MiniAppSessionState sessionState = context
+        .watch<MiniAppSessionStore>()
+        .state;
 
     return BlocBuilder<IpsOverviewCubit, LoadableState<IpsOverviewViewData>>(
-      builder: (BuildContext context, LoadableState<IpsOverviewViewData> state) {
-        final IpsOverviewViewData? data = state.data;
-        final bool isTradingEnabled = _hasTradingAccess(
-          viewData: data,
-          sessionState: sessionState,
-        );
+      builder:
+          (BuildContext context, LoadableState<IpsOverviewViewData> state) {
+            final IpsOverviewViewData? data = state.data;
+            final bool isTradingEnabled = _hasTradingAccess(
+              viewData: data,
+              sessionState: sessionState,
+            );
 
-        return CustomScaffold(
-          showBackButton: false,
-          showCloseButton: true,
-          appBarCenterTitle: false,
-          appBarBackgroundColor: DesignTokens.softSurface,
-          backgroundColor: DesignTokens.softSurface,
-          appBarShowBottomBorder: false,
-          appBarReserveLeadingSpace: false,
-          body: _buildBody(context, state, sessionState),
-          isTradingEnabled: isTradingEnabled,
-          adaptiveBottomNavigationBar: data == null || !state.isSuccess
-              ? null
-              : buildOverviewBottomNavigationBar(
-                  context,
-                  selectedIndex: _selectedTabIndex,
-                  onSelected: _handleTabSelected,
-                  onActionPressed: isTradingEnabled ? () => (context, data) : null,
-                  isActionEnabled: isTradingEnabled,
-                ),
-          floatingActionButton: isTradingEnabled && PlatformInfo.isIOS26OrHigher()
-              ? _InvestXFloatingButton(
-                  selected: true,
-                  onTap: () => _showActionSheet(context, data!),
-                )
-              : null,
-        );
-      },
+            return CustomScaffold(
+              showBackButton: false,
+              showCloseButton: true,
+              appBarCenterTitle: false,
+              appBarBackgroundColor: DesignTokens.softSurface,
+              backgroundColor: DesignTokens.softSurface,
+              appBarShowBottomBorder: false,
+              appBarReserveLeadingSpace: false,
+              body: _buildBody(context, state, sessionState),
+              isTradingEnabled: isTradingEnabled,
+              adaptiveBottomNavigationBar: data == null || !state.isSuccess
+                  ? null
+                  : buildOverviewBottomNavigationBar(
+                      context,
+                      selectedIndex: _selectedTabIndex,
+                      onSelected: _handleTabSelected,
+                      onActionPressed: isTradingEnabled
+                          ? () => (context, data)
+                          : null,
+                      isActionEnabled: isTradingEnabled,
+                    ),
+              floatingActionButton:
+                  isTradingEnabled && PlatformInfo.isIOS26OrHigher()
+                  ? _InvestXFloatingButton(
+                      selected: true,
+                      onTap: () => _showActionSheet(context, data!),
+                    )
+                  : null,
+            );
+          },
     );
   }
 
+  /// Updates the selected bottom-navigation tab.
   void _handleTabSelected(int index) {
     if (_selectedTabIndex == index) {
       return;
@@ -64,10 +76,12 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     setState(() => _selectedTabIndex = index);
   }
 
+  /// Reloads overview/bootstrap data when the active tab is refreshed.
   Future<void> _handleRefresh() {
     return context.read<IpsOverviewCubit>().load(forceRefresh: true);
   }
 
+  /// Builds loading, error, dashboard, or profile content for the shell.
   Widget _buildBody(
     BuildContext context,
     LoadableState<IpsOverviewViewData> state,
@@ -77,7 +91,8 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     final responsive = context.responsive;
     final IpsOverviewViewData? viewData = state.data;
     final AcntBootstrapState? data = viewData?.bootstrapState;
-    final bool shouldHoldDashboard = data?.hasIpsAcnt == true && !(viewData?.isDashboardDataReady ?? false);
+    final bool shouldHoldDashboard =
+        data?.hasIpsAcnt == true && !(viewData?.isDashboardDataReady ?? false);
 
     if ((state.isInitial || state.isLoading) && data == null) {
       return Center(
@@ -113,8 +128,12 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   ? OverviewDashboardHomeTab(
                       bootstrapState: data,
                       portfolioOverview: viewData?.portfolioOverview,
-                      yieldProfitHoldings: viewData?.yieldProfitHoldings ?? const <PortfolioHolding>[],
-                      stockYieldDetails: viewData?.stockYieldDetails ?? const <PortfolioHolding>[],
+                      yieldProfitHoldings:
+                          viewData?.yieldProfitHoldings ??
+                          const <PortfolioHolding>[],
+                      stockYieldDetails:
+                          viewData?.stockYieldDetails ??
+                          const <PortfolioHolding>[],
                       user: sessionState.currentUser,
                       onRecharge: () => launchIpsRoute(
                         context,
@@ -125,7 +144,8 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                         route: MiniAppRoutes.statements,
                         arguments: viewData?.portfolioContext,
                       ),
-                      onWithdraw: () => launchIpsRoute(context, route: MiniAppRoutes.sell),
+                      onWithdraw: () =>
+                          launchIpsRoute(context, route: MiniAppRoutes.sell),
                       onViewDetails: () => launchIpsRoute(
                         context,
                         route: MiniAppRoutes.portfolio,
@@ -159,7 +179,9 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
             ),
             child: MiniAppLoadingState(
               title: l10n.commonLoading,
-              message: data.hasIpsAcnt ? l10n.ipsPortfolioLoading : l10n.ipsBootstrapLoading,
+              message: data.hasIpsAcnt
+                  ? l10n.ipsPortfolioLoading
+                  : l10n.ipsBootstrapLoading,
             ),
           ),
         ],
@@ -168,6 +190,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     );
   }
 
+  /// Determines whether trade actions should be exposed to the current user.
   bool _hasTradingAccess({
     required IpsOverviewViewData? viewData,
     required MiniAppSessionState sessionState,
@@ -182,6 +205,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     return account?.isInvestContract == true && packageCode.isNotEmpty;
   }
 
+  /// Shows the floating action sheet for recharge/sell or verification.
   Future<void> _showActionSheet(
     BuildContext context,
     IpsOverviewViewData data,
@@ -243,10 +267,15 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
   }
 }
 
+/// Circular floating InvestX action button used on iOS 26+ surfaces.
 class _InvestXFloatingButton extends StatelessWidget {
+  /// Whether the button should expose selected semantics.
   final bool selected;
+
+  /// Callback invoked when the action button is tapped.
   final VoidCallback onTap;
 
+  /// Creates the floating InvestX button.
   const _InvestXFloatingButton({
     required this.selected,
     required this.onTap,

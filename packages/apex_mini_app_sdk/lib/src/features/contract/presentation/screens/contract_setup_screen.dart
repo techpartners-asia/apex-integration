@@ -2,15 +2,18 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
+/// Prepares contract dependencies before opening recharge/payment.
 class ContractSetupScreen extends StatefulWidget {
+  /// Creates the contract setup screen.
   const ContractSetupScreen({super.key});
 
   @override
   State<ContractSetupScreen> createState() => _ContractSetupScreenState();
 }
 
+/// Initializes contract setup and opens recharge once dependencies are ready.
 class _ContractSetupScreenState extends State<ContractSetupScreen> {
+  /// Prevents repeated bottom-sheet launches when the cubit re-emits ready.
   bool _didOpenRechargeSheet = false;
 
   @override
@@ -24,6 +27,7 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
     });
   }
 
+  /// Opens recharge once the contract cubit reports that setup is ready.
   Future<void> _openRechargeBottomSheetAfterReady(BuildContext context) async {
     final IpsDependencies dependencies = context.read<IpsDependencies>();
     final SdkLocalizations l10n = context.l10n;
@@ -46,7 +50,8 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<IpsContractCubit, IpsContractState>(
-      listenWhen: (IpsContractState previous, IpsContractState current) => previous.isReady != current.isReady && current.isReady,
+      listenWhen: (IpsContractState previous, IpsContractState current) =>
+          previous.isReady != current.isReady && current.isReady,
       listener: (BuildContext context, IpsContractState state) async {
         if (_didOpenRechargeSheet) {
           return;
@@ -57,7 +62,9 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
       child: BlocBuilder<IpsContractCubit, IpsContractState>(
         builder: (BuildContext context, IpsContractState state) {
           final l10n = context.l10n;
-          final bool showLoading = state.isInitializing || (!state.isReady && state.errorMessage == null);
+          final bool showLoading =
+              state.isInitializing ||
+              (!state.isReady && state.errorMessage == null);
 
           return CustomScaffold(
             showBackButton: true,

@@ -1,15 +1,35 @@
 part of '../user_entity_dto.dart';
 
+/// File metadata returned by backend profile/account endpoints.
+///
+/// Used for profile images and saved signature files. The backend currently
+/// spells `extention` this way, so the DTO preserves that field name.
 class FileEntity {
+  /// File identifier.
   final int? id;
+
+  /// Stored file name.
   final String? fileName;
+
+  /// Original uploaded file name.
   final String? originalName;
+
+  /// Backend physical path or URL-like storage path.
   final String? physicalPath;
+
+  /// File extension value from the backend.
   final String? extention;
+
+  /// File size as reported by the backend.
   final num? fileSize;
+
+  /// Raw creation timestamp.
   final String? createdAt;
+
+  /// Raw update timestamp.
   final String? updatedAt;
 
+  /// Creates a backend file entity DTO.
   const FileEntity({
     this.id,
     this.fileName,
@@ -21,6 +41,7 @@ class FileEntity {
     this.updatedAt,
   });
 
+  /// Parses backend file metadata with nullable fields for old responses.
   factory FileEntity.fromJson(Map<String, Object?> json) {
     return FileEntity(
       id: ApiParser.asNullableInt(json['id']),
@@ -34,6 +55,7 @@ class FileEntity {
     );
   }
 
+  /// Returns a copy with selected fields replaced.
   FileEntity copyWith({
     int? id,
     String? fileName,

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Agreement step shown before questionnaire signature and questions.
 class QuestionnaireAgreementScreen extends StatefulWidget {
+  /// Creates the questionnaire agreement screen.
   const QuestionnaireAgreementScreen({
     super.key,
     required this.signatureUploadService,
   });
 
+  /// Service passed to the following signature step.
   final SignatureUploadService signatureUploadService;
 
   @override
@@ -16,10 +18,13 @@ class QuestionnaireAgreementScreen extends StatefulWidget {
       _QuestionnaireAgreementScreenState();
 }
 
+/// Tracks agreement consent before opening the signature step.
 class _QuestionnaireAgreementScreenState
     extends State<QuestionnaireAgreementScreen> {
+  /// Whether the user has accepted the questionnaire agreement.
   bool _accepted = false;
 
+  /// Opens the signature step after agreement consent.
   void _openNextStep() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(

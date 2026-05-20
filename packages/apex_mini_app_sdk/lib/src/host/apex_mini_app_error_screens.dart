@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'apex_mini_app_host_config.dart';
 
+/// Host-facing fallback screen shown when the required token is missing.
 class ApexMiniAppMissingTokenScreen extends StatelessWidget {
+  /// Creates the missing-token fallback screen.
   const ApexMiniAppMissingTokenScreen({super.key});
 
   @override
@@ -15,9 +17,12 @@ class ApexMiniAppMissingTokenScreen extends StatelessWidget {
   }
 }
 
+/// Host-facing fallback shown when the current host token/session expires.
 class ApexMiniAppSessionExpiredScreen extends StatelessWidget {
+  /// Creates the session-expired fallback screen.
   const ApexMiniAppSessionExpiredScreen({super.key, this.onClose});
 
+  /// Optional host close callback.
   final VoidCallback? onClose;
 
   @override
@@ -32,12 +37,15 @@ class ApexMiniAppSessionExpiredScreen extends StatelessWidget {
   }
 }
 
+/// Host-facing fallback shown when SDK config validation fails.
 class ApexMiniAppInvalidParamsScreen extends StatelessWidget {
+  /// Creates the invalid-host-parameters fallback screen.
   const ApexMiniAppInvalidParamsScreen({
     super.key,
     required this.validation,
   });
 
+  /// Validation result containing the specific parameter errors.
   final ApexMiniAppHostValidationResult validation;
 
   @override
@@ -50,14 +58,19 @@ class ApexMiniAppInvalidParamsScreen extends StatelessWidget {
   }
 }
 
+/// Host-facing fallback shown when SDK initialization fails unexpectedly.
 class ApexMiniAppInitializationFailureScreen extends StatelessWidget {
+  /// Creates the initialization-failure fallback screen.
   const ApexMiniAppInitializationFailureScreen({
     super.key,
     this.message,
     this.onClose,
   });
 
+  /// Optional failure message.
   final String? message;
+
+  /// Optional host close callback.
   final VoidCallback? onClose;
 
   @override
@@ -72,7 +85,9 @@ class ApexMiniAppInitializationFailureScreen extends StatelessWidget {
   }
 }
 
+/// Generic error surface used before the full mini-app runtime is available.
 class ApexMiniAppErrorScreen extends StatelessWidget {
+  /// Creates a generic host-facing SDK error screen.
   const ApexMiniAppErrorScreen({
     super.key,
     required this.title,
@@ -82,10 +97,19 @@ class ApexMiniAppErrorScreen extends StatelessWidget {
     this.onAction,
   });
 
+  /// Error title.
   final String title;
+
+  /// Error message.
   final String message;
+
+  /// Icon representing the error category.
   final IconData icon;
+
+  /// Optional action button label.
   final String? actionLabel;
+
+  /// Optional action button callback.
   final VoidCallback? onAction;
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Shows a reusable confirmation bottom sheet and returns the user's choice.
 Future<bool?> showConfirmationSheet({
   required BuildContext context,
   required String title,

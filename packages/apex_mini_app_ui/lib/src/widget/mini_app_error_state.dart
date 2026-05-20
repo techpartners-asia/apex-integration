@@ -5,12 +5,21 @@ import '../theme/mini_app_state_colors.dart';
 import 'custom_text.dart';
 import 'mini_app_state_panel.dart';
 
+/// Standard error-state panel.
 class MiniAppErrorState extends StatelessWidget {
+  /// Error title.
   final String title;
+
+  /// Error message.
   final String message;
+
+  /// Optional retry button label.
   final String? retryLabel;
+
+  /// Optional retry callback.
   final VoidCallback? onRetry;
 
+  /// Creates an error-state panel.
   const MiniAppErrorState({
     super.key,
     required this.title,

@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 part 'overview/overview_pack_recommendation_view.dart';
 
+/// Overview home tab that shows either onboarding progress or pack suggestions.
 class OverviewHomeTab extends StatelessWidget {
+  /// Account/bootstrap data for current user.
   final AcntBootstrapState data;
+
+  /// Current user used for greeting/profile copy.
   final UserEntityDto? user;
+
+  /// Recommended packs to show when account setup is complete.
   final List<IpsPack> packs;
+
+  /// Optional pull-to-refresh callback.
   final RefreshCallback? onRefresh;
 
+  /// Creates the overview home tab.
   const OverviewHomeTab({
     super.key,
     required this.data,

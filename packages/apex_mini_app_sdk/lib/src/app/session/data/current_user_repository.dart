@@ -1,16 +1,26 @@
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Loads the current Apex user from the host-provided authentication token.
 abstract interface class CurrentUserRepository {
+  /// Resolves the current user and bootstrap session information.
   Future<UserEntityDto> getCurrentUser({required String userToken});
 }
 
+/// Current-user repository backed by the sign-up bootstrap endpoint.
 class RemoteSignupBootstrapRepository implements CurrentUserRepository {
+  /// API wrapper for the sign-up/bootstrap endpoint.
   final SignUpBackendApi api;
+
+  /// Optional profile API used to hydrate richer account fields after sign-up.
   final MiniAppApiBackend? profileApi;
+
+  /// Mutable admin token provider updated once bootstrap returns a session.
   final MutableTokenProvider? adminTokenProvider;
+
+  /// Logger used for bootstrap and hydration diagnostics.
   final MiniAppLogger logger;
 
+  /// Creates the remote bootstrap repository.
   const RemoteSignupBootstrapRepository({
     required this.api,
     this.profileApi,
@@ -51,11 +61,13 @@ class RemoteSignupBootstrapRepository implements CurrentUserRepository {
     }
   }
 
+  /// Ensures [admSession] is populated from the strongest available token.
   UserEntityDto _attachAdminSession(UserEntityDto user) {
     user.admSession = _normalizedAdminToken(user);
     return user;
   }
 
+  /// Chooses the admin session token, falling back to the sign-up token.
   String? _normalizedAdminToken(UserEntityDto user) {
     final String? session = user.admSession?.trim();
     if (session != null && session.isNotEmpty) {
@@ -70,6 +82,7 @@ class RemoteSignupBootstrapRepository implements CurrentUserRepository {
     return null;
   }
 
+  /// Fetches profile info when an admin token exists, without failing bootstrap.
   Future<UserEntityDto> _hydrateProfile(
     UserEntityDto bootstrapUser, {
     required String? adminToken,

@@ -1,11 +1,15 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
-
+/// Bottom sheet that loads and displays selectable settlement banks.
 class SecAcntBankSelectionSheet extends StatefulWidget {
+  /// Currently selected bank.
   final SecAcntBankOption? selectedBank;
+
+  /// Repository used to load bank options.
   final SecAcntBankOptionsRepository bankOptionsRepository;
 
+  /// Creates a bank selection sheet.
   const SecAcntBankSelectionSheet({
     super.key,
     required this.selectedBank,
@@ -17,7 +21,9 @@ class SecAcntBankSelectionSheet extends StatefulWidget {
       _SecAcntBankSelectionSheetState();
 }
 
+/// Loads bank options and renders loading/error/empty/selectable sheet states.
 class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
+  /// Future backing the bank options grid.
   late Future<List<SecAcntBankOption>> _bankOptionsFuture;
 
   @override
@@ -26,6 +32,7 @@ class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
     _bankOptionsFuture = _loadBankOptions();
   }
 
+  /// Loads banks, optionally bypassing repository cache.
   Future<List<SecAcntBankOption>> _loadBankOptions({
     bool forceRefresh = false,
   }) {
@@ -34,6 +41,7 @@ class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
     );
   }
 
+  /// Retries bank loading after a sheet-level failure.
   void _retry() {
     setState(() => _bankOptionsFuture = _loadBankOptions(forceRefresh: true));
   }
@@ -150,9 +158,12 @@ class _SecAcntBankSelectionSheetState extends State<SecAcntBankSelectionSheet> {
   }
 }
 
+/// Centered status wrapper used for sheet loading/error/empty states.
 class _SecAcntSheetStatusView extends StatelessWidget {
+  /// Status content to center in the sheet.
   final Widget child;
 
+  /// Creates a sheet status wrapper.
   const _SecAcntSheetStatusView({required this.child});
 
   @override

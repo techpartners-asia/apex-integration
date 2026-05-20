@@ -10,32 +10,86 @@ part 'user/region_dto.dart';
 
 part 'user/user_value_types.dart';
 
+/// Current user DTO returned by signup, bootstrap, and profile info APIs.
+///
+/// The parser accepts both direct user payloads and the nested bootstrap shape
+/// where the backend wraps user data under `body.user`. Feature code uses this
+/// DTO as the source of truth for session identity, bank/personal info, account
+/// onboarding status, and display metadata.
 class UserEntityDto {
+  /// Host/backend token resolved during signup/bootstrap.
   String? token;
+
+  /// Securities/invest account state nested under `account`.
   final AccountDto? account;
+
+  /// Saved user bank account information.
   final BankDto? bank;
+
+  /// User identifier.
   final int? id;
+
+  /// Mongolian registration number.
   final String? registerNo;
+
+  /// User first name.
   final String? firstName;
+
+  /// User last name.
   final String? lastName;
+
+  /// Primary phone number.
   final String? phone;
+
+  /// Secondary phone number.
   final String? phoneAddition;
+
+  /// User email address.
   final String? email;
+
+  /// User gender value.
   final String? gender;
+
+  /// External integration identifier.
   final String? integrationId;
+
+  /// Current department/employer metadata.
   final String? currentDepartment;
+
+  /// Current position/employment metadata.
   final String? currentPosition;
+
+  /// Profile image metadata.
   final FileEntity? image;
+
+  /// Profile image identifier.
   final int? imageId;
+
+  /// Source platform normalized to [PlatformType].
   final String platform;
+
+  /// Region object returned by profile APIs.
   final RegionDto? region;
+
+  /// Region identifier.
   final int? regionId;
+
+  /// Residential address.
   final String? residenceAddress;
+
+  /// Residential country.
   final String? residenceCountry;
+
+  /// Parsed creation timestamp.
   final DateTime? createdAt;
+
+  /// Parsed update timestamp.
   final DateTime? updatedAt;
 
+  /// Optional access token when included by backend responses.
   final String? accessToken;
+
+  /// ADM/session token used by downstream Apex APIs.
   String? admSession;
 
   UserEntityDto({
@@ -66,6 +120,7 @@ class UserEntityDto {
     this.admSession,
   });
 
+  /// Parses direct and nested user response payloads.
   factory UserEntityDto.fromJson(Map<String, Object?> json) {
     final Map<String, Object?> payload = ApiParser.asObjectMap(json['body']);
     final Map<String, Object?> nestedUser = ApiParser.asObjectMap(
@@ -79,18 +134,28 @@ class UserEntityDto {
         : json;
     final Map<String, Object?> image = ApiParser.asObjectMap(source['image']);
     final Map<String, Object?> region = ApiParser.asObjectMap(source['region']);
-    final String? resolvedToken = ApiParser.asNullableString(payload['token']) ?? ApiParser.asNullableString(json['token']);
+    final String? resolvedToken =
+        ApiParser.asNullableString(payload['token']) ??
+        ApiParser.asNullableString(json['token']);
 
     return UserEntityDto(
       account: AccountDto.fromJson(ApiParser.asObjectMap(source['account'])),
       bank: BankDto.fromJson(ApiParser.asObjectMap(source['bank'])),
       id: ApiParser.asNullableInt(source['id']),
       // registerNo: 'ЪЪ98100630', // isBootstrapUserPayload ? _asRequiredBootstrapText(source['rd']) : ApiParser.asNullableString(source['rd']),
-      registerNo: isBootstrapUserPayload ? _asRequiredBootstrapText(source['rd']) : ApiParser.asNullableString(source['rd']),
+      registerNo: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['rd'])
+          : ApiParser.asNullableString(source['rd']),
       token: resolvedToken,
-      firstName: isBootstrapUserPayload ? _asRequiredBootstrapText(source['first_name']) : ApiParser.asNullableString(source['first_name']),
-      lastName: isBootstrapUserPayload ? _asRequiredBootstrapText(source['last_name']) : ApiParser.asNullableString(source['last_name']),
-      phone: isBootstrapUserPayload ? _asRequiredBootstrapText(source['phone']) : ApiParser.asNullableString(source['phone']),
+      firstName: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['first_name'])
+          : ApiParser.asNullableString(source['first_name']),
+      lastName: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['last_name'])
+          : ApiParser.asNullableString(source['last_name']),
+      phone: isBootstrapUserPayload
+          ? _asRequiredBootstrapText(source['phone'])
+          : ApiParser.asNullableString(source['phone']),
       phoneAddition: ApiParser.asNullableString(source['phone_addition']),
       email: ApiParser.asNullableString(source['email']),
       gender: ApiParser.asNullableString(source['gender']),
@@ -108,14 +173,19 @@ class UserEntityDto {
       residenceCountry: ApiParser.asNullableString(source['residence_country']),
       createdAt: ApiParser.asNullableDateTime(source['created_at']),
       updatedAt: ApiParser.asNullableDateTime(source['updated_at']),
-      admSession: resolvedToken ?? ApiParser.asNullableString(source['adm_session']) ?? ApiParser.asNullableString(source['admSession']),
+      admSession:
+          resolvedToken ??
+          ApiParser.asNullableString(source['adm_session']) ??
+          ApiParser.asNullableString(source['admSession']),
     );
   }
 
+  /// Keeps bootstrap-required text fields non-null after parsing.
   static String _asRequiredBootstrapText(Object? value) {
     return value?.toString().trim() ?? '';
   }
 
+  /// Normalizes unknown platform values.
   static String _parsePlatform(Object? value) {
     final String? platform = ApiParser.asNullableString(value);
     return switch (platform) {
@@ -124,6 +194,7 @@ class UserEntityDto {
     };
   }
 
+  /// Best display name for headers/profile cards.
   String get displayName {
     final String fullName = '${firstName ?? ''} ${lastName ?? ''}'.trim();
     if (fullName.isNotEmpty) {
@@ -136,8 +207,10 @@ class UserEntityDto {
     return phone ?? '';
   }
 
+  /// Non-null user id convenience for APIs that require an integer.
   int get userId => id.isNotNullOrEmpty ? id! : 0;
 
+  /// Returns a copy with selected fields replaced.
   UserEntityDto copyWith({
     String? token,
     AccountDto? account,

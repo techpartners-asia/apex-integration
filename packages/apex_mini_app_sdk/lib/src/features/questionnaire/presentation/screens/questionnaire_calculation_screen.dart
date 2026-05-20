@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Loading screen that submits questionnaire answers and routes to packs.
 class QuestionnaireCalculationScreen extends StatefulWidget {
+  /// Creates the calculation screen.
   const QuestionnaireCalculationScreen({super.key});
 
   @override
@@ -13,8 +14,10 @@ class QuestionnaireCalculationScreen extends StatefulWidget {
       _QuestionnaireCalculationScreenState();
 }
 
+/// Submits answers once and routes to pack recommendations when complete.
 class _QuestionnaireCalculationScreenState
     extends State<QuestionnaireCalculationScreen> {
+  /// Prevents duplicate replace navigation when the cubit emits repeatedly.
   bool _isRouting = false;
 
   @override
@@ -29,6 +32,7 @@ class _QuestionnaireCalculationScreenState
     });
   }
 
+  /// Replaces the calculation screen with the recommended packs route.
   Future<void> _routeToPacks(QuestionnaireRes res) async {
     if (_isRouting) {
       return;
@@ -39,6 +43,7 @@ class _QuestionnaireCalculationScreenState
     await replaceIpsRoute(context, route: MiniAppRoutes.packs, arguments: res);
   }
 
+  /// Returns to the question screen if calculation fails.
   void _returnToQuestions() {
     if (!mounted) {
       return;
@@ -116,10 +121,15 @@ class _QuestionnaireCalculationScreenState
   }
 }
 
+/// Centered loading/processing view for questionnaire calculation.
 class _QuestionnaireCalculationView extends StatelessWidget {
+  /// Main loading title.
   final String title;
+
+  /// Supporting loading message.
   final String message;
 
+  /// Creates the calculation loading view.
   const _QuestionnaireCalculationView({
     required this.title,
     required this.message,

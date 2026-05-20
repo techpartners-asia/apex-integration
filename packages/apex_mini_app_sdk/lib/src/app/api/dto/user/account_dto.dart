@@ -1,27 +1,75 @@
 part of '../user_entity_dto.dart';
 
+/// Securities/account section returned inside profile and signup responses.
+///
+/// This DTO keeps backend fields nullable where older responses may omit them,
+/// while exposing helper getters for onboarding decisions such as paid-contract
+/// and saved-signature checks.
 class AccountDto {
+  /// Date when the securities account was created, if the backend provides it.
   final String? accountCreationDate;
+
+  /// Apex account code.
   final String? acntCode;
+
+  /// Raw creation timestamp from the backend.
   final String? createdAt;
+
+  /// Backend account row identifier.
   final int? id;
+
+  /// Total amount invested through the account.
   final num? investAmount;
+
+  /// Whether the user has started or completed invest onboarding.
   final bool? isInvest;
+
+  /// Whether the invest contract flag exists in the legacy backend response.
   final bool? isInvestContract;
+
+  /// Whether the contract/payment requirement has already been paid.
+  ///
+  /// This is not proof that an actual securities account exists; account-only
+  /// actions must still rely on the securities account list/`hasAcnt` state.
   final bool isPaidContract;
+
+  /// KYC status normalized to [KycStatusType] constants.
   final String kycStatus;
+
+  /// Selected investment package code.
   final String? packageCode;
+
+  /// Current profit amount.
   final num? profitAmount;
+
+  /// Current profit percentage.
   final num? profitPercent;
+
+  /// Securities account code.
   final String? scAcntCode;
+
+  /// Signature file identifier used by older profile responses.
   final int? signatureId;
+
+  /// Streak value returned by backend gamification/account state.
   final String? streak;
+
+  /// Target goal amount configured by the user.
   final num? targetGoal;
+
+  /// Total account amount.
   final num? totalAmount;
+
+  /// Raw update timestamp from the backend.
   final String? updatedAt;
+
+  /// Owning user identifier.
   final int? userId;
+
+  /// Signature file object returned by newer profile responses.
   final FileEntity? signatureFile;
 
+  /// Creates a user account DTO.
   const AccountDto({
     this.accountCreationDate,
     this.acntCode,
@@ -45,6 +93,7 @@ class AccountDto {
     this.signatureFile,
   });
 
+  /// Parses the account object with safe defaults for newer optional fields.
   factory AccountDto.fromJson(Map<String, Object?> json) {
     final Map<String, Object?> signatureFile = ApiParser.asObjectMap(
       json['signature_file'],
@@ -82,6 +131,7 @@ class AccountDto {
     );
   }
 
+  /// Returns a copy with selected fields replaced.
   AccountDto copyWith({
     String? accountCreationDate,
     String? acntCode,
@@ -128,10 +178,13 @@ class AccountDto {
     );
   }
 
+  /// Whether contract/payment onboarding is already completed.
   bool get hasPaidContract => isPaidContract;
 
+  /// Whether the user already has a drawable signature stored.
   bool get hasDrawableSignature => hasSavedSignature;
 
+  /// Whether any known signature source exists in the profile response.
   bool get hasSavedSignature {
     final int? signatureFileId = signatureFile?.id;
     return (signatureId != null && signatureId! > 0) ||
@@ -140,8 +193,10 @@ class AccountDto {
         _hasText(signatureFile?.fileName);
   }
 
+  /// Returns true when a nullable backend string contains visible text.
   bool _hasText(String? value) => value?.trim().isNotEmpty ?? false;
 
+  /// Normalizes unsupported/missing KYC values to [KycStatusType.unknown].
   static String _parseKycStatus(Object? value) {
     final String? status = ApiParser.asNullableString(value);
     return switch (status) {

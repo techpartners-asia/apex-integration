@@ -1,20 +1,48 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 import '../host/apex_mini_app_host_context.dart';
 
+/// Coordinates mini-app payment with the backend and host wallet UI.
+///
+/// The flow is:
+/// 1. create invoice through the SDK API repository;
+/// 2. pass the resolved invoice to the host payment callback;
+/// 3. notify the backend after host wallet success;
+/// 4. return a normalized `MiniAppPaymentRes` to the feature flow.
 class MiniAppPaymentExecutor {
+  /// Error code used when invoice creation fails.
   static const String invoiceCreateFailedMessageKey = 'invoice_create_failed';
-  static const String invalidInvoiceMessageKey = 'invalid_invoice_response';
-  static const String hostResponseTimedOutMessageKey = 'host_response_timed_out';
-  static const String hostCallbackFailedMessageKey = 'host_callback_failed';
-  static const String paymentCallbackFailedMessageKey = 'payment_callback_failed';
 
+  /// Error code used when invoice response misses required identifiers.
+  static const String invalidInvoiceMessageKey = 'invalid_invoice_response';
+
+  /// Error code used when the host wallet callback does not answer in time.
+  static const String hostResponseTimedOutMessageKey =
+      'host_response_timed_out';
+
+  /// Error code used when the host wallet callback throws.
+  static const String hostCallbackFailedMessageKey = 'host_callback_failed';
+
+  /// Error code used when backend payment callback fails after wallet success.
+  static const String paymentCallbackFailedMessageKey =
+      'payment_callback_failed';
+
+  /// API repository used for invoice creation and payment callback.
   final MiniAppPaymentsRepository appApi;
+
+  /// Host wallet/payment callback.
   final MiniAppWalletPaymentHandler walletPaymentHandler;
+
+  /// Max duration allowed for [walletPaymentHandler].
   final Duration paymentTimeout;
+
+  /// Logger for payment diagnostics.
   final MiniAppLogger logger;
 
+  /// Creates a payment executor for one SDK runtime.
+  ///
+  /// [walletPaymentHandler] is supplied by the host app and is the only place
+  /// where native wallet/payment UI should be opened.
   MiniAppPaymentExecutor({
     required this.appApi,
     required this.walletPaymentHandler,
@@ -22,6 +50,7 @@ class MiniAppPaymentExecutor {
     this.logger = const SilentMiniAppLogger(),
   });
 
+  /// Executes the full payment handoff for [flow].
   Future<MiniAppPaymentRes> execute({
     required MiniAppPaymentFlow flow,
     required CreateInvoiceApiReq invoiceRequest,
@@ -31,7 +60,8 @@ class MiniAppPaymentExecutor {
       invoice = await appApi.createInvoice(invoiceRequest);
     } catch (error) {
       final String? backendMessage = switch (error) {
-        ApiException(:final String message) when message.trim().isNotEmpty => message.trim(),
+        ApiException(:final String message) when message.trim().isNotEmpty =>
+          message.trim(),
         _ => null,
       };
 
@@ -46,7 +76,10 @@ class MiniAppPaymentExecutor {
 
       return MiniAppPaymentRes.failed(
         message: backendMessage,
-        failure: MiniAppFailure(code: 'invoice_create_failed', message: backendMessage ?? 'invoice_create_failed'),
+        failure: MiniAppFailure(
+          code: 'invoice_create_failed',
+          message: backendMessage ?? 'invoice_create_failed',
+        ),
         req: req,
       );
     }
@@ -101,7 +134,10 @@ class MiniAppPaymentExecutor {
       );
       return _attachPaymentContext(
         MiniAppPaymentRes.failed(
-          failure: MiniAppFailure(code: 'host_payment_exception', message: 'host_payment_exception'),
+          failure: MiniAppFailure(
+            code: 'host_payment_exception',
+            message: 'host_payment_exception',
+          ),
           req: request,
         ),
         request: request,
@@ -131,14 +167,18 @@ class MiniAppPaymentExecutor {
       );
 
       final String? backendMessage = switch (error) {
-        ApiException(:final String message) when message.trim().isNotEmpty => message.trim(),
+        ApiException(:final String message) when message.trim().isNotEmpty =>
+          message.trim(),
         _ => null,
       };
 
       return _attachPaymentContext(
         MiniAppPaymentRes.failed(
           message: backendMessage,
-          failure: MiniAppFailure(code: 'payment_callback_failed', message: backendMessage ?? 'payment_callback_failed'),
+          failure: MiniAppFailure(
+            code: 'payment_callback_failed',
+            message: backendMessage ?? 'payment_callback_failed',
+          ),
           req: request,
         ),
         request: request,
@@ -146,7 +186,11 @@ class MiniAppPaymentExecutor {
     }
   }
 
-  MiniAppPaymentRes _attachPaymentContext(MiniAppPaymentRes result, {required MiniAppPaymentReq request}) {
+  /// Ensures every host result carries the original SDK payment request.
+  MiniAppPaymentRes _attachPaymentContext(
+    MiniAppPaymentRes result, {
+    required MiniAppPaymentReq request,
+  }) {
     switch (result.status) {
       case MiniAppPaymentStatus.success:
         return MiniAppPaymentRes.success(

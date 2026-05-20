@@ -3,13 +3,18 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Tab indexes used by the overview bottom navigation shell.
 final class OverviewBottomNavigation {
+  /// Home/dashboard tab index.
   static const int homeIndex = 0;
+
+  /// Profile tab index.
   static const int profileIndex = 1;
 
   const OverviewBottomNavigation._();
 }
 
+/// Builds the adaptive bottom navigation bar used by the overview screen.
 AdaptiveBottomNavigationBar buildOverviewBottomNavigationBar(
   BuildContext context, {
   required int selectedIndex,

@@ -1,25 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Profile form used when editing personal, employment, and bank details.
 class ProfilePersonalInfoForm extends StatelessWidget {
+  /// Controller for the last-name field.
   final TextEditingController lastNameController;
+
+  /// Controller for the first-name field.
   final TextEditingController firstNameController;
+
+  /// Controller for the email field.
   final TextEditingController emailController;
+
+  /// Controller for the phone field.
   final TextEditingController phoneController;
+
+  /// Controller for the residential address field.
   final TextEditingController addressController;
+
+  /// Controller for the employment industry field.
   final TextEditingController industryController;
+
+  /// Controller for the job-position field.
   final TextEditingController positionController;
+
+  /// Controller for the IBAN field.
   final TextEditingController ibanController;
+
+  /// Controller for the resolved bank account holder name.
   final TextEditingController accountHolderController;
+
+  /// Currently selected settlement bank.
   final SecAcntBankOption? selectedBank;
+
+  /// Read-only citizenship label.
   final String citizenship;
+
+  /// Read-only country label.
   final String country;
+
+  /// Whether the form is currently being saved.
   final bool isSaving;
+
+  /// Whether the account holder lookup is in progress.
   final bool isResolvingAccountHolder;
+
+  /// Optional lookup error displayed under the account holder field.
   final String? lookupErrorMessage;
+
+  /// Callback fired when the bank dropdown is tapped.
   final VoidCallback? onSelectBank;
 
+  /// Creates the full profile personal-info form.
   const ProfilePersonalInfoForm({
     super.key,
     required this.lastNameController,
@@ -152,6 +184,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
     );
   }
 
+  /// Builds a consistently styled field using the shared SDK input shell.
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,
@@ -167,9 +200,12 @@ class ProfilePersonalInfoForm extends StatelessWidget {
   }
 }
 
+/// Small section heading used within the profile form.
 class ProfileSectionTitle extends StatelessWidget {
+  /// Creates a section heading.
   const ProfileSectionTitle({super.key, required this.title});
 
+  /// Text displayed in the heading.
   final String title;
 
   @override
@@ -181,12 +217,21 @@ class ProfileSectionTitle extends StatelessWidget {
   }
 }
 
+/// Read-only field shell used for profile dropdown selections.
 class ProfileDropdownField extends StatelessWidget {
+  /// Floating label displayed above the value.
   final String label;
+
+  /// Current value or placeholder.
   final String value;
+
+  /// Tap handler that opens the relevant picker/sheet.
   final VoidCallback? onTap;
+
+  /// Optional leading icon for the selected value.
   final IconData? icon;
 
+  /// Creates a dropdown-like profile field.
   const ProfileDropdownField({
     super.key,
     required this.label,

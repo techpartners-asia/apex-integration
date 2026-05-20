@@ -1,15 +1,24 @@
 part of '../mini_app_api_repository.dart';
 
+/// Remote implementation of feedback creation and listing.
 class RemoteMiniAppFeedbackRepository implements MiniAppFeedbackRepository {
   static const Duration _feedbackListCacheTtl = Duration(minutes: 2);
 
+  /// Low-level API facade for feedback endpoints.
   final MiniAppApiBackend api;
+
+  /// Session controller that supplies the admin auth token.
   final MiniAppSessionController session;
+
+  /// Logger used for endpoint failures.
   final MiniAppLogger logger;
+
+  /// Short-lived cache for paged feedback list responses.
   final TimedMemoryCacheMap<String, FeedbackListResponse> _feedbackListCache;
 
   String? _feedbackCacheScope;
 
+  /// Creates the remote feedback repository.
   RemoteMiniAppFeedbackRepository({
     required this.api,
     required this.session,
@@ -72,6 +81,7 @@ class RemoteMiniAppFeedbackRepository implements MiniAppFeedbackRepository {
     }
   }
 
+  /// Cache key that preserves each pagination request independently.
   String _feedbackListCacheKey({
     required int limit,
     required int page,

@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Visual variants for [MessageCard].
 enum MessageCardVariant { reminder, accent }
 
+/// Reusable message card for reminders, notices, and inline alerts.
 class MessageCard extends StatelessWidget {
+  /// Message title.
   final String title;
+
+  /// Message body text.
   final String message;
+
+  /// Optional leading widget.
   final Widget? leading;
+
+  /// Visual style variant.
   final MessageCardVariant variant;
 
+  /// Creates a reusable inline message card.
   const MessageCard({
     super.key,
     required this.title,
@@ -66,11 +75,18 @@ class MessageCard extends StatelessWidget {
   }
 }
 
+/// Convenience wrapper for a reminder-style [MessageCard].
 class ReminderCard extends StatelessWidget {
+  /// Reminder title.
   final String title;
+
+  /// Reminder message.
   final String message;
+
+  /// Optional leading widget.
   final Widget? leading;
 
+  /// Creates a reminder-style message card.
   const ReminderCard({
     super.key,
     required this.title,
@@ -104,18 +120,40 @@ final class _MessageCardStyle {
     this.borderColor,
   });
 
+  /// Card background color.
   final Color backgroundColor;
+
+  /// Card border radius.
   final double borderRadius;
+
+  /// Inner content padding.
   final EdgeInsets padding;
+
+  /// Fallback leading widget when caller does not provide one.
   final Widget defaultLeading;
+
+  /// Gap between leading widget and text column.
   final double leadingSpacing;
+
+  /// Gap between title and message.
   final double messageSpacing;
+
+  /// Typography variant for the title.
   final MiniAppTextVariant titleVariant;
+
+  /// Typography variant for the message.
   final MiniAppTextVariant messageVariant;
+
+  /// Optional title color override.
   final Color? titleColor;
+
+  /// Optional message color override.
   final Color? messageColor;
+
+  /// Optional border color.
   final Color? borderColor;
 
+  /// Creates resolved visual styling for a [MessageCard].
   static _MessageCardStyle resolve(
     BuildContext context,
     MessageCardVariant variant,

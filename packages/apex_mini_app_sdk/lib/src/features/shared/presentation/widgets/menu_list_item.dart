@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Reusable tappable menu/list row with optional leading and trailing widgets.
 class MenuListItem extends StatelessWidget {
+  /// Main row title.
   final String title;
+
+  /// Optional subtitle shown below [title].
   final String? subtitle;
+
+  /// Optional leading widget.
   final Widget? leading;
+
+  /// Optional trailing widget.
   final Widget? trailing;
+
+  /// Optional tap handler.
   final VoidCallback? onTap;
+
+  /// Optional row padding override.
   final EdgeInsetsGeometry? padding;
 
+  /// Creates a tappable menu/list row.
   const MenuListItem({
     super.key,
     required this.title,

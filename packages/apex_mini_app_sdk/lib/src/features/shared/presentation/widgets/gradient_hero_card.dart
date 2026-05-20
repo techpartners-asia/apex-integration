@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Gradient hero card for high-emphasis feature summaries.
 class GradientHeroCard extends StatelessWidget {
+  /// Hero title.
   final String title;
+
+  /// Supporting subtitle.
   final String subtitle;
+
+  /// Optional content shown below the subtitle.
   final Widget? body;
+
+  /// Optional gradient override; defaults to the primary app gradient.
   final Gradient? gradient;
 
+  /// Creates a gradient hero card.
   const GradientHeroCard({
     super.key,
     required this.title,

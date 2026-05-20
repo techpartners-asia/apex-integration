@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Progress indicator for the resolved securities account onboarding steps.
 class SecAcntStepIndicator extends StatelessWidget {
+  /// Current wizard step.
   final SecAcntFlowStep currentStep;
+
+  /// Bootstrap state used to resolve which steps are included.
   final AcntBootstrapState? bootstrapState;
+
+  /// Current user profile used for skip logic.
   final UserEntityDto? currentUser;
 
+  /// Creates a securities account step indicator.
   const SecAcntStepIndicator({
     super.key,
     required this.currentStep,

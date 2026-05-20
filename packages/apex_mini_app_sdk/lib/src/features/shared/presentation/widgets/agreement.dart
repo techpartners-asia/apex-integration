@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Card wrapper for long agreement/contract body content.
 class AgreementBodyCard extends StatelessWidget {
+  /// Body content to display inside the card.
   final Widget child;
+
+  /// Optional inner padding.
   final EdgeInsetsGeometry? padding;
+
+  /// Card background color.
   final Color backgroundColor;
+
+  /// Optional border radius override.
   final double? borderRadius;
 
+  /// Creates a card wrapper for agreement body content.
   const AgreementBodyCard({
     super.key,
     required this.child,
@@ -46,16 +55,34 @@ class AgreementBodyCard extends StatelessWidget {
   }
 }
 
+/// Shared agreement page layout with optional title and consent checkbox.
 class AgreementPageTemplate extends StatelessWidget {
+  /// Optional title displayed above the agreement body.
   final String? title;
+
+  /// Agreement body widget, typically HTML or rich text.
   final Widget body;
+
+  /// Optional consent label. When set, [accepted] and [onAcceptedChanged] are
+  /// required.
   final String? consentLabel;
+
+  /// Current consent value.
   final bool? accepted;
+
+  /// Called when the user toggles the consent checkbox.
   final ValueChanged<bool>? onAcceptedChanged;
+
+  /// Whether to wrap [body] inside [AgreementBodyCard].
   final bool wrapBodyInCard;
+
+  /// Optional page content padding.
   final EdgeInsetsGeometry? contentPadding;
+
+  /// Optional padding for the body card.
   final EdgeInsetsGeometry? bodyCardPadding;
 
+  /// Creates the shared agreement/consent page layout.
   const AgreementPageTemplate({
     super.key,
     required this.body,

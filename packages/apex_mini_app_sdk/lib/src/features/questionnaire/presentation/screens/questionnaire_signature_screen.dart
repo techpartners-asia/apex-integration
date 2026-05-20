@@ -1,25 +1,38 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Signature step before questionnaire recommendation/questions.
 class QuestionnaireSignatureScreen extends StatefulWidget {
+  /// Service that uploads captured signature strokes.
   final SignatureUploadService signatureUploadService;
 
+  /// Creates the questionnaire signature screen.
   const QuestionnaireSignatureScreen({
     super.key,
     required this.signatureUploadService,
   });
 
   @override
-  State<QuestionnaireSignatureScreen> createState() => _QuestionnaireSignatureScreenState();
+  State<QuestionnaireSignatureScreen> createState() =>
+      _QuestionnaireSignatureScreenState();
 }
 
-class _QuestionnaireSignatureScreenState extends State<QuestionnaireSignatureScreen> {
+/// Captures signature strokes and uploads them before recommendation.
+class _QuestionnaireSignatureScreenState
+    extends State<QuestionnaireSignatureScreen> {
+  /// Signature stroke points; null values separate strokes.
   final List<Offset?> _points = <Offset?>[];
+
+  /// Whether a signature upload is in progress.
   bool _isUploading = false;
+
+  /// Last upload/validation error shown on the screen.
   String? _errorMessage;
 
+  /// Whether the user has drawn at least one stroke.
   bool get _hasSignature => _points.any((Offset? point) => point != null);
 
+  /// Uploads the signature and opens the recommendation step.
   Future<void> _openNextStep() async {
     if (_isUploading) {
       return;

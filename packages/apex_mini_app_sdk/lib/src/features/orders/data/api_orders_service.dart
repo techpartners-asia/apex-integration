@@ -1,10 +1,17 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Backend-backed implementation of the IPS orders service.
 class ApiOrdersService implements OrdersService {
+  /// IPS backend facade.
   final IpsBackendApi api;
+
+  /// Runtime backend config used for source FI code defaults.
   final SdkBackendConfig config;
+
+  /// Session controller used to ensure login-session auth before calls.
   final MiniAppSessionController session;
 
+  /// Creates the orders service.
   const ApiOrdersService({
     required this.api,
     required this.config,
@@ -56,6 +63,8 @@ class ApiOrdersService implements OrdersService {
       srcFiCode: config.runtime.defaultSrcFiCode,
     );
 
-    return orders.map((IpsOrderDto dto) => dto.toDomain()).toList(growable: false);
+    return orders
+        .map((IpsOrderDto dto) => dto.toDomain())
+        .toList(growable: false);
   }
 }

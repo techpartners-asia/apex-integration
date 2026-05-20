@@ -1,8 +1,11 @@
 part of '../reward_screen.dart';
 
+/// Static milestone list shown on the reward screen.
 class _MilestonesList extends StatelessWidget {
+  /// Creates the reward milestones list.
   const _MilestonesList({required this.l10n});
 
+  /// Localized reward labels.
   final SdkLocalizations l10n;
 
   @override
@@ -26,7 +29,9 @@ class _MilestonesList extends StatelessWidget {
   }
 }
 
+/// View data for one reward milestone row.
 class _RewardMilestoneData {
+  /// Creates milestone row data.
   const _RewardMilestoneData({
     required this.months,
     required this.reward,
@@ -37,15 +42,29 @@ class _RewardMilestoneData {
     this.statusLabel,
   });
 
+  /// Number of months required for this milestone.
   final int months;
+
+  /// Reward label shown for this milestone.
   final String reward;
+
+  /// Leading icon for the milestone state.
   final IconData icon;
+
+  /// Leading icon color.
   final Color iconColor;
+
+  /// Whether this is the user's current active milestone.
   final bool isActive;
+
+  /// Whether this milestone has already been completed.
   final bool isCompleted;
+
+  /// Optional status badge label.
   final String? statusLabel;
 }
 
+/// Demo/static reward milestone data used by the reward UI.
 const List<_RewardMilestoneData> _rewardMilestones = <_RewardMilestoneData>[
   _RewardMilestoneData(
     months: 3,
@@ -82,9 +101,12 @@ const List<_RewardMilestoneData> _rewardMilestones = <_RewardMilestoneData>[
   ),
 ];
 
+/// Card row for one reward milestone.
 class _RewardMilestoneRow extends StatelessWidget {
+  /// Creates a reward milestone row.
   const _RewardMilestoneRow(this.data);
 
+  /// Milestone data to render.
   final _RewardMilestoneData data;
 
   @override

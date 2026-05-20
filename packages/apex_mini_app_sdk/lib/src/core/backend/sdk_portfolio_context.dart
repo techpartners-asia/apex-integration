@@ -1,11 +1,24 @@
+/// Account context used by portfolio, statement, and holding APIs.
 class SdkPortfolioContext {
+  /// Broker identifier.
   final String? brokerId;
+
+  /// Source financial institution code.
   final String? srcFiCode;
+
+  /// IPS account code.
   final String? ipsAcntCode;
+
+  /// CASA account id used for statements.
   final int? casaAcntId;
+
+  /// Statement start date.
   final String? stmtStartDate;
+
+  /// Statement end date.
   final String? stmtEndDate;
 
+  /// Creates optional account context for portfolio and statement requests.
   const SdkPortfolioContext({
     this.brokerId,
     this.srcFiCode,
@@ -15,29 +28,38 @@ class SdkPortfolioContext {
     this.stmtEndDate,
   });
 
+  /// Sentinel that lets [copyWith] distinguish omitted values from `null`.
   static const Object _sentinel = Object();
 
+  /// Normalized broker id, or null when blank.
   String? get normalizedBrokerId => _normalizeText(brokerId);
 
+  /// Normalized source FI code, or null when blank.
   String? get normalizedSrcFiCode => _normalizeText(srcFiCode);
 
+  /// Normalized IPS account code, or null when blank.
   String? get normalizedIpsAcntCode => _normalizeText(ipsAcntCode);
 
+  /// Positive CASA account id, or null when missing/invalid.
   int? get normalizedCasaAcntId =>
       casaAcntId != null && casaAcntId! > 0 ? casaAcntId : null;
 
+  /// Normalized statement start date, or null when blank.
   String? get normalizedStmtStartDate => _normalizeText(stmtStartDate);
 
+  /// Normalized statement end date, or null when blank.
   String? get normalizedStmtEndDate => _normalizeText(stmtEndDate);
 
   // bool get hasStockYieldDetailContext =>
   //     normalizedBrokerId != null && normalizedSecurityCode != null;
 
+  /// Whether this context can load statement data.
   bool get hasStatementContext =>
       normalizedCasaAcntId != null &&
       normalizedStmtStartDate != null &&
       normalizedStmtEndDate != null;
 
+  /// Whether no usable context fields are present.
   bool get isEmpty =>
       normalizedBrokerId == null &&
       normalizedSrcFiCode == null &&
@@ -46,11 +68,13 @@ class SdkPortfolioContext {
       normalizedStmtStartDate == null &&
       normalizedStmtEndDate == null;
 
+  /// Resolves the source FI code using this context before [fallback].
   String resolveSrcFiCode(String fallback) {
     final String? normalizedFallback = _normalizeText(fallback);
     return normalizedSrcFiCode ?? normalizedFallback ?? '';
   }
 
+  /// Returns a copy with selected fields replaced.
   SdkPortfolioContext copyWith({
     Object? brokerId = _sentinel,
     Object? srcFiCode = _sentinel,
@@ -77,6 +101,7 @@ class SdkPortfolioContext {
     );
   }
 
+  /// Merges this context over [other], preferring non-empty values from this.
   SdkPortfolioContext merge(SdkPortfolioContext other) {
     return SdkPortfolioContext(
       brokerId: normalizedBrokerId ?? other.normalizedBrokerId,
@@ -88,6 +113,7 @@ class SdkPortfolioContext {
     );
   }
 
+  /// Returns a context with all text fields trimmed and invalid values removed.
   SdkPortfolioContext normalized({String? fallbackSrcFiCode}) {
     final String? normalizedFallbackSrcFiCode = _normalizeText(
       fallbackSrcFiCode,

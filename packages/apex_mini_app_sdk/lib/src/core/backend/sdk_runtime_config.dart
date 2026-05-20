@@ -1,19 +1,38 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Runtime backend configuration for all Apex mini-app API clients.
 class SdkRuntimeConfig {
+  /// TechInvestX base URL used for profile/current-user APIs.
   final String techInvestXUrl;
+
+  /// Login-session API base URL.
   final String loginSessionBaseUrl;
+
+  /// IPS protected API base URL.
   final String ipsApiBaseUrl;
+
+  /// Application credentials sent with API requests.
   final AppCredentials credentials;
+
+  /// Optional access token supplied by host/session.
   final String? accessToken;
+
+  /// Default source FI code used when a flow does not provide one.
   final String defaultSrcFiCode;
+
+  /// Default FI code used by account-opening APIs.
   final String defaultFiCode;
+
+  /// Runtime language code.
   final String language;
+
+  /// Whether API clients should log request/response diagnostics.
   final bool enableDebugLogs;
+
+  /// NE session value used by login-session bootstrap.
   final String? neSession;
 
+  /// Creates concrete runtime API configuration.
   const SdkRuntimeConfig({
     this.techInvestXUrl = '',
     required this.loginSessionBaseUrl,
@@ -27,6 +46,7 @@ class SdkRuntimeConfig {
     this.neSession,
   });
 
+  /// Resolves runtime config from explicit values, host config, and defaults.
   factory SdkRuntimeConfig.fromConfig({
     String? baseUrl,
     String? techInvestXUrl,
@@ -70,21 +90,27 @@ class SdkRuntimeConfig {
     );
   }
 
+  /// Whether both app id and secret are present.
   bool get hasCredentials =>
       credentials.appId.trim().isNotEmpty &&
       credentials.appSecret.trim().isNotEmpty;
 
+  /// Whether profile/current-user APIs can be called.
   bool get canFetchCurrentUser => hasCredentials && techInvestXUrl.isNotEmpty;
 
+  /// Whether protected IPS APIs can be called.
   bool get hasProtectedApi => hasCredentials && ipsApiBaseUrl.isNotEmpty;
 
+  /// Whether login-session bootstrap can be called.
   bool get canBootstrapSession =>
       hasProtectedApi &&
       loginSessionBaseUrl.isNotEmpty &&
       (neSession?.isNotEmpty ?? false);
 
+  /// Backend language flag, where English is `1` and Mongolian/default is `0`.
   int get languageFlag => language.toUpperCase() == 'EN' ? 1 : 0;
 
+  /// Creates an API runtime for current-user/profile APIs.
   ApiRuntime? createCurrentUserRuntime({TokenProvider? tokenProvider}) {
     if (!canFetchCurrentUser) return null;
 
@@ -106,6 +132,7 @@ class SdkRuntimeConfig {
     TokenProvider? tokenProvider,
   }) => createCurrentUserRuntime(tokenProvider: tokenProvider);
 
+  /// Creates an API runtime for protected IPS APIs.
   ApiRuntime? createProtectedRuntime({
     TokenProvider? tokenProvider,
     Future<String?> Function()? onRefreshSession,
@@ -124,6 +151,7 @@ class SdkRuntimeConfig {
     );
   }
 
+  /// Creates an API runtime for the login-session endpoint.
   ApiRuntime? createSessionRuntime() {
     if (!canBootstrapSession) return null;
 

@@ -1,13 +1,22 @@
 part of '../mini_app_api_repository.dart';
 
+/// Remote implementation of support/company-info operations.
 class RemoteMiniAppSupportRepository implements MiniAppSupportRepository {
   static const Duration _companyInfoCacheTtl = Duration(minutes: 10);
 
+  /// Low-level API facade for support endpoints.
   final MiniAppApiBackend api;
+
+  /// Session controller that supplies the admin auth token.
   final MiniAppSessionController session;
+
+  /// Logger used for endpoint failures.
   final MiniAppLogger logger;
+
+  /// Cache for the company info payload, which changes infrequently.
   final TimedMemoryCache<BranchInfoEntity> _companyInfoCache;
 
+  /// Creates the remote support repository.
   RemoteMiniAppSupportRepository({
     required this.api,
     required this.session,

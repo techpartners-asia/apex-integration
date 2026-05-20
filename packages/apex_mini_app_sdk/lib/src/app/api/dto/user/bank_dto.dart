@@ -1,16 +1,38 @@
 part of '../user_entity_dto.dart';
 
+/// Bank account section returned in profile/signup user payloads.
+///
+/// The same shape is reused for saved user bank data and selected bank details
+/// in onboarding flows.
 class BankDto {
+  /// Bank account number or IBAN.
   final String? accountNumber;
+
+  /// Account holder name.
   final String? accountName;
+
+  /// Bank identifier as a string because some API responses return it as text.
   final String? bankId;
+
+  /// Backend bank code.
   final String? bankCode;
+
+  /// Human-readable bank name.
   final String? bankName;
+
+  /// Numeric backend row identifier.
   final int? id;
+
+  /// Owning user identifier.
   final int? userId;
+
+  /// Raw creation timestamp.
   final String? createdAt;
+
+  /// Raw update timestamp.
   final String? updatedAt;
 
+  /// Creates a user bank DTO.
   const BankDto({
     this.accountNumber,
     this.accountName,
@@ -23,6 +45,7 @@ class BankDto {
     this.updatedAt,
   });
 
+  /// Parses backend bank JSON with fallback support for `bank_id`/`id`.
   factory BankDto.fromJson(Map<String, Object?> json) => BankDto(
     accountNumber: ApiParser.asNullableString(json['account_number']),
     accountName: ApiParser.asNullableString(json['account_name']),
@@ -37,6 +60,7 @@ class BankDto {
     updatedAt: ApiParser.asNullableString(json['updated_at']),
   );
 
+  /// Returns a copy with selected fields replaced.
   BankDto copyWith({
     String? accountNumber,
     String? accountName,

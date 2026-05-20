@@ -1,9 +1,18 @@
+/// Request body for securities account balance lookup.
 class GetSecAcntBalApiReq {
+  /// Optional Apex session id.
   final String? sessionId;
+
+  /// Source financial institution code.
   final String srcFiCode;
+
+  /// Optional backend flag controlling lookup mode.
   final int? flag;
+
+  /// Optional securities account code filter.
   final String? scAcntCode;
 
+  /// Creates a securities balance lookup request.
   const GetSecAcntBalApiReq({
     this.sessionId,
     required this.srcFiCode,
@@ -11,6 +20,7 @@ class GetSecAcntBalApiReq {
     this.scAcntCode,
   });
 
+  /// Converts this request to JSON and omits blank optional values.
   Map<String, Object?> toJson() {
     return <String, Object?>{
       if (sessionId case final String value when value.trim().isNotEmpty)

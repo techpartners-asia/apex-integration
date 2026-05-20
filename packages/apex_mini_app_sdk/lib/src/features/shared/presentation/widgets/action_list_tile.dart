@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// List tile used for wizard/action rows with a status icon.
 class ActionListTile extends StatelessWidget {
+  /// Tile title.
   final String title;
+
+  /// Step/action status that controls icon and color.
   final StepStatus status;
+
+  /// Tap callback.
   final VoidCallback? onTap;
 
+  /// Creates an action/status list tile.
   const ActionListTile({
     super.key,
     required this.title,

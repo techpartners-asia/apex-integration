@@ -1,9 +1,14 @@
 part of '../help_sections.dart';
 
+/// Renders the branch image, address, schedule, and map action.
 class HelpLocationSection extends StatelessWidget {
+  /// Localized labels for the location section.
   final SdkLocalizations l10n;
+
+  /// Location payload to display.
   final LocationEntity location;
 
+  /// Creates a branch location card.
   const HelpLocationSection({
     super.key,
     required this.l10n,

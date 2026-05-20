@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 const List<Color> _shimmerColors = <Color>[
   Color(0xFFF0ECE6),
   Color(0xFFF7F4EF),
   Color(0xFFF0ECE6),
 ];
 
+/// Generic shimmer placeholder for page-level loading states.
 class SkeletonLoader extends StatefulWidget {
+  /// Creates the page-level skeleton loader.
   const SkeletonLoader({super.key});
 
   @override
   State<SkeletonLoader> createState() => _SkeletonLoaderState();
 }
 
+/// Owns the shimmer animation for [SkeletonLoader].
 class _SkeletonLoaderState extends State<SkeletonLoader>
     with SingleTickerProviderStateMixin {
+  /// Repeating shimmer animation controller.
   late final AnimationController _controller;
 
   @override
@@ -62,10 +65,15 @@ class _SkeletonLoaderState extends State<SkeletonLoader>
   }
 }
 
+/// Rectangular shimmer card placeholder.
 class _SkeletonCard extends StatelessWidget {
+  /// Creates a skeleton card placeholder.
   const _SkeletonCard({required this.animation, this.height});
 
+  /// Shimmer animation.
   final Animation<double> animation;
+
+  /// Optional explicit card height.
   final double? height;
 
   @override
@@ -92,10 +100,15 @@ class _SkeletonCard extends StatelessWidget {
   }
 }
 
+/// Group of shimmer text-line placeholders.
 class _SkeletonLines extends StatelessWidget {
+  /// Creates skeleton text lines.
   const _SkeletonLines({required this.animation, required this.lineCount});
 
+  /// Shimmer animation.
   final Animation<double> animation;
+
+  /// Number of lines to render.
   final int lineCount;
 
   @override
@@ -134,17 +147,22 @@ class _SkeletonLines extends StatelessWidget {
   }
 }
 
+/// Shimmer placeholder list for repeated rows.
 class SkeletonListLoader extends StatefulWidget {
+  /// Creates a skeleton list loader.
   const SkeletonListLoader({super.key, this.itemCount = 4});
 
+  /// Number of skeleton rows to show.
   final int itemCount;
 
   @override
   State<SkeletonListLoader> createState() => _SkeletonListLoaderState();
 }
 
+/// Owns the shimmer animation for [SkeletonListLoader].
 class _SkeletonListLoaderState extends State<SkeletonListLoader>
     with SingleTickerProviderStateMixin {
+  /// Repeating shimmer animation controller.
   late final AnimationController _controller;
 
   @override
@@ -189,9 +207,12 @@ class _SkeletonListLoaderState extends State<SkeletonListLoader>
   }
 }
 
+/// Single repeated skeleton row.
 class _SkeletonListItem extends StatelessWidget {
+  /// Creates one skeleton list item.
   const _SkeletonListItem({required this.animation});
 
+  /// Shimmer animation.
   final Animation<double> animation;
 
   @override

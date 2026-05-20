@@ -2,10 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Circular close button used by normal and splash/overlay screens.
 class CustomCloseBtn extends StatelessWidget {
+  /// Callback invoked when the button is tapped.
   final VoidCallback onPressed;
+
+  /// Whether to use the splash-screen color inversion.
   final bool isSplashBtn;
 
+  /// Creates the circular close button used by mini-app chrome.
   const CustomCloseBtn({
     super.key,
     required this.onPressed,

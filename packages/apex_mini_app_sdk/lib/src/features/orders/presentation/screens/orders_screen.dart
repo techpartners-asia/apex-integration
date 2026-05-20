@@ -2,10 +2,12 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
+/// IPS order history screen with refresh and pending-order cancellation.
 class OrdersScreen extends StatelessWidget {
+  /// Creates the IPS order history screen.
   const OrdersScreen({super.key});
 
+  /// Confirms and submits cancellation for a pending order.
   Future<void> cancelOrder(BuildContext context, IpsOrder order) async {
     final l10n = context.l10n;
     final bool? confirmed = await showConfirmationSheet(
@@ -114,12 +116,21 @@ class OrdersScreen extends StatelessWidget {
   }
 }
 
+/// Single order row used inside [OrdersScreen].
 class OrderRow extends StatelessWidget {
+  /// Order data to render.
   final IpsOrder order;
+
+  /// Whether this row's cancellation request is running.
   final bool cancelling;
+
+  /// Whether to show a divider below the row.
   final bool showDivider;
+
+  /// Optional cancel callback for pending orders.
   final VoidCallback? onCancel;
 
+  /// Creates an order row.
   const OrderRow({
     super.key,
     required this.order,

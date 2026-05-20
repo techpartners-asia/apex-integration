@@ -7,9 +7,15 @@ import 'package:flutter/foundation.dart';
 
 import 'api_config.dart';
 
+/// Dio client wrapper that applies base options, cookies, and debug logging.
 class ApiClient {
+  /// HTTP configuration for this client.
   final ApiConfig config;
+
+  /// Underlying Dio instance.
   final Dio dio;
+
+  /// Cookie jar shared by Dio cookie manager.
   final CookieJar cookieJar;
 
   ApiClient({required this.config, Dio? dio, CookieJar? cookieJar})
@@ -25,6 +31,7 @@ class ApiClient {
     this.dio.interceptors.add(CookieManager(this.cookieJar));
   }
 
+  /// Adds debug request/response logging once in debug builds.
   void attachDebugLoggingInterceptor() {
     if (!kDebugMode) {
       return;
@@ -38,11 +45,18 @@ class ApiClient {
   }
 }
 
+/// Debug-only Dio interceptor that prints sanitized request/response data.
 class _ApiDebugLogInterceptor extends Interceptor {
+  /// Creates the debug log interceptor.
   const _ApiDebugLogInterceptor();
 
+  /// Pretty JSON encoder used for map/list payloads.
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
+
+  /// Max debug-print chunk size to avoid truncation by the console.
   static const int _chunkSize = 800;
+
+  /// Header/body keys that must be redacted from debug logs.
   static const Set<String> _sensitiveKeys = <String>{
     'authorization',
     'cookie',
@@ -101,6 +115,7 @@ class _ApiDebugLogInterceptor extends Interceptor {
     handler.next(err);
   }
 
+  /// Prints a multi-line log block in chunks.
   void _printBlock(String prefix, List<String> lines) {
     final String block = '$prefix\n${lines.join('\n')}';
     for (int index = 0; index < block.length; index += _chunkSize) {
@@ -111,6 +126,7 @@ class _ApiDebugLogInterceptor extends Interceptor {
     }
   }
 
+  /// Sanitizes, truncates, and stringifies arbitrary request/response values.
   String _formatValue(Object? value) {
     final Object? sanitized = _truncateLongFields(_sanitizeValue(value));
     if (sanitized == null) {
@@ -128,6 +144,7 @@ class _ApiDebugLogInterceptor extends Interceptor {
     }
   }
 
+  /// Redacts sensitive values and converts [FormData] to safe metadata.
   Object? _sanitizeValue(Object? value, {String? key}) {
     if (_isSensitiveKey(key)) {
       return '<redacted>';
@@ -173,6 +190,7 @@ class _ApiDebugLogInterceptor extends Interceptor {
     return value;
   }
 
+  /// Returns true when a key likely contains credentials or session material.
   bool _isSensitiveKey(String? key) {
     final String normalized = key?.trim().toLowerCase() ?? '';
     if (normalized.isEmpty) {
@@ -188,6 +206,7 @@ class _ApiDebugLogInterceptor extends Interceptor {
   }
 }
 
+/// Truncates large values before debug logging.
 dynamic _truncateLongFields(dynamic value, {int maxStringLength = 500}) {
   if (value == null) return null;
 

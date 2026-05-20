@@ -1,13 +1,20 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Builds common Apex/IPS request headers.
 class ApiHeadersBuilder {
+  /// App id/secret pair.
   final AppCredentials credentials;
+
+  /// Token source.
   final TokenProvider tokenProvider;
+
+  /// Header key used for the token.
   final String tokenHeaderName;
+
+  /// Whether token value should be prefixed with `Bearer`.
   final bool useBearerToken;
 
+  /// Creates a backend header builder.
   const ApiHeadersBuilder({
     required this.credentials,
     required this.tokenProvider,
@@ -15,6 +22,7 @@ class ApiHeadersBuilder {
     this.useBearerToken = false,
   });
 
+  /// Builds headers for one request.
   Future<Map<String, String>> build({
     Map<String, String> extraHeaders = const <String, String>{},
     String? accessTokenOverride,

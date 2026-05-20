@@ -1,26 +1,69 @@
+/// Portfolio balance/allocation overview returned by dashboard APIs.
 class PortfolioOverview {
+  /// Backend response code, if available.
   final int? responseCode;
+
+  /// Backend response description.
   final String? responseDesc;
+
+  /// Raw result value for diagnostics.
   final Object? resultValue;
+
+  /// Currency code used by dashboard amounts.
   final String currency;
+
+  /// Available cash/balance amount.
   final double? availableBalance;
+
+  /// Invested balance amount.
   final double? investedBalance;
+
+  /// Profit/loss amount.
   final double? profitOrLoss;
+
+  /// Yield amount.
   final double? yieldAmount;
+
+  /// Profit percentage.
   final double? profitPercent;
+
+  /// Summary text for statement/dashboard cards.
   final String? statementSummary;
+
+  /// Total stock allocation amount.
   final double? stockTotal;
+
+  /// Total bond allocation amount.
   final double? bondTotal;
+
+  /// Stock allocation percentage.
   final double? stockPercent;
+
+  /// Bond allocation percentage.
   final double? bondPercent;
+
+  /// Cash allocation amount.
   final double? cashTotal;
+
+  /// Selected package quantity.
   final double? packQty;
+
+  /// Selected/current package amount.
   final double? packAmount;
+
+  /// Package fee amount.
   final double? packFee;
+
+  /// Optional backend description.
   final String? description;
+
+  /// Securities included in the portfolio.
   final List<PortfolioSecurity> security;
+
+  /// Current package details.
   final PortfolioPackDetail? packDetail;
 
+  /// Creates a portfolio overview domain model.
   const PortfolioOverview({
     this.responseCode,
     this.responseDesc,
@@ -45,8 +88,14 @@ class PortfolioOverview {
     this.packDetail,
   });
 
+  /// Internal sentinel that lets [copyWith] distinguish omitted values from
+  /// explicit null assignments.
   static const Object _sentinel = Object();
 
+  /// Returns a copy of this overview.
+  ///
+  /// Nullable fields use sentinel parameters so callers can intentionally clear
+  /// a value by passing `null`.
   PortfolioOverview copyWith({
     Object? responseCode = _sentinel,
     Object? responseDesc = _sentinel,
@@ -126,19 +175,43 @@ class PortfolioOverview {
   }
 }
 
+/// Security allocation/detail row inside [PortfolioOverview].
 class PortfolioSecurity {
+  /// Backend security code.
   final String securityCode;
+
+  /// First investment date.
   final DateTime? firstInvDate;
+
+  /// First investment price.
   final double? firstPrice;
+
+  /// Current market price.
   final double? currentPrice;
+
+  /// Security yield/portfolio percentage.
   final double? percent;
+
+  /// Quantity held.
   final double? qty;
+
+  /// Currency code.
   final String? curCode;
+
+  /// Portfolio allocation percentage, mutable because some services calculate
+  /// it after parsing all securities.
   double? portfolioPercent;
+
+  /// Percentage within the security type group.
   final double? typePercent;
+
+  /// Backend security type.
   final String? securityType;
+
+  /// Historical close prices for charts.
   final List<PortfolioClosePrice>? closePrices;
 
+  /// Creates a security allocation/detail row.
   PortfolioSecurity({
     required this.securityCode,
     this.firstInvDate,
@@ -154,25 +227,45 @@ class PortfolioSecurity {
   });
 }
 
+/// Historical close price point for a security chart.
 class PortfolioClosePrice {
+  /// Close price value.
   final double closePrice;
+
+  /// Trade date for the close price.
   final DateTime? tradeDate;
 
+  /// Creates a historical close price point.
   const PortfolioClosePrice({
     required this.closePrice,
     this.tradeDate,
   });
 }
 
+/// Investment package details embedded in portfolio overview.
 class PortfolioPackDetail {
+  /// Whether this pack is backend-recommended.
   final bool? isRecommended;
+
+  /// Package code.
   final String? packCode;
+
+  /// Primary package name.
   final String? name;
+
+  /// Secondary/localized package name.
   final String? name2;
+
+  /// Package description.
   final String? packDesc;
+
+  /// Bond allocation percentage.
   final double? bondPercent;
+
+  /// Stock allocation percentage.
   final double? stockPercent;
 
+  /// Creates embedded package details for portfolio overview.
   const PortfolioPackDetail({
     this.isRecommended,
     this.packCode,

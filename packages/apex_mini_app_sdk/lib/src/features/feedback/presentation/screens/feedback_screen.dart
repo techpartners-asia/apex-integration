@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Feedback inbox screen with pagination and create-feedback entry point.
 class FeedbackScreen extends StatelessWidget {
+  /// Creates the feedback screen.
   const FeedbackScreen({super.key});
 
   @override
@@ -31,6 +32,7 @@ class FeedbackScreen extends StatelessWidget {
     );
   }
 
+  /// Builds the appropriate loading, error, empty, or list state.
   Widget _buildBody(
     BuildContext context,
     FeedbackState state,
@@ -64,6 +66,7 @@ class FeedbackScreen extends StatelessWidget {
     );
   }
 
+  /// Opens the feedback creation screen with the existing cubit instance.
   void _openCreateFeedback(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -76,9 +79,12 @@ class FeedbackScreen extends StatelessWidget {
   }
 }
 
+/// Empty feedback state with a create-feedback action.
 class _FeedbackEmptyState extends StatelessWidget {
+  /// Creates the feedback empty state.
   const _FeedbackEmptyState({required this.onCreatePressed});
 
+  /// Callback for opening the create-feedback screen.
   final VoidCallback onCreatePressed;
 
   @override
@@ -126,15 +132,22 @@ class _FeedbackEmptyState extends StatelessWidget {
   }
 }
 
+/// Feedback list state with infinite-scroll loading and create action.
 class _FeedbackListState extends StatelessWidget {
+  /// Creates the feedback list state.
   const _FeedbackListState({
     required this.state,
     required this.onCreatePressed,
     required this.onLoadMore,
   });
 
+  /// Current feedback state.
   final FeedbackState state;
+
+  /// Callback for opening the create-feedback screen.
   final VoidCallback onCreatePressed;
+
+  /// Callback for loading the next page.
   final VoidCallback onLoadMore;
 
   @override
@@ -188,9 +201,12 @@ class _FeedbackListState extends StatelessWidget {
   }
 }
 
+/// Card tile for one feedback item.
 class _FeedbackListTile extends StatelessWidget {
+  /// Creates a feedback list tile.
   const _FeedbackListTile({required this.item});
 
+  /// Feedback item to render.
   final FeedbackEntity item;
 
   @override
@@ -264,6 +280,7 @@ class _FeedbackListTile extends StatelessWidget {
   }
 }
 
+/// Formats backend feedback timestamps for display.
 String _formatFeedbackTimestamp(String raw) {
   final String text = raw.trim();
   if (text.isEmpty) return raw;
@@ -274,9 +291,12 @@ String _formatFeedbackTimestamp(String raw) {
   return DateFormat('yyyy-MM-dd HH:mm').format(parsed.toLocal());
 }
 
+/// Status chip for one feedback item.
 class _FeedbackStatusChip extends StatelessWidget {
+  /// Raw feedback status.
   final String status;
 
+  /// Creates a feedback status chip.
   const _FeedbackStatusChip({required this.status});
 
   @override

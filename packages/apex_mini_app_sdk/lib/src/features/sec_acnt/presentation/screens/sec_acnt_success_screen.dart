@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Short-flow success screen shown before the service agreement.
 class SecAcntSuccessScreen extends StatelessWidget {
+  /// Creates the success screen.
   const SecAcntSuccessScreen({
     super.key,
     required this.bootstrapState,
@@ -10,10 +11,16 @@ class SecAcntSuccessScreen extends StatelessWidget {
     this.currentUser,
   });
 
+  /// Bootstrap data carried through the flow.
   final AcntBootstrapState? bootstrapState;
+
+  /// Draft personal/bank data carried to later steps.
   final SecAcntFlowDraft draft;
+
+  /// Current profile used by skip logic.
   final UserEntityDto? currentUser;
 
+  /// Opens the service agreement step.
   void _openNextStep(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(

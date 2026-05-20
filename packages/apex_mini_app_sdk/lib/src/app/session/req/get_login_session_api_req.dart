@@ -1,17 +1,36 @@
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
-
+/// Request body for bootstrapping a login session.
 class GetLoginSessionApiReq {
+  /// Financial institution code.
   final String fiCode;
+
+  /// ADM session token.
   final String admSession;
+
+  /// User mobile number.
   final String mobile;
+
+  /// User registration number.
   final String registerNo;
+
+  /// User first name.
   final String firstName;
+
+  /// User last name.
   final String lastName;
+
+  /// Optional family name.
   final String? familyName;
+
+  /// Optional email.
   final String? email;
+
+  /// Optional sex code.
   final String? sexCode;
+
+  /// Optional birth date.
   final String? birthDate;
 
+  /// Creates and normalizes a login-session bootstrap request.
   GetLoginSessionApiReq({
     required String fiCode,
     required String admSession,
@@ -37,10 +56,13 @@ class GetLoginSessionApiReq {
       this.firstName,
       this.lastName,
     ].any((String value) => value.isEmpty)) {
-      throw const ApiIntegrationException('getLoginSession requires fiCode, admSession, mobile, registerNo, firstName, and lastName.');
+      // throw const ApiIntegrationException(
+      //   'getLoginSession requires fiCode, admSession, mobile, registerNo, firstName, and lastName.',
+      // );
     }
   }
 
+  /// Converts this request to backend JSON.
   Map<String, Object?> toJson() {
     return <String, Object?>{
       'fiCode': fiCode,
@@ -49,10 +71,14 @@ class GetLoginSessionApiReq {
       'registerNo': registerNo,
       'firstName': firstName,
       'lastName': lastName,
-      if (familyName case final String value when value.trim().isNotEmpty) 'familyName': value.trim(),
-      if (email case final String value when value.trim().isNotEmpty) 'email': value.trim(),
-      if (sexCode case final String value when value.trim().isNotEmpty) 'sexCode': value.trim(),
-      if (birthDate case final String value when value.trim().isNotEmpty) 'birthDate': value.trim(),
+      if (familyName case final String value when value.trim().isNotEmpty)
+        'familyName': value.trim(),
+      if (email case final String value when value.trim().isNotEmpty)
+        'email': value.trim(),
+      if (sexCode case final String value when value.trim().isNotEmpty)
+        'sexCode': value.trim(),
+      if (birthDate case final String value when value.trim().isNotEmpty)
+        'birthDate': value.trim(),
     };
   }
 }

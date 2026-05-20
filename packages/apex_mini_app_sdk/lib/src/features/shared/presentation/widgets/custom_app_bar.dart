@@ -5,24 +5,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Standard Apex mini-app app bar with safe close/back behavior.
 class CustomAppBar extends StatelessWidget
     implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
+  /// Optional title. When omitted, InvestX logo is shown.
   final String? title;
+
+  /// Optional trailing widget before clear/close actions.
   final Widget? trailing;
+
+  /// Whether to show a back button.
   final bool showBackButton;
+
+  /// Whether to show the close button.
   final bool showCloseButton;
+
+  /// Whether to show the clear button.
   final bool showClearButton;
+
+  /// Back action override.
   final VoidCallback? onBack;
+
+  /// Close action override.
   final VoidCallback? onClose;
+
+  /// Clear action.
   final VoidCallback? onClear;
+
+  /// Title text style override.
   final TextStyle? titleStyle;
+
+  /// Whether title/logo should be centered.
   final bool centerTitle;
+
+  /// Whether to reserve leading space when no back button is shown.
   final bool reserveLeadingSpace;
+
+  /// Optional title spacing override.
   final double? titleSpacing;
+
+  /// App bar background.
   final Color backgroundColor;
+
+  /// Whether to draw the bottom divider.
   final bool showBottomBorder;
+
+  /// Optional bottom tab content.
   final Widget? tab;
 
+  /// Creates the standard Apex mini-app app bar.
   const CustomAppBar({
     super.key,
     this.title,
@@ -160,11 +191,18 @@ class CustomAppBar extends StatelessWidget
   }
 }
 
+/// Fixed-width leading/trailing slot used to keep app-bar title alignment.
 class _CustomAppBarActionSlot extends StatelessWidget {
+  /// Reserved slot width.
   final double width;
+
+  /// Action child to center inside the slot.
   final Widget child;
+
+  /// Optional left padding for visual spacing.
   final double leftPadding;
 
+  /// Creates an app-bar action slot.
   const _CustomAppBarActionSlot({
     required this.width,
     required this.child,

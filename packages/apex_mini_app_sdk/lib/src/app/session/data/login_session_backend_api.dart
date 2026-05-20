@@ -1,14 +1,20 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// API wrapper for resolving the Apex login session used by downstream calls.
 class LoginSessionBackendApi {
+  /// HTTP executor supplied by the SDK runtime.
   final ApiExecutor? executor;
+
+  /// Runtime config containing credentials, base URL, and NE session values.
   final SdkRuntimeConfig runtimeConfig;
 
+  /// Creates the API wrapper.
   const LoginSessionBackendApi({
     required this.executor,
     required this.runtimeConfig,
   });
 
+  /// Calls the login-session endpoint and returns the raw JSON envelope.
   Future<Map<String, Object?>> getLoginSessionRaw(
     GetLoginSessionApiReq req,
   ) async {
@@ -39,6 +45,7 @@ class LoginSessionBackendApi {
     );
   }
 
+  /// Calls the login-session endpoint and parses it into a DTO.
   Future<LoginSessionResponseDto> getLoginSession(
     GetLoginSessionApiReq req,
   ) async {

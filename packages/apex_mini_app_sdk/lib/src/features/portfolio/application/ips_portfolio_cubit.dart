@@ -1,10 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Cubit that loads the portfolio tab/dashboard.
 class IpsPortfolioCubit extends Cubit<LoadableState<IpsPortfolioViewData>> {
+  /// Portfolio data service.
   final PortfolioService service;
+
+  /// Localizations used for user-facing errors.
   final SdkLocalizations l10n;
+
+  /// Diagnostic logger.
   final MiniAppLogger logger;
 
   IpsPortfolioCubit({
@@ -13,6 +18,7 @@ class IpsPortfolioCubit extends Cubit<LoadableState<IpsPortfolioViewData>> {
     this.logger = const SilentMiniAppLogger(),
   }) : super(const LoadableState<IpsPortfolioViewData>());
 
+  /// Loads overview and holdings data.
   Future<void> load() async {
     if (state.isLoading) {
       return;

@@ -5,14 +5,27 @@ import '../theme/mini_app_state_colors.dart';
 import 'custom_text.dart';
 import 'mini_app_surface_card.dart';
 
+/// Shared panel used by loading, empty, success, and error states.
 class MiniAppStatePanel extends StatelessWidget {
+  /// Main state title.
   final String title;
+
+  /// Supporting state message.
   final String message;
+
+  /// Leading icon/progress/custom visual.
   final Widget leading;
+
+  /// Optional action button or custom action widget.
   final Widget? action;
+
+  /// Panel surface color.
   final Color surfaceColor;
+
+  /// Panel border color.
   final Color borderColor;
 
+  /// Creates a generic state panel.
   const MiniAppStatePanel({
     super.key,
     required this.title,

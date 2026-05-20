@@ -1,9 +1,14 @@
 part of '../help_sections.dart';
 
+/// Renders tappable email and phone contact rows on the Help screen.
 class HelpContactSection extends StatelessWidget {
+  /// Localized labels for contact rows.
   final SdkLocalizations l10n;
+
+  /// Company payload that supplies email and phone values.
   final BranchInfoEntity company;
 
+  /// Creates a contact section for the supplied company data.
   const HelpContactSection({
     super.key,
     required this.l10n,

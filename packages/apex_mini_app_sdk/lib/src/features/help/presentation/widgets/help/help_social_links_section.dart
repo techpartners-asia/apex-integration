@@ -1,8 +1,11 @@
 part of '../help_sections.dart';
 
+/// Displays support social links in a two-column grid.
 class HelpSocialLinksSection extends StatelessWidget {
+  /// Links to render as social chips.
   final List<SocialMediaEntity> links;
 
+  /// Creates a social-links section.
   const HelpSocialLinksSection({
     super.key,
     required this.links,

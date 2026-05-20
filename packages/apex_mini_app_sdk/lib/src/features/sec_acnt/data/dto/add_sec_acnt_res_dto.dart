@@ -1,11 +1,20 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Response DTO for a securities account opening request.
 class AddSecuritiesAcntResDto {
+  /// Backend success or informational message.
   final String? message;
+
+  /// Backend reference number for the request.
   final int? refNo;
+
+  /// Source financial institution code returned by the backend.
   final String? srcFiCode;
+
+  /// MCSD request details created by the backend.
   final McsdReqDto? mcsdReq;
 
+  /// Creates a securities account opening response DTO.
   const AddSecuritiesAcntResDto({
     this.message,
     this.refNo,
@@ -13,6 +22,7 @@ class AddSecuritiesAcntResDto {
     this.mcsdReq,
   });
 
+  /// Parses and validates the action response before mapping fields.
   factory AddSecuritiesAcntResDto.fromJson(Map<String, Object?> json) {
     ApiActionResultParser.ensureSuccess(
       json,
@@ -29,6 +39,7 @@ class AddSecuritiesAcntResDto {
     );
   }
 
+  /// Converts the API DTO into the domain result used by onboarding flow.
   SecAcntRequestResult toDomain() {
     return SecAcntRequestResult(
       message: message,
@@ -39,32 +50,81 @@ class AddSecuritiesAcntResDto {
   }
 }
 
+/// MCSD request payload returned after securities account opening.
 class McsdReqDto {
+  /// Broker identifier.
   final int? brokerId;
+
+  /// User country.
   final String? country;
+
+  /// Bank account number.
   final String? bankAccountNumber;
+
+  /// BDC account number.
   final String? bdcAccountNumber;
+
+  /// User gender.
   final String? gender;
+
+  /// Registration number.
   final String? registryNumber;
+
+  /// Bank code.
   final String? bankCode;
+
+  /// User first name.
   final String? firstName;
+
+  /// User last name.
   final String? lastName;
+
+  /// Bank name.
   final String? bankName;
+
+  /// Backend customer type code.
   final int? customerType;
+
+  /// Debt fee amount.
   final double? feeDebt;
+
+  /// Equity fee amount.
   final double? feeEquity;
+
+  /// BDC account identifier.
   final String? bdcAccountId;
+
+  /// Home/residential address.
   final String? homeAddress;
+
+  /// MCSD account identifier.
   final String? mcsdAccountId;
+
+  /// Home phone number.
   final String? homePhone;
+
+  /// Mobile phone number.
   final String? mobilePhone;
+
+  /// Occupation text.
   final String? occupation;
+
+  /// Corporate debt fee amount.
   final double? feeCorpDebt;
+
+  /// User birth date.
   final String? birthDate;
+
+  /// Request creation date.
   final String? createdDate;
+
+  /// Request received date.
   final String? receivedDate;
+
+  /// CASA accounts returned with the MCSD request.
   final List<CasaAccountDto> casaAccounts;
 
+  /// Creates an MCSD request DTO.
   const McsdReqDto({
     this.brokerId,
     this.country,
@@ -92,6 +152,7 @@ class McsdReqDto {
     this.casaAccounts = const <CasaAccountDto>[],
   });
 
+  /// Parses MCSD request JSON returned by the account-opening API.
   factory McsdReqDto.fromJson(Map<String, Object?> json) {
     return McsdReqDto(
       brokerId: ApiParser.asNullableInt(json['brokerId']),
@@ -119,13 +180,15 @@ class McsdReqDto {
       receivedDate: ApiParser.asNullableString(json['recievedDate']),
       casaAccounts: ApiParser.asObjectMapList(json['casaAcnt'])
           .map(
-            (Map<String, Object?> item) => CasaAccountDto.fromNullableJson(item),
+            (Map<String, Object?> item) =>
+                CasaAccountDto.fromNullableJson(item),
           )
           .whereType<CasaAccountDto>()
           .toList(growable: false),
     );
   }
 
+  /// Returns null for absent/empty nested MCSD payloads.
   static McsdReqDto? fromNullableJson(Map<String, Object?>? json) {
     if (json == null || json.isEmpty) {
       return null;
@@ -133,6 +196,7 @@ class McsdReqDto {
     return McsdReqDto.fromJson(json);
   }
 
+  /// Converts this DTO into the domain MCSD request.
   SecAcntMcsdRequest toDomain() {
     return SecAcntMcsdRequest(
       brokerId: brokerId,
@@ -158,18 +222,28 @@ class McsdReqDto {
       birthDate: birthDate,
       createdDate: createdDate,
       receivedDate: receivedDate,
-      casaAccounts: casaAccounts.map((CasaAccountDto account) => account.toDomain()).toList(growable: false),
+      casaAccounts: casaAccounts
+          .map((CasaAccountDto account) => account.toDomain())
+          .toList(growable: false),
     );
   }
 }
 
+/// CASA account item nested in an MCSD request response.
 class CasaAccountDto {
+  /// CASA account code.
   final String? accountCode;
+
+  /// Currency code.
   final String? currencyCode;
+
+  /// Backend account type.
   final int? type;
 
+  /// Creates a nested CASA account DTO.
   const CasaAccountDto({this.accountCode, this.currencyCode, this.type});
 
+  /// Parses CASA account JSON.
   factory CasaAccountDto.fromJson(Map<String, Object?> json) {
     return CasaAccountDto(
       accountCode: ApiParser.asNullableString(json['casaAcntCode']),
@@ -178,6 +252,7 @@ class CasaAccountDto {
     );
   }
 
+  /// Returns null for absent/empty CASA JSON objects.
   static CasaAccountDto? fromNullableJson(Map<String, Object?>? json) {
     if (json == null || json.isEmpty) {
       return null;
@@ -185,6 +260,7 @@ class CasaAccountDto {
     return CasaAccountDto.fromJson(json);
   }
 
+  /// Converts this DTO into the domain CASA account model.
   SecAcntCasaAccount toDomain() {
     return SecAcntCasaAccount(
       accountCode: accountCode,

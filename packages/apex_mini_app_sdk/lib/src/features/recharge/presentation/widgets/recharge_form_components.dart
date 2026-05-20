@@ -3,12 +3,21 @@ import 'package:flutter/services.dart';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Centered numeric input used to enter recharge pack quantity.
 class RechargeQuantityInput extends StatelessWidget {
+  /// Text controller shared with the owning screen/sheet.
   final TextEditingController controller;
+
+  /// Focus node used to request keyboard focus explicitly.
   final FocusNode focusNode;
+
+  /// Called whenever the quantity text changes.
   final ValueChanged<String>? onChanged;
+
+  /// Whether tapping outside should hide keyboard focus.
   final bool unfocusOnTapOutside;
 
+  /// Creates the centered recharge quantity input.
   const RechargeQuantityInput({
     super.key,
     required this.controller,
@@ -59,9 +68,12 @@ class RechargeQuantityInput extends StatelessWidget {
   }
 }
 
+/// Pricing summary card for recharge unit price, fee, and total payable amount.
 class RechargePricingSummaryCard extends StatelessWidget {
+  /// Current recharge state used for pricing values.
   final IpsRechargeState state;
 
+  /// Creates the recharge pricing summary card.
   const RechargePricingSummaryCard({super.key, required this.state});
 
   @override
@@ -127,9 +139,12 @@ class RechargePricingSummaryCard extends StatelessWidget {
   }
 }
 
+/// Painter for dashed separators in recharge pricing cards.
 class RechargeDashedLinePainter extends CustomPainter {
+  /// Creates a dashed-line painter with the provided color.
   const RechargeDashedLinePainter({required this.color});
 
+  /// Dash color.
   final Color color;
 
   @override

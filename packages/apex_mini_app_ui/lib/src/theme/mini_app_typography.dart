@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
 
+/// Typography scale used by the mini app regardless of host app text theme.
 final class MiniAppTypography {
+  /// Bundled package font family.
   static const String fontFamily = 'Zona Pro';
+
+  /// Package that owns the font assets.
   static const String package = 'apex_mini_app_ui';
+
+  /// Regular font weight.
   static const FontWeight regular = FontWeight.w400;
+
+  /// Medium font weight.
   static const FontWeight medium = FontWeight.w500;
+
+  /// Semi-bold font weight.
   static const FontWeight semiBold = FontWeight.w600;
+
+  /// Bold font weight.
   static const FontWeight bold = FontWeight.w700;
+
+  /// Extra-bold font weight.
   static const FontWeight extraBold = FontWeight.w800;
+
+  /// Black/heaviest font weight.
   static const FontWeight black = FontWeight.w900;
+
+  /// Default text color for standalone text styles.
   static const Color defaultTextColor = Colors.black;
 
+  /// Largest display heading style.
   static const TextStyle h1 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -19,6 +38,7 @@ final class MiniAppTypography {
     fontWeight: black,
   );
 
+  /// Alternate largest display heading style.
   static const TextStyle h2 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -27,6 +47,7 @@ final class MiniAppTypography {
     fontWeight: extraBold,
   );
 
+  /// Large display heading style.
   static const TextStyle h3 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -35,6 +56,7 @@ final class MiniAppTypography {
     fontWeight: bold,
   );
 
+  /// Medium display heading style.
   static const TextStyle h4 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -43,6 +65,7 @@ final class MiniAppTypography {
     fontWeight: bold,
   );
 
+  /// Small display heading style.
   static const TextStyle h5 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -51,6 +74,7 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  /// Section heading style.
   static const TextStyle h6 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -59,6 +83,7 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  /// Dialog/page heading style.
   static const TextStyle h7 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -67,6 +92,7 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  /// Compact heading style.
   static const TextStyle h8 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -75,6 +101,7 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  /// Primary title style.
   static const TextStyle title1 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -83,10 +110,16 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  /// Alias for [title1].
   static const TextStyle title2 = title1;
+
+  /// Alias for [title1].
   static const TextStyle title3 = title1;
+
+  /// Alias for [title1].
   static const TextStyle subtitle1 = title1;
 
+  /// Primary subtitle style.
   static const TextStyle subtitle2 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -95,6 +128,7 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  /// Compact subtitle style.
   static const TextStyle subtitle3 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -103,6 +137,7 @@ final class MiniAppTypography {
     fontWeight: semiBold,
   );
 
+  /// Bold compact subtitle style.
   static const TextStyle subtitle4 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -110,6 +145,7 @@ final class MiniAppTypography {
     fontWeight: bold,
   );
 
+  /// Large body text style.
   static const TextStyle body1 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -118,6 +154,7 @@ final class MiniAppTypography {
     fontWeight: medium,
   );
 
+  /// Default body text style.
   static const TextStyle body2 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -126,6 +163,7 @@ final class MiniAppTypography {
     fontWeight: medium,
   );
 
+  /// Compact body text style.
   static const TextStyle body3 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -134,6 +172,7 @@ final class MiniAppTypography {
     fontWeight: medium,
   );
 
+  /// Primary caption style.
   static const TextStyle caption1 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -142,6 +181,7 @@ final class MiniAppTypography {
     fontWeight: medium,
   );
 
+  /// Small caption style.
   static const TextStyle caption2 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -150,6 +190,7 @@ final class MiniAppTypography {
     fontWeight: medium,
   );
 
+  /// Uppercase/eyebrow style.
   static const TextStyle overline1 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -159,6 +200,7 @@ final class MiniAppTypography {
     letterSpacing: 1.2,
   );
 
+  /// Bold uppercase/eyebrow style.
   static const TextStyle overline2 = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -168,8 +210,10 @@ final class MiniAppTypography {
     letterSpacing: 1.2,
   );
 
+  /// Alias for bold overline text.
   static const TextStyle overlineSemiBold = overline2;
 
+  /// Large button label style.
   static const TextStyle buttonLarge = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -178,6 +222,7 @@ final class MiniAppTypography {
     fontWeight: bold,
   );
 
+  /// Default button label style.
   static const TextStyle buttonMedium = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -186,6 +231,7 @@ final class MiniAppTypography {
     fontWeight: bold,
   );
 
+  /// Small button label style.
   static const TextStyle buttonSmall = TextStyle(
     fontFamily: fontFamily,
     package: package,
@@ -194,6 +240,7 @@ final class MiniAppTypography {
     fontWeight: bold,
   );
 
+  /// Applies the mini-app typography scale to common Material theme slots.
   static ThemeData apply(ThemeData base) {
     final TextTheme textTheme = textThemeFor(base.textTheme);
     final TextTheme primaryTextTheme = textThemeFor(base.primaryTextTheme);
@@ -286,6 +333,7 @@ final class MiniAppTypography {
   //   );
   // }
 
+  /// Creates a full text theme using the mini-app type scale.
   static TextTheme textThemeFor(TextTheme base) {
     return TextTheme(
       displayLarge: h1,
@@ -306,6 +354,7 @@ final class MiniAppTypography {
     );
   }
 
+  /// Applies the mini-app font family and a specific weight to [style].
   static TextStyle? withWeight(TextStyle? style, FontWeight weight) {
     return style?.copyWith(
       fontFamily: fontFamily,
@@ -314,10 +363,12 @@ final class MiniAppTypography {
     );
   }
 
+  /// Applies the mini-app font family to [style].
   static TextStyle? withFamily(TextStyle? style) {
     return style?.copyWith(fontFamily: fontFamily, package: package);
   }
 
+  /// Returns a button style that uses [textStyle] for every widget state.
   static ButtonStyle withTextStyle(ButtonStyle? base, TextStyle? textStyle) {
     return (base ?? const ButtonStyle()).copyWith(
       textStyle: WidgetStatePropertyAll<TextStyle?>(textStyle),

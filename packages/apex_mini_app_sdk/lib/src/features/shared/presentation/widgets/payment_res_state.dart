@@ -1,17 +1,21 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
-
+/// Payment result view that renders success/error and redirects transaction payments.
 class PaymentResState extends StatefulWidget {
+  /// Payment result returned by the host/payment executor.
   final MiniAppPaymentRes res;
 
+  /// Creates the payment result view.
   const PaymentResState({super.key, required this.res});
 
   @override
   State<PaymentResState> createState() => _PaymentResStateState();
 }
 
+/// Schedules order redirect for successful transaction payments.
 class _PaymentResStateState extends State<PaymentResState> {
+  /// Whether the post-frame orders redirect has already been scheduled.
   bool _ordersRedirectScheduled = false;
 
   @override
@@ -29,9 +33,12 @@ class _PaymentResStateState extends State<PaymentResState> {
     }
   }
 
+  /// Redirects successful transaction payments to orders once after render.
   void _scheduleOrdersRedirectIfNeeded() {
     final MiniAppPaymentRes res = widget.res;
-    if (_ordersRedirectScheduled || res.status != MiniAppPaymentStatus.success || !res.req.isTransaction) {
+    if (_ordersRedirectScheduled ||
+        res.status != MiniAppPaymentStatus.success ||
+        !res.req.isTransaction) {
       return;
     }
 
@@ -60,7 +67,8 @@ class _PaymentResStateState extends State<PaymentResState> {
       case MiniAppPaymentStatus.unknown:
         return MiniAppErrorState(
           title: l10n.errorsActionFailed,
-          message: '${l10n.commonStatus}: ${resolvePaymentStatusLabel(l10n, res.status)}\n$message',
+          message:
+              '${l10n.commonStatus}: ${resolvePaymentStatusLabel(l10n, res.status)}\n$message',
         );
     }
   }

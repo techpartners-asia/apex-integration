@@ -1,9 +1,14 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Validator signature for text input values.
 typedef StringValidator = String? Function(String? value);
+
+/// Validator signature for non-string values such as selections.
 typedef ValueValidator<T> = String? Function(T value);
 
+/// Shared form validators used by SDK screens.
 final class Validators {
+  /// Combines string validators and returns the first error.
   static StringValidator combine(
     List<StringValidator> validators,
   ) {
@@ -18,6 +23,7 @@ final class Validators {
     };
   }
 
+  /// Combines value validators and returns the first error.
   static ValueValidator<T> combineValue<T>(
     List<ValueValidator<T>> validators,
   ) {
@@ -32,10 +38,13 @@ final class Validators {
     };
   }
 
+  /// Requires a non-empty string.
   static StringValidator required(SdkLocalizations l10n) {
-    return (String? value) => (value?.trim().isEmpty ?? true) ? l10n.validationRequired : null;
+    return (String? value) =>
+        (value?.trim().isEmpty ?? true) ? l10n.validationRequired : null;
   }
 
+  /// Requires a minimum string length when a value is present.
   static StringValidator minLength(SdkLocalizations l10n, int count) {
     return (String? value) {
       final String normalized = value?.trim() ?? '';
@@ -46,6 +55,7 @@ final class Validators {
     };
   }
 
+  /// Requires a maximum string length when a value is present.
   static StringValidator maxLength(SdkLocalizations l10n, int count) {
     return (String? value) {
       final String normalized = value?.trim() ?? '';
@@ -56,6 +66,7 @@ final class Validators {
     };
   }
 
+  /// Validates an email address with optional required behavior.
   static StringValidator email(
     SdkLocalizations l10n, {
     bool required = true,
@@ -69,6 +80,7 @@ final class Validators {
     };
   }
 
+  /// Validates a numeric phone number with an exact length.
   static StringValidator phone(
     SdkLocalizations l10n, {
     bool required = true,
@@ -82,10 +94,13 @@ final class Validators {
       if (!RegExp(r'^\d+$').hasMatch(normalized)) {
         return l10n.validationInvalidPhone;
       }
-      return normalized.length == exactLength ? null : l10n.validationInvalidPhone;
+      return normalized.length == exactLength
+          ? null
+          : l10n.validationInvalidPhone;
     };
   }
 
+  /// Validates the local IBAN/account-number digits entered after the MN prefix.
   static StringValidator iban(
     SdkLocalizations l10n, {
     bool required = true,
@@ -99,14 +114,19 @@ final class Validators {
       if (!RegExp(r'^\d+$').hasMatch(normalized)) {
         return l10n.validationInvalidIban;
       }
-      return normalized.length == exactLength ? null : l10n.validationInvalidIban;
+      return normalized.length == exactLength
+          ? null
+          : l10n.validationInvalidIban;
     };
   }
 
+  /// Requires a non-null selection value.
   static ValueValidator<T?> requiredSelection<T>(SdkLocalizations l10n) {
-    return (T? value) => value == null ? l10n.validationSelectionRequired : null;
+    return (T? value) =>
+        value == null ? l10n.validationSelectionRequired : null;
   }
 
+  /// Validates a numeric quantity against a minimum.
   static String? quantity(int value, SdkLocalizations l10n, {int min = 1}) {
     return value >= min ? null : l10n.validationMinQuantity;
   }

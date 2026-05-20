@@ -6,16 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
 
+/// Startup screen that loads bootstrap state and routes to the first IPS page.
 class IpsSplashScreen extends StatefulWidget {
+  /// Creates the IPS startup splash screen.
   const IpsSplashScreen({super.key});
 
   @override
   State<IpsSplashScreen> createState() => IpsSplashScreenState();
 }
 
+/// State for [IpsSplashScreen].
+///
+/// Owns delayed navigation and startup error dialog lifecycle so pending work
+/// is cancelled when the mini app closes during splash.
 class IpsSplashScreenState extends State<IpsSplashScreen> {
+  /// Whether bootstrap success has already scheduled navigation.
   bool navigated = false;
+
+  /// Prevents multiple startup error dialogs from stacking.
   bool errorDialogVisible = false;
+
   Timer? _navigationTimer;
 
   @override
@@ -24,16 +34,19 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
     super.dispose();
   }
 
+  /// Cancels any delayed route replacement scheduled by bootstrap success.
   void _cancelPendingNavigation() {
     _navigationTimer?.cancel();
     _navigationTimer = null;
   }
 
+  /// Safely closes the mini app from splash after cancelling pending work.
   Future<void> _closeSplash(BuildContext context) async {
     _cancelPendingNavigation();
     await closeMiniAppSafely(context);
   }
 
+  /// Schedules the resolved initial route after the current frame.
   void _scheduleResolvedNavigation(MiniAppBootstrapRes resolution) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
@@ -58,6 +71,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
     });
   }
 
+  /// Shows the fatal startup error dialog with close and retry actions.
   Future<void> showErrorDialog(
     BuildContext context,
     LoadableState<MiniAppBootstrapRes> state,

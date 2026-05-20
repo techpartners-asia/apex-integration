@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Agreement step for service or securities account terms.
 class SecAcntAgreementScreen extends StatefulWidget {
+  /// Creates an agreement screen for a supported agreement step.
   const SecAcntAgreementScreen({
     super.key,
     required this.step,
@@ -15,19 +16,31 @@ class SecAcntAgreementScreen extends StatefulWidget {
              step == SecAcntFlowStep.secAgreement,
        );
 
+  /// Agreement step being displayed.
   final SecAcntFlowStep step;
+
+  /// Bootstrap data used for agreement copy and next-step resolution.
   final AcntBootstrapState? bootstrapState;
+
+  /// Draft personal/bank data carried through the flow.
   final SecAcntFlowDraft draft;
+
+  /// Profile repository required by later signature/profile steps.
   final MiniAppProfileRepository? appApi;
+
+  /// Current profile used by skip logic.
   final UserEntityDto? currentUser;
 
   @override
   State<SecAcntAgreementScreen> createState() => _SecAcntAgreementScreenState();
 }
 
+/// Tracks agreement consent and routes to the next onboarding step.
 class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
+  /// Whether the user has accepted the displayed agreement.
   bool _accepted = false;
 
+  /// Opens the next screen for service or securities agreement completion.
   Future<void> _openNextStep() async {
     if (widget.step == SecAcntFlowStep.serviceAgreement) {
       await routeAfterSecAcntFlow(context, widget.bootstrapState);

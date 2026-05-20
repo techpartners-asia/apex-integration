@@ -4,12 +4,21 @@ import '../../responsive/mini_app_responsive.dart';
 import '../custom_text.dart';
 import '../mini_app_surface_card.dart';
 
+/// Standard mini-app dialog content layout.
 class MiniAppDialog extends StatelessWidget {
+  /// Dialog title.
   final String title;
+
+  /// Dialog body.
   final Widget body;
+
+  /// Dialog actions displayed at the bottom.
   final List<Widget> actions;
+
+  /// Optional leading icon or status visual.
   final Widget? icon;
 
+  /// Creates a mini-app dialog body.
   const MiniAppDialog({
     super.key,
     required this.title,
@@ -62,6 +71,7 @@ class MiniAppDialog extends StatelessWidget {
   }
 }
 
+/// Shows a dialog using the mini-app dialog surface and responsive width.
 Future<T?> showMiniAppDialog<T>({
   required BuildContext context,
   required String title,

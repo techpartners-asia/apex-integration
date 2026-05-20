@@ -1,17 +1,25 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:intl/intl.dart';
 
+/// Resolves portfolio API context from host config, bootstrap state, and user.
 class PortfolioContextResolver {
+  /// Starting context supplied by host/runtime.
   final SdkPortfolioContext seed;
+
+  /// Source FI fallback when no context value is supplied.
   final String? defaultSrcFiCode;
+
+  /// Clock used to calculate statement ranges.
   final DateTime Function() now;
 
+  /// Creates a context resolver.
   const PortfolioContextResolver({
     this.seed = const SdkPortfolioContext(),
     this.defaultSrcFiCode,
     this.now = _defaultNow,
   });
 
+  /// Merges all available sources into a normalized portfolio context.
   SdkPortfolioContext resolve({
     AcntBootstrapState? bootstrapState,
     UserEntityDto? user,
@@ -21,7 +29,10 @@ class PortfolioContextResolver {
       bootstrapState,
     );
 
-    return seed.merge(userContext).merge(bootstrapContext).normalized(fallbackSrcFiCode: defaultSrcFiCode);
+    return seed
+        .merge(userContext)
+        .merge(bootstrapContext)
+        .normalized(fallbackSrcFiCode: defaultSrcFiCode);
   }
 
   SdkPortfolioContext _fromUser(UserEntityDto? user) {
@@ -70,9 +81,14 @@ class PortfolioContextResolver {
   static DateTime _defaultNow() => DateTime.now();
 }
 
+/// Date range used when querying portfolio statements.
 class _StatementRange {
+  /// Start date in backend `yyyy-MM-dd` format.
   final String startDate;
+
+  /// End date in backend `yyyy-MM-dd` format.
   final String endDate;
 
+  /// Creates a statement date range.
   const _StatementRange({required this.startDate, required this.endDate});
 }

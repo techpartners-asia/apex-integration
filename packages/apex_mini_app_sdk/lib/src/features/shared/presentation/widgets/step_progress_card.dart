@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Card that renders a progress label and a list of actionable steps.
 class StepProgressCard extends StatelessWidget {
+  /// Card title.
   final String title;
+
+  /// Compact progress label, for example `1/3`.
   final String progressLabel;
+
+  /// Step rows shown inside the card.
   final List<StepItem> steps;
 
+  /// Creates a step progress card.
   const StepProgressCard({
     super.key,
     required this.title,

@@ -1,6 +1,7 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Builds per-step header chrome configuration for the securities flow.
 SecAcntWizardHeaderData buildSecAcntHeader(
   BuildContext context,
   SecAcntFlowStep currentStep,
@@ -69,6 +70,7 @@ SecAcntWizardHeaderData buildSecAcntHeader(
   };
 }
 
+/// Builds per-step footer button configuration for the securities flow.
 SecAcntWizardFooterData buildSecAcntFooter(
   BuildContext context, {
   required SecAcntFlowStep currentStep,
@@ -116,7 +118,11 @@ SecAcntWizardFooterData buildSecAcntFooter(
     SecAcntFlowStep.payment => SecAcntWizardFooterData(
       buttonLabel: state.isSubmitting ? loadingLabel : l10n.commonPay,
       onPressed: onPrimaryAction,
-      enabled: !state.isSubmitting && payableCommission != null && payableCommission.isFinite && payableCommission > 0,
+      enabled:
+          !state.isSubmitting &&
+          payableCommission != null &&
+          payableCommission.isFinite &&
+          payableCommission > 0,
     ),
     SecAcntFlowStep.calculation => SecAcntWizardFooterData(
       buttonLabel: l10n.commonGoHome,
@@ -125,12 +131,17 @@ SecAcntWizardFooterData buildSecAcntFooter(
   };
 }
 
+/// Resolves the header title style from the step header configuration.
 TextStyle? buildSecAcntHeaderTitleStyle(
   BuildContext context,
   SecAcntWizardHeaderData header,
 ) {
-  final Color titleColor = header.highlightBrand ? DesignTokens.rose : DesignTokens.ink;
-  final TextStyle baseStyle = header.highlightBrand ? MiniAppTypography.title1 : MiniAppTypography.subtitle2;
+  final Color titleColor = header.highlightBrand
+      ? DesignTokens.rose
+      : DesignTokens.ink;
+  final TextStyle baseStyle = header.highlightBrand
+      ? MiniAppTypography.title1
+      : MiniAppTypography.subtitle2;
 
   return baseStyle.copyWith(color: titleColor);
 }

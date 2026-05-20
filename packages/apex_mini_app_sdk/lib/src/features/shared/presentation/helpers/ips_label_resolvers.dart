@@ -1,5 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Resolves a localized display label for a payment result status.
 String resolvePaymentStatusLabel(
   SdkLocalizations l10n,
   MiniAppPaymentStatus status,
@@ -11,7 +12,11 @@ String resolvePaymentStatusLabel(
   };
 }
 
-String? resolvePaymentResultMessage(SdkLocalizations l10n, MiniAppPaymentRes paymentRes) {
+/// Returns the explicit payment result message when the backend/host provides one.
+String? resolvePaymentResultMessage(
+  SdkLocalizations l10n,
+  MiniAppPaymentRes paymentRes,
+) {
   final String? explicitMessage = paymentRes.message?.trim();
 
   return explicitMessage;

@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Bottom fixed action area with safe-area padding.
 class BottomActionBar extends StatelessWidget {
+  /// Action content, usually a primary button.
   final Widget child;
+
+  /// Bar background color.
   final Color backgroundColor;
+
+  /// Padding override.
   final EdgeInsetsGeometry? padding;
 
+  /// Creates a fixed bottom action container.
   const BottomActionBar({
     super.key,
     required this.child,

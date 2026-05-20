@@ -3,38 +3,102 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Shared scaffold used by Apex mini-app screens.
+///
+/// It centralizes the SDK theme wrapper, custom app bar behavior, adaptive tab
+/// shell support, safe-area padding, refresh handling, and bottom navigation
+/// placement so feature screens stay consistent.
 class CustomScaffold extends StatelessWidget {
+  /// Header title used by the default body layout.
   final String title;
+
+  /// Optional custom app bar. When absent, [CustomAppBar] is built.
   final PreferredSizeWidget? appBar;
+
+  /// Whether this screen should display an app bar.
   final bool hasAppBar;
+
+  /// Complete body override. When absent, [children] are wrapped in
+  /// [CustomScaffoldBody].
   final Widget? body;
+
+  /// Standard Flutter bottom navigation/footer widget.
   final Widget? bottomNavigationBar;
+
+  /// Adaptive bottom navigation used by the iOS/Android platform UI layer.
   final AdaptiveBottomNavigationBar? adaptiveBottomNavigationBar;
+
+  /// Whether adaptive scaffold may use a native toolbar when no app bar exists.
   final bool adaptiveUseNativeToolbar;
+
+  /// Optional subtitle shown by the default body layout.
   final String? subtitle;
+
+  /// Optional widget displayed near the app bar title.
   final Widget? trailing;
+
+  /// App bar title override.
   final String? appBarTitle;
+
+  /// App bar title style override.
   final TextStyle? appBarTitleStyle;
+
+  /// Whether the default app bar centers the title.
   final bool appBarCenterTitle;
+
+  /// Whether the default app bar reserves leading space when no back button is
+  /// shown.
   final bool appBarReserveLeadingSpace;
+
+  /// Optional app bar title spacing.
   final double? appBarTitleSpacing;
+
+  /// Header/body actions passed to the default body layout.
   final List<Widget> actions;
+
+  /// Children rendered by the default body layout.
   final List<Widget> children;
+
+  /// Overrides automatic back-button visibility.
   final bool? showBackButton;
+
+  /// Whether the default app bar shows the mini-app close button.
   final bool showCloseButton;
+
+  /// Whether the default app bar shows a clear action.
   final bool showClearButton;
+
+  /// Scaffold background color.
   final Color backgroundColor;
+
+  /// App bar background color.
   final Color appBarBackgroundColor;
+
+  /// Whether the default app bar draws a bottom divider.
   final bool appBarShowBottomBorder;
+
+  /// Optional back action override.
   final VoidCallback? onBack;
+
+  /// Optional close action override.
   final VoidCallback? onClose;
+
+  /// Optional clear action.
   final VoidCallback? onClear;
+
+  /// Whether body bottom padding should include the device safe area.
   final bool hasSafeArea;
+
+  /// Optional floating action button.
   final Widget? floatingActionButton;
+
+  /// Pull-to-refresh callback for the default body layout.
   final Future<void> Function()? onRefresh;
+
+  /// Feature flag used by screens that need trading-specific UI state.
   final bool isTradingEnabled;
 
+  /// Creates the shared Apex mini-app scaffold.
   const CustomScaffold({
     super.key,
     this.title = '',

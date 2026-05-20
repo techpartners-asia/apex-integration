@@ -1,14 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Cubit for IPS account recharge flow.
 class IpsRechargeCubit extends Cubit<IpsRechargeState> {
+  /// Orders service used to create recharge charge request.
   final OrdersService service;
+
+  /// Portfolio service used to load pricing and refresh balance.
   final PortfolioService? portfolioService;
+
+  /// Bootstrap service used to resolve pricing context when needed.
   final InvestmentBootstrapService? bootstrapService;
+
+  /// Optional pre-resolved portfolio/pricing context.
   final SdkPortfolioContext? pricingContext;
+
+  /// Host-payment executor.
   final MiniAppPaymentExecutor paymentExecutor;
+
+  /// Localizations used for user-facing errors.
   final SdkLocalizations l10n;
+
+  /// Diagnostic logger.
   final MiniAppLogger logger;
 
   IpsRechargeCubit({
@@ -30,6 +43,7 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
          ),
        );
 
+  /// Loads pack unit price/service fee before allowing submission.
   Future<void> loadPricing() async {
     final PortfolioService? ps = portfolioService;
     if (ps == null || state.hasPricing) return;
@@ -82,10 +96,12 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
     }
   }
 
+  /// Updates selected pack quantity from user input.
   void updatePackQty(String value) {
     emit(state.copyWith(packQty: int.tryParse(value.trim()) ?? 0));
   }
 
+  /// Creates recharge request, delegates payment to host, then refreshes balance.
   Future<void> submit() async {
     if (!state.canSubmit) return;
 

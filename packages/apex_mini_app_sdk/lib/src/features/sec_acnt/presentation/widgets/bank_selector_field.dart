@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Floating-label field that opens the bank selection sheet.
 class BankSelectorField extends StatelessWidget {
+  /// Label shown above the selected bank/placeholder.
   final String label;
+
+  /// Selected bank value or placeholder text.
   final String value;
+
+  /// Callback fired when the field is tapped.
   final VoidCallback onTap;
+
+  /// Whether [value] represents a real selection.
   final bool hasValue;
+
+  /// Optional trailing widget, defaulting to a dropdown chevron.
   final Widget? trailing;
+
+  /// Selected bank used to render a logo when available.
   final SecAcntBankOption? selectedValue;
+
+  /// Optional validation error text.
   final String? errorText;
+
+  /// Whether the field can be tapped.
   final bool enabled;
 
+  /// Creates a bank selector field.
   const BankSelectorField({
     super.key,
     required this.label,

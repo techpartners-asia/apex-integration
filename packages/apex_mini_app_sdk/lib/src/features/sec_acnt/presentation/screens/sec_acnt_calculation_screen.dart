@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Final pending/calculation screen after securities account submission.
 class SecAcntCalculationScreen extends StatelessWidget {
+  /// Creates the calculation screen.
   const SecAcntCalculationScreen({super.key, required this.bootstrapState});
 
+  /// Bootstrap state used to decide the route after the flow.
   final AcntBootstrapState? bootstrapState;
 
   @override

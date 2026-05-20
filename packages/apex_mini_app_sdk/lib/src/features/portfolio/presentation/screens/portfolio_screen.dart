@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Portfolio detail screen showing allocation, yield, holdings, and actions.
 class PortfolioScreen extends StatelessWidget {
+  /// Creates the portfolio screen.
   const PortfolioScreen({super.key});
 
   @override
@@ -122,6 +123,10 @@ class PortfolioScreen extends StatelessWidget {
   }
 }
 
+/// Builds allocation card data from a portfolio overview response.
+///
+/// The UI expects formatted labels, badge tones, and fallback totals in one
+/// object, so this helper keeps formatting and domain-value selection together.
 AllocationSummaryData _buildAllocationSummaryData(
   PortfolioOverview overview,
   SdkLocalizations l10n,

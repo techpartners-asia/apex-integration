@@ -1,10 +1,10 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Factory for building login-session requests from the selected user source.
 class GetLoginSessionApiReqFactory {
   const GetLoginSessionApiReqFactory._();
 
+  /// Builds a request using either real user data or contract fixture data.
   static GetLoginSessionApiReq build({
     required String admSession,
     required MiniAppUserDataSourceMode userDataSourceMode,

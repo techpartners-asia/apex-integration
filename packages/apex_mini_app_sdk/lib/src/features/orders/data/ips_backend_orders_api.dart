@@ -1,6 +1,8 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Order-specific backend calls on top of [IpsBackendApi].
 extension IpsBackendOrdersApi on IpsBackendApi {
+  /// Creates a sell order for the selected pack quantity.
   Future<ActionResDto> createIpsSellOrder(
     int packQty, {
     String? srcFiCode,
@@ -20,6 +22,7 @@ extension IpsBackendOrdersApi on IpsBackendApi {
     );
   }
 
+  /// Creates a recharge/charge request for the selected pack quantity.
   Future<ActionResDto> chargeIpsAcnt(int packQty, {String? srcFiCode}) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.chargeIpsAcnt,
@@ -37,6 +40,7 @@ extension IpsBackendOrdersApi on IpsBackendApi {
     );
   }
 
+  /// Loads IPS order history.
   Future<List<IpsOrderDto>> getIpsOrderList({
     String? srcFiCode,
     int packQty = 0,
@@ -53,6 +57,7 @@ extension IpsBackendOrdersApi on IpsBackendApi {
     return IpsOrderDto.listFromResponse(json);
   }
 
+  /// Cancels a pending IPS order.
   Future<ActionResDto> cancelIpsOrder({
     required int orderNo,
     int packQty = 0,

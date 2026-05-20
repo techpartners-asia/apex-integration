@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Default scrollable body used by [CustomScaffold] when no body override exists.
 class CustomScaffoldBody extends StatelessWidget {
+  /// Optional body title.
   final String title;
+
+  /// Optional body subtitle.
   final String? subtitle;
+
+  /// Action widgets rendered after children.
   final List<Widget> actions;
+
+  /// Main content children.
   final List<Widget> children;
+
+  /// Padding around the scroll content.
   final EdgeInsets bodyPadding;
+
+  /// Optional pull-to-refresh callback.
   final Future<void> Function()? onRefresh;
+
+  /// Optional refresh indicator color.
   final Color? refreshIndicatorColor;
 
+  /// Creates the default scrollable scaffold body.
   const CustomScaffoldBody({
     super.key,
     required this.title,

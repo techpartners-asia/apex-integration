@@ -5,11 +5,15 @@ import 'dart:ui' as ui;
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Converts drawn signature strokes into PNG bytes and uploads them.
 class SignatureUploadService {
+  /// Repository used to send the rendered signature to the backend.
   final MiniAppProfileRepository appApi;
 
+  /// Creates a signature upload service.
   const SignatureUploadService({required this.appApi});
 
+  /// Renders [points] as a PNG and uploads it as the current user's signature.
   Future<void> uploadSignature(
     List<Offset?> points, {
     double strokeWidth = 2.6,
@@ -24,6 +28,10 @@ class SignatureUploadService {
   }
 }
 
+/// Renders signature stroke points into a PNG byte array.
+///
+/// `null` points split separate strokes. Throws when there are no drawable
+/// points or when Flutter cannot encode the image.
 Future<Uint8List> renderSignaturePngBytes(
   List<Offset?> points, {
   double strokeWidth = 2.6,

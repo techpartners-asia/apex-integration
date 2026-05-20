@@ -2,10 +2,15 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+/// Sizes a mini-app page to the available host viewport.
 class MiniAppHostShell extends StatelessWidget {
+  /// Page content.
   final Widget child;
+
+  /// Whether the shell should provide a scroll view around [child].
   final bool scrollable;
 
+  /// Creates a host shell for embedded mini-app content.
   const MiniAppHostShell({
     super.key,
     required this.child,

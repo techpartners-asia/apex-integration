@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Compact status chip with optional icon and emphasized filled state.
 class IpsStatusChip extends StatelessWidget {
+  /// Status text.
   final String label;
+
+  /// Optional leading icon.
   final IconData? icon;
+
+  /// Optional accent color.
   final Color? color;
+
+  /// Whether to render as filled instead of subtle.
   final bool emphasized;
 
+  /// Creates a compact status chip.
   const IpsStatusChip({
     super.key,
     required this.label,

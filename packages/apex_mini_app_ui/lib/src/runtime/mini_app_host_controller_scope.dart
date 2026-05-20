@@ -4,10 +4,18 @@ import 'mini_app_host_controller.dart';
 import 'mini_app_host_controller_provider.dart';
 import 'mini_app_host_controller_registry.dart';
 
+/// Widget boundary that both provides and registers a mini-app controller.
+///
+/// Route pages must be built under this scope so delayed callbacks and nested
+/// widgets can still resolve the currently active controller.
 class MiniAppHostControllerScope extends StatefulWidget {
+  /// Controller owned by the active mini-app runtime.
   final MiniAppHostController controller;
+
+  /// Mini-app subtree that should use [controller].
   final Widget child;
 
+  /// Creates a controller scope for a visible mini-app route subtree.
   const MiniAppHostControllerScope({
     super.key,
     required this.controller,
@@ -19,8 +27,10 @@ class MiniAppHostControllerScope extends StatefulWidget {
       _MiniAppHostControllerScopeState();
 }
 
+/// Registers the scope context while the widget is mounted.
 class _MiniAppHostControllerScopeState
     extends State<MiniAppHostControllerScope> {
+  /// Registry handle for this mounted controller/context pair.
   MiniAppHostControllerRegistration? _registration;
 
   @override
@@ -44,6 +54,7 @@ class _MiniAppHostControllerScopeState
     super.dispose();
   }
 
+  /// Adds this mounted context to the active controller registry.
   void _attach() {
     _registration = MiniAppHostControllerRegistry.attach(
       controller: widget.controller,
@@ -51,6 +62,7 @@ class _MiniAppHostControllerScopeState
     );
   }
 
+  /// Removes this scope's registry entry.
   void _detach() {
     final MiniAppHostControllerRegistration? registration = _registration;
     if (registration == null) {

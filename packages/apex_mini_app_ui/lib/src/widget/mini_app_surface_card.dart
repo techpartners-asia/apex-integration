@@ -3,16 +3,33 @@ import 'package:flutter/material.dart';
 import '../responsive/mini_app_responsive.dart';
 import '../theme/mini_app_state_colors.dart';
 
+/// Reusable rounded surface used by cards, dialogs, and state panels.
 class MiniAppSurfaceCard extends StatelessWidget {
+  /// Card content.
   final Widget child;
+
+  /// Internal padding.
   final EdgeInsetsGeometry? padding;
+
+  /// External margin.
   final EdgeInsetsGeometry? margin;
+
+  /// Surface fill color.
   final Color backgroundColor;
+
+  /// Border color used when [hasBorder] is true.
   final Color borderColor;
+
+  /// Optional radius override.
   final double? borderRadius;
+
+  /// Whether to draw a border.
   final bool hasBorder;
+
+  /// Whether to draw the standard card shadow.
   final bool hasShadow;
 
+  /// Creates a reusable mini-app surface card.
   const MiniAppSurfaceCard({
     super.key,
     required this.child,

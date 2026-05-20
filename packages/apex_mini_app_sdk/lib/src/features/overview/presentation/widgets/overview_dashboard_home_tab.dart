@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Main dashboard tab shown after the user has an InvestX account context.
 class OverviewDashboardHomeTab extends StatelessWidget {
+  /// Account/bootstrap state for the dashboard.
   final AcntBootstrapState bootstrapState;
+
+  /// Portfolio overview values.
   final PortfolioOverview? portfolioOverview;
+
+  /// Holdings used to derive yield/profit metrics.
   final List<PortfolioHolding> yieldProfitHoldings;
+
+  /// Stock yield holdings used to derive current value.
   final List<PortfolioHolding> stockYieldDetails;
+
+  /// Current user for greeting display.
   final UserEntityDto? user;
+
+  /// Recharge quick action.
   final VoidCallback? onRecharge;
+
+  /// Statements quick action.
   final VoidCallback? onStatements;
+
+  /// Withdraw quick action.
   final VoidCallback? onWithdraw;
+
+  /// Opens portfolio detail.
   final VoidCallback? onViewDetails;
+
+  /// Pull-to-refresh callback.
   final RefreshCallback? onRefresh;
 
+  /// Creates the overview dashboard tab.
   const OverviewDashboardHomeTab({
     super.key,
     required this.bootstrapState,
@@ -70,10 +90,10 @@ class OverviewDashboardHomeTab extends StatelessWidget {
 
         /// Dashboard goal card
         OverviewDashboardGoalCard(metrics: metrics),
-        SizedBox(height: responsive.dp(14)),
-
-        /// Dashboard reward card
-        OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
+        // SizedBox(height: responsive.dp(14)),
+        //
+        // /// Dashboard reward card
+        // OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
         SizedBox(height: responsive.dp(100)),
       ],
     );
@@ -86,9 +106,12 @@ class OverviewDashboardHomeTab extends StatelessWidget {
   }
 }
 
+/// Loading skeleton for the dashboard tab.
 class OverviewDashboardHomeShimmer extends StatelessWidget {
+  /// Pull-to-refresh callback while loading.
   final RefreshCallback? onRefresh;
 
+  /// Creates the dashboard loading shimmer.
   const OverviewDashboardHomeShimmer({
     super.key,
     this.onRefresh,
@@ -104,6 +127,7 @@ class OverviewDashboardHomeShimmer extends StatelessWidget {
   }
 }
 
+/// Converts overview metrics into allocation-card data.
 AllocationSummaryData _buildAllocationSummaryData(
   BuildContext context,
   OverviewDashboardMetrics metrics,
@@ -134,10 +158,15 @@ AllocationSummaryData _buildAllocationSummaryData(
   );
 }
 
+/// Bottom sheet content for dashboard quick actions.
 class OverviewDashboardActionSheetContent extends StatelessWidget {
+  /// Recharge action.
   final VoidCallback? onRecharge;
+
+  /// Sell/close-pack action.
   final VoidCallback? onClosePack;
 
+  /// Creates dashboard action sheet content.
   const OverviewDashboardActionSheetContent({
     super.key,
     this.onRecharge,

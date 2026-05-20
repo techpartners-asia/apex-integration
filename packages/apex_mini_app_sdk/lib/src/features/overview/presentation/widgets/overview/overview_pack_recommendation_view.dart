@@ -1,11 +1,20 @@
 part of '../overview_home_tab.dart';
 
+/// Recommended pack list shown from overview before package selection.
 class OverviewPackRecommendationView extends StatelessWidget {
+  /// Bootstrap/account data for the current user.
   final AcntBootstrapState data;
+
+  /// Current user used for greeting copy.
   final UserEntityDto? user;
+
+  /// Packs to display.
   final List<IpsPack> packs;
+
+  /// Optional pull-to-refresh callback.
   final RefreshCallback? onRefresh;
 
+  /// Creates the overview pack recommendation view.
   const OverviewPackRecommendationView({
     super.key,
     required this.data,
@@ -60,9 +69,12 @@ class OverviewPackRecommendationView extends StatelessWidget {
   }
 }
 
+/// Greeting row shown above the recommended pack list.
 class _PackRecommendationGreeting extends StatelessWidget {
+  /// Creates the recommendation greeting.
   const _PackRecommendationGreeting({required this.displayName});
 
+  /// User display name, if available.
   final String displayName;
 
   @override
@@ -115,10 +127,15 @@ class _PackRecommendationGreeting extends StatelessWidget {
   }
 }
 
+/// Recommended pack card with hero art, benefits, and choose action.
 class _PackRecommendationCard extends StatelessWidget {
+  /// Pack data rendered by the card.
   final IpsPack pack;
+
+  /// Position in the recommendation stack, used for visual variant selection.
   final int stackIndex;
 
+  /// Creates a recommendation card.
   const _PackRecommendationCard({
     required this.pack,
     required this.stackIndex,
@@ -209,15 +226,21 @@ class _PackRecommendationCard extends StatelessWidget {
   }
 }
 
+/// Decorative pack hero image and allocation summary.
 class _PackRecommendationHero extends StatelessWidget {
+  /// Creates the pack recommendation hero.
   const _PackRecommendationHero({
     required this.pack,
     required this.stackIndex,
   });
 
+  /// Pack data used for copy and allocation values.
   final IpsPack pack;
+
+  /// Stack index used to alternate hero styling.
   final int stackIndex;
 
+  /// Whether the warm visual variant should be used.
   bool get _isWarmVariant => pack.isRecommended == 1 || stackIndex == 0;
 
   @override
@@ -362,9 +385,12 @@ class _PackRecommendationHero extends StatelessWidget {
   }
 }
 
+/// Background plate that creates the stacked-card hero effect.
 class _PackRecommendationStackPlate extends StatelessWidget {
+  /// Creates a stack plate.
   const _PackRecommendationStackPlate({required this.color});
 
+  /// Plate fill color.
   final Color color;
 
   @override

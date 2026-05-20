@@ -1,35 +1,65 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Ordered onboarding steps for securities account opening.
 enum SecAcntFlowStep {
+  /// Consent/intro step.
   consent,
+
+  /// User personal and bank information form.
   personalInformation,
+
+  /// Short-flow success confirmation.
   success,
+
+  /// Existing service agreement step for users with securities accounts.
   serviceAgreement,
+
+  /// Securities account agreement step.
   secAgreement,
+
+  /// Terms step kept for route compatibility.
   terms,
+
+  /// Signature capture step.
   signature,
+
+  /// Contract/payment step.
   payment,
+
+  /// Final calculation/summary step before completion.
   calculation,
 }
 
+/// Whether bootstrap confirms an actual securities account exists.
 bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 
+/// Whether account-opening payment is still required for onboarding.
 bool requiresSecAcntOpeningPayment(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
-}) => (state?.requiresSecAcntPayment ?? false) && !hasPaidSecAcntContract(currentUser);
+}) =>
+    (state?.requiresSecAcntPayment ?? false) &&
+    !hasPaidSecAcntContract(currentUser);
 
-bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && state?.hasIpsAcnt == false;
+/// Whether the user has a securities account but has not enabled IPS.
+bool isShortSecAcntFlow(AcntBootstrapState? state) =>
+    state?.hasAcnt == true && state?.hasIpsAcnt == false;
 
-bool hasPaidSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
+/// Whether the current profile says the contract/payment fee is already paid.
+bool hasPaidSecAcntContract(UserEntityDto? user) =>
+    user?.account?.hasPaidContract ?? false;
 
-bool hasSavedSecAcntSignature(UserEntityDto? user) => user?.account?.hasSavedSignature ?? false;
+/// Whether the current profile already has a stored signature.
+bool hasSavedSecAcntSignature(UserEntityDto? user) =>
+    user?.account?.hasSavedSignature ?? false;
 
+/// Whether profile/bootstrap data is enough to skip personal info entry.
 bool hasCompleteSecAcntPersonalInfo(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) => SecAcntFlowDraft.fromBootstrap(state, user: user).hasCompletePersonalInfo;
 
+/// Resolves the required onboarding steps from account and profile state.
 List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
@@ -67,11 +97,13 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   ];
 }
 
+/// Returns the first step the user should see for the current state.
 SecAcntFlowStep resolveInitialSecAcntFlowStep(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
 }) => resolveSecAcntFlowSteps(state, currentUser: currentUser).first;
 
+/// Returns the next step after [currentStep], or null when the flow is done.
 SecAcntFlowStep? resolveNextSecAcntFlowStep(
   SecAcntFlowStep currentStep,
   AcntBootstrapState? state, {
@@ -88,29 +120,55 @@ SecAcntFlowStep? resolveNextSecAcntFlowStep(
   return steps[index + 1];
 }
 
+/// Bank option selected in the securities account personal-info flow.
 class SecAcntBankOption {
+  /// Bank identifier/code sent to profile/account APIs.
   final String id;
+
+  /// Full display label.
   final String label;
+
+  /// Compact label used in dense selectors.
   final String shortLabel;
+
+  /// Optional bank logo URL.
   final String logoUrl;
 
+  /// Creates a bank option.
   const SecAcntBankOption(this.id, this.label, this.shortLabel, this.logoUrl);
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SecAcntBankOption && runtimeType == other.runtimeType && id == other.id;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SecAcntBankOption &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
   int get hashCode => id.hashCode;
 }
 
+/// Editable draft of data collected during securities account onboarding.
 class SecAcntFlowDraft {
+  /// Primary mobile phone.
   final String mobile;
+
+  /// Secondary mobile phone.
   final String secondaryMobile;
+
+  /// Email address.
   final String email;
+
+  /// Settlement bank IBAN/account number.
   final String iban;
+
+  /// Settlement account holder name.
   final String acntName;
+
+  /// Selected settlement bank.
   final SecAcntBankOption? selectedBank;
 
+  /// Creates an editable onboarding draft.
   const SecAcntFlowDraft({
     this.mobile = '',
     this.secondaryMobile = '',
@@ -120,6 +178,7 @@ class SecAcntFlowDraft {
     this.selectedBank,
   });
 
+  /// Builds a draft from bootstrap/profile values.
   factory SecAcntFlowDraft.fromBootstrap(
     AcntBootstrapState? state, {
     UserEntityDto? user,
@@ -150,6 +209,7 @@ class SecAcntFlowDraft {
     );
   }
 
+  /// Returns a copy with updated values.
   SecAcntFlowDraft copyWith({
     String? mobile,
     String? secondaryMobile,
@@ -164,10 +224,13 @@ class SecAcntFlowDraft {
       email: email ?? this.email,
       iban: iban ?? this.iban,
       acntName: acntName ?? this.acntName,
-      selectedBank: selectedBank == _sentinel ? this.selectedBank : selectedBank as SecAcntBankOption?,
+      selectedBank: selectedBank == _sentinel
+          ? this.selectedBank
+          : selectedBank as SecAcntBankOption?,
     );
   }
 
+  /// Converts this draft into the domain payload used for profile submission.
   SecAcntPersonalInfoData toPersonalInfoData() => SecAcntPersonalInfoData(
     mobile: _trimToNull(mobile),
     secondaryMobile: _trimToNull(secondaryMobile),
@@ -178,12 +241,19 @@ class SecAcntFlowDraft {
     bankLabel: _trimToNull(selectedBank?.label),
   );
 
+  /// Whether all required contact, bank, and holder fields are valid.
   bool get hasCompletePersonalInfo {
-    return hasCompleteContactInfo && _isValidIban(iban) && _trimToNull(selectedBank?.id) != null && _trimToNull(acntName) != null;
+    return hasCompleteContactInfo &&
+        _isValidIban(iban) &&
+        _trimToNull(selectedBank?.id) != null &&
+        _trimToNull(acntName) != null;
   }
 
+  /// Whether mobile, secondary mobile, and email values are valid.
   bool get hasCompleteContactInfo {
-    return _isValidPhone(mobile) && _isValidPhone(secondaryMobile) && _isValidEmail(email);
+    return _isValidPhone(mobile) &&
+        _isValidPhone(secondaryMobile) &&
+        _isValidEmail(email);
   }
 
   static const Object _sentinel = Object();
@@ -258,12 +328,15 @@ String? _resolveBootstrapIban(
 }
 
 String? _sanitizeIbanDigits(String? value) {
-  final String normalized = value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
+  final String normalized =
+      value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
   if (normalized.isEmpty) {
     return null;
   }
 
-  final String withoutPrefix = normalized.toUpperCase().startsWith('MN') ? normalized.substring(2) : normalized;
+  final String withoutPrefix = normalized.toUpperCase().startsWith('MN')
+      ? normalized.substring(2)
+      : normalized;
   final String digitsOnly = withoutPrefix.replaceAll(RegExp(r'\D'), '');
   return digitsOnly.isEmpty ? null : digitsOnly;
 }

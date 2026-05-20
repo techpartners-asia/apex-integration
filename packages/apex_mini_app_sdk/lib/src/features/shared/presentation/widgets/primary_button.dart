@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Primary gradient button used for main screen actions.
 class PrimaryButton extends StatelessWidget {
+  /// Button label.
   final String label;
+
+  /// Press callback. Null disables the button.
   final VoidCallback? onPressed;
+
+  /// Optional leading icon.
   final IconData? icon;
+
+  /// Text/icon color.
   final Color foregroundColor;
+
+  /// Enabled gradient override.
   final Gradient? enabledGradient;
+
+  /// Disabled gradient override.
   final Gradient? disabledGradient;
+
+  /// Enabled shadow override.
   final List<BoxShadow>? enabledBoxShadow;
+
+  /// Border radius override.
   final BorderRadius? borderRadius;
+
+  /// Height override.
   final double? height;
 
+  /// Creates the main gradient action button used by mini-app flows.
   const PrimaryButton({
     super.key,
     required this.label,

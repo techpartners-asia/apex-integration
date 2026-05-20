@@ -1,10 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Cubit for securities-account opening/payment actions.
 class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
+  /// Bootstrap service used to submit and refresh securities account state.
   final InvestmentBootstrapService service;
+
+  /// Host-payment executor.
   final MiniAppPaymentExecutor paymentExecutor;
+
+  /// Localizations used for error/payment messages.
   final SdkLocalizations l10n;
 
   IpsSecAcntCubit({
@@ -13,6 +18,7 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     required this.l10n,
   }) : super(const IpsSecAcntState());
 
+  /// Runs opening-fee payment and optionally submits account-opening request.
   Future<MiniAppPaymentRes?> submitOpeningPayment({
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
@@ -39,7 +45,9 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
       SecAcntRequestResult? requestResult;
       if (paymentRes.success) {
         if (!requiresOpeningPaymentFlow) {
-          requestResult = await service.addSecuritiesAcntReq(personalInfo: personalInfo);
+          requestResult = await service.addSecuritiesAcntReq(
+            personalInfo: personalInfo,
+          );
         }
       }
 
@@ -48,7 +56,9 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
           isSubmitting: false,
           requestResult: requestResult,
           paymentRes: paymentRes,
-          errorMessage: paymentRes.status == MiniAppPaymentStatus.success ? null : resolvePaymentResultMessage(l10n, paymentRes),
+          errorMessage: paymentRes.status == MiniAppPaymentStatus.success
+              ? null
+              : resolvePaymentResultMessage(l10n, paymentRes),
         ),
       );
 
@@ -64,6 +74,7 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     }
   }
 
+  /// Reloads bootstrap/account state after account-opening actions.
   Future<AcntBootstrapState?> refreshBootstrapState({
     AcntBootstrapState? currentState,
   }) async {

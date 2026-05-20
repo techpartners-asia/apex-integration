@@ -6,12 +6,21 @@ import '../theme/mini_app_state_colors.dart';
 import 'mini_app_adaptive_controls.dart';
 import 'custom_text.dart';
 
+/// Responsive page header with optional back action and trailing content.
 class MiniAppPageHeader extends StatelessWidget {
+  /// Header title.
   final String title;
+
+  /// Optional subtitle shown below [title].
   final String? subtitle;
+
+  /// Back action. When null, no back button is rendered.
   final VoidCallback? onBack;
+
+  /// Optional trailing widget.
   final Widget? trailing;
 
+  /// Creates a page header with optional subtitle and trailing content.
   const MiniAppPageHeader({
     super.key,
     required this.title,

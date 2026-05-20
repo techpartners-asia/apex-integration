@@ -1,6 +1,8 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Backend API methods used by the securities-account bootstrap flow.
 extension IpsBackendBootstrapApi on IpsBackendApi {
+  /// Fetches broker/institution metadata needed for account setup.
   Future<List<FiBomInstDto>> getFiBomInst(GetFiBomInstApiReq req) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getFiBomInst,
@@ -11,6 +13,7 @@ extension IpsBackendBootstrapApi on IpsBackendApi {
     return GetFiBomInstResDto.fromJson(json).items;
   }
 
+  /// Fetches the user's securities accounts.
   Future<GetSecuritiesAcntListResDto> getSecuritiesAcntList(
     GetSecuritiesAcntListApiReq req,
   ) async {
@@ -23,6 +26,7 @@ extension IpsBackendBootstrapApi on IpsBackendApi {
     return GetSecuritiesAcntListResDto.fromJson(json);
   }
 
+  /// Submits a request to open a securities account.
   Future<AddSecuritiesAcntResDto> addSecuritiesAcntReq(
     AddSecuritiesAcntApiReq req,
   ) async {
@@ -35,6 +39,7 @@ extension IpsBackendBootstrapApi on IpsBackendApi {
     return AddSecuritiesAcntResDto.fromJson(json);
   }
 
+  /// Fetches the account/balance state for an existing securities account.
   Future<GetSecuritiesAcntListResDto> getSecAcntBalState(
     GetSecAcntBalApiReq req,
   ) async {
@@ -47,6 +52,7 @@ extension IpsBackendBootstrapApi on IpsBackendApi {
     return GetSecuritiesAcntListResDto.fromJson(json);
   }
 
+  /// Resolves account holder name for an account code.
   Future<AcntNameLookupDto> getAcntNameByAcntCode(
     GetAcntNameByAcntCodeApiReq req,
   ) async {

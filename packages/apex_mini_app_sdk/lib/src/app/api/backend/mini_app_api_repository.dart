@@ -12,24 +12,33 @@ part 'repositories/remote_mini_app_profile_repository.dart';
 
 part 'repositories/remote_mini_app_support_repository.dart';
 
+/// Profile-related repository operations exposed to SDK features.
 abstract interface class MiniAppProfileRepository {
+  /// Fetches the current profile/account payload.
   Future<UserEntityDto> getProfileInfo();
 
+  /// Loads all questionnaire goals.
   Future<List<QuestionnaireQuestion>> getAllGoals();
 
+  /// Updates the selected investment target goal.
   Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req);
 
+  /// Uploads and stores the user's drawn signature.
   Future<UserEntityDto> updateSignature({
     required Uint8List bytes,
     String fileName = 'signature.png',
   });
 
+  /// Updates personal and bank profile fields.
   Future<UserEntityDto> updateProfile(UpdateProfileApiReq req);
 }
 
+/// Feedback repository operations used by feedback screens.
 abstract interface class MiniAppFeedbackRepository {
+  /// Creates one feedback entry.
   Future<FeedbackEntity> createFeedback(CreateFeedbackApiReq req);
 
+  /// Loads a paged feedback list.
   Future<FeedbackListResponse> getFeedbackList({
     required int limit,
     required int page,
@@ -37,31 +46,47 @@ abstract interface class MiniAppFeedbackRepository {
   });
 }
 
+/// Support repository operations used by Help screens.
 abstract interface class MiniAppSupportRepository {
+  /// Loads company support/contact data.
   Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false});
 }
 
+/// Payment repository operations used by contract/payment flows.
 abstract interface class MiniAppPaymentsRepository {
+  /// Creates a payment invoice for a mini-app action.
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req);
 
+  /// Fetches payment status by invoice UUID.
   Future<String> getPaymentCallback({required String uuid});
 }
 
+/// Composite repository facade for all backend-backed mini-app features.
 abstract interface class MiniAppApiRepository
     implements
         MiniAppProfileRepository,
         MiniAppFeedbackRepository,
         MiniAppSupportRepository,
         MiniAppPaymentsRepository {
+  /// Creates the base composite mini-app API repository.
   const MiniAppApiRepository();
 }
 
+/// Default composite repository that delegates to focused remote repositories.
 class RemoteMiniAppApiRepository implements MiniAppApiRepository {
+  /// Profile repository implementation.
   final MiniAppProfileRepository profileRepository;
+
+  /// Feedback repository implementation.
   final MiniAppFeedbackRepository feedbackRepository;
+
+  /// Support repository implementation.
   final MiniAppSupportRepository supportRepository;
+
+  /// Payments repository implementation.
   final MiniAppPaymentsRepository paymentsRepository;
 
+  /// Creates a composite repository with optional overrides for tests.
   RemoteMiniAppApiRepository({
     required MiniAppApiBackend api,
     required MiniAppSessionController session,

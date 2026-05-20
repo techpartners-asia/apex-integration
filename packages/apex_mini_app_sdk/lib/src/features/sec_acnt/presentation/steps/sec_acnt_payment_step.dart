@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Payment content for securities account opening fee collection.
 class SecAcntPaymentStep extends StatelessWidget {
+  /// Optional payment error message.
   final String? errorMessage;
+
+  /// Whether payment submission is in progress.
   final bool isSubmitting;
+
+  /// Amount payable for account opening.
   final double payableAmount;
 
+  /// Creates the payment step content.
   const SecAcntPaymentStep({
     super.key,
     required this.errorMessage,
@@ -90,7 +96,9 @@ class SecAcntPaymentStep extends StatelessWidget {
   }
 }
 
+/// Informational card used for payment notices and payment errors.
 class _PaymentInfoCard extends StatelessWidget {
+  /// Creates a payment information card.
   const _PaymentInfoCard({
     required this.icon,
     required this.iconColor,
@@ -99,10 +107,19 @@ class _PaymentInfoCard extends StatelessWidget {
     required this.textColor,
   });
 
+  /// Leading icon.
   final IconData icon;
+
+  /// Leading icon color.
   final Color iconColor;
+
+  /// Circle color behind the icon.
   final Color iconBackground;
+
+  /// Notice/error text.
   final String message;
+
+  /// Notice/error text color.
   final Color textColor;
 
   @override

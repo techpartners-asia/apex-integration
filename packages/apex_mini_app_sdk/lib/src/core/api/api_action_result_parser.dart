@@ -43,7 +43,8 @@ final class ApiActionResultParser {
       );
     }
 
-    if (json.containsKey('success') && !ApiParser.asFlag(json['success'], defaultValue: true)) {
+    if (json.containsKey('success') &&
+        !ApiParser.asFlag(json['success'], defaultValue: true)) {
       throw ApiBusinessException(
         responseCode: responseCode ?? 1,
         message: messageOf(json) ?? fallbackErrorMessage,
@@ -51,10 +52,13 @@ final class ApiActionResultParser {
     }
   }
 
+  /// Returns the best user/backend message from a response map.
   static String? messageOf(Map<String, Object?> json) {
-    return ApiParser.asNullableString(json['responseDesc']) ?? ApiParser.asNullableString(json['message']);
+    return ApiParser.asNullableString(json['responseDesc']) ??
+        ApiParser.asNullableString(json['message']);
   }
 
+  /// Returns the response `body` as a JSON object map.
   static Map<String, Object?> bodyOf(Map<String, Object?> json) {
     return ApiParser.asObjectMap(json['body']);
   }

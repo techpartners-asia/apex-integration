@@ -1,9 +1,12 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Fallback page shown when a route cannot be resolved by the mini app router.
 class UnavailableScreen extends StatelessWidget {
+  /// Creates the unresolved-route fallback screen.
   const UnavailableScreen({super.key, required this.route});
 
+  /// Route name/path that failed to resolve.
   final String route;
 
   @override

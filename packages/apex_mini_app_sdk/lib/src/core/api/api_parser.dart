@@ -1,6 +1,8 @@
+/// Safe JSON parsing helpers used by DTOs.
 class ApiParser {
   const ApiParser._();
 
+  /// Converts maps with any key type into `Map<String, Object?>`.
   static Map<String, Object?> asObjectMap(Object? value) {
     if (value is Map<String, Object?>) {
       return value;
@@ -15,6 +17,7 @@ class ApiParser {
     return const <String, Object?>{};
   }
 
+  /// Converts a list of raw objects into a list of object maps.
   static List<Map<String, Object?>> asObjectMapList(Object? value) {
     if (value is! List) {
       return const <Map<String, Object?>>[];
@@ -25,12 +28,14 @@ class ApiParser {
         .toList(growable: false);
   }
 
+  /// Converts [value] to a trimmed string, returning null for blank values.
   static String? asNullableString(Object? value) {
     if (value == null) return null;
     final String text = value.toString().trim();
     return text.isEmpty ? null : text;
   }
 
+  /// Converts [value] to int when possible.
   static int? asNullableInt(Object? value) {
     if (value == null) return null;
     if (value is int) return value;
@@ -38,6 +43,7 @@ class ApiParser {
     return int.tryParse(value.toString());
   }
 
+  /// Converts [value] to double when possible.
   static double? asNullableDouble(Object? value) {
     if (value == null) return null;
     if (value is double) return value;
@@ -45,6 +51,7 @@ class ApiParser {
     return double.tryParse(value.toString());
   }
 
+  /// Parses backend truthy/falsey values into a boolean flag.
   static bool asFlag(Object? value, {bool defaultValue = false}) {
     if (value == null) return defaultValue;
     if (value is bool) return value;
@@ -57,6 +64,7 @@ class ApiParser {
     return defaultValue;
   }
 
+  /// Parses [value] as ISO-like date/time when possible.
   static DateTime? asNullableDateTime(Object? value) {
     final String? text = asNullableString(value);
     if (text == null) return null;

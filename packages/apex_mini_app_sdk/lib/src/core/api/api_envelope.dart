@@ -1,13 +1,20 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Generic backend envelope used by some IPS APIs.
 class ApiEnvelope<T> {
+  /// Backend response code. `0` means success.
   final int responseCode;
+
+  /// Backend response description.
   final String responseDesc;
+
+  /// Optional raw response value.
   final Object? resValue;
+
+  /// Typed parsed response data.
   final T responseData;
 
+  /// Creates a typed API response envelope.
   const ApiEnvelope({
     required this.responseCode,
     required this.responseDesc,
@@ -15,6 +22,7 @@ class ApiEnvelope<T> {
     required this.responseData,
   });
 
+  /// Parses an envelope and maps `responseData` using [mapper].
   factory ApiEnvelope.fromJson(
     Map<String, Object?> json,
     T Function(Object? raw) mapper,
@@ -27,6 +35,7 @@ class ApiEnvelope<T> {
     );
   }
 
+  /// Throws [ApiBusinessException] when [responseCode] is not zero.
   void ensureSuccess() {
     if (responseCode != 0) {
       throw ApiBusinessException(

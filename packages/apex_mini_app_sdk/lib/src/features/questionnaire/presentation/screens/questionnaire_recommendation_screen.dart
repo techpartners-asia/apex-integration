@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Intro/recommendation screen shown before the questionnaire questions.
 class QuestionnaireRecommendationScreen extends StatelessWidget {
+  /// Creates the questionnaire recommendation screen.
   const QuestionnaireRecommendationScreen({super.key});
 
+  /// Opens the first questionnaire question.
   void _openFirstQuestion(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -58,11 +60,18 @@ class QuestionnaireRecommendationScreen extends StatelessWidget {
   }
 }
 
+/// Card content for the questionnaire recommendation intro.
 class _QuestionnaireRecommendationView extends StatelessWidget {
+  /// Whether questionnaire data is loading.
   final bool isLoading;
+
+  /// Optional error message shown when questions failed to load.
   final String? errorMessage;
+
+  /// Retry callback for loading questionnaire data.
   final VoidCallback onRetry;
 
+  /// Creates the questionnaire recommendation content.
   const _QuestionnaireRecommendationView({
     required this.isLoading,
     required this.errorMessage,

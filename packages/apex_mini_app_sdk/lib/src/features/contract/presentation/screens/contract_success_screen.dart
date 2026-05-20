@@ -2,7 +2,9 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Success page shown after contract payment/creation completes.
 class ContractSuccessScreen extends StatelessWidget {
+  /// Creates the contract success screen.
   const ContractSuccessScreen({super.key});
 
   @override
@@ -75,7 +77,8 @@ class ContractSuccessScreen extends StatelessWidget {
       bottomNavigationBar: BottomActionBar(
         child: PrimaryButton(
           label: l10n.commonGoHome,
-          onPressed: () => replaceIpsRoute(context, route: MiniAppRoutes.overview),
+          onPressed: () =>
+              replaceIpsRoute(context, route: MiniAppRoutes.overview),
         ),
       ),
     );

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Full-screen blocking loading overlay for long-running modal actions.
 class BlockingLoadingOverlay extends StatelessWidget {
+  /// Loading title.
   final String title;
+
+  /// Loading message.
   final String message;
 
+  /// Creates a blocking loading overlay.
   const BlockingLoadingOverlay({
     super.key,
     required this.title,

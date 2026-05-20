@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 /// Shows the recharge flow as a modal bottom sheet.
 ///
-/// Returns the [IpsRechargeState] when the sheet closes, or `null` if
-/// dismissed without completing.
+/// [ordersService] submits recharge actions, [portfolioService] and
+/// [bootstrapService] can refresh portfolio/account context, [pricingContext]
+/// provides an already-resolved account context, and [paymentExecutor] delegates
+/// payment to the host app. Returns the [IpsRechargeState] when the sheet
+/// closes, or `null` if dismissed without completing.
 Future<IpsRechargeState?> showRechargeBottomSheet(
   BuildContext context, {
   required OrdersService ordersService,
@@ -43,18 +45,30 @@ Future<IpsRechargeState?> showRechargeBottomSheet(
   );
 }
 
+/// Modal content shell for the recharge flow.
 class _RechargeBottomSheet extends StatefulWidget {
+  /// Creates the recharge bottom-sheet content.
   const _RechargeBottomSheet();
 
   @override
   State<_RechargeBottomSheet> createState() => _RechargeBottomSheetState();
 }
 
+/// Manages input focus and listens to recharge submission state.
 class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
+  /// Quantity text controller for the hidden/visible input.
   final TextEditingController _controller = TextEditingController();
+
+  /// Focus node used to show the keyboard when the sheet opens.
   final FocusNode _focusNode = FocusNode(debugLabel: 'recharge_quantity_input');
+
+  /// Current bottom-sheet route animation being observed.
   Animation<double>? _routeAnimation;
+
+  /// Whether initial focus has already been requested for this sheet.
   bool _initialFocusRequested = false;
+
+  /// Whether the platform keyboard fallback has already been attempted.
   bool _keyboardFallbackRequested = false;
 
   @override
@@ -63,6 +77,7 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     _watchBottomSheetOpenAnimation();
   }
 
+  /// Waits for the sheet opening animation before requesting input focus.
   void _watchBottomSheetOpenAnimation() {
     final Animation<double>? animation = ModalRoute.of(context)?.animation;
     if (identical(_routeAnimation, animation)) return;
@@ -78,12 +93,14 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     animation.addStatusListener(_handleBottomSheetAnimationStatus);
   }
 
+  /// Requests focus once the modal route animation reaches completed.
   void _handleBottomSheetAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
       _requestInitialFocusAfterOpen();
     }
   }
 
+  /// Schedules initial focus after layout and route animation are stable.
   void _requestInitialFocusAfterOpen() {
     if (_initialFocusRequested) return;
     _initialFocusRequested = true;
@@ -98,6 +115,7 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     });
   }
 
+  /// Focuses the quantity input and optionally asks the platform keyboard to open.
   void _focusQuantityInput({bool showKeyboardFallback = false}) {
     if (!mounted) return;
 
@@ -168,13 +186,24 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   }
 }
 
+/// Scrollable body and submit button for the recharge sheet.
 class _RechargeSheetBody extends StatelessWidget {
+  /// Controller bound to the recharge quantity input.
   final TextEditingController controller;
+
+  /// Focus node bound to the recharge quantity input.
   final FocusNode focusNode;
+
+  /// Current recharge state.
   final IpsRechargeState state;
+
+  /// Called when the user taps the input area.
   final VoidCallback onRequestFocus;
+
+  /// Called when the quantity text changes.
   final ValueChanged<String> onQuantityChanged;
 
+  /// Creates the recharge sheet body.
   const _RechargeSheetBody({
     required this.controller,
     required this.focusNode,

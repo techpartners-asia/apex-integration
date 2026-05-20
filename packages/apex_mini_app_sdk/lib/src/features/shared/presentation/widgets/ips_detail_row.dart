@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Label/value row used in portfolio, orders, and account details.
 class IpsDetailRow extends StatelessWidget {
+  /// Leading label.
   final String label;
+
+  /// Text value shown on the right.
   final String? value;
+
+  /// Custom value widget shown on the right.
   final Widget? valueWidget;
+
+  /// Optional leading icon.
   final IconData? icon;
 
+  /// Creates a label/value detail row.
   const IpsDetailRow({
     super.key,
     required this.label,

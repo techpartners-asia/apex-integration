@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Selectable card used by questionnaire and option-selection flows.
 class OptionCard extends StatelessWidget {
+  /// Option label.
   final String label;
+
+  /// Whether this option is selected.
   final bool selected;
+
+  /// Optional tap handler.
   final VoidCallback? onTap;
+
+  /// Optional prefix index shown before the label.
   final String? indexLabel;
 
+  /// Creates a selectable option card.
   const OptionCard({
     super.key,
     required this.label,

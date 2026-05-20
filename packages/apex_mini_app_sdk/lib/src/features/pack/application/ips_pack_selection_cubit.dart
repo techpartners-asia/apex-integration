@@ -1,6 +1,7 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Cubit that loads/selects available investment packs.
 class IpsPackSelectionCubit extends Cubit<LoadableState<List<IpsPack>>> {
   IpsPackSelectionCubit({
     required this.service,
@@ -15,9 +16,13 @@ class IpsPackSelectionCubit extends Cubit<LoadableState<List<IpsPack>>> {
                ),
        );
 
+  /// Pack API service.
   final PackService service;
+
+  /// Localizations used for user-facing errors.
   final SdkLocalizations l10n;
 
+  /// Loads pack list.
   Future<void> load({bool forceRefresh = false}) async {
     emit(state.copyWith(status: LoadableStatus.loading, errorMessage: null));
 

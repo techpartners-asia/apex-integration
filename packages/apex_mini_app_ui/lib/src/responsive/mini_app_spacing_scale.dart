@@ -2,21 +2,46 @@ import 'package:flutter/widgets.dart';
 
 import 'mini_app_breakpoints.dart';
 
+/// Breakpoint-specific spacing, radius, and component size tokens.
 @immutable
 class MiniAppSpacingScale {
+  /// Default page padding for this breakpoint.
   final EdgeInsets pagePadding;
+
+  /// Vertical gap between major sections.
   final double sectionSpacing;
+
+  /// Gap between card-like elements.
   final double cardGap;
+
+  /// Horizontal gap between inline controls.
   final double inlineSpacing;
+
+  /// Small corner radius token.
   final double radiusSmall;
+
+  /// Medium corner radius token.
   final double radiusMedium;
+
+  /// Large corner radius token.
   final double radiusLarge;
+
+  /// Small icon size token.
   final double iconSizeSmall;
+
+  /// Medium icon size token.
   final double iconSizeMedium;
+
+  /// Standard primary button height.
   final double buttonHeight;
+
+  /// Padding used inside modal surfaces.
   final double modalPadding;
+
+  /// Horizontal padding used by financial card layouts.
   final double financialCardSpacing;
 
+  /// Creates a spacing scale with concrete breakpoint token values.
   const MiniAppSpacingScale({
     required this.pagePadding,
     required this.sectionSpacing,
@@ -32,6 +57,7 @@ class MiniAppSpacingScale {
     required this.financialCardSpacing,
   });
 
+  /// Returns the spacing scale for [breakpoint].
   factory MiniAppSpacingScale.forBreakpoint(MiniAppBreakpoint breakpoint) {
     switch (breakpoint) {
       case MiniAppBreakpoint.compact:

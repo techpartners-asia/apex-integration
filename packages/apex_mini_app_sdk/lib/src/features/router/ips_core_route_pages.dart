@@ -2,6 +2,7 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Builds the splash/bootstrap route and wires its bootstrap cubit.
 Widget buildIpsSplashPage(
   BuildContext context, {
   required String route,
@@ -23,6 +24,7 @@ Widget buildIpsSplashPage(
   );
 }
 
+/// Builds the overview route with bootstrap, portfolio, and pack dependencies.
 Widget buildIpsOverviewPage(
   BuildContext context, {
   required String route,
@@ -51,6 +53,7 @@ Widget buildIpsOverviewPage(
   );
 }
 
+/// Builds the securities account onboarding route.
 Widget buildIpsSecAcntPage(
   BuildContext context, {
   required String route,
@@ -70,7 +73,9 @@ Widget buildIpsSecAcntPage(
         l10n: l10n,
       ),
       child: SecAcntScreen(
-        initialBootstrapState: arguments is AcntBootstrapState ? arguments : null,
+        initialBootstrapState: arguments is AcntBootstrapState
+            ? arguments
+            : null,
         bankOptionsRepository: dependencies.bankOptionsRepository,
         bankAccountLookupRepository: dependencies.bankAccountLookupRepository,
         appApi: dependencies.appApi,
@@ -80,6 +85,7 @@ Widget buildIpsSecAcntPage(
   );
 }
 
+/// Builds the profile personal-info route.
 Widget buildIpsPersonalInfoPage(
   BuildContext context, {
   required String route,

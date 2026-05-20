@@ -1,6 +1,8 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Backend API methods for IPS portfolio and statement endpoints.
 extension IpsBackendPortfolioApi on IpsBackendApi {
+  /// Fetches the current portfolio overview/balance snapshot.
   Future<PortfolioOverviewDto> getIpsOverview({String? srcFiCode}) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getIpsBalance,
@@ -11,13 +13,16 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
     return PortfolioOverviewDto.fromJson(json);
   }
 
+  /// Fetches yield/profit holdings and returns only the holding rows.
   Future<List<PortfolioHoldingDto>> getYieldProfitHoldings(
     GetAcntYieldProfitApiReq req,
   ) async {
-    final PortfolioYieldProfitResponseDto response = await getYieldProfitResponse(req);
+    final PortfolioYieldProfitResponseDto response =
+        await getYieldProfitResponse(req);
     return response.profit;
   }
 
+  /// Fetches the full yield/profit response including totals.
   Future<PortfolioYieldProfitResponseDto> getYieldProfitResponse(
     GetAcntYieldProfitApiReq req,
   ) async {
@@ -30,6 +35,7 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
     return PortfolioYieldProfitResponseDto.fromJson(json);
   }
 
+  /// Fetches detailed stock-yield rows for the selected securities account.
   Future<List<PortfolioHoldingDto>> getStockYieldDetail(
     GetStockAcntYieldDtlApiReq req,
   ) async {
@@ -42,6 +48,7 @@ extension IpsBackendPortfolioApi on IpsBackendApi {
     return PortfolioHoldingDto.listFromStockYieldDetailResponse(json);
   }
 
+  /// Fetches CASA statement rows for the requested account/date range.
   Future<CasaStatementResponseDto> getCasaStatements(
     GetCasaStmtApiReq req,
   ) async {

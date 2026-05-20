@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Shows the calculated questionnaire score and links to recommended packs.
 class QuestionnaireResultView extends StatelessWidget {
+  /// Calculated questionnaire result.
   final QuestionnaireRes res;
 
+  /// Creates a questionnaire result view.
   const QuestionnaireResultView({super.key, required this.res});
 
   @override

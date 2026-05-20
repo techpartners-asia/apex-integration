@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Consent step that starts the securities account onboarding flow.
 class SecAcntConsentScreen extends StatelessWidget {
+  /// Bootstrap data used to resolve the next step.
   final AcntBootstrapState? bootstrapState;
+
+  /// Repository used if the flow proceeds to personal information.
   final SecAcntBankOptionsRepository bankOptionsRepository;
+
+  /// Repository used if the flow proceeds to personal information.
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
+
+  /// Profile repository passed to mutation screens.
   final MiniAppProfileRepository appApi;
+
+  /// Current profile used by skip logic.
   final UserEntityDto? currentUser;
+
+  /// Initial draft built from bootstrap/profile data.
   final SecAcntFlowDraft initialDraft;
 
+  /// Creates the consent screen.
   const SecAcntConsentScreen({
     super.key,
     required this.bootstrapState,
@@ -20,6 +32,7 @@ class SecAcntConsentScreen extends StatelessWidget {
     required this.initialDraft,
   });
 
+  /// Resolves and opens the first actionable step after consent acceptance.
   Future<void> _openNextStep(BuildContext context) async {
     final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
       SecAcntFlowStep.consent,

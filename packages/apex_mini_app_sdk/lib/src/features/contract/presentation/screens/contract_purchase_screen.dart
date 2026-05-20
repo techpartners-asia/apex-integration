@@ -2,22 +2,29 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Contract purchase page with quantity entry and payment submission.
 class ContractPurchaseScreen extends StatefulWidget {
+  /// Creates the contract purchase screen.
   const ContractPurchaseScreen({super.key});
 
   @override
   State<ContractPurchaseScreen> createState() => _ContractPurchaseScreenState();
 }
 
+/// Listens for payment success and renders contract quantity/payment UI.
 class _ContractPurchaseScreenState extends State<ContractPurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final IpsContractCubit cubit = context.read<IpsContractCubit>();
-    final String packTitle = cubit.payload.pack.packDesc?.trim().isNotEmpty == true ? cubit.payload.pack.packDesc!.trim() : cubit.payload.pack.name;
+    final String packTitle =
+        cubit.payload.pack.packDesc?.trim().isNotEmpty == true
+        ? cubit.payload.pack.packDesc!.trim()
+        : cubit.payload.pack.name;
 
     return BlocListener<IpsContractCubit, IpsContractState>(
-      listenWhen: (IpsContractState previous, IpsContractState current) => previous.paymentRes?.status != current.paymentRes?.status,
+      listenWhen: (IpsContractState previous, IpsContractState current) =>
+          previous.paymentRes?.status != current.paymentRes?.status,
       listener: (BuildContext context, IpsContractState state) {
         if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
           Navigator.of(context).push(
@@ -76,7 +83,8 @@ class _ContractPurchaseScreenState extends State<ContractPurchaseScreen> {
                         serviceFee: state.serviceFee,
                         totalPayable: state.totalPayable,
                       ),
-                      if (_buildStatusBanner(context, state) case final Widget banner) ...<Widget>[
+                      if (_buildStatusBanner(context, state)
+                          case final Widget banner) ...<Widget>[
                         SizedBox(
                           height: context.responsive.spacing.sectionSpacing,
                         ),
@@ -111,8 +119,10 @@ class _ContractPurchaseScreenState extends State<ContractPurchaseScreen> {
     );
   }
 
+  /// Builds an error/status banner for failed or pending payment outcomes.
   Widget? _buildStatusBanner(BuildContext context, IpsContractState state) {
-    if (state.errorMessage case final String message when message.trim().isNotEmpty) {
+    if (state.errorMessage case final String message
+        when message.trim().isNotEmpty) {
       return NoticeBanner(
         title: context.l10n.errorsActionFailed,
         message: message,
@@ -121,13 +131,17 @@ class _ContractPurchaseScreenState extends State<ContractPurchaseScreen> {
     }
 
     final MiniAppPaymentRes? paymentRes = state.paymentRes;
-    if (paymentRes == null || paymentRes.status == MiniAppPaymentStatus.success) {
+    if (paymentRes == null ||
+        paymentRes.status == MiniAppPaymentStatus.success) {
       return null;
     }
 
     return NoticeBanner(
       title: resolvePaymentStatusLabel(context.l10n, paymentRes.status),
-      message: resolvePaymentResultMessage(context.l10n, paymentRes) ?? paymentRes.message ?? context.l10n.errorsActionFailed,
+      message:
+          resolvePaymentResultMessage(context.l10n, paymentRes) ??
+          paymentRes.message ??
+          context.l10n.errorsActionFailed,
       icon: Icons.error_outline_rounded,
     );
   }

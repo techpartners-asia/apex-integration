@@ -1,17 +1,32 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// User identity resolved from either real-user or contract data source mode.
 class ResolvedUserIdentity {
+  /// Register number used by IPS APIs.
   final String registerNo;
+
+  /// First name.
   final String firstName;
+
+  /// Last name.
   final String lastName;
+
+  /// Mobile number.
   final String mobile;
+
+  /// Optional family name.
   final String? familyName;
+
+  /// Optional email.
   final String? email;
+
+  /// Optional sex/gender code.
   final String? sexCode;
+
+  /// Optional birth date.
   final String? birthDate;
 
+  /// Creates a resolved user identity for login-session requests.
   const ResolvedUserIdentity({
     required this.registerNo,
     required this.firstName,
@@ -23,6 +38,7 @@ class ResolvedUserIdentity {
     this.birthDate,
   });
 
+  /// Returns the static contract identity.
   factory ResolvedUserIdentity.contract() {
     return const ResolvedUserIdentity(
       registerNo: LoginSessionContract.registerNo,
@@ -36,6 +52,7 @@ class ResolvedUserIdentity {
     );
   }
 
+  /// Builds identity from the loaded real user profile.
   factory ResolvedUserIdentity.realUser(UserEntityDto user) {
     return ResolvedUserIdentity(
       registerNo: _requiredField(
@@ -59,6 +76,7 @@ class ResolvedUserIdentity {
     );
   }
 
+  /// Resolves the identity source using [mode].
   static ResolvedUserIdentity resolve({
     required MiniAppUserDataSourceMode mode,
     UserEntityDto? user,
@@ -76,6 +94,7 @@ class ResolvedUserIdentity {
     }
   }
 
+  /// Resolves only register number for flows that do not need full identity.
   static String resolveRegisterNo({
     required MiniAppUserDataSourceMode mode,
     required UserEntityDto user,

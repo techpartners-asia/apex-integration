@@ -1,12 +1,23 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Session/API runtime bundle created during SDK dependency wiring.
 class MiniAppSessionRuntime {
+  /// Resolved backend configuration.
   final SdkBackendConfig backendConfig;
+
+  /// Reactive session state.
   final MiniAppSessionStore store;
+
+  /// Session loader/refresher.
   final MiniAppSessionController controller;
+
+  /// Protected API executor, null when protected APIs cannot be configured.
   final ApiExecutor? protectedExecutor;
+
+  /// General mini-app repository backed by Apex APIs.
   final MiniAppApiRepository appApi;
 
+  /// Creates the assembled session/API runtime bundle.
   const MiniAppSessionRuntime({
     required this.backendConfig,
     required this.store,
@@ -16,6 +27,7 @@ class MiniAppSessionRuntime {
   });
 }
 
+/// Builds session stores, token providers, API runtimes, and repositories.
 MiniAppSessionRuntime buildMiniAppSessionRuntime({
   String? initialUserToken,
   MiniAppLogger logger = const DebugMiniAppLogger(),
@@ -125,6 +137,7 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
   );
 }
 
+/// Converts optional host user data into the internal user DTO.
 UserEntityDto? _hostUserToDto(ApexMiniAppHostUser? user) {
   if (user == null) {
     return null;
@@ -145,6 +158,7 @@ UserEntityDto? _hostUserToDto(ApexMiniAppHostUser? user) {
   );
 }
 
+/// Converts optional host bank data into the internal bank DTO.
 BankDto? _hostBankToDto(ApexMiniAppHostBank? bank) {
   if (bank == null) {
     return null;
@@ -159,6 +173,7 @@ BankDto? _hostBankToDto(ApexMiniAppHostBank? bank) {
   );
 }
 
+/// Converts optional host session data into the internal login session model.
 LoginSession? _hostSessionToLoginSession(ApexMiniAppHostSession? session) {
   final String accessToken = session?.accessToken?.trim() ?? '';
   if (accessToken.isEmpty) {

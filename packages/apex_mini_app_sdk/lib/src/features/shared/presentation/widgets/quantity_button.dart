@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Circular quantity increment/decrement button.
 class QuantityButton extends StatelessWidget {
+  /// Icon to display.
   final IconData icon;
+
+  /// Whether the button can be tapped.
   final bool enabled;
+
+  /// Tap callback when enabled.
   final VoidCallback onTap;
 
+  /// Creates an increment/decrement control button.
   const QuantityButton({
     super.key,
     required this.icon,

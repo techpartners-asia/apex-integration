@@ -1,12 +1,21 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Coordinates pricing, submission, and post-success refresh for sell flow.
 class IpsSellCubit extends Cubit<IpsSellState> {
+  /// Orders service used to submit sell requests.
   final OrdersService service;
+
+  /// Localizations used for user-facing errors.
   final SdkLocalizations l10n;
+
+  /// Optional portfolio service used to load pricing/holding data.
   final PortfolioService? portfolioService;
+
+  /// Optional pack service used to show the selected/recommended pack.
   final PackService? packService;
 
+  /// Creates the sell flow cubit.
   IpsSellCubit({
     required this.service,
     required this.l10n,
@@ -14,6 +23,7 @@ class IpsSellCubit extends Cubit<IpsSellState> {
     this.packService,
   }) : super(const IpsSellState());
 
+  /// Loads overview pricing and selected pack details in parallel.
   Future<void> loadPricing() async {
     await Future.wait(<Future<void>>[
       _loadOverview(),
@@ -61,10 +71,12 @@ class IpsSellCubit extends Cubit<IpsSellState> {
     }
   }
 
+  /// Updates selected pack quantity from user input.
   void updatePackQty(String value) {
     emit(state.copyWith(packQty: int.tryParse(value.trim()) ?? 0));
   }
 
+  /// Submits the sell request when the state is valid.
   Future<void> submit() async {
     if (!state.canSubmit) return;
 
@@ -93,6 +105,7 @@ class IpsSellCubit extends Cubit<IpsSellState> {
     }
   }
 
+  /// Refreshes packs before routing the user away from the success screen.
   Future<List<IpsPack>?> refreshPacksAfterSuccess() async {
     if (!state.canCompleteSuccessFlow) {
       return null;
@@ -139,13 +152,18 @@ class IpsSellCubit extends Cubit<IpsSellState> {
   }
 
   double _resolveProfit(PortfolioOverview overview, double fallback) {
-    final double? reportedProfit = overview.profitOrLoss ?? overview.yieldAmount;
+    final double? reportedProfit =
+        overview.profitOrLoss ?? overview.yieldAmount;
     if (reportedProfit != null && reportedProfit.isFinite) {
       return reportedProfit;
     }
 
-    final double principal = (overview.packQty ?? 0) * (overview.packAmount ?? 0);
-    final double assetsValue = (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0) + (overview.cashTotal ?? 0);
+    final double principal =
+        (overview.packQty ?? 0) * (overview.packAmount ?? 0);
+    final double assetsValue =
+        (overview.stockTotal ?? 0) +
+        (overview.bondTotal ?? 0) +
+        (overview.cashTotal ?? 0);
     if (principal > 0 && assetsValue.isFinite) {
       return assetsValue - principal;
     }

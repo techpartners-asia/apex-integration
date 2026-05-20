@@ -1,13 +1,24 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// One row in the overview onboarding/verification checklist.
 class OverviewVerificationStep {
+  /// Step title.
   final String title;
+
+  /// Step subtitle.
   final String subtitle;
+
+  /// Current visual status.
   final StepStatus status;
+
+  /// Optional action when the step is tapped.
   final VoidCallback? onTap;
+
+  /// Whether this is the final step in the checklist.
   final bool isLast;
 
+  /// Creates a verification step.
   const OverviewVerificationStep({
     required this.title,
     required this.subtitle,
@@ -17,17 +28,36 @@ class OverviewVerificationStep {
   });
 }
 
+/// View model consumed by [OverviewVerificationCard].
 class OverviewVerificationViewModel {
+  /// Card title.
   final String title;
+
+  /// Card subtitle.
   final String subtitle;
+
+  /// Current progress numerator.
   final int progressCurrent;
+
+  /// Total progress denominator.
   final int progressTotal;
+
+  /// Timeline/checklist rows.
   final List<OverviewVerificationStep> steps;
+
+  /// Eyebrow text for the promo card.
   final String promoEyebrow;
+
+  /// Title text for the promo card.
   final String promoTitle;
+
+  /// Button label for the promo card.
   final String promoButtonLabel;
+
+  /// Optional promo action.
   final VoidCallback? onPromoTap;
 
+  /// Creates a verification card view model.
   const OverviewVerificationViewModel({
     required this.title,
     required this.subtitle,
@@ -41,6 +71,7 @@ class OverviewVerificationViewModel {
   });
 }
 
+/// Builds the onboarding checklist model from account bootstrap state.
 OverviewVerificationViewModel buildOverviewVerificationViewModel(
   BuildContext context,
   AcntBootstrapState state,
@@ -58,7 +89,8 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           title: l10n.ipsOverviewProfileMenuPersonalInfo,
           subtitle: l10n.ipsOverviewProfilePersonalInfoMissing,
           status: StepStatus.active,
-          onTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+          onTap: () =>
+              launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
         ),
         OverviewVerificationStep(
           title: l10n.ipsAcntOpenAcnt,
@@ -75,7 +107,8 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
       promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
       promoTitle: l10n.ipsOverviewFirstPackTitle,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+      onPromoTap: () =>
+          launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
     );
   }
 
@@ -135,13 +168,15 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
         title: l10n.ipsQuestionnaireTitle,
         subtitle: l10n.ipsQuestionnaireSubtitle,
         status: StepStatus.active,
-        onTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+        onTap: () =>
+            launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
         isLast: true,
       ),
     ],
     promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
     promoTitle: l10n.ipsHomeRecommendedPackCta,
     promoButtonLabel: l10n.commonContinue,
-    onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+    onPromoTap: () =>
+        launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
   );
 }

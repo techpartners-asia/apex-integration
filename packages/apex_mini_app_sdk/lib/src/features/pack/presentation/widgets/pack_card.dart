@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Visual card for an investment pack and its allocation.
 class PackCard extends StatelessWidget {
+  /// Pack to render.
   final IpsPack pack;
 
+  /// Creates an investment pack card.
   const PackCard({super.key, required this.pack});
 
   @override

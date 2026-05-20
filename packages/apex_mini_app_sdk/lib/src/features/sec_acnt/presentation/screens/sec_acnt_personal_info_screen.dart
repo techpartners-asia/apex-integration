@@ -3,14 +3,27 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Personal and bank information step for securities account onboarding.
 class SecAcntPersonalInfoScreen extends StatefulWidget {
+  /// Bootstrap data used for short-flow decisions.
   final AcntBootstrapState? bootstrapState;
+
+  /// Repository used to load bank options.
   final SecAcntBankOptionsRepository bankOptionsRepository;
+
+  /// Repository used to resolve account holder names.
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
+
+  /// Profile repository used to submit entered personal information.
   final MiniAppProfileRepository appApi;
+
+  /// Current profile used by skip and submission logic.
   final UserEntityDto? currentUser;
+
+  /// Initial form values built from bootstrap/profile data.
   final SecAcntFlowDraft initialDraft;
 
+  /// Creates the personal information screen.
   const SecAcntPersonalInfoScreen({
     super.key,
     required this.bootstrapState,
@@ -26,24 +39,51 @@ class SecAcntPersonalInfoScreen extends StatefulWidget {
       _SecAcntPersonalInfoScreenState();
 }
 
+/// Owns form state, validation, bank lookup, and profile submission.
 class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
+  /// Form key used to validate personal and bank fields together.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  /// Primary mobile phone controller.
   late final TextEditingController _mobileController;
+
+  /// Secondary mobile phone controller.
   late final TextEditingController _secondaryMobileController;
+
+  /// Email controller.
   late final TextEditingController _emailController;
+
+  /// IBAN account number controller.
   late final TextEditingController _ibanController;
+
+  /// Service responsible for profile update and account-name lookup.
   late final SecAcntProfileSubmissionService _profileSubmissionService;
 
+  /// Currently selected settlement bank.
   SecAcntBankOption? _selectedBank;
+
+  /// Whether bank options have been warmed once for matching existing data.
   bool _didWarmBankOptions = false;
+
+  /// Whether the user has changed or attempted to submit personal info.
   bool _didInteractWithPersonalInfo = false;
+
+  /// Whether the bank selector has been touched.
   bool _didTouchBankSelector = false;
+
+  /// Whether initial bank option warming is in progress.
   bool _isWarmingBankOptions = false;
+
+  /// Whether profile submission is in progress.
   bool _isSubmittingProfile = false;
+
+  /// Last profile submission error shown in the form.
   String? _submitErrorMessage;
 
+  /// Whether the current bootstrap state uses the shorter bank-only flow.
   bool get _isShortFlow => isShortSecAcntFlow(widget.bootstrapState);
+
+  /// Whether contact fields can be skipped because profile data is complete.
   bool get _usesBankOnlyShortForm =>
       _isShortFlow && widget.initialDraft.hasCompleteContactInfo;
 
@@ -78,6 +118,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     }
   }
 
+  /// Refreshes validation/error state after form input changes.
   void _refresh() {
     if (!mounted) {
       return;
@@ -88,6 +129,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     });
   }
 
+  /// Loads bank options once to replace draft bank aliases with canonical data.
   Future<void> _warmBankOptions() async {
     if (mounted) {
       setState(() => _isWarmingBankOptions = true);
@@ -118,6 +160,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     });
   }
 
+  /// Finds a bank option matching an existing bank code or display name.
   SecAcntBankOption? _matchBankOption({
     required List<SecAcntBankOption> bankOptions,
     String? bankCode,
@@ -135,6 +178,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     return null;
   }
 
+  /// Validates the primary mobile field when contact info is required.
   String? _validateMobile(BuildContext context, String? value) {
     if (_usesBankOnlyShortForm) {
       return null;
@@ -145,6 +189,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     ])(value);
   }
 
+  /// Validates the optional secondary mobile field.
   String? _validateSecondaryMobile(BuildContext context, String? value) {
     if (_usesBankOnlyShortForm) {
       return null;
@@ -152,6 +197,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     return Validators.phone(context.l10n)(value);
   }
 
+  /// Validates the email field when contact info is required.
   String? _validateEmail(BuildContext context, String? value) {
     if (_usesBankOnlyShortForm) {
       return null;
@@ -159,20 +205,24 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     return Validators.email(context.l10n)(value);
   }
 
+  /// Validates the IBAN field.
   String? _validateIban(BuildContext context, String? value) {
     return Validators.iban(context.l10n)(value);
   }
 
+  /// Validates that a settlement bank has been selected.
   String? _validateSelectedBank(BuildContext context) {
     return Validators.requiredSelection<SecAcntBankOption>(context.l10n)(
       _selectedBank,
     );
   }
 
+  /// Form autovalidation mode after first interaction.
   AutovalidateMode get _autovalidateMode => _didInteractWithPersonalInfo
       ? AutovalidateMode.always
       : AutovalidateMode.disabled;
 
+  /// Returns bank selector error text only after relevant interaction.
   String? _bankErrorText(BuildContext context) {
     if (!_didInteractWithPersonalInfo && !_didTouchBankSelector) {
       return null;
@@ -180,6 +230,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     return _validateSelectedBank(context);
   }
 
+  /// Returns whether all fields required by the active flow are valid.
   bool _canContinue(BuildContext context) {
     if (_usesBankOnlyShortForm) {
       return _validateIban(context, _ibanController.text) == null &&
@@ -194,6 +245,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
         _validateSelectedBank(context) == null;
   }
 
+  /// Opens the bank selector sheet and stores the selected bank.
   Future<void> _selectBank(BuildContext context) async {
     if (mounted) {
       setState(() => _didTouchBankSelector = true);
@@ -224,6 +276,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     });
   }
 
+  /// Builds an updated flow draft from current form values.
   SecAcntFlowDraft _buildDraft() {
     return widget.initialDraft.copyWith(
       mobile: _mobileController.text,
@@ -234,6 +287,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
   }
 
+  /// Submits profile data and opens the next onboarding step when successful.
   Future<void> _submitAndOpenNextStep() async {
     setState(() {
       _didInteractWithPersonalInfo = true;
@@ -276,6 +330,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     _openNextStep(draft);
   }
 
+  /// Resolves and opens the next step after personal information is complete.
   Future<void> _openNextStep(SecAcntFlowDraft draft) async {
     final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
       SecAcntFlowStep.personalInformation,
@@ -345,6 +400,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
   }
 
+  /// Builds the form body with loading overlays.
   Widget _buildBody(BuildContext context, double footerClearance) {
     return Stack(
       children: <Widget>[
@@ -363,6 +419,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
   }
 
+  /// Builds the scrollable form content above the fixed footer.
   Widget _buildScrollableForm(BuildContext context, double footerClearance) {
     final responsive = context.responsive;
 
@@ -408,6 +465,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
   }
 
+  /// Whether a non-empty submission error should be shown.
   bool get _hasSubmitError =>
       _submitErrorMessage != null && _submitErrorMessage!.trim().isNotEmpty;
 
@@ -429,9 +487,12 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   }
 }
 
+/// Error banner shown after profile submission fails.
 class _SubmitErrorBanner extends StatelessWidget {
+  /// Error message to display.
   final String message;
 
+  /// Creates a submit error banner.
   const _SubmitErrorBanner({required this.message});
 
   @override

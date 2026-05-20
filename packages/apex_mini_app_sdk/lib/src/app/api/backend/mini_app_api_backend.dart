@@ -3,12 +3,18 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 import 'package:dio/dio.dart';
 
+/// Backend facade for non-IPS app APIs such as profile, feedback, and payment.
 class MiniAppApiBackend {
+  /// Executor for public endpoints that do not use authorized user context.
   final ApiExecutor? publicExecutor;
+
+  /// Executor for authorized profile/user endpoints.
   final ApiExecutor? authorizedExecutor;
 
+  /// Creates the low-level mini-app API backend.
   const MiniAppApiBackend({this.publicExecutor, this.authorizedExecutor});
 
+  /// Loads the current user's profile info.
   Future<UserEntityDto> getProfileInfo() async {
     final ApiExecutor executor = _requireAuthorizedExecutor('getProfileInfo');
     final Map<String, Object?> json = await executor.getJson(
@@ -19,6 +25,7 @@ class MiniAppApiBackend {
     return UserEntityDto.fromJson(json);
   }
 
+  /// Loads all goal questions from the profile API domain.
   Future<List<QuestionnaireQuestionDto>> getAllGoals() async {
     final ApiExecutor executor = _requireAuthorizedExecutor('getAllGoals');
     final List<Object?> json = await executor.getJsonList(
@@ -29,7 +36,10 @@ class MiniAppApiBackend {
     return QuestionnaireQuestionDto.listFromQuestionApiRaw(json);
   }
 
-  Future<CreateInvoiceResponseDto> createInvoice(CreateInvoiceApiReq req) async {
+  /// Creates an invoice through the authorized API.
+  Future<CreateInvoiceResponseDto> createInvoice(
+    CreateInvoiceApiReq req,
+  ) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('createInvoice');
     final Map<String, Object?> json = await executor.postJson(
       ApiEndpoints.createInvoice,
@@ -40,6 +50,7 @@ class MiniAppApiBackend {
     return CreateInvoiceResponseDto.fromJson(json);
   }
 
+  /// Updates the user's target goal.
   Future<ApiActionResponseDto> updateTargetGoal(
     UpdateTargetGoalApiReq req,
   ) async {
@@ -56,6 +67,7 @@ class MiniAppApiBackend {
     );
   }
 
+  /// Updates profile and bank/personal information.
   Future<ApiActionResponseDto> updateProfile(UpdateProfileApiReq req) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('updateProfile');
     final Map<String, Object?> json = await executor.putJson(
@@ -70,6 +82,7 @@ class MiniAppApiBackend {
     );
   }
 
+  /// Uploads a rendered signature image.
   Future<ApiActionResponseDto> updateSignature({
     required Uint8List bytes,
     required String fileName,
@@ -91,6 +104,7 @@ class MiniAppApiBackend {
     );
   }
 
+  /// Creates a support feedback ticket.
   Future<CreateFeedbackResponseDto> createFeedback(
     CreateFeedbackApiReq req,
   ) async {
@@ -104,6 +118,7 @@ class MiniAppApiBackend {
     return CreateFeedbackResponseDto.fromJson(json);
   }
 
+  /// Loads paginated support feedback.
   Future<FeedbackListResponseDto> getFeedbackList(
     FeedbackListApiReq req,
   ) async {
@@ -117,6 +132,7 @@ class MiniAppApiBackend {
     return FeedbackListResponseDto.fromJson(json);
   }
 
+  /// Loads company/help information.
   Future<CompanyInfoResponseDto> getCompanyInfo() async {
     final ApiExecutor executor = _requireAuthorizedExecutor('getCompanyInfo');
     final Map<String, Object?> json = await executor.getJson(
@@ -127,7 +143,10 @@ class MiniAppApiBackend {
     return CompanyInfoResponseDto.fromJson(json);
   }
 
-  Future<PaymentCallbackResponseDto> getPaymentCallback(PaymentCallbackQuery query) async {
+  /// Checks payment callback state by invoice id.
+  Future<PaymentCallbackResponseDto> getPaymentCallback(
+    PaymentCallbackQuery query,
+  ) async {
     final ApiExecutor executor = _requirePublicExecutor('getPaymentCallback');
     final Map<String, Object?> json = await executor.getJson(
       ApiEndpoints.paymentCallback,

@@ -1,12 +1,30 @@
+/// Static contract-user identity used by `MiniAppUserDataSourceMode.contract`.
 final class LoginSessionContract {
-  static const String registerNo = 'ЪЪ13121212';
-  static const String firstName = 'Noro';
-  static const String lastName = 'Tenger';
-  static const String familyName = 'Ургын овог';
-  static const String sexCode = 'MALE';
-  static const String birthDate = '2000-06-16';
-  static const String mobile = '55153400';
-  static const String email = 'test@test.com';
+  // static const String registerNo = 'ЪЪ13121212';
+
+  /// Register number sent to login-session APIs in contract mode.
+  static const String registerNo = 'УВ97102125';
+
+  /// First name sent to login-session APIs in contract mode.
+  static const String firstName = 'Sarangua';
+
+  /// Last name sent to login-session APIs in contract mode.
+  static const String lastName = 'Oyunbaatar';
+
+  /// Family name sent to login-session APIs in contract mode.
+  static const String familyName = 'Ургын овог1';
+
+  /// Sex code sent to login-session APIs in contract mode.
+  static const String sexCode = 'FEMALE';
+
+  /// Birth date sent to login-session APIs in contract mode.
+  static const String birthDate = '1997-10-21';
+
+  /// Mobile number sent to login-session APIs in contract mode.
+  static const String mobile = '95651129';
+
+  /// Email sent to login-session APIs in contract mode.
+  static const String email = 'test11@test.com';
 
   const LoginSessionContract._();
 }

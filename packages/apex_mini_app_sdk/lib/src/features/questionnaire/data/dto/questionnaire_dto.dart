@@ -1,18 +1,35 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Answer option DTO parsed from questionnaire APIs.
 class QuestionnaireOptionDto {
+  /// Backend option id.
   final String id;
+
+  /// Primary label.
   final String label;
+
+  /// Secondary/localized label.
   final String? secondaryLabel;
+
+  /// Score value used by score calculation.
   final int? scoreValue;
+
+  /// Backend answer type.
   final String? answerType;
+
+  /// Sort order.
   final int? orderNo;
+
+  /// Optional amount for goal-style answers.
   final double? amount;
+
+  /// Raw creation timestamp.
   final String? createdAt;
+
+  /// Raw update timestamp.
   final String? updatedAt;
 
+  /// Creates a questionnaire answer option DTO.
   const QuestionnaireOptionDto({
     required this.id,
     required this.label,
@@ -25,6 +42,7 @@ class QuestionnaireOptionDto {
     this.updatedAt,
   });
 
+  /// Parses option JSON from the legacy question-list API shape.
   factory QuestionnaireOptionDto.fromJson(Map<String, Object?> json) {
     return QuestionnaireOptionDto(
       id: ApiParser.asNullableString(json['answerId']) ?? '',
@@ -36,6 +54,7 @@ class QuestionnaireOptionDto {
     );
   }
 
+  /// Parses option JSON from the current question API shape.
   factory QuestionnaireOptionDto.fromQuestionApiJson(
     Map<String, Object?> json,
   ) {
@@ -62,6 +81,7 @@ class QuestionnaireOptionDto {
     );
   }
 
+  /// Converts the DTO into the domain answer option.
   QuestionnaireOption toDomain() {
     return QuestionnaireOption(
       id: id,
@@ -77,18 +97,39 @@ class QuestionnaireOptionDto {
   }
 }
 
+/// Question DTO parsed from questionnaire APIs.
 class QuestionnaireQuestionDto {
+  /// Backend question id.
   final String id;
+
+  /// Primary title.
   final String title;
+
+  /// Secondary/localized title.
   final String? secondaryTitle;
+
+  /// Backend question type.
   final String? questionType;
+
+  /// Backend answer type.
   final String? answerType;
+
+  /// Sort order.
   final int? orderNo;
+
+  /// Whether this question is the goal/amount question.
   final bool isGoal;
+
+  /// Raw creation timestamp.
   final String? createdAt;
+
+  /// Raw update timestamp.
   final String? updatedAt;
+
+  /// Answer options for this question.
   final List<QuestionnaireOptionDto> options;
 
+  /// Creates a questionnaire question DTO.
   const QuestionnaireQuestionDto({
     required this.id,
     required this.title,
@@ -102,6 +143,7 @@ class QuestionnaireQuestionDto {
     this.updatedAt,
   });
 
+  /// Parses question JSON from the legacy question-list API shape.
   factory QuestionnaireQuestionDto.fromJson(Map<String, Object?> json) {
     return QuestionnaireQuestionDto(
       id: ApiParser.asNullableString(json['questionId']) ?? '',
@@ -116,6 +158,7 @@ class QuestionnaireQuestionDto {
     );
   }
 
+  /// Parses question JSON from the current question API shape.
   factory QuestionnaireQuestionDto.fromQuestionApiJson(
     Map<String, Object?> json,
   ) {
@@ -139,12 +182,14 @@ class QuestionnaireQuestionDto {
     );
   }
 
+  /// Parses a raw legacy list response into question DTOs.
   static List<QuestionnaireQuestionDto> listFromRaw(Object? raw) {
     return ApiParser.asObjectMapList(
       raw,
     ).map(QuestionnaireQuestionDto.fromJson).toList(growable: false);
   }
 
+  /// Parses a raw current question API list response into question DTOs.
   static List<QuestionnaireQuestionDto> listFromQuestionApiRaw(Object? raw) {
     return ApiParser.asObjectMapList(raw)
         .map(QuestionnaireQuestionDto.fromQuestionApiJson)
@@ -154,6 +199,7 @@ class QuestionnaireQuestionDto {
         .toList(growable: false);
   }
 
+  /// Converts the DTO into the domain question model.
   QuestionnaireQuestion toDomain() {
     return QuestionnaireQuestion(
       id: id,
@@ -172,13 +218,16 @@ class QuestionnaireQuestionDto {
   }
 }
 
+/// Score calculation response DTO.
 class QuestionnaireResDto {
+  /// Creates a questionnaire score result DTO.
   const QuestionnaireResDto({
     required this.score,
     this.customerCode,
     this.summary,
   });
 
+  /// Parses and validates the score calculation response.
   factory QuestionnaireResDto.fromJson(Map<String, Object?> json) {
     final int responseCode = ApiParser.asNullableInt(json['responseCode']) ?? 1;
     if (responseCode != 0) {
@@ -197,10 +246,16 @@ class QuestionnaireResDto {
     );
   }
 
+  /// Calculated total score.
   final int score;
+
+  /// Customer code returned by the backend.
   final String? customerCode;
+
+  /// Backend summary/description.
   final String? summary;
 
+  /// Converts the score response into the domain result.
   QuestionnaireRes toDomain(bool showRecomended) {
     return QuestionnaireRes(
       score: score,

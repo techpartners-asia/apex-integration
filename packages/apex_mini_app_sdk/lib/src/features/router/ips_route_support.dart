@@ -1,6 +1,7 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 
+/// Builds a route only when its required service dependency is available.
 Widget buildGuarded<T>(
   BuildContext context, {
   required String route,
@@ -14,6 +15,7 @@ Widget buildGuarded<T>(
   return builder(service);
 }
 
+/// Builds a route-aware missing dependency/unavailable screen.
 Widget missingScreen(BuildContext context, String route, String message) {
   if (!isKnownIpsRoute(route)) {
     return UnavailableScreen(route: route);
@@ -26,6 +28,7 @@ Widget missingScreen(BuildContext context, String route, String message) {
   );
 }
 
+/// Resolves a localized title for a known InvestX route.
 String resolveIpsRouteTitle(SdkLocalizations l10n, String route) {
   return switch (route) {
     MiniAppRoutes.splash => l10n.ipsSplashTitle,
@@ -43,6 +46,7 @@ String resolveIpsRouteTitle(SdkLocalizations l10n, String route) {
   };
 }
 
+/// Resolves a localized subtitle for a known InvestX route.
 String resolveIpsRouteSubtitle(SdkLocalizations l10n, String route) {
   return switch (route) {
     MiniAppRoutes.splash => l10n.ipsSplashSubtitle,

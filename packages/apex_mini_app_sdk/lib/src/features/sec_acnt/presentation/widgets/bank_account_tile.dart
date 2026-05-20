@@ -2,12 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Selectable bank card used inside the bank selection sheet.
 class BankAccountTile extends StatelessWidget {
+  /// Bank option rendered by this tile.
   final SecAcntBankOption bank;
+
+  /// Whether this tile is currently selected.
   final bool selected;
+
+  /// Callback fired when the user selects the tile.
   final VoidCallback? onTap;
 
+  /// Creates a bank option tile.
   const BankAccountTile({
     super.key,
     required this.bank,

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Small icon/bullet plus text row for feature and instruction lists.
 class FeatureBullet extends StatelessWidget {
+  /// Bullet text.
   final String label;
+
+  /// Icon used as the bullet marker.
   final IconData icon;
 
+  /// Creates a feature bullet row.
   const FeatureBullet({
     super.key,
     required this.label,

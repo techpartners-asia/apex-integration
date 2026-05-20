@@ -1,10 +1,17 @@
 part of '../mini_app_api_repository.dart';
 
+/// Remote implementation of profile operations.
 class RemoteMiniAppProfileRepository implements MiniAppProfileRepository {
+  /// Low-level API facade for profile endpoints.
   final MiniAppApiBackend api;
+
+  /// Session controller that supplies and caches the current user.
   final MiniAppSessionController session;
+
+  /// Logger used for endpoint failures.
   final MiniAppLogger logger;
 
+  /// Creates the remote profile repository.
   const RemoteMiniAppProfileRepository({
     required this.api,
     required this.session,

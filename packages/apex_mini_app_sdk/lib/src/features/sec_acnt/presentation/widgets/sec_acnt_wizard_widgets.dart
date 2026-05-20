@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Immutable configuration for a securities account wizard header.
 class SecAcntWizardHeaderData {
+  /// Header title.
   final String? title;
+
+  /// Whether the back button is visible.
   final bool showBack;
+
+  /// Whether the close button is visible.
   final bool showClose;
+
+  /// Whether the title uses the brand accent style.
   final bool highlightBrand;
+
+  /// Whether the title is centered.
   final bool centerTitle;
+
+  /// Whether leading space is reserved when the back button is hidden.
   final bool reserveLeadingSpace;
+
+  /// Top padding applied to the body under the header.
   final double bodyTopPadding;
 
+  /// Creates header data.
   const SecAcntWizardHeaderData({
     required this.title,
     this.showBack = true,
@@ -22,33 +36,58 @@ class SecAcntWizardHeaderData {
   });
 }
 
+/// Immutable configuration for the wizard footer button.
 class SecAcntWizardFooterData {
+  /// Button label.
   final String buttonLabel;
+
+  /// Button action.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled.
   final bool enabled;
 
+  /// Creates footer data for a visible footer button.
   const SecAcntWizardFooterData({
     required this.buttonLabel,
     this.onPressed,
     this.enabled = true,
   });
 
+  /// Creates footer data that hides the footer button.
   const SecAcntWizardFooterData.hidden()
     : buttonLabel = '',
       onPressed = null,
       enabled = false;
 }
 
+/// Shared header widget for the securities account wizard.
 class SecAcntWizardHeader extends StatelessWidget {
+  /// Header title.
   final String? title;
+
+  /// Whether the back button is visible.
   final bool showBack;
+
+  /// Whether the close button is visible.
   final bool showClose;
+
+  /// Whether the title uses the brand accent style.
   final bool highlightBrand;
+
+  /// Whether the title is centered.
   final bool centerTitle;
+
+  /// Whether leading space is reserved when the back button is hidden.
   final bool reserveLeadingSpace;
+
+  /// Back action callback.
   final VoidCallback onBack;
+
+  /// Close action callback.
   final VoidCallback onClose;
 
+  /// Creates a shared wizard header.
   const SecAcntWizardHeader({
     super.key,
     this.title,
@@ -92,11 +131,18 @@ class SecAcntWizardHeader extends StatelessWidget {
   }
 }
 
+/// Shared bottom action area for the securities account wizard.
 class SecAcntWizardFooter extends StatelessWidget {
+  /// Button label.
   final String buttonLabel;
+
+  /// Button action.
   final VoidCallback? onPressed;
+
+  /// Whether the button is enabled.
   final bool enabled;
 
+  /// Creates a wizard footer.
   const SecAcntWizardFooter({
     super.key,
     required this.buttonLabel,

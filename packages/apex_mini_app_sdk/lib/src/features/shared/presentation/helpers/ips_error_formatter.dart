@@ -1,5 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Converts SDK/API exceptions into localized user-facing messages.
 String formatIpsError(Object? error, SdkLocalizations l10n) {
   if (error is ApiNetworkException) {
     return _resolveApiMessage(error.message, fallback: l10n.errorsNetwork);
@@ -31,5 +32,9 @@ String _resolveApiMessage(String? message, {required String fallback}) {
 
 bool _looksTechnicalApiMessage(String message) {
   final String lowerCased = message.trim().toLowerCase();
-  return lowerCased.startsWith('http ') || lowerCased.startsWith('req timed out') || lowerCased.startsWith('network req failed') || lowerCased.startsWith('authentication failed') || lowerCased.startsWith('unexpected error during');
+  return lowerCased.startsWith('http ') ||
+      lowerCased.startsWith('req timed out') ||
+      lowerCased.startsWith('network req failed') ||
+      lowerCased.startsWith('authentication failed') ||
+      lowerCased.startsWith('unexpected error during');
 }

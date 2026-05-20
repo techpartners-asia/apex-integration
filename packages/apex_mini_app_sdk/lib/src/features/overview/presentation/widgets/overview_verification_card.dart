@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Card that shows account setup progress and next recommended action.
 class OverviewVerificationCard extends StatelessWidget {
+  /// View model describing progress, steps, and promo action.
   final OverviewVerificationViewModel viewModel;
+
+  /// Whether compact spacing should be used.
   final bool compact;
 
+  /// Creates an overview verification card.
   const OverviewVerificationCard({
     super.key,
     required this.viewModel,
@@ -82,11 +86,18 @@ class OverviewVerificationCard extends StatelessWidget {
   }
 }
 
+/// Circular progress indicator for account setup completion.
 class _ProgressRing extends StatelessWidget {
+  /// Completed step count.
   final int current;
+
+  /// Total step count.
   final int total;
+
+  /// Normalized progress value from 0 to 1.
   final double progress;
 
+  /// Creates the setup progress ring.
   const _ProgressRing({
     required this.current,
     required this.total,
@@ -125,11 +136,18 @@ class _ProgressRing extends StatelessWidget {
   }
 }
 
+/// Timeline row for one verification/onboarding step.
 class _OverviewTimelineRow extends StatelessWidget {
+  /// Step to render.
   final OverviewVerificationStep step;
+
+  /// Optional footer rendered after the row.
   final Widget? footer;
+
+  /// Gap between row and footer.
   final double footerSpacing;
 
+  /// Creates a verification timeline row.
   const _OverviewTimelineRow({
     required this.step,
     this.footer,
@@ -227,7 +245,9 @@ class _OverviewTimelineRow extends StatelessWidget {
   }
 }
 
+/// Promo/action card rendered at the end of the verification timeline.
 class _OverviewPromoCard extends StatelessWidget {
+  /// Creates the promo card.
   const _OverviewPromoCard({
     required this.eyebrow,
     required this.title,
@@ -235,9 +255,16 @@ class _OverviewPromoCard extends StatelessWidget {
     this.onTap,
   });
 
+  /// Small accent label above the title.
   final String eyebrow;
+
+  /// Promo title.
   final String title;
+
+  /// Primary button label.
   final String buttonLabel;
+
+  /// Optional promo action.
   final VoidCallback? onTap;
 
   @override

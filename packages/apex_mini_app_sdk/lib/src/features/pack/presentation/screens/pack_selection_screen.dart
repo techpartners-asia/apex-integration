@@ -2,10 +2,12 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
+/// Screen where the user chooses an investment pack.
 class PackSelectionScreen extends StatelessWidget {
+  /// Creates the pack selection screen.
   const PackSelectionScreen({super.key, this.questionnaireRes});
 
+  /// Optional questionnaire result used to filter recommended packs.
   final QuestionnaireRes? questionnaireRes;
 
   @override
@@ -61,10 +63,15 @@ class PackSelectionScreen extends StatelessWidget {
   }
 }
 
+/// Loaded pack-selection content.
 class PackSelectionContent extends StatelessWidget {
+  /// Available packs.
   final List<IpsPack> packs;
+
+  /// Optional questionnaire result passed forward into contract flow.
   final QuestionnaireRes? questionnaireRes;
 
+  /// Creates loaded pack-selection content.
   const PackSelectionContent({
     super.key,
     required this.packs,
@@ -166,6 +173,7 @@ class PackSelectionContent extends StatelessWidget {
   }
 }
 
+/// Builds benefit bullets based on the pack allocation mix.
 List<Widget> buildPackBenefits(BuildContext context, IpsPack pack) {
   final l10n = context.l10n;
   final List<String> points = <String>[

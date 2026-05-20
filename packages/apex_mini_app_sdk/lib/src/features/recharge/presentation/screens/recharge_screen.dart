@@ -2,16 +2,21 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
+/// Full-screen IPS recharge flow.
 class RechargeScreen extends StatefulWidget {
+  /// Creates the full-screen recharge route.
   const RechargeScreen({super.key});
 
   @override
   State<RechargeScreen> createState() => _RechargeScreenState();
 }
 
+/// Owns recharge quantity input state for the full-screen route.
 class _RechargeScreenState extends State<RechargeScreen> {
+  /// Quantity text controller.
   final TextEditingController _controller = TextEditingController();
+
+  /// Focus node used to focus the quantity input on open.
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -69,11 +74,18 @@ class _RechargeScreenState extends State<RechargeScreen> {
   }
 }
 
+/// Main recharge form body with input and pricing summary.
 class _RechargeBody extends StatelessWidget {
+  /// Quantity text controller.
   final TextEditingController controller;
+
+  /// Quantity input focus node.
   final FocusNode focusNode;
+
+  /// Current recharge state.
   final IpsRechargeState state;
 
+  /// Creates the recharge body.
   const _RechargeBody({
     required this.controller,
     required this.focusNode,
@@ -144,9 +156,12 @@ class _RechargeBody extends StatelessWidget {
   }
 }
 
+/// Fixed bottom submit area for the recharge screen.
 class _BottomActionArea extends StatelessWidget {
+  /// Current recharge state.
   final IpsRechargeState state;
 
+  /// Creates the bottom action area.
   const _BottomActionArea({required this.state});
 
   @override
@@ -171,9 +186,12 @@ class _BottomActionArea extends StatelessWidget {
   }
 }
 
+/// Displays the payment result after recharge submission.
 class _RechargeResultView extends StatelessWidget {
+  /// Creates the recharge result view.
   const _RechargeResultView({required this.state});
 
+  /// Final recharge state containing [IpsRechargeState.paymentRes].
   final IpsRechargeState state;
 
   @override

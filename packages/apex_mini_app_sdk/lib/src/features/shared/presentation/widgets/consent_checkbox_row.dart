@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Inline consent checkbox row used by agreement/contract screens.
 class ConsentCheckboxRow extends StatelessWidget {
+  /// Consent label text.
   final String label;
+
+  /// Whether the consent is currently accepted.
   final bool accepted;
+
+  /// Called with the new accepted value when the row is tapped.
   final ValueChanged<bool> onAcceptedChanged;
+
+  /// Active checkbox and label color.
   final Color activeColor;
 
+  /// Creates an inline consent checkbox row.
   const ConsentCheckboxRow({
     super.key,
     required this.label,

@@ -1,15 +1,20 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:dio/dio.dart';
 
-
 import '../../host/apex_mini_app_host_context.dart';
 
+/// Guarded HTTP request executor used by repositories and backend API clients.
 class ApiExecutor {
+  /// Dio client wrapper.
   final ApiClient client;
+
+  /// Builds app/token headers per request.
   final ApiHeadersBuilder headersBuilder;
 
+  /// Creates an API executor for JSON backend requests.
   const ApiExecutor({required this.client, required this.headersBuilder});
 
+  /// Sends a JSON POST and parses a JSON object response.
   Future<Map<String, Object?>> postJson(
     String path, {
     required Map<String, Object?> body,
@@ -29,6 +34,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a GET and parses a JSON object response.
   Future<Map<String, Object?>> getJson(
     String path, {
     Map<String, Object?> queryParameters = const <String, Object?>{},
@@ -47,6 +53,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a GET and parses a JSON list response.
   Future<List<Object?>> getJsonList(
     String path, {
     Map<String, Object?> queryParameters = const <String, Object?>{},
@@ -65,6 +72,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a JSON PUT and parses a JSON object response.
   Future<Map<String, Object?>> putJson(
     String path, {
     required Map<String, Object?> body,
@@ -88,6 +96,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends multipart/form data through PUT and parses a JSON object response.
   Future<Map<String, Object?>> putFormData(
     String path, {
     required FormData body,
@@ -102,6 +111,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a JSON POST and parses a typed API envelope response.
   Future<ApiEnvelope<T>> postEnvelope<T>(
     String path, {
     required Map<String, Object?> body,
@@ -127,6 +137,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a raw POST using built headers.
   Future<Response<dynamic>> post(
     String path, {
     required Object body,
@@ -144,6 +155,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a raw PUT using built headers.
   Future<Response<dynamic>> put(
     String path, {
     required Object body,
@@ -161,6 +173,7 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a raw GET using built headers.
   Future<Response<dynamic>> get(
     String path, {
     required ReqContext context,
@@ -177,6 +190,7 @@ class ApiExecutor {
     );
   }
 
+  /// Parses [raw] as a JSON object.
   Map<String, Object?> asJsonMap(Object? raw) {
     if (raw is! Map) {
       throw const ApiParsingException('Expected JSON object response.');
@@ -186,6 +200,7 @@ class ApiExecutor {
     );
   }
 
+  /// Parses [raw] as a JSON array, also supporting envelope `body` arrays.
   List<Object?> asJsonList(Object? raw) {
     final Object? value;
 
@@ -202,6 +217,7 @@ class ApiExecutor {
     return value.cast<Object?>().toList(growable: false);
   }
 
+  /// Maps Dio failures into SDK API exceptions and host-visible callbacks.
   ApiException mapDioException(
     String path,
     ReqContext context,
@@ -268,6 +284,7 @@ class ApiExecutor {
     return exception;
   }
 
+  /// Extracts a readable backend error message from varied response shapes.
   String? extractServerMessage(Object? raw) {
     return _extractServerMessage(raw);
   }
@@ -330,6 +347,7 @@ class ApiExecutor {
     return value.length > 200 ? '${value.substring(0, 200)}…' : value;
   }
 
+  /// Runs [action] and normalizes known network/parsing/runtime failures.
   Future<T> _runGuarded<T>(
     String path, {
     required ReqContext context,

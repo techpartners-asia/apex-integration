@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Reusable status page content for securities account completion/pending states.
 class SecAcntStatusContent extends StatelessWidget {
+  /// Main status title.
   final String title;
+
+  /// Title shown inside the status card.
   final String cardTitle;
+
+  /// Supporting message shown inside the status card.
   final String message;
 
+  /// Creates status content.
   const SecAcntStatusContent({
     super.key,
     required this.title,
@@ -65,10 +71,15 @@ class SecAcntStatusContent extends StatelessWidget {
   }
 }
 
+/// White status card nested inside [SecAcntStatusContent].
 class _SecAcntStatusCard extends StatelessWidget {
+  /// Creates a securities-account status card.
   const _SecAcntStatusCard({required this.title, required this.message});
 
+  /// Status card title.
   final String title;
+
+  /// Status card supporting message.
   final String message;
 
   @override

@@ -1,11 +1,18 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Bottom sheet for editing statement amount and date filters.
 class StatementFilterSheet extends StatefulWidget {
+  /// Filter values used to initialize the sheet controls.
   final IpsStatementFilter initialFilter;
+
+  /// Called when the user applies the current filter.
   final ValueChanged<IpsStatementFilter>? onApply;
+
+  /// Called when the user clears all filters.
   final VoidCallback? onClear;
 
+  /// Creates the statement filter bottom sheet.
   const StatementFilterSheet({
     super.key,
     this.initialFilter = const IpsStatementFilter(),
@@ -17,10 +24,15 @@ class StatementFilterSheet extends StatefulWidget {
   State<StatementFilterSheet> createState() => _StatementFilterSheetState();
 }
 
+/// Tracks editable amount/date filter values inside the bottom sheet.
 class _StatementFilterSheetState extends State<StatementFilterSheet> {
+  /// Selected amount range.
   late RangeValues _amountRange;
+
+  /// Selected [IpsStatementDateFilter] index.
   late int _selectedDateFilter;
 
+  /// Current filter represented by the sheet controls.
   IpsStatementFilter get _currentFilter {
     return IpsStatementFilter(
       minAmount: _amountRange.start,
@@ -222,15 +234,22 @@ class _StatementFilterSheetState extends State<StatementFilterSheet> {
   }
 }
 
+/// Selectable date preset chip used by [StatementFilterSheet].
 class _DateFilterChip extends StatelessWidget {
+  /// Creates a date filter chip.
   const _DateFilterChip({
     required this.label,
     required this.isSelected,
     required this.onTap,
   });
 
+  /// Chip label.
   final String label;
+
+  /// Whether this chip is selected.
   final bool isSelected;
+
+  /// Tap callback.
   final VoidCallback onTap;
 
   @override

@@ -2,12 +2,18 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Portfolio yield section containing chart and yield metrics.
 class PortfolioYieldSection extends StatelessWidget {
+  /// Portfolio overview totals.
   final PortfolioOverview overview;
+
+  /// Chart-ready yield data.
   final PortfolioYieldChartData chartData;
+
+  /// Localized labels.
   final SdkLocalizations l10n;
 
+  /// Creates a portfolio yield section.
   const PortfolioYieldSection({
     super.key,
     required this.overview,
@@ -53,11 +59,18 @@ class PortfolioYieldSection extends StatelessWidget {
   }
 }
 
+/// Line chart for portfolio current value and optional profit/yield series.
 class PortfolioYieldChart extends StatelessWidget {
+  /// Chart data.
   final PortfolioYieldChartData data;
+
+  /// Localized labels.
   final SdkLocalizations l10n;
+
+  /// Currency used for tooltip/legend values.
   final String currency;
 
+  /// Creates a portfolio yield chart.
   const PortfolioYieldChart({
     super.key,
     required this.data,
@@ -65,7 +78,10 @@ class PortfolioYieldChart extends StatelessWidget {
     required this.currency,
   });
 
+  /// Main line used for current allocation/value over time.
   static const Color _primaryColor = DesignTokens.selectionBlue;
+
+  /// Optional secondary line used for profit/yield values.
   static const Color _secondaryColor = DesignTokens.rose;
 
   @override
@@ -112,6 +128,7 @@ class PortfolioYieldChart extends StatelessWidget {
     );
   }
 
+  /// Converts chart points into fl_chart line/axis/touch configuration.
   LineChartData _buildChartData() {
     final List<FlSpot> primarySpots = data.points
         .asMap()
@@ -191,6 +208,7 @@ class PortfolioYieldChart extends StatelessWidget {
     );
   }
 
+  /// Builds one curved line series with matching area fill and dot styling.
   LineChartBarData _buildBar(List<FlSpot> spots, Color color) {
     return LineChartBarData(
       spots: spots,
@@ -221,6 +239,7 @@ class PortfolioYieldChart extends StatelessWidget {
     );
   }
 
+  /// Builds x-axis labels only for whole-number point indexes.
   Widget _buildBottomTitle(double value, TitleMeta meta) {
     final int index = value.toInt();
     if (index < 0 ||
@@ -242,15 +261,22 @@ class PortfolioYieldChart extends StatelessWidget {
   }
 }
 
+/// Legend label/value pair shown below the portfolio yield chart.
 class _PortfolioYieldLegendItem extends StatelessWidget {
+  /// Creates a yield chart legend item.
   const _PortfolioYieldLegendItem({
     required this.color,
     required this.label,
     required this.value,
   });
 
+  /// Series color.
   final Color color;
+
+  /// Series label.
   final String label;
+
+  /// Formatted series value.
   final String value;
 
   @override
@@ -279,9 +305,12 @@ class _PortfolioYieldLegendItem extends StatelessWidget {
   }
 }
 
+/// Empty chart placeholder shown when there are no yield points.
 class _PortfolioYieldEmptyState extends StatelessWidget {
+  /// Creates the empty chart state.
   const _PortfolioYieldEmptyState({required this.message});
 
+  /// Empty-state message.
   final String message;
 
   @override
@@ -320,11 +349,18 @@ class _PortfolioYieldEmptyState extends StatelessWidget {
   }
 }
 
+/// Compact grid of portfolio balance/yield metrics.
 class PortfolioYieldMetricsGrid extends StatelessWidget {
+  /// Portfolio overview totals.
   final PortfolioOverview overview;
+
+  /// Optional chart data used as fallback totals.
   final PortfolioYieldChartData chartData;
+
+  /// Localized labels.
   final SdkLocalizations l10n;
 
+  /// Creates a portfolio yield metrics grid.
   const PortfolioYieldMetricsGrid({
     super.key,
     required this.overview,
@@ -412,13 +448,24 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
   }
 }
 
+/// Compact label/value metric tile used by portfolio sections.
 class PortfolioCompactMetricTile extends StatelessWidget {
+  /// Metric label.
   final String label;
+
+  /// Metric value.
   final String value;
+
+  /// Whether to lay out label/value horizontally.
   final bool showHorizontal;
+
+  /// Whether to wrap the metric in a card-like border/shadow.
   final bool hasBorder;
+
+  /// Optional value text variant.
   final MiniAppTextVariant? variant;
 
+  /// Creates a compact portfolio metric tile.
   const PortfolioCompactMetricTile({
     super.key,
     required this.label,

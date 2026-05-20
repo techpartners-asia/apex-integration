@@ -1,5 +1,3 @@
-
-
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Thin backward-compatible wrapper that delegates to [ApiActionResultParser]
@@ -11,6 +9,7 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 class ApiResponseGuard {
   const ApiResponseGuard._();
 
+  /// Throws when the backend action response is not successful.
   static void ensureSuccess(
     Map<String, Object?> json, {
     String fallbackMessage = 'Request failed.',

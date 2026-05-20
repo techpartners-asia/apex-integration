@@ -4,14 +4,25 @@ import 'package:flutter/foundation.dart';
 
 import 'mini_app_breakpoints.dart';
 
+/// Max-width constraints for common mini-app layout surfaces.
 @immutable
 class MiniAppAdaptiveConstraints {
+  /// Max width for general page content.
   final double maxContentWidth;
+
+  /// Max width for form-heavy content.
   final double maxFormWidth;
+
+  /// Max width for dialogs.
   final double maxDialogWidth;
+
+  /// Max width for modal bottom sheets.
   final double maxBottomSheetWidth;
+
+  /// Max width for financial summary cards.
   final double maxFinancialCardWidth;
 
+  /// Creates adaptive layout constraints for one size class.
   const MiniAppAdaptiveConstraints({
     required this.maxContentWidth,
     required this.maxFormWidth,
@@ -20,6 +31,7 @@ class MiniAppAdaptiveConstraints {
     required this.maxFinancialCardWidth,
   });
 
+  /// Returns constraints appropriate for [width] and [breakpoint].
   factory MiniAppAdaptiveConstraints.forWidth(
     double width,
     MiniAppBreakpoint breakpoint,

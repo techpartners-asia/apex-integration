@@ -1,11 +1,20 @@
 part of '../help_sections.dart';
 
+/// View data for one support contact row.
 class _ContactRowData {
+  /// Row label, such as phone or email.
   final String label;
+
+  /// Visible contact value.
   final String value;
+
+  /// Optional URI launched when the row is tapped.
   final Uri? launchUri;
+
+  /// Optional trailing widget, for example a chevron or icon.
   final Widget? trailing;
 
+  /// Creates support contact row data.
   const _ContactRowData({
     required this.label,
     required this.value,
@@ -14,12 +23,21 @@ class _ContactRowData {
   });
 }
 
+/// Tappable support row for phone, email, or address-like values.
 class _ContactRow extends StatelessWidget {
+  /// Row label.
   final String label;
+
+  /// Row value.
   final String value;
+
+  /// Optional launch target.
   final Uri? launchUri;
+
+  /// Optional trailing widget.
   final Widget? trailing;
 
+  /// Creates a support contact row.
   const _ContactRow({
     required this.label,
     required this.value,
@@ -74,9 +92,12 @@ class _ContactRow extends StatelessWidget {
   }
 }
 
+/// Social media chip that opens the configured external profile.
 class _SocialChip extends StatelessWidget {
+  /// Social media entity from company info.
   final SocialMediaEntity link;
 
+  /// Creates a social link chip.
   const _SocialChip({required this.link});
 
   @override
@@ -153,7 +174,9 @@ class _SocialChip extends StatelessWidget {
   }
 }
 
+/// Neutral map placeholder shown when no map image/component is available.
 class _LocationPlaceholder extends StatelessWidget {
+  /// Creates the location placeholder.
   const _LocationPlaceholder();
 
   @override
@@ -172,16 +195,22 @@ class _LocationPlaceholder extends StatelessWidget {
   }
 }
 
+/// Visual metadata for a social link type.
 class _SocialMeta {
+  /// Fallback icon for the social network.
   final IconData icon;
+
+  /// Brand-like fallback color for the icon container.
   final Color color;
 
+  /// Creates social-link visual metadata.
   const _SocialMeta({
     required this.icon,
     required this.color,
   });
 }
 
+/// Resolves a social-network type into fallback icon/color metadata.
 _SocialMeta _socialMeta(String type) {
   return switch (type) {
     SocialMediaType.instagram => const _SocialMeta(
@@ -219,6 +248,7 @@ _SocialMeta _socialMeta(String type) {
   };
 }
 
+/// Builds the combined weekday/time label for a branch location.
 String? _buildWorkingHoursLabel(BuildContext context, LocationEntity location) {
   final String? dayRange = _formatDayRange(
     context,
@@ -237,6 +267,7 @@ String? _buildWorkingHoursLabel(BuildContext context, LocationEntity location) {
   ].join(' ');
 }
 
+/// Formats a localized day range from backend weekday constants.
 String? _formatDayRange(
   BuildContext context,
   String? startDay,
@@ -248,6 +279,7 @@ String? _formatDayRange(
   return start == end ? start : '$start - $end';
 }
 
+/// Formats an open/close time range without dangling separators.
 String? _formatTimeRange(String? openTime, String? closeTime) {
   final String? open = openTime?.trim().isNotEmpty == true
       ? openTime!.trim()
@@ -260,6 +292,7 @@ String? _formatTimeRange(String? openTime, String? closeTime) {
   return open ?? close;
 }
 
+/// Localizes a backend weekday constant.
 String _dayLabel(BuildContext context, String day) {
   final bool isMongolian = Localizations.localeOf(context).languageCode == 'mn';
   return switch (day) {
@@ -274,6 +307,7 @@ String _dayLabel(BuildContext context, String day) {
   };
 }
 
+/// Returns a usable HTTP(S) URL string or null.
 String? _httpUrlOrNull(String? raw) {
   final String? value = raw?.trim();
   if (value == null || value.isEmpty) return null;
@@ -284,18 +318,21 @@ String? _httpUrlOrNull(String? raw) {
   return value;
 }
 
+/// Builds a mailto URI for a non-empty email value.
 Uri? _mailtoUri(String raw) {
   final String value = raw.trim();
   if (value.isEmpty) return null;
   return Uri(scheme: 'mailto', path: value);
 }
 
+/// Builds a tel URI after removing visual phone separators.
 Uri? _telUri(String raw) {
   final String cleaned = raw.replaceAll(RegExp(r'[\s\-\(\)]'), '').trim();
   if (cleaned.isEmpty) return null;
   return Uri(scheme: 'tel', path: cleaned);
 }
 
+/// Builds an external web URI, adding HTTPS when the scheme is omitted.
 Uri? _webUri(String? raw) {
   final String? value = raw?.trim();
   if (value == null || value.isEmpty) return null;
@@ -305,6 +342,7 @@ Uri? _webUri(String? raw) {
   return Uri.tryParse('https://$value');
 }
 
+/// Builds a Google Maps search URI from coordinates or text address.
 Uri? _googleMapsUri(LocationEntity location) {
   if (location.hasCoordinates) {
     return Uri.parse(
@@ -330,6 +368,7 @@ Uri? _googleMapsUri(LocationEntity location) {
   );
 }
 
+/// Launches an external URI and shows an SDK toast if launch fails.
 Future<void> _launchUri(
   BuildContext context,
   Uri uri, {
@@ -354,6 +393,8 @@ Future<void> _launchUri(
   }
 }
 
+/// Local first-or-null helper used by help-section list building.
 extension<T> on Iterable<T> {
+  /// Returns the first item, or null for an empty iterable.
   T? get firstOrNull => isEmpty ? null : first;
 }

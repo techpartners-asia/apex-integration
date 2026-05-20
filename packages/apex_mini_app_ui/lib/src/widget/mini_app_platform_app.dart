@@ -4,27 +4,70 @@ import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+/// Adaptive app wrapper used by the SDK instead of raw `MaterialApp`.
+///
+/// It configures Material/Cupertino themes from the same source and guarantees
+/// Flutter localization delegates are present even when the host provides only
+/// SDK-specific delegates.
 class MiniAppPlatformApp extends StatelessWidget {
+  /// Navigator key for non-router mode.
   final GlobalKey<NavigatorState>? navigatorKey;
+
+  /// Home widget for non-router mode.
   final Widget? home;
+
+  /// Light Material theme.
   final ThemeData theme;
+
+  /// Optional dark Material theme.
   final ThemeData? darkTheme;
+
+  /// App title.
   final String title;
+
+  /// Forced locale.
   final Locale? locale;
+
+  /// SDK/host localization delegates.
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
+
+  /// Locale-list resolver passed to the underlying app.
   final LocaleListResolutionCallback? localeListResolutionCallback;
+
+  /// Locale resolver passed to the underlying app.
   final LocaleResolutionCallback? localeResolutionCallback;
+
+  /// Locales supported by the mini app.
   final Iterable<Locale> supportedLocales;
+
+  /// Whether to show Flutter's debug banner.
   final bool debugShowCheckedModeBanner;
+
+  /// Builder hook passed to the underlying app.
   final TransitionBuilder? builder;
+
+  /// Optional generated title callback.
   final GenerateAppTitle? onGenerateTitle;
+
+  /// Scaffold messenger key used by SDK overlays/snackbars.
   final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
+
+  /// Router config for router mode.
   final RouterConfig<Object>? routerConfig;
+
+  /// Router route information provider.
   final RouteInformationProvider? routeInformationProvider;
+
+  /// Router route information parser.
   final RouteInformationParser<Object>? routeInformationParser;
+
+  /// Router delegate.
   final RouterDelegate<Object>? routerDelegate;
+
+  /// Router back button dispatcher.
   final BackButtonDispatcher? backButtonDispatcher;
 
+  /// Creates the platform-adaptive mini-app root.
   const MiniAppPlatformApp({
     super.key,
     this.navigatorKey,
@@ -147,6 +190,7 @@ class MiniAppPlatformApp extends StatelessWidget {
     );
   }
 
+  /// Merges caller delegates with required Flutter localization delegates.
   static Iterable<LocalizationsDelegate<dynamic>> _mergeLocalizationDelegates(
     Iterable<LocalizationsDelegate<dynamic>>? delegates,
   ) {

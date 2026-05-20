@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Profile tab in the overview bottom navigation.
 class OverviewProfileTab extends StatelessWidget {
+  /// Account/bootstrap state used to enable or disable profile menu items.
   final AcntBootstrapState data;
+
+  /// Current user rendered in the profile header.
   final UserEntityDto? user;
+
+  /// Optional portfolio context passed to statements.
   final SdkPortfolioContext? portfolioContext;
 
+  /// Creates the overview profile tab.
   const OverviewProfileTab({
     super.key,
     required this.data,
@@ -112,10 +118,15 @@ class OverviewProfileTab extends StatelessWidget {
   }
 }
 
+/// Header card showing profile avatar, name, and verification status.
 class OverviewProfileHeaderCard extends StatelessWidget {
+  /// Current user shown in the card.
   final UserEntityDto? user;
+
+  /// Whether the account/profile is verified.
   final bool verified;
 
+  /// Creates the profile header card.
   const OverviewProfileHeaderCard({
     super.key,
     required this.user,
@@ -176,34 +187,34 @@ class OverviewProfileHeaderCard extends StatelessWidget {
                       ),
                 ),
               ),
-              Positioned(
-                right: -responsive.dp(2),
-                bottom: -responsive.dp(2),
-                child: Container(
-                  width: responsive.dp(24),
-                  height: responsive.dp(24),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF232A3A),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
-                    boxShadow: const <BoxShadow>[
-                      BoxShadow(
-                        color: Color(0x140F172A),
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: CustomImage(
-                      path: Img.camera,
-                      width: responsive.dp(16),
-                      height: responsive.dp(16),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   right: -responsive.dp(2),
+              //   bottom: -responsive.dp(2),
+              //   child: Container(
+              //     width: responsive.dp(24),
+              //     height: responsive.dp(24),
+              //     decoration: BoxDecoration(
+              //       color: const Color(0xFF232A3A),
+              //       shape: BoxShape.circle,
+              //       border: Border.all(color: Colors.white, width: 2),
+              //       boxShadow: const <BoxShadow>[
+              //         BoxShadow(
+              //           color: Color(0x140F172A),
+              //           blurRadius: 8,
+              //           offset: Offset(0, 4),
+              //         ),
+              //       ],
+              //     ),
+              //     child: Center(
+              //       child: CustomImage(
+              //         path: Img.camera,
+              //         width: responsive.dp(16),
+              //         height: responsive.dp(16),
+              //         fit: BoxFit.contain,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           SizedBox(width: responsive.dp(12)),
@@ -246,9 +257,12 @@ class OverviewProfileHeaderCard extends StatelessWidget {
   }
 }
 
+/// Container for the profile menu rows.
 class OverviewProfileMenuCard extends StatelessWidget {
+  /// Menu rows to render.
   final List<OverviewProfileMenuItemData> items;
 
+  /// Creates a profile menu card.
   const OverviewProfileMenuCard({super.key, required this.items});
 
   @override
@@ -269,9 +283,12 @@ class OverviewProfileMenuCard extends StatelessWidget {
   }
 }
 
+/// One tappable row in the profile menu.
 class OverviewProfileMenuRow extends StatelessWidget {
+  /// Row data.
   final OverviewProfileMenuItemData item;
 
+  /// Creates a profile menu row.
   const OverviewProfileMenuRow({super.key, required this.item});
 
   @override
@@ -349,15 +366,30 @@ class OverviewProfileMenuRow extends StatelessWidget {
   }
 }
 
+/// Data model for one profile menu row.
 class OverviewProfileMenuItemData {
+  /// Leading image asset.
   final String image;
+
+  /// Row title.
   final String title;
+
+  /// Optional row subtitle.
   final String? subtitle;
+
+  /// Optional subtitle color override.
   final Color? subtitleColor;
+
+  /// Row tap action.
   final VoidCallback? onTap;
+
+  /// Whether the row is visually enabled.
   final bool enabled;
+
+  /// Whether this row represents the profile header/action.
   final bool isProfile;
 
+  /// Creates a profile menu item.
   const OverviewProfileMenuItemData({
     required this.image,
     required this.title,

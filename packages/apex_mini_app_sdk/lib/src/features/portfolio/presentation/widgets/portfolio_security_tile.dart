@@ -1,12 +1,23 @@
 part of 'portfolio_holdings_widgets.dart';
 
+/// Expandable security holding row in the portfolio holdings list.
 class PortfolioSecurityTile extends StatefulWidget {
+  /// Security/holding to display.
   final PortfolioSecurity security;
+
+  /// Currency used for amount formatting.
   final String currency;
+
+  /// Localized labels used inside the tile.
   final SdkLocalizations l10n;
+
+  /// Optional solid color for the leading swatch.
   final Color? color;
+
+  /// Optional gradient for the leading swatch.
   final LinearGradient? gradient;
 
+  /// Creates a portfolio security tile.
   const PortfolioSecurityTile({
     super.key,
     required this.security,
@@ -20,7 +31,9 @@ class PortfolioSecurityTile extends StatefulWidget {
   State<PortfolioSecurityTile> createState() => _PortfolioSecurityTileState();
 }
 
+/// Tracks whether the holding detail rows are expanded.
 class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
+  /// Whether close-price details are visible.
   bool _expanded = false;
 
   @override
@@ -133,10 +146,15 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
   }
 }
 
+/// Percentage badge for holding yield/profit.
 class _YieldBadge extends StatelessWidget {
+  /// Yield percentage value.
   final double yieldPercent;
+
+  /// Positive/negative tone color.
   final Color toneColor;
 
+  /// Creates a yield badge.
   const _YieldBadge({
     required this.yieldPercent,
     required this.toneColor,
@@ -165,11 +183,18 @@ class _YieldBadge extends StatelessWidget {
   }
 }
 
+/// Compact metrics shown for a portfolio security.
 class _SecurityDetails extends StatelessWidget {
+  /// Security data to render.
   final PortfolioSecurity security;
+
+  /// Currency used for amount formatting.
   final String currency;
+
+  /// Localized labels.
   final SdkLocalizations l10n;
 
+  /// Creates security detail metrics.
   const _SecurityDetails({
     required this.security,
     required this.currency,
@@ -207,11 +232,18 @@ class _SecurityDetails extends StatelessWidget {
   }
 }
 
+/// One historical close-price row for an expanded security tile.
 class _SecurityClosedPriceWidget extends StatelessWidget {
+  /// Historical close-price point.
   final PortfolioClosePrice closedPrice;
+
+  /// Currency used for price formatting.
   final String currency;
+
+  /// Localized labels.
   final SdkLocalizations l10n;
 
+  /// Creates a closed-price row.
   const _SecurityClosedPriceWidget({
     required this.closedPrice,
     required this.currency,
@@ -257,11 +289,18 @@ class _SecurityClosedPriceWidget extends StatelessWidget {
   }
 }
 
+/// Expand/collapse control for security detail rows.
 class _DetailsToggle extends StatelessWidget {
+  /// Whether the tile is currently expanded.
   final bool isExpanded;
+
+  /// Control label.
   final String label;
+
+  /// Toggle callback.
   final VoidCallback onPressed;
 
+  /// Creates a details toggle.
   const _DetailsToggle({
     required this.isExpanded,
     required this.label,

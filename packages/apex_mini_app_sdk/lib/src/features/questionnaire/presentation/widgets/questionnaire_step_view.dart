@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Renders one questionnaire question and its selectable answer options.
 class QuestionnaireStepView extends StatelessWidget {
+  /// Current question index.
   final int currentIndex;
+
+  /// Questionnaire state containing questions, answers, and errors.
   final IpsQuestionnaireState state;
+
+  /// Total number of questionnaire steps.
   final int totalSteps;
 
+  /// Creates a questionnaire step view.
   const QuestionnaireStepView({
     super.key,
     required this.currentIndex,
@@ -110,18 +116,26 @@ class QuestionnaireStepView extends StatelessWidget {
   }
 }
 
+/// View model for one rendered questionnaire option.
 class _QuestionnaireChoice {
+  /// Backend option identifier.
+  final String id;
+
+  /// Display label resolved from backend text, amount, or fallback copy.
+  final String label;
+
+  /// One-based visual option number.
+  final int number;
+
+  /// Creates a questionnaire choice view model.
   const _QuestionnaireChoice({
     required this.id,
     required this.label,
     required this.number,
   });
-
-  final String id;
-  final String label;
-  final int number;
 }
 
+/// Resolves the text shown for an option tile.
 String _resolveOptionLabel(
   QuestionnaireQuestion question,
   QuestionnaireOption option,
@@ -139,12 +153,21 @@ String _resolveOptionLabel(
   return l10n.ipsQuestionnaireOptionPrefix(index);
 }
 
+/// Selectable answer row for one questionnaire option.
 class _QuestionnaireOptionTile extends StatelessWidget {
+  /// Display label for the option.
   final String label;
+
+  /// One-based option number.
   final int number;
+
+  /// Whether this option is currently selected.
   final bool selected;
+
+  /// Called when the user taps the option.
   final VoidCallback onTap;
 
+  /// Creates a questionnaire option tile.
   const _QuestionnaireOptionTile({
     required this.label,
     required this.number,
@@ -202,9 +225,12 @@ class _QuestionnaireOptionTile extends StatelessWidget {
   }
 }
 
+/// Circular radio indicator used by [_QuestionnaireOptionTile].
 class _QuestionnaireRadioIndicator extends StatelessWidget {
+  /// Whether the indicator should show selected styling.
   final bool selected;
 
+  /// Creates a questionnaire radio indicator.
   const _QuestionnaireRadioIndicator({required this.selected});
 
   @override

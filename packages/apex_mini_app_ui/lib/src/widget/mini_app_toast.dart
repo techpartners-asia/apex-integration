@@ -3,13 +3,16 @@ import 'dart:async';
 import 'package:apex_mini_app_ui/apex_mini_app_ui.dart';
 import 'package:flutter/material.dart';
 
+/// Visual severity for mini-app toast overlays.
 enum MiniAppToastType { info, success, warning, error }
 
+/// Static toast manager for transient SDK-owned overlay messages.
 final class MiniAppToast {
   const MiniAppToast._();
 
   static OverlayEntry? _currentEntry;
 
+  /// Shows a toast and replaces any currently visible toast.
   static void show(
     BuildContext context, {
     required String message,
@@ -53,6 +56,7 @@ final class MiniAppToast {
     overlay.insert(entry);
   }
 
+  /// Shows an informational toast.
   static void showInfo(
     BuildContext context, {
     required String message,
@@ -68,6 +72,7 @@ final class MiniAppToast {
     );
   }
 
+  /// Shows a success toast.
   static void showSuccess(
     BuildContext context, {
     required String message,
@@ -83,6 +88,7 @@ final class MiniAppToast {
     );
   }
 
+  /// Shows a warning toast.
   static void showWarning(
     BuildContext context, {
     required String message,
@@ -98,6 +104,7 @@ final class MiniAppToast {
     );
   }
 
+  /// Shows an error toast.
   static void showError(
     BuildContext context, {
     required String message,
@@ -113,6 +120,7 @@ final class MiniAppToast {
     );
   }
 
+  /// Removes the current toast immediately.
   static void hide() {
     final OverlayEntry? entry = _currentEntry;
     _currentEntry = null;
@@ -122,13 +130,24 @@ final class MiniAppToast {
   }
 }
 
+/// Animated overlay entry used by [MiniAppToast].
 class _MiniAppToastOverlay extends StatefulWidget {
+  /// Optional bold title shown above [message].
   final String? title;
+
+  /// Main toast message.
   final String message;
+
+  /// Visual severity used to resolve colors and icon.
   final MiniAppToastType type;
+
+  /// Time before the toast auto-dismisses.
   final Duration duration;
+
+  /// Called after the exit animation completes.
   final VoidCallback onDismissed;
 
+  /// Creates a toast overlay widget.
   const _MiniAppToastOverlay({
     required this.message,
     required this.type,
@@ -141,8 +160,10 @@ class _MiniAppToastOverlay extends StatefulWidget {
   State<_MiniAppToastOverlay> createState() => _MiniAppToastOverlayState();
 }
 
+/// Drives toast enter/exit animation and timed dismissal.
 class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay>
     with SingleTickerProviderStateMixin {
+  /// Animation controller for fade/slide transitions.
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 220),
@@ -158,7 +179,10 @@ class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay>
     end: Offset.zero,
   ).animate(_opacity);
 
+  /// Auto-dismiss timer for the visible toast.
   Timer? _dismissTimer;
+
+  /// Prevents double removal when the user taps during auto-dismiss.
   bool _isClosing = false;
 
   @override
@@ -175,6 +199,7 @@ class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay>
     super.dispose();
   }
 
+  /// Animates the toast out and removes its overlay entry.
   Future<void> _dismiss() async {
     if (_isClosing || !mounted) {
       return;
@@ -304,15 +329,30 @@ class _MiniAppToastOverlayState extends State<_MiniAppToastOverlay>
   }
 }
 
+/// Resolved colors and icon for a specific toast type.
 final class _MiniAppToastStyle {
+  /// Toast container background.
   final Color backgroundColor;
+
+  /// Toast outline color.
   final Color borderColor;
+
+  /// Primary icon/accent color.
   final Color foregroundColor;
+
+  /// Circle background behind the icon.
   final Color iconBackgroundColor;
+
+  /// Icon shown for the toast type.
   final IconData icon;
+
+  /// Title text color.
   final Color titleColor;
+
+  /// Message text color.
   final Color messageColor;
 
+  /// Creates resolved toast style data.
   const _MiniAppToastStyle({
     required this.backgroundColor,
     required this.borderColor,
@@ -323,6 +363,7 @@ final class _MiniAppToastStyle {
     required this.messageColor,
   });
 
+  /// Maps toast severity to design-token colors and icons.
   static _MiniAppToastStyle resolve(MiniAppToastType type) {
     return switch (type) {
       MiniAppToastType.info => const _MiniAppToastStyle(

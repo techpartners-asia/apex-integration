@@ -2,15 +2,30 @@ import 'package:flutter/material.dart';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Header for multi-step flows with progress segments and optional content.
 class FlowProgressHeader extends StatelessWidget {
+  /// Total number of progress segments.
   final int total;
+
+  /// Zero-based active segment index.
   final int activeIndex;
+
+  /// Header title.
   final String title;
+
+  /// Human-readable progress label.
   final String progressLabel;
+
+  /// Optional overline label.
   final String? overline;
+
+  /// Optional subtitle.
   final String? subtitle;
+
+  /// Optional content below the title block.
   final Widget? child;
 
+  /// Creates a flow header with segmented progress and copy.
   const FlowProgressHeader({
     super.key,
     required this.total,
@@ -57,10 +72,15 @@ class FlowProgressHeader extends StatelessWidget {
   }
 }
 
+/// Horizontal segmented progress indicator.
 class ProgressSegments extends StatelessWidget {
+  /// Total segment count.
   final int total;
+
+  /// Zero-based active segment index.
   final int activeIndex;
 
+  /// Creates a segmented progress indicator.
   const ProgressSegments({
     super.key,
     required this.total,

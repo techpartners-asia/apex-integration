@@ -9,28 +9,74 @@ const Color _inputLabelColor = DesignTokens.ink;
 const Color _inputHintColor = DesignTokens.muted;
 const Color _inputDisabledTextColor = Color(0xFF9AA0AA);
 
+/// Shared floating-label text field used by onboarding/profile forms.
+///
+/// The widget owns defensive text colors instead of inheriting host
+/// `InputDecorationTheme` label colors, which keeps labels visible when the SDK
+/// is embedded in hosts with aggressive global themes.
 class CustomTextField extends StatefulWidget {
+  /// Label displayed above the value when floating, or as placeholder text when
+  /// the field is empty and no [hintText] is provided.
   final String label;
+
+  /// Text controller owned by the caller.
   final TextEditingController controller;
+
+  /// Optional focus node. If omitted, the widget creates and disposes one.
   final FocusNode? focusNode;
+
+  /// Keyboard type passed to the inner `TextField`.
   final TextInputType? keyboardType;
+
+  /// IME action passed to the inner `TextField`.
   final TextInputAction? textInputAction;
+
+  /// Optional max character count.
   final int? maxLength;
+
+  /// Minimum lines for multiline inputs.
   final int? minLines;
+
+  /// Maximum lines for multiline inputs.
   final int? maxLines;
+
+  /// Prefix shown only when the label is floating.
   final String? prefixText;
+
+  /// Placeholder shown inside the value area when the label is floating.
   final String? hintText;
+
+  /// Form validation callback.
   final String? Function(String?)? validator;
+
+  /// Value change callback.
   final ValueChanged<String>? onChanged;
+
+  /// Tap callback, useful for read-only fields that open pickers.
   final VoidCallback? onTap;
+
+  /// Input formatters passed to the inner `TextField`.
   final List<TextInputFormatter>? inputFormatters;
+
+  /// Validation mode used by the wrapping `FormField`.
   final AutovalidateMode autovalidateMode;
+
+  /// Whether the field accepts input.
   final bool enabled;
+
+  /// Whether the field is visually enabled but read-only.
   final bool readOnly;
+
+  /// Whether the value should be obscured.
   final bool obscureText;
+
+  /// Whether to show a character counter below the field.
   final bool showCounter;
+
+  /// Optional trailing icon/action.
   final Widget? suffixIcon;
 
+  /// Creates a defensive floating-label text field.
   const CustomTextField({
     super.key,
     required this.label,
@@ -59,14 +105,21 @@ class CustomTextField extends StatefulWidget {
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
+/// Manages focus ownership and floating-label rebuilds for [CustomTextField].
 class _CustomTextFieldState extends State<CustomTextField> {
+  /// Effective focus node, either caller-owned or internally owned.
   late FocusNode _focusNode;
+
+  /// Whether this state object must dispose [_focusNode].
   late bool _ownsFocusNode;
 
+  /// Whether the field currently has user-visible text.
   bool get _hasValue => widget.controller.text.isNotEmpty;
 
+  /// Whether a separate placeholder is available.
   bool get _hasHintText => widget.hintText?.trim().isNotEmpty ?? false;
 
+  /// Whether the label should move to the compact floating position.
   bool get _isFloating => _focusNode.hasFocus || _hasValue || _hasHintText;
 
   @override
@@ -106,12 +159,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
     super.dispose();
   }
 
+  /// Rebuilds when focus or controller text changes the floating label state.
   void _handleVisualStateChanged() {
     if (mounted) {
       setState(() {});
     }
   }
 
+  /// Requests focus unless the field is disabled or read-only.
   void _focusField() {
     if (!widget.enabled || widget.readOnly) return;
     _focusNode.requestFocus();
@@ -158,28 +213,69 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 }
 
+/// Internal H-design text-field shell with defensive label/hint styling.
 class _HDesignTextField extends StatelessWidget {
+  /// Floating/placeholder label.
   final String label;
+
+  /// Text controller for the inner field.
   final TextEditingController controller;
+
+  /// Focus node for visual state and keyboard focus.
   final FocusNode focusNode;
+
+  /// Whether the label is in compact floating position.
   final bool isFloating;
+
+  /// Whether the field accepts input.
   final bool enabled;
+
+  /// Whether the field is read-only.
   final bool readOnly;
+
+  /// Whether text should be obscured.
   final bool obscureText;
+
+  /// Validation error text.
   final String? errorText;
+
+  /// Keyboard type for the inner field.
   final TextInputType? keyboardType;
+
+  /// IME action for the inner field.
   final TextInputAction? textInputAction;
+
+  /// Optional max character count.
   final int? maxLength;
+
+  /// Minimum line count.
   final int? minLines;
+
+  /// Maximum line count.
   final int? maxLines;
+
+  /// Prefix shown when the label is floating.
   final String? prefixText;
+
+  /// Hint shown when the label is floating.
   final String? hintText;
+
+  /// Input formatters applied to the inner field.
   final List<TextInputFormatter>? inputFormatters;
+
+  /// Whether to show the character counter.
   final bool showCounter;
+
+  /// Optional trailing icon/action.
   final Widget? suffixIcon;
+
+  /// Tap callback for the shell and text field.
   final VoidCallback? onTap;
+
+  /// Value change callback.
   final ValueChanged<String> onChanged;
 
+  /// Creates the internal text-field shell.
   const _HDesignTextField({
     required this.label,
     required this.controller,
@@ -203,6 +299,7 @@ class _HDesignTextField extends StatelessWidget {
     this.onTap,
   });
 
+  /// Whether validation produced an error message.
   bool get _hasError => errorText != null && errorText!.trim().isNotEmpty;
 
   @override
@@ -397,18 +494,42 @@ class _HDesignTextField extends StatelessWidget {
   }
 }
 
+/// Floating-label shell for non-text inputs such as dropdowns and bank pickers.
+///
+/// It matches [CustomTextField] spacing, color, error, and label behavior while
+/// allowing the caller to provide an arbitrary child widget for the value area.
 class FloatingLabelFieldShell extends StatelessWidget {
+  /// Label displayed in compact floating state.
   final String label;
+
+  /// Placeholder shown before a value is selected.
   final String? placeholder;
+
+  /// Whether the wrapped control has a selected value.
   final bool hasValue;
+
+  /// Whether the wrapped control is currently focused.
   final bool isFocused;
+
+  /// Whether the control is enabled.
   final bool enabled;
+
+  /// Optional validation error.
   final String? errorText;
+
+  /// Tap callback for opening picker/dropdown UI.
   final VoidCallback? onTap;
+
+  /// Value/content widget rendered inside the shell.
   final Widget child;
+
+  /// Optional trailing icon.
   final Widget? trailing;
+
+  /// Optional field height override.
   final double? minHeight;
 
+  /// Creates a floating-label shell for non-text controls.
   const FloatingLabelFieldShell({
     super.key,
     required this.label,
@@ -423,10 +544,13 @@ class FloatingLabelFieldShell extends StatelessWidget {
     this.minHeight,
   });
 
+  /// Whether a placeholder should force the compact label layout.
   bool get _hasPlaceholder => placeholder?.trim().isNotEmpty ?? false;
 
+  /// Whether the label should be drawn in the compact top position.
   bool get _isFloating => isFocused || hasValue || _hasPlaceholder;
 
+  /// Whether validation produced an error message.
   bool get _hasError => errorText != null && errorText!.trim().isNotEmpty;
 
   @override

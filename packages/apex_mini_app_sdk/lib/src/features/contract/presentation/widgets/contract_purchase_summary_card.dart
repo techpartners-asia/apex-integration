@@ -1,18 +1,39 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Summary card for the contract purchase quantity and payable amount.
 class ContractPurchaseSummaryCard extends StatelessWidget {
+  /// Card title.
   final String title;
+
+  /// Selected pack quantity.
   final int quantity;
+
+  /// Helper text shown below the quantity.
   final String quantityPrompt;
+
+  /// Label for unit price row.
   final String unitPriceLabel;
+
+  /// Label for service fee row.
   final String serviceFeeLabel;
+
+  /// Label for total payable row.
   final String totalLabel;
+
+  /// Unit price amount.
   final double unitPrice;
+
+  /// Service fee amount.
   final double serviceFee;
+
+  /// Total payable amount.
   final double totalPayable;
+
+  /// Currency code for displayed amounts.
   final String currency;
 
+  /// Creates the purchase summary for the contract flow.
   const ContractPurchaseSummaryCard({
     super.key,
     required this.title,

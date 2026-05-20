@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Request-state view for confirming a pack sell operation.
 class SellRequestView extends StatelessWidget {
+  /// Creates the sell request confirmation view.
   const SellRequestView({super.key, required this.state});
 
+  /// Current sell flow state.
   final IpsSellState state;
 
   @override
@@ -46,16 +48,21 @@ class SellRequestView extends StatelessWidget {
   }
 }
 
+/// Pricing and payout summary card for a sell request.
 class SellAmountSummaryCard extends StatefulWidget {
+  /// Current sell flow state used to render all amount rows.
   final IpsSellState state;
 
+  /// Creates the sell amount summary card.
   const SellAmountSummaryCard({super.key, required this.state});
 
   @override
   State<SellAmountSummaryCard> createState() => _SellAmountSummaryCardState();
 }
 
+/// Tracks whether fee breakdown rows are expanded.
 class _SellAmountSummaryCardState extends State<SellAmountSummaryCard> {
+  /// Whether fee detail rows are visible.
   bool _feeExpanded = false;
 
   @override
@@ -185,10 +192,15 @@ class _SellAmountSummaryCardState extends State<SellAmountSummaryCard> {
   }
 }
 
+/// Bold label/value row used for important sell totals.
 class SellBoldDetailRow extends StatelessWidget {
+  /// Row label.
   final String label;
+
+  /// Row value.
   final String value;
 
+  /// Creates a bold sell detail row.
   const SellBoldDetailRow({
     super.key,
     required this.label,
@@ -219,11 +231,18 @@ class SellBoldDetailRow extends StatelessWidget {
   }
 }
 
+/// Highlighted label/value row used for profit or status amounts.
 class SellHighlightDetailRow extends StatelessWidget {
+  /// Row label.
   final String label;
+
+  /// Row value.
   final String value;
+
+  /// Text color for both label and value.
   final Color valueColor;
 
+  /// Creates a highlighted sell detail row.
   const SellHighlightDetailRow({
     super.key,
     required this.label,
@@ -255,9 +274,12 @@ class SellHighlightDetailRow extends StatelessWidget {
   }
 }
 
+/// Painter for dashed dividers in sell amount summaries.
 class SellDashedLinePainter extends CustomPainter {
+  /// Dash color.
   final Color color;
 
+  /// Creates a dashed-line painter for sell summaries.
   const SellDashedLinePainter({required this.color});
 
   @override
@@ -286,9 +308,12 @@ class SellDashedLinePainter extends CustomPainter {
       color != oldDelegate.color;
 }
 
+/// Bottom action area for sell request submission.
 class SellBottomAction extends StatelessWidget {
+  /// Creates the sell flow bottom action area.
   const SellBottomAction({super.key, required this.state});
 
+  /// Current sell flow state.
   final IpsSellState state;
 
   @override
@@ -333,11 +358,15 @@ class SellBottomAction extends StatelessWidget {
   }
 }
 
+/// Success-state view shown after a sell request is submitted.
 class SellSuccessView extends StatelessWidget {
+  /// Creates the sell success view.
   const SellSuccessView({super.key, required this.state});
 
+  /// Current sell flow state.
   final IpsSellState state;
 
+  /// Refreshes packs and navigates back to pack selection after success.
   Future<void> _goToPackList(BuildContext context) async {
     final List<IpsPack>? packs = await context
         .read<IpsSellCubit>()

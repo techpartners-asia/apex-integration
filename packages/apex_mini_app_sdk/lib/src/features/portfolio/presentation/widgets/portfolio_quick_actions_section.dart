@@ -1,14 +1,19 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Quick action grid shown on the portfolio screen.
 class PortfolioQuickActionsSection extends StatelessWidget {
+  /// Creates the portfolio quick action section.
   const PortfolioQuickActionsSection({
     super.key,
     required this.portfolioContext,
     required this.l10n,
   });
 
+  /// Portfolio context passed to statements.
   final SdkPortfolioContext portfolioContext;
+
+  /// Localized labels used by the action tiles.
   final SdkLocalizations l10n;
 
   @override

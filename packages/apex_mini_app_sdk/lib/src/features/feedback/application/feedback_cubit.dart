@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Cubit for feedback list pagination and feedback creation.
 class FeedbackCubit extends Cubit<FeedbackState> {
   FeedbackCubit({
     required this.appApi,
@@ -8,10 +9,16 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     this.logger = const SilentMiniAppLogger(),
   }) : super(const FeedbackState());
 
+  /// Feedback repository.
   final MiniAppFeedbackRepository appApi;
+
+  /// Localizations used for user-facing errors.
   final SdkLocalizations l10n;
+
+  /// Diagnostic logger.
   final MiniAppLogger logger;
 
+  /// Loads one page of feedback.
   Future<void> load({
     int page = 1,
     int? limit,
@@ -37,7 +44,9 @@ class FeedbackCubit extends Cubit<FeedbackState> {
         page: page,
         forceRefresh: forceRefresh,
       );
-      final List<FeedbackEntity> nextItems = isInitialPage ? response.items : <FeedbackEntity>[...state.items, ...response.items];
+      final List<FeedbackEntity> nextItems = isInitialPage
+          ? response.items
+          : <FeedbackEntity>[...state.items, ...response.items];
 
       emit(
         state.copyWith(
@@ -65,15 +74,18 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     }
   }
 
+  /// Loads the next page when more items are available.
   Future<void> loadNextPage() async {
     if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
     await load(page: state.currentPage + 1, limit: state.pageSize);
   }
 
+  /// Refreshes the first page.
   Future<void> refresh() async {
     await load(page: 1, limit: state.pageSize, forceRefresh: true);
   }
 
+  /// Creates feedback and prepends the result to the current list.
   Future<void> createFeedback({
     required String title,
     required String description,
@@ -116,6 +128,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     }
   }
 
+  /// Clears one-shot feedback creation/error state.
   void clearFeedback() {
     emit(state.copyWith(lastCreated: null, errorMessage: null));
   }

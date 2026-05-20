@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Large tappable quick-action tile used on dashboard and profile surfaces.
 class IpsQuickActionTile extends StatelessWidget {
+  /// Tile title.
   final String title;
+
+  /// Tile subtitle.
   final String subtitle;
+
+  /// Leading icon.
   final IconData icon;
+
+  /// Optional tap handler.
   final VoidCallback? onTap;
+
+  /// Optional status badge label.
   final String? badgeLabel;
+
+  /// Whether the tile should use the primary gradient style.
   final bool emphasized;
 
+  /// Creates a dashboard quick-action tile.
   const IpsQuickActionTile({
     super.key,
     required this.title,

@@ -1,13 +1,24 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Compact transaction row used by statements and order history.
 class TransactionTile extends StatelessWidget {
+  /// Main transaction title.
   final String title;
+
+  /// Supporting subtitle/date.
   final String subtitle;
+
+  /// Right-aligned amount/quantity text.
   final String trailing;
+
+  /// Status label shown under [trailing].
   final String statusLabel;
+
+  /// Whether this transaction uses incoming/positive styling.
   final bool positive;
 
+  /// Creates a compact transaction row.
   const TransactionTile({
     super.key,
     required this.title,
@@ -34,7 +45,9 @@ class TransactionTile extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              positive ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
+              positive
+                  ? Icons.arrow_downward_rounded
+                  : Icons.arrow_upward_rounded,
               color: accent,
               size: responsive.icon(AppComponentSize.iconSm),
             ),

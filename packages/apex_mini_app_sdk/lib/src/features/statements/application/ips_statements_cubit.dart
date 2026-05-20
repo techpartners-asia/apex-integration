@@ -1,13 +1,21 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Loads and filters portfolio/cash account statements.
 class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
-  IpsStatementsCubit({required this.service, required this.l10n}) : super(const LoadableState<IpsStatementsViewData>());
+  /// Creates the statements cubit.
+  IpsStatementsCubit({required this.service, required this.l10n})
+    : super(const LoadableState<IpsStatementsViewData>());
 
+  /// Portfolio service used to fetch statement data.
   final PortfolioService service;
+
+  /// Localization source for error messages.
   final SdkLocalizations l10n;
+
   SdkPortfolioContext? _baseContext;
 
+  /// Loads statements and preserves the last base context for filter reloads.
   Future<void> load({
     SdkPortfolioContext? context,
     IpsStatementFilter? filter,
@@ -16,8 +24,10 @@ class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
       _baseContext = context;
     }
 
-    final IpsStatementFilter currentFilter = filter ?? state.data?.filter ?? const IpsStatementFilter();
-    final SdkPortfolioContext? resolvedContext = currentFilter.resolveRequestContext(context ?? _baseContext);
+    final IpsStatementFilter currentFilter =
+        filter ?? state.data?.filter ?? const IpsStatementFilter();
+    final SdkPortfolioContext? resolvedContext = currentFilter
+        .resolveRequestContext(context ?? _baseContext);
 
     emit(state.copyWith(status: LoadableStatus.loading, errorMessage: null));
     try {
@@ -56,9 +66,11 @@ class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
     }
   }
 
+  /// Applies [filter], reloading only when the backend date range changes.
   Future<void> applyFilter(IpsStatementFilter filter) async {
     final IpsStatementsViewData? data = state.data;
-    final bool shouldReload = filter.hasDateFilter || (data?.filter.hasDateFilter ?? false);
+    final bool shouldReload =
+        filter.hasDateFilter || (data?.filter.hasDateFilter ?? false);
 
     if (data == null || shouldReload) {
       await load(filter: filter);
@@ -74,6 +86,7 @@ class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
     );
   }
 
+  /// Clears all statement filters and reloads if a date filter was active.
   Future<void> clearFilter() async {
     final IpsStatementsViewData? data = state.data;
     if (data == null || data.filter.hasDateFilter) {
@@ -84,6 +97,7 @@ class IpsStatementsCubit extends Cubit<LoadableState<IpsStatementsViewData>> {
     await applyFilter(const IpsStatementFilter());
   }
 
+  /// Builds an empty statement response when the backend returns business empty.
   PortfolioStatementsData _emptyStatementsData(SdkPortfolioContext? context) {
     return PortfolioStatementsData(
       summary: '',

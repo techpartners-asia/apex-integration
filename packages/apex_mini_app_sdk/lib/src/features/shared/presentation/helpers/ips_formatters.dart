@@ -1,9 +1,11 @@
 import 'package:intl/intl.dart';
 
+/// Formats an amount with two decimals and a resolved currency symbol.
 String formatIpsAmount(double amount, String currency) {
   return '${amount.toStringAsFixed(2)} ${convertCurrencyToSymbol(currency)}';
 }
 
+/// Formats payment amounts with Mongolian currency conventions by default.
 String formatIpsPaymentAmount(
   double amount,
   String currency, {
@@ -30,10 +32,12 @@ String formatIpsPaymentAmount(
   ).format(amount);
 }
 
+/// Formats a local IPS timestamp for list/detail screens.
 String formatIpsDate(DateTime dateTime) {
   return DateFormat('yyyy-MM-dd HH:mm').format(dateTime.toLocal());
 }
 
+/// Converts common currency codes to display symbols.
 String convertCurrencyToSymbol(String currency) {
   switch (currency) {
     case 'MNT':

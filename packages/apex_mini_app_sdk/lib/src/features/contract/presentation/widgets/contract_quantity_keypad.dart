@@ -1,14 +1,19 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Numeric keypad used by contract purchase quantity entry.
 class ContractQuantityKeypad extends StatelessWidget {
+  /// Creates the contract quantity keypad.
   const ContractQuantityKeypad({
     super.key,
     required this.onDigitPressed,
     required this.onBackspacePressed,
   });
 
+  /// Called when the user taps a digit.
   final ValueChanged<int> onDigitPressed;
+
+  /// Called when the user taps backspace.
   final VoidCallback onBackspacePressed;
 
   static const Map<int, String> _digitLabels = <int, String>{
@@ -99,7 +104,9 @@ class ContractQuantityKeypad extends StatelessWidget {
   }
 }
 
+/// Empty keypad cell used to align the zero/backspace row.
 class _KeypadSpacer extends StatelessWidget {
+  /// Creates an empty keypad spacer.
   const _KeypadSpacer();
 
   @override
@@ -108,9 +115,12 @@ class _KeypadSpacer extends StatelessWidget {
   }
 }
 
+/// Three-column keypad row.
 class _KeypadRow extends StatelessWidget {
+  /// Creates a keypad row.
   const _KeypadRow({required this.children});
 
+  /// Row cells.
   final List<Widget> children;
 
   @override
@@ -134,15 +144,22 @@ class _KeypadRow extends StatelessWidget {
   }
 }
 
+/// Numeric keypad button with optional phone-style letter label.
 class _KeypadButton extends StatelessWidget {
+  /// Creates a digit button.
   const _KeypadButton({
     required this.digit,
     required this.onPressed,
     this.label,
   });
 
+  /// Digit inserted when tapped.
   final int digit;
+
+  /// Optional secondary letters below the digit.
   final String? label;
+
+  /// Tap callback.
   final VoidCallback onPressed;
 
   @override
@@ -187,10 +204,15 @@ class _KeypadButton extends StatelessWidget {
   }
 }
 
+/// Icon-only keypad action button, currently used for backspace.
 class _KeypadActionButton extends StatelessWidget {
+  /// Creates a keypad action button.
   const _KeypadActionButton({required this.icon, required this.onPressed});
 
+  /// Action icon.
   final IconData icon;
+
+  /// Tap callback.
   final VoidCallback onPressed;
 
   @override

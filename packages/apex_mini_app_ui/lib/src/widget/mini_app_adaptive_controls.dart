@@ -3,25 +3,60 @@ import 'package:flutter/material.dart';
 
 import '../../apex_mini_app_ui.dart';
 
+/// Adaptive icon/image button with SDK sizing and platform behavior.
 class MiniAppAdaptiveIconButton extends StatelessWidget {
+  /// Optional SDK asset image path.
   final String? img;
+
+  /// Material/default icon.
   final IconData? icon;
+
+  /// iOS-specific icon override.
   final IconData? iosIcon;
+
+  /// Press callback. Null disables the button.
   final VoidCallback? onPressed;
+
+  /// Optional tooltip.
   final String? tooltip;
+
+  /// Outer square size.
   final double size;
+
+  /// Icon or image size.
   final double iconSize;
+
+  /// Inner button padding.
   final EdgeInsetsGeometry padding;
+
+  /// Optional radius override.
   final BorderRadius? borderRadius;
+
+  /// Enabled background color.
   final Color? backgroundColor;
+
+  /// Enabled foreground color.
   final Color? foregroundColor;
+
+  /// Disabled background color override.
   final Color? disabledBackgroundColor;
+
+  /// Disabled foreground color override.
   final Color? disabledForegroundColor;
+
+  /// Optional border.
   final Border? border;
+
+  /// Optional shadow list.
   final List<BoxShadow>? boxShadow;
+
+  /// Whether the shape should be circular.
   final bool circular;
+
+  /// Whether to allow native platform-view rendering when supported.
   final bool useNativePlatformView;
 
+  /// Creates an adaptive icon button.
   const MiniAppAdaptiveIconButton({
     super.key,
     this.img,
@@ -107,15 +142,30 @@ class MiniAppAdaptiveIconButton extends StatelessWidget {
   }
 }
 
+/// Adaptive pressable wrapper for custom child content.
 class MiniAppAdaptivePressable extends StatelessWidget {
+  /// Press callback.
   final VoidCallback? onPressed;
+
+  /// Pressable content.
   final Widget child;
+
+  /// Inner padding.
   final EdgeInsetsGeometry padding;
+
+  /// Optional radius override.
   final BorderRadius? borderRadius;
+
+  /// Optional minimum size.
   final Size? minSize;
+
+  /// Whether the control should be interactive.
   final bool enabled;
+
+  /// Whether to allow native platform-view rendering when supported.
   final bool useNativePlatformView;
 
+  /// Creates an adaptive pressable region.
   const MiniAppAdaptivePressable({
     super.key,
     required this.onPressed,

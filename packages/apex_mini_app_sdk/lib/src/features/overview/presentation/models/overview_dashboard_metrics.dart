@@ -1,24 +1,57 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Presentation-ready financial metrics for the overview dashboard.
 class OverviewDashboardMetrics {
+  /// Short user name shown in the greeting.
   final String shortDisplayName;
+
+  /// Total investment amount.
   final double totalInvestment;
+
+  /// Formatted total investment label.
   final String totalInvestmentLabel;
+
+  /// Total stock allocation value.
   final double stockTotal;
+
+  /// Formatted stock allocation label.
   final String stockTotalLabel;
+
+  /// Total bond allocation value.
   final double bondTotal;
+
+  /// Formatted bond allocation label.
   final String bondTotalLabel;
+
+  /// Profit/loss amount.
   final double profit;
+
+  /// Formatted profit/loss label.
   final String profitLabel;
+
+  /// Formatted profit/loss percent label.
   final String profitPercentLabel;
+
+  /// Color used to show positive or negative profit tone.
   final Color profitTone;
+
+  /// Current progress toward the target goal.
   final double goalCurrent;
+
+  /// Formatted current goal progress label.
   final String goalCurrentLabel;
+
+  /// Target goal amount.
   final double goalTarget;
+
+  /// Formatted target goal label.
   final String goalTargetLabel;
+
+  /// Streak/month count displayed by the dashboard.
   final int streakMonths;
 
+  /// Creates dashboard metrics.
   const OverviewDashboardMetrics({
     required this.shortDisplayName,
     required this.totalInvestment,
@@ -38,6 +71,7 @@ class OverviewDashboardMetrics {
     required this.streakMonths,
   });
 
+  /// Resolves UI metrics from bootstrap, portfolio, holding, and user data.
   static OverviewDashboardMetrics resolve(
     BuildContext context, {
     required AcntBootstrapState bootstrapState,
@@ -75,18 +109,37 @@ class OverviewDashboardMetrics {
     final double holdingsProfit = yieldProfitHoldings.isNotEmpty
         ? yieldProfitHoldings.fold<double>(
             0,
-            (double sum, PortfolioHolding item) => sum + ((item.holdingType == HoldingType.getStockAcntYieldDtl ? item.totalYield : item.profit) ?? 0),
+            (double sum, PortfolioHolding item) =>
+                sum +
+                ((item.holdingType == HoldingType.getStockAcntYieldDtl
+                        ? item.totalYield
+                        : item.profit) ??
+                    0),
           )
         : stockYieldDetails.isNotEmpty
         ? stockYieldDetails.fold<double>(
             0,
-            (double sum, PortfolioHolding item) => sum + ((item.holdingType == HoldingType.getStockAcntYieldDtl ? item.totalYield : item.profit) ?? 0),
+            (double sum, PortfolioHolding item) =>
+                sum +
+                ((item.holdingType == HoldingType.getStockAcntYieldDtl
+                        ? item.totalYield
+                        : item.profit) ??
+                    0),
           )
         : 0;
-    final double profit = overview?.profitOrLoss ?? (holdingsProfit != 0 ? holdingsProfit : null) ?? overview?.yieldAmount ?? 0;
-    final double goalCurrent = _firstMeaningful(overview?.stockTotal, totalInvestment) ?? 0;
-    final double goalTarget = _firstMeaningful(user?.account?.targetGoal?.toDouble(), 1000000) ?? 1000000;
-    final double profitRatio = totalInvestment > 0 ? profit / totalInvestment : 0;
+    final double profit =
+        overview?.profitOrLoss ??
+        (holdingsProfit != 0 ? holdingsProfit : null) ??
+        overview?.yieldAmount ??
+        0;
+    final double goalCurrent =
+        _firstMeaningful(overview?.stockTotal, totalInvestment) ?? 0;
+    final double goalTarget =
+        _firstMeaningful(user?.account?.targetGoal?.toDouble(), 1000000) ??
+        1000000;
+    final double profitRatio = totalInvestment > 0
+        ? profit / totalInvestment
+        : 0;
 
     return OverviewDashboardMetrics(
       shortDisplayName: _resolveShortDisplayName(context, user),
@@ -156,10 +209,17 @@ class OverviewDashboardMetrics {
     double total = 0;
     bool hasValue = false;
     for (final PortfolioHolding holding in holdings) {
-      if (!(holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.currentValue : holding.buyAmount)!.isFinite) {
+      if (!(holding.holdingType == HoldingType.getStockAcntYieldDtl
+              ? holding.currentValue
+              : holding.buyAmount)!
+          .isFinite) {
         continue;
       }
-      total += (holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.currentValue : holding.buyAmount) ?? 0;
+      total +=
+          (holding.holdingType == HoldingType.getStockAcntYieldDtl
+              ? holding.currentValue
+              : holding.buyAmount) ??
+          0;
       hasValue = true;
     }
     return hasValue ? total : null;

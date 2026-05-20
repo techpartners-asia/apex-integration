@@ -1,10 +1,17 @@
 part of 'portfolio_holdings_widgets.dart';
 
+/// Segmented filter control for all/bond/stock holdings.
 class PortfolioFilterTabs extends StatelessWidget {
+  /// Selected tab index.
   final int selectedFilter;
+
+  /// Called when a tab is selected.
   final ValueChanged<int> onChanged;
+
+  /// Localized tab labels.
   final SdkLocalizations l10n;
 
+  /// Creates portfolio filter tabs.
   const PortfolioFilterTabs({
     super.key,
     required this.selectedFilter,
@@ -91,11 +98,18 @@ class PortfolioFilterTabs extends StatelessWidget {
   }
 }
 
+/// Individual tab button inside [PortfolioFilterTabs].
 class _PortfolioFilterTabButton extends StatelessWidget {
+  /// Tab label.
   final String label;
+
+  /// Whether this tab is selected.
   final bool isSelected;
+
+  /// Tap callback.
   final VoidCallback onTap;
 
+  /// Creates a portfolio filter tab button.
   const _PortfolioFilterTabButton({
     required this.label,
     required this.isSelected,

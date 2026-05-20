@@ -1,10 +1,17 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// One plotted point in the portfolio yield chart.
 class PortfolioYieldChartPoint {
+  /// Short label shown on the chart axis.
   final String label;
+
+  /// Primary series value, usually current/invested value.
   final double primaryValue;
+
+  /// Optional secondary series value, usually yield/profit.
   final double? secondaryValue;
 
+  /// Creates a yield chart point.
   const PortfolioYieldChartPoint({
     required this.label,
     required this.primaryValue,
@@ -12,27 +19,38 @@ class PortfolioYieldChartPoint {
   });
 }
 
+/// Portfolio yield chart data with optional two-series totals.
 class PortfolioYieldChartData {
+  /// Creates yield chart data.
   const PortfolioYieldChartData({
     this.points = const <PortfolioYieldChartPoint>[],
     this.primaryTotal,
     this.secondaryTotal,
   });
 
+  /// Points rendered by the chart.
   final List<PortfolioYieldChartPoint> points;
+
+  /// Sum of the primary series.
   final double? primaryTotal;
+
+  /// Sum of the secondary series.
   final double? secondaryTotal;
 
+  /// Whether there is anything to render.
   bool get hasData => points.isNotEmpty;
 
+  /// Whether any point has a secondary value.
   bool get hasSecondarySeries => points.any(
     (PortfolioYieldChartPoint point) => point.secondaryValue != null,
   );
 }
 
+/// Maps backend holding responses into chart-ready data.
 final class PortfolioYieldChartDataMapper {
   const PortfolioYieldChartDataMapper._();
 
+  /// Merges yield-profit and stock-yield-detail holdings into chart points.
   static PortfolioYieldChartData fromResponses({
     required List<PortfolioHolding> yieldProfitHoldings,
     required List<PortfolioHolding> stockYieldDetails,
@@ -54,7 +72,9 @@ final class PortfolioYieldChartDataMapper {
     absorb(yieldProfitHoldings);
     absorb(stockYieldDetails);
 
-    final List<_ChartSeed> seeds = seedsByKey.values.where((_ChartSeed seed) => seed.hasRenderableData).toList(growable: false);
+    final List<_ChartSeed> seeds = seedsByKey.values
+        .where((_ChartSeed seed) => seed.hasRenderableData)
+        .toList(growable: false);
 
     if (seeds.isEmpty) {
       return const PortfolioYieldChartData();
@@ -128,20 +148,34 @@ final class PortfolioYieldChartDataMapper {
   }
 }
 
+/// Mutable aggregation seed used while merging chart points by security.
 class _ChartSeed {
+  /// Creates a chart seed with a stable ordering index.
   _ChartSeed({required this.order});
 
+  /// Original insertion order used as fallback label order.
   final int order;
+
+  /// Security code used for the short chart label.
   String? securityCode;
+
+  /// Security name used when code is unavailable.
   String? securityName;
 
   // String? pointLabel;
   // DateTime? recordedAt;
+  /// Primary series value.
   double? primaryValue;
+
+  /// Optional secondary series value.
   double? secondaryValue;
 
-  bool get hasRenderableData => (primaryValue != null && primaryValue!.isFinite) || (secondaryValue != null && secondaryValue!.isFinite);
+  /// Whether either series contains a finite value.
+  bool get hasRenderableData =>
+      (primaryValue != null && primaryValue!.isFinite) ||
+      (secondaryValue != null && secondaryValue!.isFinite);
 
+  /// Short label shown on the chart x-axis.
   String get displayLabel {
     // final String? customLabel = _normalizedText(pointLabel);
     // if (customLabel != null) {
@@ -159,24 +193,34 @@ class _ChartSeed {
 
     final String? shortsecurityName = _normalizedText(securityName);
     if (shortsecurityName != null) {
-      return shortsecurityName.length > 6 ? shortsecurityName.substring(0, 6) : shortsecurityName;
+      return shortsecurityName.length > 6
+          ? shortsecurityName.substring(0, 6)
+          : shortsecurityName;
     }
 
     return 'P${order + 1}';
   }
 
+  /// Merges one backend holding into this chart seed without overwriting data.
   void absorb(PortfolioHolding holding) {
     securityCode ??= _normalizedText(holding.securityCode);
     securityName ??= _normalizedText(holding.securityName);
     // pointLabel ??= _normalizedText(holding.pointLabel);
     // recordedAt ??= holding.recordedAt;
 
-    final double? resolvedPrimaryValue = holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.currentValue : holding.buyAmount;
-    if (resolvedPrimaryValue case final double value when value.isFinite && primaryValue == null) {
+    final double? resolvedPrimaryValue =
+        holding.holdingType == HoldingType.getStockAcntYieldDtl
+        ? holding.currentValue
+        : holding.buyAmount;
+    if (resolvedPrimaryValue case final double value
+        when value.isFinite && primaryValue == null) {
       primaryValue = value;
     }
 
-    if (holding.holdingType == HoldingType.getStockAcntYieldDtl ? holding.totalYield : holding.profit case final double profit when profit.isFinite) {
+    if (holding.holdingType == HoldingType.getStockAcntYieldDtl
+            ? holding.totalYield
+            : holding.profit
+        case final double profit when profit.isFinite) {
       secondaryValue ??= profit;
     }
   }

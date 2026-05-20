@@ -3,13 +3,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 part 'portfolio_filter_tabs.dart';
 
 part 'portfolio_pie_chart.dart';
 
 part 'portfolio_security_tile.dart';
 
+/// Fallback categorical colors for portfolio pie-chart slices.
 const List<Color> kPieChartPalette = <Color>[
   DesignTokens.rose,
   DesignTokens.deepPink,
@@ -33,6 +33,7 @@ const List<Color> kPieChartPalette = <Color>[
   Color(0xFFE87B6F),
 ];
 
+/// Gradient palette derived from [kPieChartPalette] for pie-chart slices.
 List<LinearGradient> kPieChartGradient = <LinearGradient>[
   LinearGradient(colors: [DesignTokens.rose, DesignTokens.softPeach]),
   LinearGradient(colors: [DesignTokens.softPeach, DesignTokens.coral]),
@@ -63,10 +64,15 @@ String _portfolioSecurityTypeLabel(
   };
 }
 
+/// Holdings section that shows allocation, metrics, chart, and securities.
 class PortfolioMyPackSection extends StatefulWidget {
+  /// Portfolio overview payload.
   final PortfolioOverview overview;
+
+  /// Localized labels.
   final SdkLocalizations l10n;
 
+  /// Creates a portfolio holdings section.
   const PortfolioMyPackSection({
     super.key,
     required this.overview,
@@ -77,9 +83,12 @@ class PortfolioMyPackSection extends StatefulWidget {
   State<PortfolioMyPackSection> createState() => _PortfolioMyPackSectionState();
 }
 
+/// Owns the all/bond/stock filter for the holdings section.
 class _PortfolioMyPackSectionState extends State<PortfolioMyPackSection> {
+  /// Selected filter index: 0 all, 1 bonds, 2 stocks.
   int _selectedFilter = 0;
 
+  /// Securities matching the current filter, falling back to all when empty.
   List<PortfolioSecurity> get _filteredSecurities {
     final List<PortfolioSecurity> all = widget.overview.security;
     if (_selectedFilter == 0) return all;

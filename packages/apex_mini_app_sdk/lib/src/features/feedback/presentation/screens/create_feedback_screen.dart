@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Form screen for creating a new support feedback item.
 class CreateFeedbackScreen extends StatefulWidget {
+  /// Creates the create-feedback screen.
   const CreateFeedbackScreen({super.key});
 
   @override
   State<CreateFeedbackScreen> createState() => _CreateFeedbackScreenState();
 }
 
+/// Owns feedback form controllers and submit enablement.
 class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
+  /// Feedback title controller.
   final TextEditingController _titleController = TextEditingController();
+
+  /// Feedback body controller.
   final TextEditingController _bodyController = TextEditingController();
+
+  /// Maximum body length accepted by the form.
   static const int _maxBodyLength = 500;
 
+  /// Whether both required fields contain text.
   bool get _canSubmit =>
       _titleController.text.trim().isNotEmpty &&
       _bodyController.text.trim().isNotEmpty;
@@ -26,6 +34,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
     super.dispose();
   }
 
+  /// Submits the feedback through the existing cubit.
   void _submit() {
     if (!_canSubmit) return;
 
@@ -107,7 +116,9 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
   }
 }
 
+/// Multiline feedback body field with character counter.
 class _FeedbackBodyField extends StatelessWidget {
+  /// Creates the body text field.
   const _FeedbackBodyField({
     required this.controller,
     required this.label,
@@ -116,10 +127,19 @@ class _FeedbackBodyField extends StatelessWidget {
     this.onChanged,
   });
 
+  /// Body text controller.
   final TextEditingController controller;
+
+  /// Field label.
   final String label;
+
+  /// Field hint.
   final String hint;
+
+  /// Max body length.
   final int maxLength;
+
+  /// Text change callback.
   final ValueChanged<String>? onChanged;
 
   @override

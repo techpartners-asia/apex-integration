@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Standard white section card with optional title/subtitle.
 class SectionCard extends StatelessWidget {
+  /// Optional section title.
   final String? title;
+
+  /// Optional supporting subtitle.
   final String? subtitle;
+
+  /// Section content.
   final List<Widget> children;
+
+  /// Padding override.
   final EdgeInsetsGeometry? padding;
+
+  /// Whether border styling should be enabled.
   final bool hasBorder;
+
+  /// Whether card shadow should be enabled.
   final bool hasShadow;
+
+  /// Background color override.
   final Color? backgroundColor;
 
+  /// Creates a standard section card.
   const SectionCard({
     super.key,
     this.title,

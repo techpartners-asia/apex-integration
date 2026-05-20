@@ -2,22 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Form section for contact, bank, and IBAN fields in onboarding.
 class SecAcntPersonalInfoStep extends StatelessWidget {
+  /// Primary mobile controller.
   final TextEditingController mobileController;
+
+  /// Secondary mobile controller.
   final TextEditingController secondaryMobileController;
+
+  /// Email controller.
   final TextEditingController emailController;
+
+  /// IBAN/account-number controller.
   final TextEditingController ibanController;
+
+  /// Selected settlement bank.
   final SecAcntBankOption? selectedBank;
+
+  /// Opens the bank selector.
   final VoidCallback onSelectBank;
+
+  /// Whether contact fields are skipped for a short account flow.
   final bool isShortFlow;
+
+  /// Autovalidation mode passed to text fields.
   final AutovalidateMode autovalidateMode;
+
+  /// Validator for primary mobile.
   final String? Function(String?)? mobileValidator;
+
+  /// Validator for secondary mobile.
   final String? Function(String?)? secondaryMobileValidator;
+
+  /// Validator for email.
   final String? Function(String?)? emailValidator;
+
+  /// Validator for IBAN/account number.
   final String? Function(String?)? ibanValidator;
+
+  /// Bank selector validation error.
   final String? bankErrorText;
 
+  /// Creates a personal info step form section.
   const SecAcntPersonalInfoStep({
     super.key,
     required this.mobileController,

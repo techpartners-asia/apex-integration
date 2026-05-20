@@ -1,10 +1,21 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Visual tone for trend labels in financial summary cards.
+enum IpsTrendTone {
+  /// Neutral/default tone.
+  neutral,
 
-enum IpsTrendTone { neutral, positive, negative }
+  /// Positive/gain tone.
+  positive,
 
+  /// Negative/loss tone.
+  negative,
+}
+
+/// Reusable card for financial totals with optional metrics and trends.
 class IpsSummaryCard extends StatelessWidget {
+  /// Creates a summary card.
   const IpsSummaryCard({
     super.key,
     required this.title,
@@ -19,15 +30,34 @@ class IpsSummaryCard extends StatelessWidget {
     this.gradient,
   });
 
+  /// Card title.
   final String title;
+
+  /// Main amount/value displayed by the card.
   final String primaryValue;
+
+  /// Optional supporting text below the title.
   final String? subtitle;
+
+  /// Optional widget displayed at the top right.
   final Widget? trailing;
+
+  /// Optional trend pill label.
   final String? trendLabel;
+
+  /// Tone used for [trendLabel].
   final IpsTrendTone trendTone;
+
+  /// Metric tiles displayed below the primary value.
   final List<IpsMetricTile> metrics;
+
+  /// Optional footer widget.
   final Widget? footer;
+
+  /// Optional leading icon.
   final IconData? icon;
+
+  /// Optional gradient that switches the card into emphasis mode.
   final Gradient? gradient;
 
   @override

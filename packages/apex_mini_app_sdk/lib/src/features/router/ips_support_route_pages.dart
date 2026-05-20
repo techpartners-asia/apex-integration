@@ -2,6 +2,7 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Builds the Help/support route.
 Widget buildIpsHelpPage(
   BuildContext context, {
   required String route,
@@ -18,6 +19,7 @@ Widget buildIpsHelpPage(
   );
 }
 
+/// Builds the feedback route.
 Widget buildIpsFeedbackPage(
   BuildContext context, {
   required String route,
@@ -34,6 +36,7 @@ Widget buildIpsFeedbackPage(
   );
 }
 
+/// Builds the reward route.
 Widget buildIpsRewardPage(BuildContext context, {required String route}) {
   return const RewardScreen();
 }

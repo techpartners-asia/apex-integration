@@ -1,8 +1,14 @@
 import '../contract/mini_app_module.dart';
 
+/// In-memory registry mapping mini-app routes to their owning module.
+///
+/// The host controller uses this registry to validate launch requests and to
+/// find the module that should build a requested route.
 class MiniAppRegistry {
+  /// Route path to module lookup table.
   final Map<String, MiniAppModule> modulesByRoute = <String, MiniAppModule>{};
 
+  /// Registers [module] after validating its display name and route table.
   void register(MiniAppModule module) {
     final String displayName = module.displayName.trim();
     if (displayName.isEmpty) {
@@ -52,6 +58,7 @@ class MiniAppRegistry {
     }
   }
 
+  /// Removes routes owned by [module].
   void unregister(MiniAppModule module) {
     for (final route in module.routes) {
       if (modulesByRoute[route.path] == module) {
@@ -60,10 +67,12 @@ class MiniAppRegistry {
     }
   }
 
+  /// Removes every registered module route.
   void clear() {
     modulesByRoute.clear();
   }
 
+  /// Finds the module that owns [route], after trimming empty input.
   MiniAppModule? findByRoute(String? route) {
     if (route == null) return null;
     final String normalized = route.trim();
@@ -71,6 +80,7 @@ class MiniAppRegistry {
     return modulesByRoute[normalized];
   }
 
+  /// Registers each module in [modules].
   void registerAll(Iterable<MiniAppModule> modules) {
     for (final module in modules) {
       register(module);

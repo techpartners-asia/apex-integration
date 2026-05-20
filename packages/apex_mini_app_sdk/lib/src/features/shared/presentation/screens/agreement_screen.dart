@@ -2,28 +2,66 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Shared agreement/terms screen with consent and continue action.
 class AgreementScreen extends StatelessWidget {
+  /// App bar title.
   final String? appBarTitle;
+
+  /// Agreement title.
   final String title;
+
+  /// Agreement body widget.
   final Widget body;
+
+  /// Consent checkbox label.
   final String consentLabel;
+
+  /// Whether consent is accepted.
   final bool accepted;
+
+  /// Called when consent changes.
   final ValueChanged<bool> onAcceptedChanged;
+
+  /// Continue button label.
   final String continueLabel;
+
+  /// Continue action.
   final VoidCallback? onContinue;
+
+  /// Back action.
   final VoidCallback? onBack;
+
+  /// Close action.
   final VoidCallback? onClose;
+
+  /// Whether back button is visible.
   final bool showBackButton;
+
+  /// Whether close button is visible.
   final bool showCloseButton;
+
+  /// Whether app bar title is centered.
   final bool appBarCenterTitle;
+
+  /// Whether leading app bar space is reserved.
   final bool appBarReserveLeadingSpace;
+
+  /// Optional title spacing.
   final double? appBarTitleSpacing;
+
+  /// Optional title style.
   final TextStyle? appBarTitleStyle;
+
+  /// Whether safe area is applied.
   final bool hasSafeArea;
+
+  /// Optional blocking overlay.
   final Widget? overlay;
+
+  /// Optional widget above agreement content.
   final Widget? headerWidget;
 
+  /// Creates a shared agreement screen.
   const AgreementScreen({
     super.key,
     required this.appBarTitle,
@@ -92,9 +130,12 @@ class AgreementScreen extends StatelessWidget {
   }
 }
 
+/// Scrollable sanitized HTML body for agreement copy.
 class AgreementHtmlBody extends StatelessWidget {
+  /// Raw agreement HTML/text from backend or localization.
   final String agreementText;
 
+  /// Creates an agreement HTML body.
   const AgreementHtmlBody({super.key, required this.agreementText});
 
   @override
@@ -112,6 +153,7 @@ class AgreementHtmlBody extends StatelessWidget {
   }
 }
 
+/// Removes unsafe or irrelevant HTML wrapper tags before rendering.
 String sanitizeAgreementHtml(String raw) {
   return raw
       .replaceAll(RegExp(r'<!DOCTYPE[^>]*>', caseSensitive: false), '')

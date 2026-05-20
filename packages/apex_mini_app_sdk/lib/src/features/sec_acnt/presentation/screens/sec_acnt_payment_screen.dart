@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Payment step for securities account opening fees.
 class SecAcntPaymentScreen extends StatefulWidget {
+  /// Creates the payment screen.
   const SecAcntPaymentScreen({
     super.key,
     required this.bootstrapState,
@@ -12,17 +13,28 @@ class SecAcntPaymentScreen extends StatefulWidget {
     this.isInitialStep = false,
   });
 
+  /// Bootstrap data containing commission/payment requirements.
   final AcntBootstrapState? bootstrapState;
+
+  /// Draft personal/bank data submitted alongside opening payment.
   final SecAcntFlowDraft draft;
+
+  /// Current profile used to skip already-paid contract fees.
   final UserEntityDto? currentUser;
+
+  /// Whether this screen is the first screen in the nested flow.
   final bool isInitialStep;
 
   @override
   State<SecAcntPaymentScreen> createState() => _SecAcntPaymentScreenState();
 }
 
+/// Handles payment submission and post-payment bootstrap refresh.
 class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
+  /// Whether account/bootstrap status is being refreshed after payment success.
   bool _isRefreshingBootstrap = false;
+
+  /// Mutable bootstrap snapshot so refreshed state can affect next routing.
   AcntBootstrapState? _bootstrapState;
 
   @override
@@ -31,8 +43,10 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
     _bootstrapState = widget.bootstrapState;
   }
 
+  /// Payable account-opening commission from the current bootstrap snapshot.
   double? get _payableCommission => _bootstrapState?.commission;
 
+  /// Submits opening payment and moves to calculation when payment succeeds.
   Future<void> _submitOpeningPayment() async {
     final IpsSecAcntCubit cubit = context.read<IpsSecAcntCubit>();
     final double? amount = _payableCommission;
@@ -84,6 +98,7 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
     );
   }
 
+  /// Handles back behavior for both initial and nested payment routes.
   Future<void> _handleBack() async {
     if (widget.isInitialStep) {
       await closeSecAcntFlow(context);

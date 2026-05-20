@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import '../responsive/mini_app_responsive.dart';
 import 'mini_app_state_panel.dart';
 
+/// Standard loading-state panel.
 class MiniAppLoadingState extends StatelessWidget {
+  /// Loading title.
   final String title;
+
+  /// Loading message.
   final String message;
 
+  /// Creates a loading-state panel.
   const MiniAppLoadingState({
     super.key,
     required this.title,

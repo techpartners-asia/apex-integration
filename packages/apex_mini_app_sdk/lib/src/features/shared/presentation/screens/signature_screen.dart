@@ -1,34 +1,84 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
-
+/// Shared full-screen signature capture layout.
 class SignatureScreen extends StatelessWidget {
+  /// App bar title.
   final String? appBarTitle;
+
+  /// Prompt displayed above the signature canvas.
   final String title;
+
+  /// Stroke points drawn by the user.
   final List<Offset?> points;
+
+  /// Called when a point is added during drawing.
   final ValueChanged<Offset> onPointAdd;
+
+  /// Called when the current stroke ends.
   final VoidCallback onStrokeEnd;
+
+  /// Clears all signature points.
   final VoidCallback onClear;
+
+  /// Continue button label.
   final String continueLabel;
+
+  /// Whether continue is enabled.
   final bool continueEnabled;
+
+  /// Continue action.
   final VoidCallback? onContinue;
+
+  /// Back action.
   final VoidCallback? onBack;
+
+  /// Close action.
   final VoidCallback? onClose;
+
+  /// Whether the app bar back button is visible.
   final bool showBackButton;
+
+  /// Whether the app bar close button is visible.
   final bool showCloseButton;
+
+  /// Whether app bar title is centered.
   final bool appBarCenterTitle;
+
+  /// Whether leading app bar space is reserved.
   final bool appBarReserveLeadingSpace;
+
+  /// Optional app bar title spacing.
   final double? appBarTitleSpacing;
+
+  /// Optional app bar title style override.
   final TextStyle? appBarTitleStyle;
+
+  /// Whether the scaffold applies safe area.
   final bool hasSafeArea;
+
+  /// Optional blocking overlay.
   final Widget? overlay;
+
+  /// Optional message shown near the signature panel.
   final Widget? message;
+
+  /// Optional fixed canvas height.
   final double? height;
+
+  /// Placeholder text for the canvas.
   final String? placeholder;
+
+  /// Whether the placeholder is visible when no points exist.
   final bool showPlaceholderWhenEmpty;
+
+  /// Signature stroke width.
   final double strokeWidth;
+
+  /// Optional widget rendered above the signature panel.
   final Widget? headerWidget;
 
+  /// Creates a shared signature screen.
   const SignatureScreen({
     super.key,
     required this.appBarTitle,

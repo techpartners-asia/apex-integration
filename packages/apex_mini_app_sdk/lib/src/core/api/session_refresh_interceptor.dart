@@ -2,16 +2,21 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-
+/// Dio interceptor that refreshes session token once for auth failures.
 class SessionRefreshInterceptor extends Interceptor {
+  /// Callback that returns a refreshed access token.
   final Future<String?> Function() onRefreshSession;
+
+  /// API client used to retry the failed request.
   final ApiClient client;
 
+  /// Creates a session refresh interceptor.
   SessionRefreshInterceptor({
     required this.onRefreshSession,
     required this.client,
   });
 
+  /// Header marker used to prevent infinite retry loops.
   static const String retryHeader = ApiHeaderNames.retry;
 
   @override

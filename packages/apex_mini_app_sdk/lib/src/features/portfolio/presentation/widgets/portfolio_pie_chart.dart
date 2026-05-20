@@ -1,11 +1,17 @@
 part of 'portfolio_holdings_widgets.dart';
 
+/// Pie chart that visualizes portfolio security allocation.
 class _PortfolioPieChart extends StatelessWidget {
+  /// Securities included in the chart.
   final List<PortfolioSecurity> securities;
+
+  /// Key passed through to the chart to force redraw when data changes.
   final ValueKey sKey;
 
+  /// Creates a portfolio pie chart.
   const _PortfolioPieChart({required this.securities, required this.sKey});
 
+  /// Builds chart sections from portfolio percentages or equal fallback shares.
   List<PieChartSectionData> _buildSections() {
     // Preserve the existing chart normalization side effect during refactor.
     securities.map((e) => e.portfolioPercent = 20).toList();
@@ -75,10 +81,15 @@ class _PortfolioPieChart extends StatelessWidget {
   }
 }
 
+/// Small label badge rendered outside a pie section.
 class _PieBadge extends StatelessWidget {
+  /// Badge label.
   final String label;
+
+  /// Badge accent color.
   final Color color;
 
+  /// Creates a pie section badge.
   const _PieBadge({required this.label, required this.color});
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/mini_app_typography.dart';
 
+/// Named text styles from the mini-app typography scale.
 enum MiniAppTextVariant {
   h1,
   h2,
@@ -31,20 +32,45 @@ enum MiniAppTextVariant {
   buttonSmall,
 }
 
+/// Text wrapper that applies the mini-app typography scale consistently.
 class CustomText extends StatelessWidget {
+  /// Text content.
   final String text;
+
+  /// Typography variant to use.
   final MiniAppTextVariant variant;
+
+  /// Optional color override.
   final Color? color;
+
+  /// Optional weight override.
   final FontWeight? fontWeight;
+
+  /// Text alignment.
   final TextAlign? textAlign;
+
+  /// Maximum line count.
   final int? maxLines;
+
+  /// Overflow behavior.
   final TextOverflow? overflow;
+
+  /// Whether text may wrap softly.
   final bool? softWrap;
+
+  /// Optional text decoration.
   final TextDecoration? decoration;
+
+  /// Optional line-height override.
   final double? height;
+
+  /// Additional style merged on top of the resolved variant style.
   final TextStyle? style;
+
+  /// Optional accessibility label.
   final String? semanticsLabel;
 
+  /// Creates SDK typography text.
   const CustomText(
     this.text, {
     super.key,
@@ -95,6 +121,7 @@ class CustomText extends StatelessWidget {
     );
   }
 
+  /// Maps a [MiniAppTextVariant] to its base text style.
   TextStyle? _resolveBaseStyle(MiniAppTextVariant variant) {
     return switch (variant) {
       MiniAppTextVariant.h1 => MiniAppTypography.h1,

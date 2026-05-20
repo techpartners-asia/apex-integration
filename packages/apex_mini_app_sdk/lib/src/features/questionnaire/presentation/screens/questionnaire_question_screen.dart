@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Multi-step questionnaire question screen.
 class QuestionnaireQuestionScreen extends StatefulWidget {
+  /// Creates a question screen starting at [stepIndex].
   const QuestionnaireQuestionScreen({super.key, required this.stepIndex});
 
+  /// Initial question index for this route.
   final int stepIndex;
 
   @override
@@ -13,10 +15,13 @@ class QuestionnaireQuestionScreen extends StatefulWidget {
       _QuestionnaireQuestionScreenState();
 }
 
+/// Maintains the current question index and handles step navigation.
 class _QuestionnaireQuestionScreenState
     extends State<QuestionnaireQuestionScreen> {
+  /// Current question index inside the loaded question list.
   late int _currentStepIndex = widget.stepIndex;
 
+  /// Returns whether the current question already has a selected answer.
   bool _hasCurrentAnswer(IpsQuestionnaireState state) {
     if (_currentStepIndex < 0 || _currentStepIndex >= state.questions.length) {
       return false;
@@ -25,6 +30,7 @@ class _QuestionnaireQuestionScreenState
     return state.answers[state.questions[_currentStepIndex].id] != null;
   }
 
+  /// Saves goal answers when needed and advances to the next step.
   Future<void> _goNext(IpsQuestionnaireState state) async {
     final QuestionnaireQuestion currentQuestion =
         state.questions[_currentStepIndex];
@@ -51,6 +57,7 @@ class _QuestionnaireQuestionScreenState
     setState(() => _currentStepIndex += 1);
   }
 
+  /// Handles in-flow back navigation between questionnaire steps.
   Future<bool> _handleBack() async {
     if (_currentStepIndex > widget.stepIndex) {
       setState(() => _currentStepIndex -= 1);
@@ -60,6 +67,7 @@ class _QuestionnaireQuestionScreenState
     return true;
   }
 
+  /// Handles the app-bar back button.
   Future<void> _handleBackPressed() async {
     if (await _handleBack() && mounted) {
       Navigator.of(context).maybePop();

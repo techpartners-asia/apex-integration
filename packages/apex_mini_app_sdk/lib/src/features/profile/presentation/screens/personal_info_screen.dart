@@ -3,13 +3,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Full profile editing screen opened from the overview profile tab.
 class PersonalInfoScreen extends StatefulWidget {
+  /// Current user data used to seed the form.
   final UserEntityDto? currentUser;
+
+  /// Profile repository used to save changes.
   final MiniAppProfileRepository appApi;
+
+  /// Repository used to load selectable banks.
   final SecAcntBankOptionsRepository bankOptionsRepository;
+
+  /// Repository used to resolve bank account holder names.
   final SecAcntBankAccountLookupRepository bankAccountLookupRepository;
 
+  /// Creates the personal info editing screen.
   const PersonalInfoScreen({
     super.key,
     required this.appApi,
@@ -22,34 +30,75 @@ class PersonalInfoScreen extends StatefulWidget {
   State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
 }
 
+/// Owns profile edit controllers, bank selection, and account-name lookup.
 class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+  /// Last name controller.
   late final TextEditingController _lastNameController;
+
+  /// First name controller.
   late final TextEditingController _firstNameController;
+
+  /// Email controller.
   late final TextEditingController _emailController;
+
+  /// Phone controller.
   late final TextEditingController _phoneController;
+
+  /// Residence address controller.
   late final TextEditingController _addressController;
+
+  /// Industry/current department controller.
   late final TextEditingController _industryController;
+
+  /// Current position controller.
   late final TextEditingController _positionController;
+
+  /// Bank account number controller.
   late final TextEditingController _ibanController;
+
+  /// Read-only resolved account holder controller.
   late final TextEditingController _accountHolderController;
 
+  /// Selected settlement bank.
   SecAcntBankOption? _selectedBank;
+
+  /// Current citizenship label.
   String _citizenship = 'Монгол';
+
+  /// Current residence country label.
   String _country = 'Монгол';
+
+  /// Last successfully resolved account holder name.
   String? _resolvedAccountHolderName;
+
+  /// Current account lookup error message.
   String? _lookupErrorMessage;
+
+  /// Whether account holder lookup is running.
   bool _isResolvingAccountHolder = false;
+
+  /// Whether profile save is running.
   bool _isSaving = false;
+
+  /// Monotonic token used to ignore stale async lookup results.
   int _lookupToken = 0;
+
+  /// Debounce timer for account holder lookup.
   Timer? _lookupDebounce;
+
+  /// Bank/account key for the last successful lookup.
   String? _resolvedLookupKey;
 
+  /// Delay before running account holder lookup after input changes.
   static const Duration _lookupDebounceDuration = Duration(milliseconds: 450);
 
+  /// Current selected bank code.
   String get _bankCode => _selectedBank?.id.trim() ?? '';
 
+  /// Current bank account number.
   String get _accountNumber => _ibanController.text.trim();
 
+  /// Lookup key for the current bank/account pair.
   String get _currentLookupKey => _buildLookupKey(
     bankCode: _bankCode,
     accountNumber: _accountNumber,
@@ -130,6 +179,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     );
   }
 
+  /// Builds the editable form and fixed save action.
   Widget _buildContent(BuildContext context) {
     final responsive = context.responsive;
 
@@ -171,6 +221,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     );
   }
 
+  /// Saves profile data after validating account lookup requirements.
   Future<void> _save() async {
     if (!_canSave()) {
       _showSaveBlockedToast();
@@ -204,6 +255,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     }
   }
 
+  /// Builds the profile update request from current form values.
   UpdateProfileApiReq _buildRequest() {
     return UpdateProfileApiReq(
       actionType: UpdateProfileActionType.updateInformation,
@@ -220,6 +272,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     );
   }
 
+  /// Builds the optional bank payload only when lookup has succeeded.
   UpdateProfileBankApiReq? _buildBankRequest() {
     final String bankCode = _bankCode;
     final String accountNumber = _accountNumber;
@@ -243,12 +296,14 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     );
   }
 
+  /// Selected bank display label, falling back to bank code.
   String get _selectedBankLabelOrCode {
     final String bankCode = _bankCode;
     final String bankLabel = _selectedBank?.label.trim() ?? '';
     return bankLabel.isNotEmpty ? bankLabel : bankCode;
   }
 
+  /// Converts profile bank data into the selector option shape.
   SecAcntBankOption? _resolveInitialBank(UserEntityDto? user) {
     final String bankCode = user?.bank?.bankCode?.trim() ?? '';
     final String bankName = user?.bank?.bankName?.trim() ?? '';
@@ -260,6 +315,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     return SecAcntBankOption(id, label, label, '');
   }
 
+  /// Opens bank selection and invalidates lookup if the bank changes.
   Future<void> _openBankSelectionSheet(BuildContext context) async {
     final SecAcntBankOption? selected =
         await showModalBottomSheet<SecAcntBankOption>(
@@ -291,6 +347,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     _scheduleLookup();
   }
 
+  /// Handles bank account number edits.
   void _onAccountInputChanged() {
     if (!mounted) {
       return;
@@ -299,6 +356,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     _scheduleLookup();
   }
 
+  /// Debounces account holder lookup until bank/account inputs are valid.
   void _scheduleLookup() {
     _lookupDebounce?.cancel();
     final String bankCode = _bankCode;
@@ -320,6 +378,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     });
   }
 
+  /// Resolves the account holder and ignores results from stale requests.
   Future<void> _runLookup({
     required String bankCode,
     required String accountNumber,
@@ -384,9 +443,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     }
   }
 
+  /// Returns whether the account number satisfies the shared IBAN validator.
   bool _isValidAccountNumber(String value) =>
       Validators.iban(context.l10n)(value) == null;
 
+  /// Returns whether the profile can be saved in its current state.
   bool _canSave() {
     if (_isResolvingAccountHolder) {
       return false;
@@ -407,6 +468,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         _trimToNull(_resolvedAccountHolderName) != null;
   }
 
+  /// Clears account holder lookup state when bank/account inputs change.
   void _invalidateLookupState() {
     _lookupToken += 1;
     _lookupDebounce?.cancel();
@@ -418,16 +480,19 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     _accountHolderController.clear();
   }
 
+  /// Trims a string and converts empty text to null.
   String? _trimToNull(String? value) {
     final String trimmed = value?.trim() ?? '';
     return trimmed.isEmpty ? null : trimmed;
   }
 
+  /// Builds a stable key for matching lookup results to current inputs.
   String _buildLookupKey({
     required String bankCode,
     required String accountNumber,
   }) => '$bankCode|$accountNumber';
 
+  /// Explains why save is blocked when the user presses a disabled path.
   void _showSaveBlockedToast() {
     if (!mounted) {
       return;

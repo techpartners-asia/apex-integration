@@ -2,6 +2,7 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Builds the questionnaire route and its cubit/signature dependencies.
 Widget buildIpsQuestionnairePage(
   BuildContext context, {
   required String route,
@@ -9,17 +10,20 @@ Widget buildIpsQuestionnairePage(
   required IpsDependencies dependencies,
   required SdkLocalizations l10n,
 }) {
-  final QuestionnaireService? questionnaireService = dependencies.questionnaireService;
+  final QuestionnaireService? questionnaireService =
+      dependencies.questionnaireService;
   if (questionnaireService == null) {
     return missingScreen(context, route, l10n.ipsQuestionnaireMissingService);
   }
 
-  final InvestmentBootstrapService? bootstrapService = dependencies.bootstrapService;
+  final InvestmentBootstrapService? bootstrapService =
+      dependencies.bootstrapService;
   if (bootstrapService == null && arguments is! AcntBootstrapState) {
     return missingScreen(context, route, l10n.ipsAcntMissingService);
   }
 
-  final AcntBootstrapState? initialBootstrapState = arguments is AcntBootstrapState ? arguments : null;
+  final AcntBootstrapState? initialBootstrapState =
+      arguments is AcntBootstrapState ? arguments : null;
 
   return BlocProvider<IpsQuestionnaireCubit>(
     create: (BuildContext context) => IpsQuestionnaireCubit(
@@ -37,6 +41,7 @@ Widget buildIpsQuestionnairePage(
   );
 }
 
+/// Builds the pack selection route with optional preloaded packs/result.
 Widget buildIpsPackPage(
   BuildContext context, {
   required String route,
@@ -44,7 +49,9 @@ Widget buildIpsPackPage(
   required IpsDependencies dependencies,
   required SdkLocalizations l10n,
 }) {
-  final List<IpsPack>? initialPacks = arguments is List<IpsPack> ? List<IpsPack>.unmodifiable(arguments) : null;
+  final List<IpsPack>? initialPacks = arguments is List<IpsPack>
+      ? List<IpsPack>.unmodifiable(arguments)
+      : null;
 
   return buildGuarded(
     context,
@@ -73,6 +80,7 @@ Widget buildIpsPackPage(
   );
 }
 
+/// Builds the contract purchase route for a selected pack payload.
 Widget buildIpsContractPage(
   BuildContext context, {
   required String route,
@@ -80,7 +88,9 @@ Widget buildIpsContractPage(
   required IpsDependencies dependencies,
   required SdkLocalizations l10n,
 }) {
-  final ContractPayload? payload = arguments is ContractPayload ? arguments : null;
+  final ContractPayload? payload = arguments is ContractPayload
+      ? arguments
+      : null;
   if (payload == null) {
     return missingScreen(context, route, context.l10n.ipsContractMissingPack);
   }
@@ -90,7 +100,8 @@ Widget buildIpsContractPage(
     return missingScreen(context, route, l10n.ipsContractMissingService);
   }
 
-  final InvestmentBootstrapService? bootstrapService = dependencies.bootstrapService;
+  final InvestmentBootstrapService? bootstrapService =
+      dependencies.bootstrapService;
   if (bootstrapService == null) {
     return missingScreen(context, route, l10n.ipsAcntMissingService);
   }
@@ -123,6 +134,7 @@ Widget buildIpsContractPage(
   );
 }
 
+/// Builds the portfolio dashboard route.
 Widget buildIpsPortfolioPage(
   BuildContext context, {
   required String route,
@@ -145,6 +157,7 @@ Widget buildIpsPortfolioPage(
   );
 }
 
+/// Builds the orders/history route.
 Widget buildIpsOrdersPage(
   BuildContext context, {
   required String route,
@@ -168,6 +181,7 @@ Widget buildIpsOrdersPage(
   );
 }
 
+/// Builds the full-screen recharge route.
 Widget buildIpsRechargePage(
   BuildContext context, {
   required String route,
@@ -193,6 +207,7 @@ Widget buildIpsRechargePage(
   );
 }
 
+/// Shows the recharge bottom sheet from screens that support inline recharge.
 Future<IpsRechargeState?> showIpsRechargeBottomSheet(
   BuildContext context, {
   required IpsDependencies dependencies,
@@ -212,6 +227,7 @@ Future<IpsRechargeState?> showIpsRechargeBottomSheet(
   );
 }
 
+/// Builds the sell request route.
 Widget buildIpsSellPage(
   BuildContext context, {
   required String route,
@@ -235,6 +251,7 @@ Widget buildIpsSellPage(
   );
 }
 
+/// Builds the statements route with an optional portfolio context argument.
 Widget buildIpsStatementsPage(
   BuildContext context, {
   required String route,

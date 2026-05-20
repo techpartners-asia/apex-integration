@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Help/support page that renders company contact, social, and location data.
 class HelpScreen extends StatelessWidget {
+  /// Creates the Help screen.
   const HelpScreen({super.key});
 
   @override

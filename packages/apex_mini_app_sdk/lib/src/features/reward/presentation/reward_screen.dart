@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 part 'widgets/reward_cards.dart';
 part 'widgets/reward_milestones.dart';
 
+/// Static reward/progress screen for the mini-app reward tab.
 class RewardScreen extends StatelessWidget {
+  /// Creates the reward screen.
   const RewardScreen({super.key});
 
   @override

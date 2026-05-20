@@ -1,6 +1,7 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 
+/// Builds the screen widget for a registered InvestX route.
 Widget buildIpsPageForRoute(
   BuildContext context, {
   required String route,

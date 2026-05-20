@@ -2,17 +2,17 @@ import 'dart:ui';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-const String exampleUserToken = 'a2a086376809286ae74e86e3541ab7c0';
+const String exampleUserToken = 'f54869c2c7ed0561539b513e8a8286ec';
 
 const ApexMiniAppHostConfig exampleHostConfig = ApexMiniAppHostConfig(
   token: exampleUserToken,
   locale: Locale('mn'),
   entryRoute: MiniAppRoutes.investX,
   user: ApexMiniAppHostUser(
-    registerNo: 'AB99112233',
-    firstName: 'Apex',
-    lastName: 'Host',
-    phone: '99112233',
+    // registerNo: 'AB99112233',
+    // firstName: 'Apex',
+    // lastName: 'Host',
+    // phone: '99112233',
   ),
 );
 

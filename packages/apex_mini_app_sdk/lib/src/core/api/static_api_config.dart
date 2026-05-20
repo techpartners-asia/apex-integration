@@ -1,3 +1,7 @@
+/// Built-in fallback backend configuration.
+///
+/// Host apps should normally pass environment-specific URLs through
+/// `ApexMiniAppSdk`; these values are retained as SDK defaults.
 class StaticApiConfig {
   StaticApiConfig._();
 
@@ -12,16 +16,26 @@ class StaticApiConfig {
   static const String ipsApiBaseUrl = 'http://202.21.105.150:40651';
 
   //─── App credentials ───────────────────────────────────────────────────────
+  /// Default app id used when the host does not override credentials.
   static const String appId = '156';
+
+  /// Default app secret used when the host does not override credentials.
   static const String appSecret = 'APEXTINO';
 
   //─── Session ───────────────────────────────────────────────────────────────
+  /// Default NE session used for login-session bootstrap.
   static const String neSession = 'v4omE7WQDotmIpzZvtN2OXgR302rxS';
 
   //─── Defaults ──────────────────────────────────────────────────────────────
+  /// Default source FI code used by securities APIs.
   static const String defaultSrcFiCode = '181';
+
+  /// Default FI code used by securities APIs.
   static const String defaultFiCode = '181';
+
+  /// Default backend language code.
   static const String defaultLanguage = 'MN';
 
+  /// Storage base URL used for Tech InvestX media assets.
   static const String techInvestXStorageUrl = 'https://storage.admin.investx.mn/';
 }

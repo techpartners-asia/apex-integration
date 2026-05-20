@@ -1,5 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Maps FI institution metadata into a selectable securities-account bank.
 SecAcntBankOption mapSecAcntBankOptionFromFiBomInst(FiBomInstDto fiBomInst) {
   final String label = _resolveBankLabel(fiBomInst);
   final String shortLabel = _buildBankShortLabel(
@@ -11,7 +12,11 @@ SecAcntBankOption mapSecAcntBankOptionFromFiBomInst(FiBomInstDto fiBomInst) {
     fiBomInst.fiCode,
     label,
     shortLabel,
-    fiBomInst.logo ?? fiBomInst.logoDim ?? fiBomInst.logoDark ?? fiBomInst.logoDimDark ?? '',
+    fiBomInst.logo ??
+        fiBomInst.logoDim ??
+        fiBomInst.logoDark ??
+        fiBomInst.logoDimDark ??
+        '',
   );
 }
 
@@ -35,7 +40,11 @@ String _resolveBankLabel(FiBomInstDto fiBomInst) {
 }
 
 String _buildBankShortLabel(String title, {required String fallback}) {
-  final List<String> parts = title.trim().split(RegExp(r'[\s/()-]+')).where((String part) => part.isNotEmpty).toList(growable: false);
+  final List<String> parts = title
+      .trim()
+      .split(RegExp(r'[\s/()-]+'))
+      .where((String part) => part.isNotEmpty)
+      .toList(growable: false);
 
   if (parts.length >= 2) {
     return '${_firstLetter(parts[0])}${_firstLetter(parts[1])}'.toUpperCase();

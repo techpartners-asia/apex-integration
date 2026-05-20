@@ -2,16 +2,33 @@ import 'package:flutter/material.dart';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
+/// Shared bottom-sheet shell with a title, optional handle, and close action.
 class ActionSheet extends StatelessWidget {
+  /// Sheet title.
   final String title;
+
+  /// Main sheet content.
   final Widget child;
+
+  /// Optional title style override.
   final TextStyle? titleStyle;
+
+  /// Whether to show a divider below the title row.
   final bool showDivider;
+
+  /// Whether to show the drag handle at the top.
   final bool showHandle;
+
+  /// Optional trailing widget; defaults to a close button.
   final Widget? trailing;
+
+  /// Sheet background color.
   final Color backgroundColor;
+
+  /// Optional bottom padding override.
   final double? btmPad;
 
+  /// Creates a reusable bottom-sheet shell.
   const ActionSheet({
     super.key,
     required this.title,

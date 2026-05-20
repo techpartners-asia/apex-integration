@@ -1,12 +1,23 @@
 part of '../user_entity_dto.dart';
 
+/// Region/country metadata nested in a user profile payload.
 class RegionDto {
+  /// ISO alpha-2 region code.
   final String? alpha2;
+
+  /// Raw creation timestamp.
   final String? createdAt;
+
+  /// Region identifier.
   final int? id;
+
+  /// Human-readable region name.
   final String? name;
+
+  /// Raw update timestamp.
   final String? updatedAt;
 
+  /// Creates a user region DTO.
   const RegionDto({
     this.alpha2,
     this.createdAt,
@@ -15,6 +26,7 @@ class RegionDto {
     this.updatedAt,
   });
 
+  /// Parses region metadata from backend JSON.
   factory RegionDto.fromJson(Map<String, Object?> json) {
     return RegionDto(
       alpha2: ApiParser.asNullableString(json['alpha2']),
@@ -25,6 +37,7 @@ class RegionDto {
     );
   }
 
+  /// Returns a copy with selected fields replaced.
   RegionDto copyWith({
     String? alpha2,
     String? createdAt,

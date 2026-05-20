@@ -1,42 +1,117 @@
 part of '../get_sec_acnt_list_res_dto.dart';
 
+/// Account row returned by the securities account list endpoint.
+///
+/// A single response can include multiple account types. The `flag` value is
+/// used by [GetSecuritiesAcntListResDto] to identify securities, IPS master,
+/// and IPS CASA accounts.
 class GetSecAcntListAccountDto {
+  /// Display name for the account.
   final String? name;
+
+  /// Bank code associated with this account.
   final String? bankCode;
+
+  /// Bank name associated with this account.
   final String? bankName;
+
+  /// Broker identifier.
   final String? brokerId;
+
+  /// Account code used in downstream APIs.
   final String? acntCode;
+
+  /// Numeric account identifier.
   final int? acntId;
+
+  /// Current balance.
   final double? balance;
+
+  /// Currency or symbol value returned by the backend.
   final String? symbol;
+
+  /// Backend account type flag.
   final int? flag;
+
+  /// Backend account status code.
   final int? status;
+
+  /// Account prefix.
   final String? prefix;
+
+  /// Active money amount.
   final double? activeMoney;
+
+  /// Nominal fee rows.
   final List<NominalListResDto>? nominalList;
+
+  /// Available balance amount.
   final double? availableBalance;
+
+  /// Securities account code.
   final String? scAcntCode;
+
+  /// Nominal amount.
   final double? nominal;
+
+  /// Ownership flag.
   final int? isOwn;
+
+  /// Maximum statement day range returned by backend.
   final String? statementMaxDay;
+
+  /// QR payload associated with this account.
   final String? qrCode;
+
+  /// Whether this row is the main account.
   final bool isMain;
+
+  /// Whether this row is informational only.
   final bool isInfo;
+
+  /// Whether account/payment has been paid.
   final bool isPaid;
+
+  /// Money request fee amount.
   final double? moneyReqFeeAmt;
+
+  /// Securities commission/fee value.
   final num? scFee;
+
+  /// Buy fee value.
   final num? buyXocFee;
+
+  /// Sell fee value.
   final num? sellXocFee;
+
+  /// Detailed balance rows.
   final List<BalancesDto>? balances;
+
+  /// Compact balance rows.
   final List<BalsDto>? bals;
+
+  /// Customer id.
   final int? custId;
+
+  /// Instrument code.
   final String? instrumentCode;
+
+  /// Market code.
   final String? marketCode;
+
+  /// Transaction availability flag.
   final int? canTxn;
+
+  /// Nominal account code.
   final String? nominalAcntCode;
+
+  /// Security type code.
   final String? secType;
+
+  /// Security type display name.
   final String? secTypeName;
 
+  /// Creates an account row DTO.
   const GetSecAcntListAccountDto({
     this.name,
     this.bankCode,
@@ -75,6 +150,7 @@ class GetSecAcntListAccountDto {
     this.secTypeName,
   });
 
+  /// Parses a securities account row.
   factory GetSecAcntListAccountDto.fromJson(Map<String, Object?> json) {
     return GetSecAcntListAccountDto(
       name: ApiParser.asNullableString(json['name']),
@@ -121,6 +197,7 @@ class GetSecAcntListAccountDto {
     );
   }
 
+  /// Returns a copy with selected fields replaced.
   GetSecAcntListAccountDto copyWith({
     String? name,
     String? bankCode,

@@ -2,9 +2,12 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// InvestX mini-app feature module registered with the runtime.
 class InvestXFeature extends UiMiniAppModule {
+  /// Feature dependency bundle.
   final IpsDependencies dependencies;
 
+  /// Creates the InvestX feature with its dependency bundle.
   InvestXFeature({required this.dependencies});
 
   @override

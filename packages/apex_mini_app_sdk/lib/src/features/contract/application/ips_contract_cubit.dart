@@ -3,18 +3,33 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
+/// Cubit for broker contract setup and investment-pack purchase.
 class IpsContractCubit extends Cubit<IpsContractState> {
   static const int _accountLoadAttempts = 5;
   static const Duration _accountLoadDelay = Duration(seconds: 1);
 
+  /// Contract API service.
   final ContractService contractService;
+
+  /// Bootstrap service used to wait for IPS account availability.
   final InvestmentBootstrapService bootstrapService;
+
+  /// Portfolio service used for pack pricing and balance refresh.
   final PortfolioService portfolioService;
+
+  /// Orders service used to charge IPS account after payment success.
   final OrdersService ordersService;
+
+  /// Host payment executor.
   final MiniAppPaymentExecutor paymentExecutor;
+
+  /// Contract payload passed from previous flow step.
   final ContractPayload payload;
+
+  /// Localizations used for user-facing errors.
   final SdkLocalizations l10n;
+
+  /// Diagnostic logger.
   final MiniAppLogger logger;
 
   IpsContractCubit({
@@ -28,6 +43,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     this.logger = const SilentMiniAppLogger(),
   }) : super(const IpsContractState());
 
+  /// Creates contract, waits for accounts, and loads purchase pricing.
   Future<void> initialize() async {
     if (state.isInitializing || state.isReady) {
       return;
@@ -82,6 +98,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     throw StateError(l10n.ipsContractIpsAccountsMissing);
   }
 
+  /// Appends a quantity digit from the custom keypad.
   void appendDigit(int digit) {
     if (digit < 0 || digit > 9 || state.isSubmitting || state.isInitializing) {
       return;
@@ -95,6 +112,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     _updatePurchaseQty(parsed);
   }
 
+  /// Removes the last quantity digit from the custom keypad.
   void backspaceDigit() {
     if (state.isSubmitting || state.isInitializing) {
       return;
@@ -117,6 +135,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     );
   }
 
+  /// Pays for packs, creates recharge order, and refreshes balance.
   Future<void> submit() async {
     if (!state.canSubmit) {
       return;

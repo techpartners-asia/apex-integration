@@ -1,34 +1,58 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/foundation.dart';
 
-
+/// Coordinates user bootstrap and protected login-session loading.
 abstract interface class MiniAppSessionController {
+  /// Reactive session store.
   MiniAppSessionStore get store;
 
+  /// Cached current user, if loaded.
   UserEntityDto? get currentUser;
 
+  /// Cached protected login session, if loaded.
   LoginSession? get loginSession;
 
+  /// Current host user token.
   String? get userToken;
 
+  /// Prepares token providers and store state for a launch.
   void prepareLaunch({String? userToken});
 
+  /// Caches a user profile returned by bootstrap/signup APIs.
   void cacheCurrentUser(UserEntityDto user);
 
+  /// Returns a cached current user or loads one.
   Future<UserEntityDto> ensureCurrentUser();
 
+  /// Returns a cached login session or loads one.
   Future<LoginSession> ensureLoginSession();
 
+  /// Clears and reloads the protected login session.
   Future<LoginSession> refreshLoginSession();
 }
 
+/// Default session controller with in-flight request de-duplication.
 class DefaultMiniAppSessionController implements MiniAppSessionController {
+  /// Store that owns the session state.
   final MiniAppSessionStore sessionStore;
+
+  /// Repository used to load the current user.
   final CurrentUserRepository currentUserRepository;
+
+  /// Repository used to load the protected login session.
   final LoginSessionRepository loginSessionRepository;
+
+  /// Token provider for current-user/signup APIs.
   final MutableTokenProvider currentUserTokenProvider;
+
+  /// Token provider for protected APIs.
   final MutableTokenProvider protectedTokenProvider;
 
+  /// Creates the default session controller.
+  ///
+  /// The controller keeps current-user and login-session requests de-duplicated
+  /// so multiple startup widgets can ask for the same session without causing
+  /// duplicate backend calls.
   DefaultMiniAppSessionController({
     required MiniAppSessionStore store,
     required this.currentUserRepository,
@@ -37,7 +61,10 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
     required this.protectedTokenProvider,
   }) : sessionStore = store;
 
+  /// In-flight current-user request reused by concurrent callers.
   Future<UserEntityDto>? currentUserInFlight;
+
+  /// In-flight login-session request reused by concurrent callers.
   Future<LoginSession>? loginSessionInFlight;
 
   @override
@@ -146,6 +173,7 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
     return ensureLoginSession();
   }
 
+  /// Loads the current user from the backend and updates current-user token.
   Future<UserEntityDto> fetchCurrentUser() async {
     final UserEntityDto user = await currentUserRepository.getCurrentUser(
       userToken: userToken ?? '',
@@ -162,6 +190,7 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
     return user;
   }
 
+  /// Loads the protected login session and updates protected token provider.
   Future<LoginSession> fetchLoginSession() async {
     final UserEntityDto user = await ensureCurrentUser();
     final LoginSession session = await loginSessionRepository.getLoginSession(
@@ -180,6 +209,7 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
     return session;
   }
 
+  /// Returns the first non-empty admin/current-user token from [user].
   String? _normalizedAdminSession(UserEntityDto? user) {
     final String? session = user?.admSession?.trim();
     if (session != null && session.isNotEmpty) {
@@ -194,6 +224,7 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
     return null;
   }
 
+  /// Returns a trimmed non-empty string or null.
   String? _normalized(String? value) {
     final String trimmed = value?.trim() ?? '';
     return trimmed.isEmpty ? null : trimmed;
