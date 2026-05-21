@@ -37,7 +37,7 @@ void main() {
       },
     );
 
-    test('keeps payment flow when IPS exists but SEC account is not open', () {
+    test('returns no steps when account-opening request is already pending', () {
       expect(
         resolveSecAcntFlowSteps(
           _bootstrapState(
@@ -46,10 +46,20 @@ void main() {
             secAcntStatusCode: 0,
           ),
         ),
-        const <SecAcntFlowStep>[
-          SecAcntFlowStep.payment,
-          SecAcntFlowStep.calculation,
-        ],
+        isEmpty,
+      );
+    });
+
+    test('returns null initial step for pending account-opening request', () {
+      expect(
+        resolveInitialSecAcntFlowStep(
+          _bootstrapState(
+            hasAcnt: true,
+            hasIpsAcnt: true,
+            secAcntStatusCode: 0,
+          ),
+        ),
+        isNull,
       );
     });
 

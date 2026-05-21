@@ -146,6 +146,10 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
           (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
             final MiniAppBootstrapRes? resolution = state.data;
             if (state.isFailure) {
+              MiniAppToast.showError(
+                context,
+                message: state.errorMessage ?? context.l10n.errorsNetwork,
+              );
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 showErrorDialog(context, state);
               });
@@ -155,6 +159,10 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
             if (navigated || resolution == null || !state.isSuccess) return;
 
             navigated = true;
+            // MiniAppToast.showSuccess(
+            //   context,
+            //   message: context.l10n.commonSuccess,
+            // );
 
             _scheduleResolvedNavigation(resolution);
           },

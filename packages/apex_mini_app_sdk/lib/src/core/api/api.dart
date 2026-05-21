@@ -8,6 +8,7 @@ export 'api_header_names.dart';
 export 'api_headers_builder.dart';
 export 'api_interceptors.dart';
 export 'api_parser.dart';
+export 'api_response_message_parser.dart';
 export 'api_response_guard.dart';
 export 'api_runtime.dart';
 export 'api_timeouts.dart';

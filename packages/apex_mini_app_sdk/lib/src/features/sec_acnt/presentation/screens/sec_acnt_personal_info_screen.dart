@@ -327,6 +327,10 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     }
 
     setState(() => _isSubmittingProfile = false);
+    MiniAppToast.showSuccess(
+      context,
+      message: context.l10n.internalProfileUpdateSuccess,
+    );
     _openNextStep(draft);
   }
 
@@ -344,6 +348,12 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
         route: MiniAppRoutes.questionnaire,
         arguments: widget.bootstrapState,
       );
+      return;
+    }
+
+    if (nextStep == null &&
+        hasPendingSecAcntOpeningRequest(widget.bootstrapState)) {
+      await showPendingSecAcntOpeningRequestDialog(context);
       return;
     }
 

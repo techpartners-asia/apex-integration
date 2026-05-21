@@ -90,6 +90,11 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
       return;
     }
 
+    if (hasPendingSecAcntOpeningRequest(_bootstrapState)) {
+      await showPendingSecAcntOpeningRequestDialog(context);
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) =>

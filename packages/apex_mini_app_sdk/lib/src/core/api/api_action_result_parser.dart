@@ -30,7 +30,7 @@ final class ApiActionResultParser {
       if (code != 0) {
         throw ApiBusinessException(
           responseCode: code,
-          message: messageOf(json) ?? fallbackErrorMessage,
+          message: _failureMessageOf(json) ?? fallbackErrorMessage,
         );
       }
       return;
@@ -39,7 +39,7 @@ final class ApiActionResultParser {
     if (responseCode != null && responseCode != 0) {
       throw ApiBusinessException(
         responseCode: responseCode,
-        message: messageOf(json) ?? fallbackErrorMessage,
+        message: _failureMessageOf(json) ?? fallbackErrorMessage,
       );
     }
 
@@ -47,15 +47,18 @@ final class ApiActionResultParser {
         !ApiParser.asFlag(json['success'], defaultValue: true)) {
       throw ApiBusinessException(
         responseCode: responseCode ?? 1,
-        message: messageOf(json) ?? fallbackErrorMessage,
+        message: _failureMessageOf(json) ?? fallbackErrorMessage,
       );
     }
   }
 
   /// Returns the best user/backend message from a response map.
   static String? messageOf(Map<String, Object?> json) {
-    return ApiParser.asNullableString(json['responseDesc']) ??
-        ApiParser.asNullableString(json['message']);
+    return ApiResponseMessageParser.extract(json, includeNested: false);
+  }
+
+  static String? _failureMessageOf(Map<String, Object?> json) {
+    return ApiResponseMessageParser.extract(json);
   }
 
   /// Returns the response `body` as a JSON object map.

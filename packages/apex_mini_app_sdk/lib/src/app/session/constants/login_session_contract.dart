@@ -1,7 +1,6 @@
 /// Static contract-user identity used by `MiniAppUserDataSourceMode.contract`.
 final class LoginSessionContract {
-  // static const String registerNo = 'ЪЪ13121212';
-
+  // static const String registerNo = 'ЪЪ91121212';
   /// Register number sent to login-session APIs in contract mode.
   static const String registerNo = 'УВ97102125';
 

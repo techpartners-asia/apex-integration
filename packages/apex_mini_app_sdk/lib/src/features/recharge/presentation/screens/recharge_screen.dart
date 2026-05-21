@@ -40,6 +40,13 @@ class _RechargeScreenState extends State<RechargeScreen> {
       builder: (BuildContext context, IpsRechargeState state) {
         final l10n = context.l10n;
 
+        if (state.errorMessage.isNotNullOrEmpty) {
+          MiniAppToast.showSuccess(
+            context,
+            message: state.errorMessage ?? context.l10n.errorsGenericTitle,
+          );
+        }
+
         if (state.paymentRes != null) {
           return _RechargeResultView(state: state);
         }
@@ -53,7 +60,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                 resizeToAvoidBottomInset: true,
                 appBar: CustomAppBar(
                   title: l10n.ipsPaymentRechargeTitle,
-                  showBackButton: false,
+                  showBackButton: true,
                   showCloseButton: true,
                   backgroundColor: DesignTokens.softSurface,
                   showBottomBorder: false,

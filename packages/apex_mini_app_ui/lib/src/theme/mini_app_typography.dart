@@ -6,7 +6,7 @@ final class MiniAppTypography {
   static const String fontFamily = 'Zona Pro';
 
   /// Package that owns the font assets.
-  static const String package = 'apex_mini_app_ui';
+  static const String package = 'apex_mini_app_sdk';
 
   /// Regular font weight.
   static const FontWeight regular = FontWeight.w400;

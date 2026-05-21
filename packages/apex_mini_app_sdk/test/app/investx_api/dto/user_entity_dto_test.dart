@@ -1,8 +1,25 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 void main() {
+  test('throws backend message when user response returns success false', () {
+    expect(
+      () => UserEntityDto.fromJson(
+        const <String, Object?>{
+          'success': false,
+          'message': 'User bootstrap failed.',
+        },
+      ),
+      throwsA(
+        isA<ApiBusinessException>().having(
+          (ApiBusinessException error) => error.message,
+          'message',
+          'User bootstrap failed.',
+        ),
+      ),
+    );
+  });
+
   test('profile dto parses full nested profile response safely', () {
     final UserEntityDto user = UserEntityDto.fromJson(<String, Object?>{
       'message': '',

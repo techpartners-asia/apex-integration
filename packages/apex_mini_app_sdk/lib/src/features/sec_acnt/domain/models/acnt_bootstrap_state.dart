@@ -5,51 +5,40 @@ class AcntBootstrapState {
   final GetSecuritiesAcntListResDto _response;
 
   /// Creates bootstrap state from the securities-account list response.
-  const AcntBootstrapState({required GetSecuritiesAcntListResDto response})
-    : _response = response;
+  const AcntBootstrapState({required GetSecuritiesAcntListResDto response}) : _response = response;
 
   GetSecuritiesAcntListDetailDto get _detail => _response.detail;
 
-  GetSecAcntListAccountDto? get _securitiesAccount =>
-      _response.securitiesAccount;
+  GetSecAcntListAccountDto? get _securitiesAccount => _response.securitiesAccount;
 
   GetSecAcntListAccountDto? get _ipsMasterAccount => _response.ipsMasterAccount;
 
   GetSecAcntListAccountDto? get _ipsCasaAccount => _response.ipsCasaAccount;
 
   /// Whether both IPS master and CASA accounts are present.
-  bool get hasRequiredIpsAccounts =>
-      _ipsMasterAccount != null && _ipsCasaAccount != null;
+  bool get hasRequiredIpsAccounts => _ipsMasterAccount != null && _ipsCasaAccount != null;
 
   /// Whether the backend says the user has a securities-account request/account.
   bool get hasAcnt => _detail.hasAcnt;
 
   /// Whether IPS account data is present.
-  bool get hasIpsAcnt =>
-      _detail.hasIpsAcnt ||
-      _ipsMasterAccount != null ||
-      _ipsCasaAccount != null;
+  bool get hasIpsAcnt => _detail.hasIpsAcnt || _ipsMasterAccount != null || _ipsCasaAccount != null;
 
   /// Simplified account status used by UI/onboarding decisions.
-  AcntStatus get acntStatus => !hasAcnt
-      ? AcntStatus.none
-      : (hasIpsAcnt ? AcntStatus.active : AcntStatus.pending);
+  AcntStatus get acntStatus => !hasAcnt ? AcntStatus.none : (hasIpsAcnt ? AcntStatus.active : AcntStatus.pending);
 
   /// Raw status code for the securities account, when present.
   int? get secAcntStatusCode => _securitiesAccount?.status;
 
   /// Securities account code used by account-required securities flows.
-  String? get secAcntCode =>
-      _securitiesAccount?.scAcntCode ?? _securitiesAccount?.acntCode;
+  String? get secAcntCode => _securitiesAccount?.scAcntCode ?? _securitiesAccount?.acntCode;
 
   /// IPS master account code used by portfolio and pack flows.
-  String? get ipsAcntCode =>
-      _ipsMasterAccount?.scAcntCode ?? _ipsMasterAccount?.acntCode;
+  String? get ipsAcntCode => _ipsMasterAccount?.scAcntCode ?? _ipsMasterAccount?.acntCode;
 
   /// Broker id resolved for portfolio and statement API requests.
   String? get portfolioBrokerId {
-    return _trimToNull(_securitiesAccount?.brokerId) ??
-        _trimToNull(_detail.brokerCode);
+    return _trimToNull(_securitiesAccount?.brokerId) ?? _trimToNull(_detail.brokerCode);
   }
 
   // String? get portfolioSecurityCode {
@@ -61,30 +50,23 @@ class AcntBootstrapState {
 
   /// Maximum statement range accepted by the backend for this account.
   int? get portfolioStatementMaxDays {
-    return _parsePositiveInt(_ipsCasaAccount?.statementMaxDay) ??
-        _parsePositiveInt(_securitiesAccount?.statementMaxDay);
+    return _parsePositiveInt(_ipsCasaAccount?.statementMaxDay) ?? _parsePositiveInt(_securitiesAccount?.statementMaxDay);
   }
 
   /// Securities-account available balance, falling back to total balance.
-  double? get secBalance =>
-      _securitiesAccount?.availableBalance ?? _securitiesAccount?.balance;
+  double? get secBalance => _securitiesAccount?.availableBalance ?? _securitiesAccount?.balance;
 
   /// IPS CASA available balance, falling back to total balance.
-  double? get ipsBalance =>
-      _ipsCasaAccount?.availableBalance ?? _ipsCasaAccount?.balance;
+  double? get ipsBalance => _ipsCasaAccount?.availableBalance ?? _ipsCasaAccount?.balance;
 
   /// Commission value from the bootstrap detail payload.
   double? get commission => _detail.commission;
 
   /// Display currency resolved from primary or IPS CASA account data.
-  String get currency =>
-      _response.primaryAccount?.symbol ??
-      _ipsCasaAccount?.symbol ??
-      IpsDefaults.defaultCurrency;
+  String get currency => _response.primaryAccount?.symbol ?? _ipsCasaAccount?.symbol ?? IpsDefaults.defaultCurrency;
 
   /// User-facing status message shown on onboarding/dashboard surfaces.
-  String? get statusMessage =>
-      _detail.introIps ?? _detail.intro ?? _detail.info;
+  String? get statusMessage => _detail.introIps ?? _detail.intro ?? _detail.info;
 
   /// General introduction text returned by the bootstrap endpoint.
   String? get intro => _detail.intro;
@@ -170,8 +152,7 @@ class AcntBootstrapState {
   AcntBootstrapState copyWithBalanceState(
     GetSecuritiesAcntListResDto balanceState,
   ) {
-    final GetSecAcntListAccountDto? updatedBalanceAccount =
-        balanceState.acnts.isEmpty ? null : balanceState.acnts.first;
+    final GetSecAcntListAccountDto? updatedBalanceAccount = balanceState.acnts.isEmpty ? null : balanceState.acnts.first;
     if (updatedBalanceAccount == null) {
       return this;
     }

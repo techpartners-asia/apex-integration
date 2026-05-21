@@ -126,6 +126,24 @@ void main() {
         ),
       );
     });
+
+    test('uses nested body message for explicit business failures', () {
+      expect(
+        () => ensureDefault(
+          const <String, Object?>{
+            'success': false,
+            'body': <String, Object?>{'message': 'Nested server error'},
+          },
+        ),
+        throwsA(
+          isA<ApiBusinessException>().having(
+            (e) => e.message,
+            'message',
+            'Nested server error',
+          ),
+        ),
+      );
+    });
   });
 
   group('ApiActionResultParser helpers', () {
@@ -149,6 +167,31 @@ void main() {
         'msg',
       );
     });
+
+    test('messageOf ignores normal body title fields on success payloads', () {
+      expect(
+        ApiActionResultParser.messageOf(
+          const <String, Object?>{
+            'body': <String, Object?>{'title': 'Feedback title'},
+          },
+        ),
+        isNull,
+      );
+    });
+
+    test(
+      'messageOf ignores normal body message fields on success payloads',
+      () {
+        expect(
+          ApiActionResultParser.messageOf(
+            const <String, Object?>{
+              'body': <String, Object?>{'message': 'Domain message'},
+            },
+          ),
+          isNull,
+        );
+      },
+    );
 
     test('bodyOf returns body map', () {
       final Map<String, Object?> result = ApiActionResultParser.bodyOf(

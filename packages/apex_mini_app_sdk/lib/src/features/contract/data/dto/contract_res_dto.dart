@@ -20,24 +20,16 @@ class ContractResDto {
 
   /// Parses the contract response and throws for non-zero response codes.
   factory ContractResDto.fromJson(Map<String, Object?> json) {
-    final int responseCode = ApiParser.asNullableInt(json['responseCode']) ?? 1;
-
-    if (responseCode != 0) {
-      throw ApiBusinessException(
-        responseCode: responseCode,
-        message:
-            ApiParser.asNullableString(json['responseDesc']) ??
-            'Contract creation failed.',
-      );
-    }
+    ApiActionResultParser.ensureSuccess(
+      json,
+      fallbackErrorMessage: 'Contract creation failed.',
+    );
 
     return ContractResDto(
       contractId:
           ApiParser.asNullableString(json['refNo']) ??
           IpsDefaults.contractIdFallback,
-      message:
-          ApiParser.asNullableString(json['responseDesc']) ??
-          'IPS contract created.',
+      message: ApiActionResultParser.messageOf(json) ?? 'IPS contract created.',
       deepLink: ApiParser.asNullableString(json['deepLink']),
     );
   }

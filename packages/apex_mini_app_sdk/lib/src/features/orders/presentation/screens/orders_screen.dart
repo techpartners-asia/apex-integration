@@ -28,14 +28,24 @@ class OrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<IpsOrdersCubit, IpsOrdersState>(
       listenWhen: (IpsOrdersState previous, IpsOrdersState current) =>
-          previous.cancelledOrderId != current.cancelledOrderId &&
-          current.cancelledOrderId != null,
+          (previous.cancelledOrderId != current.cancelledOrderId &&
+              current.cancelledOrderId != null) ||
+          (previous.errorMessage != current.errorMessage &&
+              (current.errorMessage?.trim().isNotEmpty ?? false)),
       listener: (BuildContext context, IpsOrdersState state) {
-        MiniAppToast.showSuccess(
-          context,
-          message: context.l10n.ipsSuccessOrderCancelled,
-        );
-        context.read<IpsOrdersCubit>().clearFeedback();
+        if (state.cancelledOrderId != null) {
+          MiniAppToast.showSuccess(
+            context,
+            message: context.l10n.ipsSuccessOrderCancelled,
+          );
+          context.read<IpsOrdersCubit>().clearFeedback();
+          return;
+        }
+
+        final String? message = state.errorMessage?.trim();
+        if (message != null && message.isNotEmpty) {
+          MiniAppToast.showError(context, message: message);
+        }
       },
       builder: (BuildContext context, IpsOrdersState state) {
         final l10n = context.l10n;

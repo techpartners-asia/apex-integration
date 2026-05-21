@@ -31,8 +31,7 @@ class MiniAppBootstrapFlow {
 
   /// Loads required startup data and returns the next route.
   Future<MiniAppBootstrapRes> resolve() async {
-    final UserEntityDto currentUser = await sessionController
-        .ensureCurrentUser();
+    final UserEntityDto currentUser = await sessionController.ensureCurrentUser();
     await sessionController.ensureLoginSession();
     final AcntBootstrapState bootstrapState = await BootstrapStateResolver(
       service: bootstrapService,
@@ -52,19 +51,12 @@ class MiniAppBootstrapFlow {
     AcntBootstrapState bootstrapState, {
     UserEntityDto? currentUser,
   }) {
-    if (bootstrapState.hasAcnt &&
-        bootstrapState.hasIpsAcnt &&
-        bootstrapState.hasOpenSecAcnt) {
+    if (bootstrapState.hasAcnt && bootstrapState.hasIpsAcnt && bootstrapState.hasOpenSecAcnt) {
       return MiniAppRoutes.overview;
     }
 
     if (bootstrapState.hasAcnt && !bootstrapState.hasIpsAcnt) {
-      return hasCompleteSecAcntPersonalInfo(
-            bootstrapState,
-            user: currentUser,
-          )
-          ? MiniAppRoutes.questionnaire
-          : MiniAppRoutes.secAcnt;
+      return hasCompleteSecAcntPersonalInfo(bootstrapState, user: currentUser) ? MiniAppRoutes.questionnaire : MiniAppRoutes.secAcnt;
     }
 
     return MiniAppRoutes.secAcnt;

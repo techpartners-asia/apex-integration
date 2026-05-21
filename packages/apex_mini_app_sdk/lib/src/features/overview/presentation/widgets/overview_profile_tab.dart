@@ -39,15 +39,11 @@ class OverviewProfileTab extends StatelessWidget {
               OverviewProfileMenuItemData(
                 image: Img.profileBlue,
                 title: l10n.ipsOverviewProfileMenuPersonalInfo,
-                subtitle: data.hasIpsAcnt
-                    ? null
-                    : l10n.ipsOverviewProfilePersonalInfoMissing,
+                subtitle: data.hasIpsAcnt ? null : l10n.ipsOverviewProfilePersonalInfoMissing,
                 subtitleColor: DesignTokens.danger,
                 onTap: () => launchIpsRoute(
                   context,
-                  route: data.hasIpsAcnt
-                      ? MiniAppRoutes.personalInfo
-                      : MiniAppRoutes.secAcnt,
+                  route: data.hasIpsAcnt ? MiniAppRoutes.personalInfo : MiniAppRoutes.secAcnt,
                   arguments: data,
                 ),
               ),
@@ -81,9 +77,7 @@ class OverviewProfileTab extends StatelessWidget {
               OverviewProfileMenuItemData(
                 image: Img.ticketBlue,
                 title: l10n.ipsPortfolioOrderList,
-                onTap: data.hasIpsAcnt
-                    ? () => launchIpsRoute(context, route: MiniAppRoutes.orders)
-                    : null,
+                onTap: data.hasIpsAcnt ? () => launchIpsRoute(context, route: MiniAppRoutes.orders) : null,
               ),
 
               /// Achievements
@@ -137,15 +131,8 @@ class OverviewProfileHeaderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final l10n = context.l10n;
-    final String displayName = user?.displayName.trim().isNotEmpty ?? false
-        ? user!.displayName
-        : l10n.ipsOverviewProfileGuestName;
-    final String initials = displayName
-        .split(RegExp(r'\s+'))
-        .where((String part) => part.trim().isNotEmpty)
-        .take(2)
-        .map((String part) => part.substring(0, 1).toUpperCase())
-        .join();
+    final String displayName = user?.displayName.trim().isNotEmpty ?? false ? user!.displayName : l10n.ipsOverviewProfileGuestName;
+    final String initials = displayName.split(RegExp(r'\s+')).where((String part) => part.trim().isNotEmpty).take(2).map((String part) => part.substring(0, 1).toUpperCase()).join();
 
     return Container(
       padding: EdgeInsets.all(responsive.dp(14)),
@@ -232,19 +219,13 @@ class OverviewProfileHeaderCard extends StatelessWidget {
                     Icon(
                       Icons.verified_rounded,
                       size: responsive.dp(16),
-                      color: verified
-                          ? DesignTokens.success
-                          : DesignTokens.muted,
+                      color: verified ? DesignTokens.success : DesignTokens.muted,
                     ),
                     SizedBox(width: responsive.dp(6)),
                     CustomText(
-                      verified
-                          ? l10n.ipsOverviewProfileVerified
-                          : l10n.ipsStatusPending,
+                      verified ? l10n.ipsOverviewProfileVerified : l10n.ipsStatusPending,
                       variant: MiniAppTextVariant.caption1,
-                      color: verified
-                          ? DesignTokens.success
-                          : DesignTokens.muted,
+                      color: verified ? DesignTokens.success : DesignTokens.muted,
                     ),
                   ],
                 ),
@@ -275,9 +256,7 @@ class OverviewProfileMenuCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(responsive.radius(16)),
       ),
       child: Column(
-        children: items
-            .map((e) => OverviewProfileMenuRow(item: e))
-            .toList(growable: false),
+        children: items.map((e) => OverviewProfileMenuRow(item: e)).toList(growable: false),
       ),
     );
   }
@@ -295,15 +274,9 @@ class OverviewProfileMenuRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final bool isEnabled = item.enabled && item.onTap != null;
-    final Color titleColor = item.enabled
-        ? DesignTokens.ink
-        : DesignTokens.muted;
-    final Color subtitleColor =
-        item.subtitleColor ??
-        (item.enabled ? DesignTokens.muted : DesignTokens.border);
-    final Color chevronColor = isEnabled
-        ? DesignTokens.muted
-        : DesignTokens.border;
+    final Color titleColor = item.enabled ? DesignTokens.ink : DesignTokens.muted;
+    final Color subtitleColor = item.subtitleColor ?? (item.enabled ? DesignTokens.muted : DesignTokens.border);
+    final Color chevronColor = isEnabled ? DesignTokens.muted : DesignTokens.border;
 
     return Material(
       color: Colors.transparent,
@@ -337,8 +310,7 @@ class OverviewProfileMenuRow extends StatelessWidget {
                       variant: MiniAppTextVariant.subtitle3,
                       color: titleColor,
                     ),
-                    if (item.subtitle != null &&
-                        item.subtitle!.trim().isNotEmpty) ...<Widget>[
+                    if (item.subtitle != null && item.subtitle!.trim().isNotEmpty) ...<Widget>[
                       SizedBox(height: responsive.dp(2)),
                       CustomText(
                         item.subtitle!,

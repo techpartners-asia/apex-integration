@@ -121,7 +121,15 @@ class UserEntityDto {
   });
 
   /// Parses direct and nested user response payloads.
-  factory UserEntityDto.fromJson(Map<String, Object?> json) {
+  factory UserEntityDto.fromJson(
+    Map<String, Object?> json, {
+    String failureMessage = 'Request failed.',
+  }) {
+    ApiActionResultParser.ensureSuccess(
+      json,
+      fallbackErrorMessage: failureMessage,
+    );
+
     final Map<String, Object?> payload = ApiParser.asObjectMap(json['body']);
     final Map<String, Object?> nestedUser = ApiParser.asObjectMap(
       payload['user'],

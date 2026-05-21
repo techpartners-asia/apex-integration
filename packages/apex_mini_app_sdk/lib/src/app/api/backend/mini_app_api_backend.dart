@@ -22,7 +22,10 @@ class MiniAppApiBackend {
       context: const ReqContext(operName: 'getProfileInfo'),
     );
 
-    return UserEntityDto.fromJson(json);
+    return UserEntityDto.fromJson(
+      json,
+      failureMessage: 'Failed to load profile information.',
+    );
   }
 
   /// Loads all goal questions from the profile API domain.

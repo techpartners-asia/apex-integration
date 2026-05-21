@@ -51,12 +51,28 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
   Widget build(BuildContext context) {
     return BlocListener<IpsContractCubit, IpsContractState>(
       listenWhen: (IpsContractState previous, IpsContractState current) =>
-          previous.isReady != current.isReady && current.isReady,
+          (previous.isReady != current.isReady && current.isReady) ||
+          (previous.errorMessage != current.errorMessage &&
+              (current.errorMessage?.trim().isNotEmpty ?? false)),
       listener: (BuildContext context, IpsContractState state) async {
+        final String? errorMessage = state.errorMessage?.trim();
+        if (errorMessage != null && errorMessage.isNotEmpty) {
+          MiniAppToast.showError(context, message: errorMessage);
+          return;
+        }
+
+        if (!state.isReady) {
+          return;
+        }
+
         if (_didOpenRechargeSheet) {
           return;
         }
         _didOpenRechargeSheet = true;
+        MiniAppToast.showSuccess(
+          context,
+          message: context.l10n.ipsSuccessContractCreated,
+        );
         await _openRechargeBottomSheetAfterReady(context);
       },
       child: BlocBuilder<IpsContractCubit, IpsContractState>(

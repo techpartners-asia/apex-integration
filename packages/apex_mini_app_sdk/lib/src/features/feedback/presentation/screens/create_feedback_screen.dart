@@ -52,6 +52,10 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
     return BlocListener<FeedbackCubit, FeedbackState>(
       listener: (BuildContext context, FeedbackState state) {
         if (state.lastCreated != null) {
+          MiniAppToast.showSuccess(
+            context,
+            message: context.l10n.commonSuccess,
+          );
           Navigator.of(context).pop();
         }
         if (state.errorMessage != null) {

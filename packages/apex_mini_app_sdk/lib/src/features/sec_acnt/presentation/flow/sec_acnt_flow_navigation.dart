@@ -1,9 +1,42 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
+/// Message shown when the securities account opening request is already sent.
+const String secAcntPendingOpeningRequestMessage = 'Таны үнэт цаасны данс нээх хүсэлт илгээгдсэн байгаа тул та түр хүлээнэ үү';
+
 /// Closes the securities account flow through the SDK safe-close path.
 Future<void> closeSecAcntFlow(BuildContext context) async {
   await closeMiniAppSafely(context);
+}
+
+/// Shows the pending-request dialog and closes the mini app from the OK action.
+Future<void> showPendingSecAcntOpeningRequestDialog(BuildContext context) async {
+  if (!context.mounted) {
+    return;
+  }
+
+  await showMiniAppDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    title: context.l10n.commonWarning,
+    body: const CustomText(
+      secAcntPendingOpeningRequestMessage,
+      variant: MiniAppTextVariant.body2,
+    ),
+    actions: <Widget>[
+      FilledButton(
+        onPressed: () async {
+          Navigator.of(context).pop();
+          await closeSecAcntFlow(context);
+        },
+        child: CustomText(
+          'OK',
+          variant: MiniAppTextVariant.buttonMedium,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
+    ],
+  );
 }
 
 /// Routes to the next mini-app destination after account onboarding ends.
@@ -11,11 +44,8 @@ Future<void> routeAfterSecAcntFlow(
   BuildContext context,
   AcntBootstrapState? state,
 ) async {
-  final bool shouldOpenQuestionnaire =
-      state != null && state.hasAcnt && !state.hasIpsAcnt;
-  final String nextRoute = shouldOpenQuestionnaire
-      ? MiniAppRoutes.questionnaire
-      : MiniAppRoutes.overview;
+  final bool shouldOpenQuestionnaire = state != null && state.hasAcnt && !state.hasIpsAcnt;
+  final String nextRoute = shouldOpenQuestionnaire ? MiniAppRoutes.questionnaire : MiniAppRoutes.overview;
 
   await replaceIpsRoute(context, route: nextRoute, arguments: state);
 }
@@ -62,9 +92,7 @@ Widget buildSecAcntFlowStepScreen({
     SecAcntFlowStep.calculation => SecAcntCalculationScreen(
       bootstrapState: bootstrapState,
     ),
-    SecAcntFlowStep.consent ||
-    SecAcntFlowStep.personalInformation ||
-    SecAcntFlowStep.terms => throw ArgumentError.value(
+    SecAcntFlowStep.consent || SecAcntFlowStep.personalInformation || SecAcntFlowStep.terms => throw ArgumentError.value(
       step,
       'step',
       'Only post-consent/post-personal-information steps can be built here.',
@@ -81,6 +109,11 @@ Future<void> pushSecAcntFlowStep(
   required MiniAppProfileRepository? appApi,
   UserEntityDto? currentUser,
 }) async {
+  if (hasPendingSecAcntOpeningRequest(bootstrapState)) {
+    await showPendingSecAcntOpeningRequestDialog(context);
+    return;
+  }
+
   await Navigator.of(context).push(
     MaterialPageRoute<void>(
       builder: (_) => buildSecAcntFlowStepScreen(

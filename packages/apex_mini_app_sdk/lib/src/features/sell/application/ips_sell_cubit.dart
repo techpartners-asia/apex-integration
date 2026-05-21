@@ -90,7 +90,9 @@ class IpsSellCubit extends Cubit<IpsSellState> {
       emit(
         state.copyWith(
           isSubmitting: false,
-          message: _normalizeSuccessMessage(res.message),
+          message:
+              _normalizeSuccessMessage(res.message) ??
+              l10n.ipsSuccessReqCreated,
           errorMessage: null,
           refreshErrorMessage: null,
         ),

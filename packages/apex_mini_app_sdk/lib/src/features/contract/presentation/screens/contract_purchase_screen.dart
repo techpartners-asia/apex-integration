@@ -24,9 +24,22 @@ class _ContractPurchaseScreenState extends State<ContractPurchaseScreen> {
 
     return BlocListener<IpsContractCubit, IpsContractState>(
       listenWhen: (IpsContractState previous, IpsContractState current) =>
-          previous.paymentRes?.status != current.paymentRes?.status,
+          (previous.paymentRes?.status != current.paymentRes?.status &&
+              current.paymentRes?.status == MiniAppPaymentStatus.success) ||
+          (previous.errorMessage != current.errorMessage &&
+              (current.errorMessage?.trim().isNotEmpty ?? false)),
       listener: (BuildContext context, IpsContractState state) {
+        final String? errorMessage = state.errorMessage?.trim();
+        if (errorMessage != null && errorMessage.isNotEmpty) {
+          MiniAppToast.showError(context, message: errorMessage);
+          return;
+        }
+
         if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
+          MiniAppToast.showSuccess(
+            context,
+            message: context.l10n.commonSuccess,
+          );
           Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (_) => const ContractSuccessScreen(),

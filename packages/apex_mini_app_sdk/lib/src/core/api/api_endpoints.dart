@@ -15,8 +15,7 @@ class ApiEndpoints {
   static const String updateProfile = '/api/v1/user/profile/update';
 
   /// Target goal update endpoint.
-  static const String updateTargetGoal =
-      '/api/v1/user/profile/update-target-goal';
+  static const String updateTargetGoal = '/api/v1/user/profile/update-target-goal';
 
   /// Signature upload/update endpoint.
   static const String updateSignature = '/api/v1/user/profile/update-signature';
@@ -67,8 +66,7 @@ class ApiEndpoints {
   static const String getIpsBalance = '/api/v1.0/getIpsBalance';
 
   /// Public CASA account statement endpoint.
-  static const String getBkrPublicCasaAcntStmt =
-      '/api/v1.0/getBkrPublicCasaAcntStmt';
+  static const String getBkrPublicCasaAcntStmt = '/api/v1.0/getBkrPublicCasaAcntStmt';
 
   /// IPS sell order creation endpoint.
   static const String createIpsSellOrder = '/api/v1.0/createIpsSellOrder';

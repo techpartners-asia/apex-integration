@@ -146,9 +146,16 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
       listenWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
           (prev.paymentRes != curr.paymentRes && curr.paymentRes != null) ||
-          prev.errorMessage != curr.errorMessage,
+          (prev.errorMessage != curr.errorMessage &&
+              (curr.errorMessage?.trim().isNotEmpty ?? false)),
       listener: (BuildContext context, IpsRechargeState state) {
         if (state.paymentRes != null) {
+          if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
+            MiniAppToast.showSuccess(
+              context,
+              message: context.l10n.commonSuccess,
+            );
+          }
           Navigator.of(context).pop(state);
           return;
         }

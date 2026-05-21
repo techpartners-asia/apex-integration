@@ -23,6 +23,6 @@ class SignUpBackendApi {
       context: const ReqContext(operName: 'signUp'),
     );
 
-    return UserEntityDto.fromJson(json);
+    return UserEntityDto.fromJson(json, failureMessage: 'Sign up failed.');
   }
 }

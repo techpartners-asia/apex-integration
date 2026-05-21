@@ -286,65 +286,7 @@ class ApiExecutor {
 
   /// Extracts a readable backend error message from varied response shapes.
   String? extractServerMessage(Object? raw) {
-    return _extractServerMessage(raw);
-  }
-
-  String? _extractServerMessage(Object? raw, {int depth = 0}) {
-    if (depth > 3) {
-      return null;
-    }
-
-    if (raw is String) {
-      return _normalizeServerMessage(raw);
-    }
-
-    if (raw is Iterable) {
-      for (final Object? item in raw) {
-        final String? message = _extractServerMessage(item, depth: depth + 1);
-        if (message != null) {
-          return message;
-        }
-      }
-      return null;
-    }
-
-    if (raw is Map) {
-      final Map<String, Object?> json = raw.map(
-        (Object? key, Object? value) => MapEntry(key.toString(), value),
-      );
-
-      const List<String> messageKeys = <String>[
-        'responseDesc',
-        'message',
-        'errorMessage',
-        'error_description',
-        'error',
-        'detail',
-        'title',
-        'body',
-        'errors',
-      ];
-
-      for (final String key in messageKeys) {
-        final String? message = _extractServerMessage(
-          json[key],
-          depth: depth + 1,
-        );
-        if (message != null) {
-          return message;
-        }
-      }
-    }
-
-    return null;
-  }
-
-  String? _normalizeServerMessage(String? raw) {
-    final String value = raw?.trim() ?? '';
-    if (value.isEmpty) {
-      return null;
-    }
-    return value.length > 200 ? '${value.substring(0, 200)}…' : value;
+    return ApiResponseMessageParser.extract(raw);
   }
 
   /// Runs [action] and normalizes known network/parsing/runtime failures.
