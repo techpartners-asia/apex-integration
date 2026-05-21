@@ -74,27 +74,42 @@ class OverviewVerificationViewModel {
 /// Builds the onboarding checklist model from account bootstrap state.
 OverviewVerificationViewModel buildOverviewVerificationViewModel(
   BuildContext context,
-  AcntBootstrapState state,
-) {
+  AcntBootstrapState state, {
+  bool hasPaidSecAcntContract = false,
+}) {
   final l10n = context.l10n;
 
   if (!state.hasAcnt) {
+    final bool contractPaid = hasPaidSecAcntContract;
+
     return OverviewVerificationViewModel(
       title: l10n.ipsOverviewVerificationTitle,
       subtitle: l10n.ipsOverviewVerificationSubtitle,
-      progressCurrent: 0,
+      progressCurrent: contractPaid ? 1 : 0,
       progressTotal: 3,
       steps: <OverviewVerificationStep>[
         OverviewVerificationStep(
           title: l10n.ipsOverviewProfileMenuPersonalInfo,
-          subtitle: l10n.ipsOverviewProfilePersonalInfoMissing,
-          status: StepStatus.active,
-          onTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+          subtitle: contractPaid ? l10n.ipsOverviewProfileVerified : l10n.ipsOverviewProfilePersonalInfoMissing,
+          status: contractPaid ? StepStatus.completed : StepStatus.active,
+          onTap: contractPaid
+              ? null
+              : () => launchIpsRoute(
+                  context,
+                  route: MiniAppRoutes.personalInfo,
+                ),
         ),
         OverviewVerificationStep(
           title: l10n.ipsAcntOpenAcnt,
           subtitle: l10n.ipsAcntFlowBody,
-          status: StepStatus.upcoming,
+          status: contractPaid ? StepStatus.active : StepStatus.upcoming,
+          onTap: contractPaid
+              ? () => launchIpsRoute(
+                  context,
+                  route: MiniAppRoutes.secAcnt,
+                  arguments: state,
+                )
+              : null,
         ),
         OverviewVerificationStep(
           title: l10n.ipsOverviewFinalStepLabel,
@@ -103,10 +118,16 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           isLast: true,
         ),
       ],
-      promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
-      promoTitle: l10n.ipsOverviewFirstPackTitle,
+      promoEyebrow: contractPaid ? l10n.ipsOverviewActionTitle : l10n.ipsOverviewProfileMenuPackInfo,
+      promoTitle: contractPaid ? l10n.ipsAcntOpenAcnt : l10n.ipsOverviewFirstPackTitle,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+      onPromoTap: () async => (contractPaid && !state.hasAcnt)
+          ? await showPendingSecAcntOpeningRequestDialog(context)
+          : launchIpsRoute(
+              context,
+              route: contractPaid ? MiniAppRoutes.secAcnt : MiniAppRoutes.personalInfo,
+              arguments: contractPaid ? state : null,
+            ),
     );
   }
 
@@ -126,7 +147,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           title: l10n.ipsAcntVerifyAcnt,
           subtitle: l10n.ipsAcntFlowBody,
           status: StepStatus.active,
-          onTap: () => launchIpsRoute(context, route: MiniAppRoutes.secAcnt),
+          onTap: !state.hasAcnt ? () async => await showPendingSecAcntOpeningRequestDialog(context) : () => launchIpsRoute(context, route: MiniAppRoutes.secAcnt),
         ),
         OverviewVerificationStep(
           title: l10n.ipsOverviewFinalStepLabel,
@@ -138,11 +159,13 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
       promoEyebrow: l10n.ipsOverviewActionTitle,
       promoTitle: l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => launchIpsRoute(
-        context,
-        route: MiniAppRoutes.secAcnt,
-        arguments: state,
-      ),
+      onPromoTap: () async => !state.hasAcnt
+          ? await showPendingSecAcntOpeningRequestDialog(context)
+          : launchIpsRoute(
+              context,
+              route: MiniAppRoutes.secAcnt,
+              arguments: state,
+            ),
     );
   }
 

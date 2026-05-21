@@ -52,7 +52,11 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                       selectedIndex: _selectedTabIndex,
                       onSelected: _handleTabSelected,
                       onActionPressed: isTradingEnabled
-                          ? () => (context, data)
+                          ? () => _showActionSheet(
+                              context,
+                              data,
+                              sessionState.currentUser,
+                            )
                           : null,
                       isActionEnabled: isTradingEnabled,
                     ),
@@ -60,7 +64,11 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   isTradingEnabled && PlatformInfo.isIOS26OrHigher()
                   ? _InvestXFloatingButton(
                       selected: true,
-                      onTap: () => _showActionSheet(context, data!),
+                      onTap: () => _showActionSheet(
+                        context,
+                        data!,
+                        sessionState.currentUser,
+                      ),
                     )
                   : null,
             );
@@ -209,6 +217,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
   Future<void> _showActionSheet(
     BuildContext context,
     IpsOverviewViewData data,
+    UserEntityDto? currentUser,
   ) async {
     final AcntBootstrapState bootstrapState = data.bootstrapState;
 
@@ -257,6 +266,8 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
               viewModel: buildOverviewVerificationViewModel(
                 sheetContext,
                 bootstrapState,
+                hasPaidSecAcntContract:
+                    currentUser?.account?.hasPaidContract ?? false,
               ),
               compact: true,
             ),

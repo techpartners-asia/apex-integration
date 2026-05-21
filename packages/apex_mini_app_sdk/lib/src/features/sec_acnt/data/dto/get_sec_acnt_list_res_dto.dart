@@ -41,9 +41,7 @@ class GetSecuritiesAcntListResDto {
   /// Parses and validates the account list response.
   factory GetSecuritiesAcntListResDto.fromJson(Map<String, Object?> json) {
     final int responseCode = ApiParser.asNullableInt(json['responseCode']) ?? 1;
-    final String? responseDesc = ApiParser.asNullableString(
-      json['responseDesc'],
-    );
+    final String? responseDesc = ApiParser.asNullableString(json['responseDesc']);
 
     if (responseCode != 0) {
       throw ApiBusinessException(
@@ -56,12 +54,8 @@ class GetSecuritiesAcntListResDto {
       detail: GetSecuritiesAcntListDetailDto.fromJson(
         ApiParser.asObjectMap(json['detail']),
       ),
-      acnts: ApiParser.asObjectMapList(
-        json['acnts'],
-      ).map(GetSecAcntListAccountDto.fromJson).toList(growable: false),
-      stlAcnts: ApiParser.asObjectMapList(
-        json['stlAcnts'],
-      ).map(GetSecAcntSettlementAccountDto.fromJson).toList(growable: false),
+      acnts: ApiParser.asObjectMapList(json['acnts']).map(GetSecAcntListAccountDto.fromJson).toList(growable: false),
+      stlAcnts: ApiParser.asObjectMapList(json['stlAcnts']).map(GetSecAcntSettlementAccountDto.fromJson).toList(growable: false),
       responseCode: responseCode,
       responseDesc: responseDesc,
     );
@@ -94,12 +88,10 @@ class GetSecuritiesAcntListResDto {
   GetSecAcntListAccountDto? get ipsCasaAccount => accountByFlag(12);
 
   /// Best account candidate for APIs that need an account context.
-  GetSecAcntListAccountDto? get primaryAccount =>
-      securitiesAccount ?? ipsCasaAccount ?? ipsMasterAccount ?? firstAccount;
+  GetSecAcntListAccountDto? get primaryAccount => securitiesAccount ?? ipsCasaAccount ?? ipsMasterAccount ?? firstAccount;
 
   /// First account row, if any.
-  GetSecAcntListAccountDto? get firstAccount =>
-      acnts.isEmpty ? null : acnts.first;
+  GetSecAcntListAccountDto? get firstAccount => acnts.isEmpty ? null : acnts.first;
 
   /// Finds the first account row with the requested backend flag.
   GetSecAcntListAccountDto? accountByFlag(int flag) {

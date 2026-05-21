@@ -38,7 +38,11 @@ class OverviewHomeTab extends StatelessWidget {
     }
 
     final OverviewVerificationViewModel viewModel =
-        buildOverviewVerificationViewModel(context, data);
+        buildOverviewVerificationViewModel(
+          context,
+          data,
+          hasPaidSecAcntContract: user?.account?.hasPaidContract ?? false,
+        );
 
     if (onRefresh == null) {
       return OverviewVerificationCard(viewModel: viewModel);

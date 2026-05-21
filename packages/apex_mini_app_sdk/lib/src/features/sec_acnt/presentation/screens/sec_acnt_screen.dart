@@ -74,8 +74,7 @@ class SecAcntScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Navigator(
-        onGenerateRoute: (_) =>
-            MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
+        onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _buildInitialScreen()),
       ),
     );
   }
@@ -85,12 +84,10 @@ class _SecAcntPendingRequestGate extends StatefulWidget {
   const _SecAcntPendingRequestGate();
 
   @override
-  State<_SecAcntPendingRequestGate> createState() =>
-      _SecAcntPendingRequestGateState();
+  State<_SecAcntPendingRequestGate> createState() => _SecAcntPendingRequestGateState();
 }
 
-class _SecAcntPendingRequestGateState
-    extends State<_SecAcntPendingRequestGate> {
+class _SecAcntPendingRequestGateState extends State<_SecAcntPendingRequestGate> {
   bool _didShowDialog = false;
 
   @override
