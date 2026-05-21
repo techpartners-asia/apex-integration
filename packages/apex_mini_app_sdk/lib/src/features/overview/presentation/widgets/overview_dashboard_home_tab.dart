@@ -59,37 +59,41 @@ class OverviewDashboardHomeTab extends StatelessWidget {
       stockYieldDetails: stockYieldDetails,
       user: user,
     );
+    final bool shouldRenderPackageBlocks = metrics.shouldRenderPackageBlocks;
 
     final Widget scrollView = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        /// Dashboard summary card
-        OverviewDashboardSummaryCard(
-          metrics: metrics,
-          onRecharge: onRecharge,
-          onStatements: onStatements,
-          onWithdraw: onWithdraw,
-        ),
-        SizedBox(height: responsive.dp(14)),
+        if (shouldRenderPackageBlocks) ...<Widget>[
+          /// Dashboard summary card
+          OverviewDashboardSummaryCard(
+            metrics: metrics,
+            onRecharge: onRecharge,
+            onStatements: onStatements,
+            onWithdraw: onWithdraw,
+          ),
+          SizedBox(height: responsive.dp(14)),
 
-        /// Dashboard yield card
-        AllocationSummaryCard(
-          variant: AllocationSummaryCardVariant.dashboard,
-          data: _buildAllocationSummaryData(context, metrics),
-          detailsLabel: context.l10n.ipsOverviewDashboardDetails,
-          onViewDetails: onViewDetails,
-        ),
-        SizedBox(height: responsive.dp(14)),
+          /// Dashboard yield card
+          AllocationSummaryCard(
+            variant: AllocationSummaryCardVariant.dashboard,
+            data: _buildAllocationSummaryData(context, metrics),
+            detailsLabel: context.l10n.ipsOverviewDashboardDetails,
+            onViewDetails: onViewDetails,
+          ),
+          SizedBox(height: responsive.dp(14)),
 
-        /// Dashboard reminder card
-        ReminderCard(
-          title: context.l10n.ipsOverviewDashboardReminderTitle,
-          message: context.l10n.ipsOverviewDashboardReminderBody,
-        ),
-        SizedBox(height: responsive.dp(14)),
+          /// Dashboard reminder card
+          ReminderCard(
+            title: context.l10n.ipsOverviewDashboardReminderTitle,
+            message: context.l10n.ipsOverviewDashboardReminderBody,
+          ),
+          SizedBox(height: responsive.dp(14)),
 
-        /// Dashboard goal card
-        OverviewDashboardGoalCard(metrics: metrics),
+          /// Dashboard goal card
+          OverviewDashboardGoalCard(metrics: metrics),
+        ] else
+          const SizedBox.shrink(),
         // SizedBox(height: responsive.dp(14)),
         //
         // /// Dashboard reward card

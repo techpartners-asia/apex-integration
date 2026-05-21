@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
   GlobalKey<NavigatorState> navigatorKey, {
@@ -22,15 +21,16 @@ MiniAppWalletPaymentHandler buildExampleWalletPaymentHandler(
       return result;
     }
 
-    final MiniAppPaymentRes? result = await showModalBottomSheet<MiniAppPaymentRes>(
-      context: context,
-      useRootNavigator: true,
-      isScrollControlled: true,
-      backgroundColor: const Color(0xFFF2F4F7),
-      builder: (BuildContext context) {
-        return _ExampleWalletPaymentSheet(request: request);
-      },
-    );
+    final MiniAppPaymentRes? result =
+        await showModalBottomSheet<MiniAppPaymentRes>(
+          context: context,
+          useRootNavigator: true,
+          isScrollControlled: true,
+          backgroundColor: const Color(0xFFF2F4F7),
+          builder: (BuildContext context) {
+            return _ExampleWalletPaymentSheet(request: request);
+          },
+        );
 
     final MiniAppPaymentRes resolved =
         result ??
@@ -102,7 +102,8 @@ class _ExampleWalletPaymentSheet extends StatelessWidget {
                     context,
                     MiniAppPaymentRes.success(
                       message: 'Payment completed in the host wallet.',
-                      transactionId: 'wallet_${DateTime.now().millisecondsSinceEpoch}',
+                      transactionId:
+                          'wallet_${DateTime.now().millisecondsSinceEpoch}',
                       req: request,
                     ),
                   ),

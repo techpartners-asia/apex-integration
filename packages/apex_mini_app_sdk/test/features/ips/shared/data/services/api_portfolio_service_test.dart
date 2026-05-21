@@ -2,14 +2,13 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 void main() {
   test('getDashboardData does not call the statement endpoint', () async {
     final _FakeApiExecutor executor = _FakeApiExecutor();
     final ApiPortfolioService service = ApiPortfolioService(
       api: IpsBackendApi(
         backendConfig: SdkBackendConfig(
-          runtime: const SdkRuntimeConfig(
+          runtime: SdkRuntimeConfig(
             loginSessionBaseUrl: 'https://session.example.com',
             ipsApiBaseUrl: 'https://ips.example.com',
             credentials: AppCredentials(appId: 'app', appSecret: 'secret'),
@@ -27,7 +26,7 @@ void main() {
         protectedExecutor: executor,
       ),
       config: SdkBackendConfig(
-        runtime: const SdkRuntimeConfig(
+        runtime: SdkRuntimeConfig(
           loginSessionBaseUrl: 'https://session.example.com',
           ipsApiBaseUrl: 'https://ips.example.com',
           credentials: AppCredentials(appId: 'app', appSecret: 'secret'),
@@ -69,7 +68,7 @@ void main() {
       final ApiPortfolioService service = ApiPortfolioService(
         api: IpsBackendApi(
           backendConfig: SdkBackendConfig(
-            runtime: const SdkRuntimeConfig(
+            runtime: SdkRuntimeConfig(
               loginSessionBaseUrl: 'https://session.example.com',
               ipsApiBaseUrl: 'https://ips.example.com',
               credentials: AppCredentials(appId: 'app', appSecret: 'secret'),
@@ -87,7 +86,7 @@ void main() {
           protectedExecutor: executor,
         ),
         config: SdkBackendConfig(
-          runtime: const SdkRuntimeConfig(
+          runtime: SdkRuntimeConfig(
             loginSessionBaseUrl: 'https://session.example.com',
             ipsApiBaseUrl: 'https://ips.example.com',
             credentials: AppCredentials(appId: 'app', appSecret: 'secret'),

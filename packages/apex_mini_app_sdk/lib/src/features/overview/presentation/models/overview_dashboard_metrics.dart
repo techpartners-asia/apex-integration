@@ -36,6 +36,9 @@ class OverviewDashboardMetrics {
   /// Color used to show positive or negative profit tone.
   final Color profitTone;
 
+  /// Package/performance section visibility state.
+  final PortfolioPackageVisibility packageVisibility;
+
   /// Current progress toward the target goal.
   final double goalCurrent;
 
@@ -64,12 +67,17 @@ class OverviewDashboardMetrics {
     required this.profitLabel,
     required this.profitPercentLabel,
     required this.profitTone,
+    required this.packageVisibility,
     required this.goalCurrent,
     required this.goalCurrentLabel,
     required this.goalTarget,
     required this.goalTargetLabel,
     required this.streakMonths,
   });
+
+  /// Whether package info, performance, and related blocks should render.
+  bool get shouldRenderPackageBlocks =>
+      packageVisibility.shouldRenderPackageBlocks;
 
   /// Resolves UI metrics from bootstrap, portfolio, holding, and user data.
   static OverviewDashboardMetrics resolve(
@@ -128,9 +136,11 @@ class OverviewDashboardMetrics {
           )
         : 0;
     final double profit =
-        overview?.profitOrLoss ??
-        (holdingsProfit != 0 ? holdingsProfit : null) ??
-        overview?.yieldAmount ??
+        _firstNonZero(
+          overview?.profitOrLoss,
+          holdingsProfit,
+          overview?.yieldAmount,
+        ) ??
         0;
     final double goalCurrent =
         _firstMeaningful(overview?.stockTotal, totalInvestment) ?? 0;
@@ -140,6 +150,13 @@ class OverviewDashboardMetrics {
     final double profitRatio = totalInvestment > 0
         ? profit / totalInvestment
         : 0;
+    final PortfolioPackageVisibility packageVisibility =
+        PortfolioPackageVisibility.resolve(
+          overview: overview,
+          user: user,
+          resolvedReturnsAmount: profit,
+          resolvedReturnsPercent: profitRatio,
+        );
 
     return OverviewDashboardMetrics(
       shortDisplayName: _resolveShortDisplayName(context, user),
@@ -153,6 +170,7 @@ class OverviewDashboardMetrics {
       profitLabel: _formatSignedAmount(profit, currency),
       profitPercentLabel: _formatPercent(profitRatio),
       profitTone: profit < 0 ? DesignTokens.danger : DesignTokens.success,
+      packageVisibility: packageVisibility,
       goalCurrent: goalCurrent,
       goalCurrentLabel: formatIpsPaymentAmount(goalCurrent, currency),
       goalTarget: goalTarget,
@@ -199,6 +217,15 @@ class OverviewDashboardMetrics {
       return null;
     }
     return (first ?? 0) + (second ?? 0);
+  }
+
+  static double? _firstNonZero(double? first, [double? second, double? third]) {
+    for (final double? value in <double?>[first, second, third]) {
+      if (value != null && value.isFinite && value != 0) {
+        return value;
+      }
+    }
+    return null;
   }
 
   static double? _sumHoldingsCurrentValue(List<PortfolioHolding> holdings) {

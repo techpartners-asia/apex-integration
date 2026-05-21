@@ -7,10 +7,12 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 /// widget details.
 UiMiniAppModule buildMiniAppFeature(MiniAppSdkConfig config) {
   final MiniAppLogger logger = config.logger;
+  StaticApiConfig.configure(devMode: config.devMode);
   final MiniAppSessionRuntime appSession = buildMiniAppSessionRuntime(
     initialUserToken: config.userToken,
     logger: logger,
     userDataSourceMode: config.userDataSourceMode,
+    devMode: config.devMode,
     baseUrl: config.baseUrl,
     techInvestXBaseUrl: config.techInvestXBaseUrl,
     loginSessionBaseUrl: config.loginSessionBaseUrl,

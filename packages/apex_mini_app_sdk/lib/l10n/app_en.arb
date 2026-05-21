@@ -220,13 +220,13 @@
   "ipsContractPackPricingUnavailable": "The selected package pricing is currently unavailable. Please try again.",
   "ipsContractPreparingPayment": "Preparing your contract, payment request, and wallet checkout.",
   "ipsPortfolioTitle": "Portfolio",
-  "ipsPortfolioSubtitle": "IPS acnt overview, holdings, yield, and profit.",
+  "ipsPortfolioSubtitle": "IPS acnt overview, pack, yield, and profit.",
   "ipsPortfolioAvailableBalance": "Available balance",
   "ipsPortfolioInvestedBalance": "Invested balance",
   "ipsPortfolioProfitLoss": "Profit/Loss",
   "ipsPortfolioYield": "Yield",
   "ipsPortfolioHoldings": "Holdings",
-  "ipsPortfolioNoHoldings": "No holdings data is available.",
+  "ipsPortfolioNoHoldings": "No data is available.",
   "ipsPortfolioRecharge": "Recharge",
   "ipsPortfolioSellOrder": "Sell order",
   "ipsPortfolioOrderList": "Order list",
@@ -237,7 +237,7 @@
   "ipsPortfolioHoldingValueLabel": "Current value",
   "ipsPortfolioHoldingValue": "Qty {quantity} • Value {value}",
   "@ipsPortfolioHoldingValue": {
-    "description": "Summary line for a holding entry.",
+    "description": "Summary line for a pack entry.",
     "placeholders": {
       "quantity": {},
       "value": {}
@@ -335,7 +335,7 @@
   "ipsYieldSubtitle": "Portfolio yield breakdown.",
   "ipsYieldDetails": "Yield details",
   "ipsProfitTitle": "Profit and loss",
-  "ipsProfitSubtitle": "Profit and loss summary for IPS holdings.",
+  "ipsProfitSubtitle": "Profit and loss summary for IPS packs.",
   "ipsProfitSummary": "Profit summary",
   "ipsSuccessReqCreated": "Req created successfully.",
   "ipsSuccessOrderCancelled": "Order cancelled successfully.",

@@ -146,9 +146,6 @@ class _ApiDebugLogInterceptor extends Interceptor {
 
   /// Redacts sensitive values and converts [FormData] to safe metadata.
   Object? _sanitizeValue(Object? value, {String? key}) {
-    if (_isSensitiveKey(key)) {
-      return '<redacted>';
-    }
 
     if (value is FormData) {
       return <String, Object?>{

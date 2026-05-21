@@ -11,6 +11,7 @@ class ApexMiniAppHostConfig {
   /// Creates host configuration for `ApexMiniAppSdk`.
   const ApexMiniAppHostConfig({
     required this.token,
+    this.devMode = false,
     this.baseUrl,
     this.techInvestXBaseUrl,
     this.loginSessionBaseUrl,
@@ -31,6 +32,9 @@ class ApexMiniAppHostConfig {
 
   /// Required host authentication token.
   final String token;
+
+  /// Whether SDK defaults should target legacy development services.
+  final bool devMode;
 
   /// Default backend base URL used when more specific service URLs are absent.
   final String? baseUrl;
@@ -158,6 +162,7 @@ class ApexMiniAppHostConfig {
   /// Creates a modified host config while preserving unspecified fields.
   ApexMiniAppHostConfig copyWith({
     String? token,
+    bool? devMode,
     String? baseUrl,
     String? techInvestXBaseUrl,
     String? loginSessionBaseUrl,
@@ -177,6 +182,7 @@ class ApexMiniAppHostConfig {
   }) {
     return ApexMiniAppHostConfig(
       token: token ?? this.token,
+      devMode: devMode ?? this.devMode,
       baseUrl: baseUrl ?? this.baseUrl,
       techInvestXBaseUrl: techInvestXBaseUrl ?? this.techInvestXBaseUrl,
       loginSessionBaseUrl: loginSessionBaseUrl ?? this.loginSessionBaseUrl,
@@ -201,6 +207,7 @@ class ApexMiniAppHostConfig {
     return identical(this, other) ||
         other is ApexMiniAppHostConfig &&
             token == other.token &&
+            devMode == other.devMode &&
             baseUrl == other.baseUrl &&
             techInvestXBaseUrl == other.techInvestXBaseUrl &&
             loginSessionBaseUrl == other.loginSessionBaseUrl &&
@@ -222,6 +229,7 @@ class ApexMiniAppHostConfig {
   int get hashCode {
     return Object.hash(
       token,
+      devMode,
       baseUrl,
       techInvestXBaseUrl,
       loginSessionBaseUrl,

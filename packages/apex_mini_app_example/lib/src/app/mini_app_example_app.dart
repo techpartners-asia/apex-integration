@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
-import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 import 'example_app_tokens.dart';
 import '../host/example_host_context.dart';
@@ -27,7 +26,9 @@ class MiniAppExampleApp extends StatefulWidget {
 class MiniAppExampleAppState extends State<MiniAppExampleApp> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> miniAppNavigatorKey = GlobalKey<NavigatorState>();
-  final ValueNotifier<List<String>> hostEvents = ValueNotifier<List<String>>(<String>[]);
+  final ValueNotifier<List<String>> hostEvents = ValueNotifier<List<String>>(
+    <String>[],
+  );
   late final ApexMiniAppHostConfig hostConfig;
   late final MiniAppWalletPaymentHandler walletPaymentHandler;
   late final MiniAppUserDataSourceMode userDataSourceMode;
@@ -47,7 +48,7 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
           },
         );
     hostConfig = widget.hostConfig ?? _hostConfigFromSdkConfig(widget.sdkConfig) ?? exampleHostConfig;
-    userDataSourceMode = widget.sdkConfig?.userDataSourceMode ?? MiniAppUserDataSourceMode.contract;
+    userDataSourceMode = widget.sdkConfig?.userDataSourceMode ?? MiniAppUserDataSourceMode.realUser;
   }
 
   @override
@@ -91,6 +92,7 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
 
     return ApexMiniAppHostConfig(
       token: config.userToken ?? '',
+      devMode: config.devMode,
       baseUrl: config.baseUrl,
       techInvestXBaseUrl: config.techInvestXBaseUrl,
       loginSessionBaseUrl: config.loginSessionBaseUrl,

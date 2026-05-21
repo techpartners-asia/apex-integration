@@ -14,6 +14,9 @@ class SdkRuntimeConfig {
   /// Application credentials sent with API requests.
   final AppCredentials credentials;
 
+  /// Whether built-in backend defaults point to legacy development services.
+  final bool devMode;
+
   /// Optional access token supplied by host/session.
   final String? accessToken;
 
@@ -33,18 +36,23 @@ class SdkRuntimeConfig {
   final String? neSession;
 
   /// Creates concrete runtime API configuration.
-  const SdkRuntimeConfig({
+  SdkRuntimeConfig({
     this.techInvestXUrl = '',
     required this.loginSessionBaseUrl,
     required this.ipsApiBaseUrl,
     required this.credentials,
+    this.devMode = false,
     this.accessToken,
-    this.defaultSrcFiCode = '181',
-    this.defaultFiCode = '181',
+    String? defaultSrcFiCode,
+    String? defaultFiCode,
     this.language = 'MN',
     this.enableDebugLogs = false,
     this.neSession,
-  });
+  }) : defaultSrcFiCode =
+           defaultSrcFiCode ??
+           StaticApiConfig.defaultSrcFiCodeForDevMode(devMode),
+       defaultFiCode =
+           defaultFiCode ?? StaticApiConfig.defaultFiCodeForDevMode(devMode);
 
   /// Resolves runtime config from explicit values, host config, and defaults.
   factory SdkRuntimeConfig.fromConfig({
@@ -61,30 +69,42 @@ class SdkRuntimeConfig {
     String? defaultFiCode,
     String? language,
     bool? enableDebugLogs,
+    bool devMode = false,
   }) {
-    final String resolvedAppId = _nonBlank(appId) ?? StaticApiConfig.appId;
+    StaticApiConfig.configure(devMode: devMode);
+
+    final String resolvedAppId =
+        _nonBlank(appId) ?? StaticApiConfig.appIdForDevMode(devMode);
     final String resolvedAppSecret =
-        _nonBlank(appSecret) ?? StaticApiConfig.appSecret;
+        _nonBlank(appSecret) ?? StaticApiConfig.appSecretForDevMode(devMode);
 
     return SdkRuntimeConfig(
       techInvestXUrl:
           _nonBlank(techInvestXUrl) ??
           _nonBlank(baseUrl) ??
-          StaticApiConfig.techInvestXUrl,
+          StaticApiConfig.techInvestXUrlForDevMode(devMode),
       loginSessionBaseUrl:
-          _nonBlank(loginSessionBaseUrl) ?? StaticApiConfig.loginSessionBaseUrl,
-      ipsApiBaseUrl: _nonBlank(ipsApiBaseUrl) ?? StaticApiConfig.ipsApiBaseUrl,
+          _nonBlank(loginSessionBaseUrl) ??
+          StaticApiConfig.loginSessionBaseUrlForDevMode(devMode),
+      ipsApiBaseUrl:
+          _nonBlank(ipsApiBaseUrl) ??
+          StaticApiConfig.ipsApiBaseUrlForDevMode(devMode),
       credentials:
           credentials ??
           AppCredentials(
             appId: resolvedAppId,
             appSecret: resolvedAppSecret,
           ),
+      devMode: devMode,
       accessToken: _nonBlank(accessToken),
-      neSession: _nonBlank(neSession) ?? StaticApiConfig.neSession,
+      neSession:
+          _nonBlank(neSession) ?? StaticApiConfig.neSessionForDevMode(devMode),
       defaultSrcFiCode:
-          _nonBlank(defaultSrcFiCode) ?? StaticApiConfig.defaultSrcFiCode,
-      defaultFiCode: _nonBlank(defaultFiCode) ?? StaticApiConfig.defaultFiCode,
+          _nonBlank(defaultSrcFiCode) ??
+          StaticApiConfig.defaultSrcFiCodeForDevMode(devMode),
+      defaultFiCode:
+          _nonBlank(defaultFiCode) ??
+          StaticApiConfig.defaultFiCodeForDevMode(devMode),
       language: _nonBlank(language) ?? StaticApiConfig.defaultLanguage,
       enableDebugLogs: enableDebugLogs ?? false,
     );

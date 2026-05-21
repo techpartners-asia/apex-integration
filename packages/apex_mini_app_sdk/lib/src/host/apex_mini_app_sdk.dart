@@ -17,6 +17,7 @@ class ApexMiniAppSdk extends StatefulWidget {
     super.key,
     required String token,
     required this.walletPaymentHandler,
+    bool devMode = false,
     String? baseUrl,
     String? techInvestXBaseUrl,
     String? loginSessionBaseUrl,
@@ -49,6 +50,7 @@ class ApexMiniAppSdk extends StatefulWidget {
     this.onError,
   }) : hostConfig = ApexMiniAppHostConfig(
          token: token,
+         devMode: devMode,
          baseUrl: baseUrl,
          techInvestXBaseUrl: techInvestXBaseUrl,
          loginSessionBaseUrl: loginSessionBaseUrl,
@@ -220,6 +222,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     ApexMiniAppHostConfig next,
   ) {
     return previous.token == next.token &&
+        previous.devMode == next.devMode &&
         previous.baseUrl == next.baseUrl &&
         previous.techInvestXBaseUrl == next.techInvestXBaseUrl &&
         previous.loginSessionBaseUrl == next.loginSessionBaseUrl &&

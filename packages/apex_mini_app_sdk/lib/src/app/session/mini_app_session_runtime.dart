@@ -33,6 +33,7 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
   MiniAppLogger logger = const DebugMiniAppLogger(),
   MiniAppUserDataSourceMode userDataSourceMode =
       MiniAppUserDataSourceMode.realUser,
+  bool devMode = false,
   String? baseUrl,
   String? techInvestXBaseUrl,
   String? loginSessionBaseUrl,
@@ -48,6 +49,7 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
   ApexMiniAppHostUser? hostUser,
   ApexMiniAppHostSession? hostSession,
 }) {
+  StaticApiConfig.configure(devMode: devMode);
   final UserEntityDto? initialCurrentUser = _hostUserToDto(hostUser);
   final LoginSession? initialLoginSession = _hostSessionToLoginSession(
     hostSession,
@@ -66,6 +68,7 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
       defaultFiCode: defaultFiCode,
       language: language,
       enableDebugLogs: enableDebugLogs,
+      devMode: devMode,
     ),
   );
   final MiniAppSessionStore store = MiniAppSessionStore(

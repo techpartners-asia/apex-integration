@@ -15,9 +15,7 @@ class LoginSessionBackendApi {
   });
 
   /// Calls the login-session endpoint and returns the raw JSON envelope.
-  Future<Map<String, Object?>> getLoginSessionRaw(
-    GetLoginSessionApiReq req,
-  ) async {
+  Future<Map<String, Object?>> getLoginSessionRaw(GetLoginSessionApiReq req) async {
     final ApiExecutor? executor = this.executor;
     if (executor == null || runtimeConfig.neSession == null) {
       throw const ApiIntegrationException(
@@ -46,9 +44,7 @@ class LoginSessionBackendApi {
   }
 
   /// Calls the login-session endpoint and parses it into a DTO.
-  Future<LoginSessionResponseDto> getLoginSession(
-    GetLoginSessionApiReq req,
-  ) async {
+  Future<LoginSessionResponseDto> getLoginSession(GetLoginSessionApiReq req) async {
     final Map<String, Object?> json = await getLoginSessionRaw(req);
     return LoginSessionResponseDto.fromJson(json);
   }

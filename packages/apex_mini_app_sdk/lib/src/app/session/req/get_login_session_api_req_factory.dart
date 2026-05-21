@@ -9,7 +9,7 @@ class GetLoginSessionApiReqFactory {
     required String admSession,
     required MiniAppUserDataSourceMode userDataSourceMode,
     UserEntityDto? user,
-    String fiCode = StaticApiConfig.defaultFiCode,
+    String? fiCode,
   }) {
     final ResolvedUserIdentity identity = ResolvedUserIdentity.resolve(
       mode: userDataSourceMode,
@@ -17,7 +17,7 @@ class GetLoginSessionApiReqFactory {
     );
 
     return GetLoginSessionApiReq(
-      fiCode: fiCode,
+      fiCode: fiCode ?? StaticApiConfig.defaultFiCode,
       admSession: admSession,
       registerNo: identity.registerNo,
       firstName: identity.firstName,

@@ -81,15 +81,12 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
 
   @override
   void prepareLaunch({String? userToken}) {
-    final bool tokenChanged =
-        _normalized(userToken) != _normalized(sessionStore.userToken);
+    final bool tokenChanged = _normalized(userToken) != _normalized(sessionStore.userToken);
     sessionStore.prepareLaunch(
       userToken: userToken,
       resetSession: tokenChanged,
     );
-    final String? adminSession = tokenChanged
-        ? null
-        : _normalizedAdminSession(sessionStore.currentUser);
+    final String? adminSession = tokenChanged ? null : _normalizedAdminSession(sessionStore.currentUser);
     currentUserTokenProvider.updateAccessToken(adminSession ?? userToken);
     if (tokenChanged) {
       protectedTokenProvider.updateAccessToken(null);
@@ -100,9 +97,7 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
 
   @override
   void cacheCurrentUser(UserEntityDto user) {
-    final String? adminSession =
-        _normalizedAdminSession(user) ??
-        _normalizedAdminSession(sessionStore.currentUser);
+    final String? adminSession = _normalizedAdminSession(user) ?? _normalizedAdminSession(sessionStore.currentUser);
     if (adminSession != null) {
       user.admSession = adminSession;
       currentUserTokenProvider.updateAccessToken(adminSession);
@@ -193,9 +188,7 @@ class DefaultMiniAppSessionController implements MiniAppSessionController {
   /// Loads the protected login session and updates protected token provider.
   Future<LoginSession> fetchLoginSession() async {
     final UserEntityDto user = await ensureCurrentUser();
-    final LoginSession session = await loginSessionRepository.getLoginSession(
-      user,
-    );
+    final LoginSession session = await loginSessionRepository.getLoginSession(user);
     protectedTokenProvider.updateAccessToken(session.accessToken);
     sessionStore.setLoginSession(session);
     if (kDebugMode) {

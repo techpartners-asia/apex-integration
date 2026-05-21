@@ -133,6 +133,7 @@ void main() {
       final MiniAppSdkConfig sdkConfig = MiniAppSdkConfig.fromHostConfig(
         hostConfig: const ApexMiniAppHostConfig(
           token: ' host-token ',
+          devMode: true,
           baseUrl: 'https://example.test',
           initialRoute: MiniAppRoutes.overview,
           session: ApexMiniAppHostSession(accessToken: 'session-token'),
@@ -152,6 +153,7 @@ void main() {
       );
 
       expect(sdkConfig.userToken, 'host-token');
+      expect(sdkConfig.devMode, isTrue);
       expect(sdkConfig.baseUrl, 'https://example.test');
       expect(sdkConfig.initialRoute, MiniAppRoutes.overview);
       expect(sdkConfig.hostSession?.accessToken, 'session-token');

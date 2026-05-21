@@ -220,13 +220,13 @@
   "ipsContractPackPricingUnavailable": "Сонгосон багцын үнийн мэдээлэл одоогоор байхгүй байна. Дахин оролдоно уу.",
   "ipsContractPreparingPayment": "Гэрээ, төлбөрийн хүсэлт, wallet төлбөрийг бэлтгэж байна.",
   "ipsPortfolioTitle": "Хөрөнгө оруулалтын багц",
-  "ipsPortfolioSubtitle": "IPS дансны тойм, эзэмшил, өгөөж, ашиг/алдагдал.",
+  "ipsPortfolioSubtitle": "IPS дансны тойм, багц, өгөөж, ашиг/алдагдал.",
   "ipsPortfolioAvailableBalance": "Боломжит үлдэгдэл",
   "ipsPortfolioInvestedBalance": "Хөрөнгө оруулсан үлдэгдэл",
   "ipsPortfolioProfitLoss": "Ашиг/Алдагдал",
   "ipsPortfolioYield": "Өгөөж",
   "ipsPortfolioHoldings": "Миний багц",
-  "ipsPortfolioNoHoldings": "Эзэмшлийн мэдээлэл алга.",
+  "ipsPortfolioNoHoldings": "Мэдээлэл алга.",
   "ipsPortfolioRecharge": "Цэнэглэх",
   "ipsPortfolioSellOrder": "Зарах захиалга",
   "ipsPortfolioOrderList": "Захиалгын жагсаалт",
@@ -237,7 +237,7 @@
   "ipsPortfolioHoldingValueLabel": "Одоогийн үнэлгээ",
   "ipsPortfolioHoldingValue": "Тоо ширхэг {quantity} • Үнэлгээ {value}",
   "@ipsPortfolioHoldingValue": {
-    "description": "Эзэмшлийн мөрийн товч мэдээлэл.",
+    "description": "Товч мэдээлэл.",
     "placeholders": {
       "quantity": {},
       "value": {}
@@ -335,7 +335,7 @@
   "ipsYieldSubtitle": "Хөрөнгө оруулалтын багцын өгөөжийн задаргаа.",
   "ipsYieldDetails": "Өгөөжийн дэлгэрэнгүй",
   "ipsProfitTitle": "Ашиг алдагдал",
-  "ipsProfitSubtitle": "IPS эзэмшлийн ашиг алдагдлын товч мэдээлэл.",
+  "ipsProfitSubtitle": "IPS багцын ашиг алдагдлын товч мэдээлэл.",
   "ipsProfitSummary": "Ашиг алдагдлын тойм",
   "ipsSuccessReqCreated": "Хүсэлт амжилттай үүслээ.",
   "ipsSuccessOrderCancelled": "Захиалгыг амжилттай цуцаллаа.",

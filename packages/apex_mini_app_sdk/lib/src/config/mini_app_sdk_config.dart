@@ -33,6 +33,9 @@ class MiniAppSdkConfig {
   /// Logger used by runtime and navigation diagnostics.
   final MiniAppLogger logger;
 
+  /// Whether built-in backend defaults should target development services.
+  final bool devMode;
+
   /// Session source selection for real-user vs contract-user flows.
   final MiniAppUserDataSourceMode userDataSourceMode;
 
@@ -101,6 +104,7 @@ class MiniAppSdkConfig {
     required this.walletPaymentHandler,
     this.paymentTimeout = defaultPaymentTimeout,
     this.logger = const DebugMiniAppLogger(),
+    this.devMode = false,
     this.userDataSourceMode = MiniAppUserDataSourceMode.realUser,
     this.initialRoute = MiniAppRoutes.investX,
     this.initialArguments,
@@ -131,6 +135,7 @@ class MiniAppSdkConfig {
     MiniAppWalletPaymentHandler? walletPaymentHandler,
     Duration? paymentTimeout,
     MiniAppLogger? logger,
+    bool? devMode,
     MiniAppUserDataSourceMode? userDataSourceMode,
     String? initialRoute,
     Object? initialArguments,
@@ -156,6 +161,7 @@ class MiniAppSdkConfig {
       walletPaymentHandler: walletPaymentHandler ?? this.walletPaymentHandler,
       paymentTimeout: paymentTimeout ?? this.paymentTimeout,
       logger: logger ?? this.logger,
+      devMode: devMode ?? this.devMode,
       userDataSourceMode: userDataSourceMode ?? this.userDataSourceMode,
       initialRoute: initialRoute ?? this.initialRoute,
       initialArguments: initialArguments ?? this.initialArguments,
@@ -193,6 +199,7 @@ class MiniAppSdkConfig {
       walletPaymentHandler: walletPaymentHandler,
       paymentTimeout: paymentTimeout,
       logger: logger,
+      devMode: hostConfig.devMode,
       userDataSourceMode: userDataSourceMode,
       initialRoute: hostConfig.normalizedInitialRoute,
       initialArguments: hostConfig.initialArguments,

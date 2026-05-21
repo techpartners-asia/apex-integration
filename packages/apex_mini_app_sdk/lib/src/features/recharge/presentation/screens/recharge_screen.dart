@@ -36,16 +36,30 @@ class _RechargeScreenState extends State<RechargeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IpsRechargeCubit, IpsRechargeState>(
+    return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
+      listenWhen: (IpsRechargeState previous, IpsRechargeState current) =>
+          (previous.paymentRes != current.paymentRes &&
+              current.paymentRes != null) ||
+          (previous.errorMessage != current.errorMessage &&
+              (current.errorMessage?.trim().isNotEmpty ?? false)),
+      listener: (BuildContext context, IpsRechargeState state) {
+        if (state.paymentRes != null) {
+          if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
+            MiniAppToast.showSuccess(
+              context,
+              message: context.l10n.commonSuccess,
+            );
+          }
+          return;
+        }
+
+        final String? message = state.errorMessage?.trim();
+        if (message != null && message.isNotEmpty) {
+          MiniAppToast.showError(context, message: message);
+        }
+      },
       builder: (BuildContext context, IpsRechargeState state) {
         final l10n = context.l10n;
-
-        if (state.errorMessage.isNotNullOrEmpty) {
-          MiniAppToast.showSuccess(
-            context,
-            message: state.errorMessage ?? context.l10n.errorsGenericTitle,
-          );
-        }
 
         if (state.paymentRes != null) {
           return _RechargeResultView(state: state);

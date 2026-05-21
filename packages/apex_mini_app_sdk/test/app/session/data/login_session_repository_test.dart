@@ -1,8 +1,7 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
-const _runtimeConfig = SdkRuntimeConfig(
+final _runtimeConfig = SdkRuntimeConfig(
   loginSessionBaseUrl: 'https://example.com',
   ipsApiBaseUrl: 'https://example.com',
   credentials: AppCredentials(appId: 'app-id', appSecret: 'app-secret'),
