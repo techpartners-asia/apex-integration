@@ -135,6 +135,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   : data.hasIpsAcnt
                   ? OverviewDashboardHomeTab(
                       bootstrapState: data,
+                      hasValidIpsBalance: viewData?.hasValidIpsBalance ?? false,
                       portfolioOverview: viewData?.portfolioOverview,
                       yieldProfitHoldings:
                           viewData?.yieldProfitHoldings ??

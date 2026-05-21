@@ -15,10 +15,14 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
   /// Withdraw action, currently disabled in the UI.
   final VoidCallback? onWithdraw;
 
+  /// Whether total investment and return labels should render.
+  final bool showFinancialSummary;
+
   /// Creates the dashboard summary card.
   const OverviewDashboardSummaryCard({
     super.key,
     required this.metrics,
+    this.showFinancialSummary = true,
     this.onRecharge,
     this.onStatements,
     this.onWithdraw,
@@ -52,20 +56,22 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                       variant: MiniAppTextVariant.h8,
                       color: DesignTokens.ink,
                     ),
-                    SizedBox(height: responsive.dp(10)),
-                    CustomText(
-                      metrics.totalInvestmentLabel,
-                      variant: MiniAppTextVariant.h7,
-                      color: DesignTokens.rose,
-                    ),
-                    SizedBox(height: responsive.dp(8)),
-                    CustomText(
-                      l10n.ipsOverviewDashboardProfitMessage(
-                        metrics.profitLabel,
+                    if (showFinancialSummary) ...<Widget>[
+                      SizedBox(height: responsive.dp(10)),
+                      CustomText(
+                        metrics.totalInvestmentLabel,
+                        variant: MiniAppTextVariant.h7,
+                        color: DesignTokens.rose,
                       ),
-                      variant: MiniAppTextVariant.body2,
-                      color: metrics.profitTone,
-                    ),
+                      SizedBox(height: responsive.dp(8)),
+                      CustomText(
+                        l10n.ipsOverviewDashboardProfitMessage(
+                          metrics.profitLabel,
+                        ),
+                        variant: MiniAppTextVariant.body2,
+                        color: metrics.profitTone,
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -78,12 +84,14 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                     width: responsive.dp(50),
                     height: responsive.dp(50),
                   ),
-                  SizedBox(height: responsive.dp(10)),
-                  CustomText(
-                    metrics.profitPercentLabel,
-                    variant: MiniAppTextVariant.body2,
-                    color: metrics.profitTone,
-                  ),
+                  if (showFinancialSummary) ...<Widget>[
+                    SizedBox(height: responsive.dp(10)),
+                    CustomText(
+                      metrics.profitPercentLabel,
+                      variant: MiniAppTextVariant.body2,
+                      color: metrics.profitTone,
+                    ),
+                  ],
                 ],
               ),
             ],

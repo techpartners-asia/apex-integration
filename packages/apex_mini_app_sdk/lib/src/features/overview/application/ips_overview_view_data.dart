@@ -37,4 +37,29 @@ class IpsOverviewViewData {
     this.isDashboardDataReady = true,
     this.dashboardLoadFailed = false,
   });
+
+  /// Whether `getIpsBalance` completed and returned a non-zero investment
+  /// balance. Dashboard investment breakdown widgets should render only when
+  /// this is true.
+  bool get hasValidIpsBalance =>
+      isDashboardDataReady &&
+      !dashboardLoadFailed &&
+      _hasNonZeroInvestmentBalance(portfolioOverview);
+
+  static bool _hasNonZeroInvestmentBalance(PortfolioOverview? overview) {
+    if (overview == null) {
+      return false;
+    }
+
+    final double stockBondTotal =
+        (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0);
+
+    return _isPositive(overview.investedBalance) ||
+        _isPositive(stockBondTotal) ||
+        _isPositive(overview.packAmount);
+  }
+
+  static bool _isPositive(double? value) {
+    return value != null && value.isFinite && value > 0;
+  }
 }

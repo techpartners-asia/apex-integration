@@ -37,10 +37,10 @@ class StaticApiConfig {
   static const String productionTechInvestXUrl = 'https://api.admin.investx.mn';
 
   /// Production login-session API base URL.
-  static const String productionLoginSessionBaseUrl = 'https://customer.mostmoney.mn:9094';
+  static const String productionLoginSessionBaseUrl = 'https://api.admin.investx.mn/miniapp-prod'; // 'https://customer.mostmoney.mn:9094';
 
   /// Production IPS API base URL.
-  static const String productionIpsApiBaseUrl = 'https://customer.mostmoney.mn:9094';
+  static const String productionIpsApiBaseUrl = 'https://api.admin.investx.mn/miniapp-prod'; // 'https://customer.mostmoney.mn:9094';
 
   /// Production app id.
   static const String productionAppId = '114';

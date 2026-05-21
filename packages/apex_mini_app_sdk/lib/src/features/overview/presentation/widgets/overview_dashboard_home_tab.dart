@@ -9,6 +9,9 @@ class OverviewDashboardHomeTab extends StatelessWidget {
   /// Portfolio overview values.
   final PortfolioOverview? portfolioOverview;
 
+  /// Whether `getIpsBalance` loaded successfully with a non-zero balance.
+  final bool hasValidIpsBalance;
+
   /// Holdings used to derive yield/profit metrics.
   final List<PortfolioHolding> yieldProfitHoldings;
 
@@ -38,6 +41,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
     super.key,
     required this.bootstrapState,
     required this.user,
+    this.hasValidIpsBalance = false,
     this.portfolioOverview,
     this.yieldProfitHoldings = const <PortfolioHolding>[],
     this.stockYieldDetails = const <PortfolioHolding>[],
@@ -59,22 +63,23 @@ class OverviewDashboardHomeTab extends StatelessWidget {
       stockYieldDetails: stockYieldDetails,
       user: user,
     );
-    final bool shouldRenderPackageBlocks = metrics.shouldRenderPackageBlocks;
+    final bool showFinancialData = hasValidIpsBalance;
 
     final Widget scrollView = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        if (shouldRenderPackageBlocks) ...<Widget>[
-          /// Dashboard summary card
-          OverviewDashboardSummaryCard(
-            metrics: metrics,
-            onRecharge: onRecharge,
-            onStatements: onStatements,
-            onWithdraw: onWithdraw,
-          ),
-          SizedBox(height: responsive.dp(14)),
+        /// Dashboard summary card
+        OverviewDashboardSummaryCard(
+          metrics: metrics,
+          showFinancialSummary: showFinancialData,
+          onRecharge: onRecharge,
+          onStatements: onStatements,
+          onWithdraw: onWithdraw,
+        ),
+        SizedBox(height: responsive.dp(14)),
 
-          /// Dashboard yield card
+        if (showFinancialData) ...<Widget>[
+          /// Dashboard asset breakdown card
           AllocationSummaryCard(
             variant: AllocationSummaryCardVariant.dashboard,
             data: _buildAllocationSummaryData(context, metrics),
@@ -83,7 +88,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
           ),
           SizedBox(height: responsive.dp(14)),
 
-          /// Dashboard reminder card
+          /// Dashboard reminder card.
           ReminderCard(
             title: context.l10n.ipsOverviewDashboardReminderTitle,
             message: context.l10n.ipsOverviewDashboardReminderBody,
@@ -92,8 +97,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
 
           /// Dashboard goal card
           OverviewDashboardGoalCard(metrics: metrics),
-        ] else
-          const SizedBox.shrink(),
+        ],
         // SizedBox(height: responsive.dp(14)),
         //
         // /// Dashboard reward card

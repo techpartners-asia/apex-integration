@@ -162,7 +162,7 @@ class GetSecAcntListAccountDto {
       balance: ApiParser.asNullableDouble(json['balance']),
       symbol: ApiParser.asNullableString(json['symbol']),
       flag: ApiParser.asNullableInt(json['flag']),
-      status: 1, // ApiParser.asNullableInt(json['status']),
+      status: ApiParser.asNullableInt(json['status']),
       prefix: ApiParser.asNullableString(json['prefix']),
       activeMoney: ApiParser.asNullableDouble(json['activeMoney']),
       availableBalance: ApiParser.asNullableDouble(json['availableBalance']),

@@ -92,6 +92,94 @@ void main() {
   );
 
   testWidgets(
+    'hides dashboard financial widgets when getIpsBalance fails',
+    (WidgetTester tester) async {
+      final _TestIpsOverviewCubit cubit = _TestIpsOverviewCubit(
+        LoadableState<IpsOverviewViewData>(
+          status: LoadableStatus.success,
+          data: IpsOverviewViewData(
+            bootstrapState: _openIpsBootstrapState(),
+            isDashboardDataReady: true,
+            dashboardLoadFailed: true,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(_buildOverviewTestApp(cubit));
+      await tester.pumpAndSettle();
+
+      final OverviewDashboardSummaryCard summary = tester.widget(
+        find.byType(OverviewDashboardSummaryCard),
+      );
+      expect(summary.showFinancialSummary, isFalse);
+      expect(find.byType(AllocationSummaryCard), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'hides dashboard financial widgets when getIpsBalance balance is zero',
+    (WidgetTester tester) async {
+      final _TestIpsOverviewCubit cubit = _TestIpsOverviewCubit(
+        LoadableState<IpsOverviewViewData>(
+          status: LoadableStatus.success,
+          data: IpsOverviewViewData(
+            bootstrapState: _openIpsBootstrapState(),
+            portfolioOverview: const PortfolioOverview(
+              currency: 'MNT',
+              investedBalance: 0,
+              stockTotal: 0,
+              bondTotal: 0,
+              packAmount: 0,
+            ),
+            isDashboardDataReady: true,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(_buildOverviewTestApp(cubit));
+      await tester.pumpAndSettle();
+
+      final OverviewDashboardSummaryCard summary = tester.widget(
+        find.byType(OverviewDashboardSummaryCard),
+      );
+      expect(summary.showFinancialSummary, isFalse);
+      expect(find.byType(AllocationSummaryCard), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'shows dashboard financial widgets when getIpsBalance balance is non-zero',
+    (WidgetTester tester) async {
+      final _TestIpsOverviewCubit cubit = _TestIpsOverviewCubit(
+        LoadableState<IpsOverviewViewData>(
+          status: LoadableStatus.success,
+          data: IpsOverviewViewData(
+            bootstrapState: _openIpsBootstrapState(),
+            portfolioOverview: const PortfolioOverview(
+              currency: 'MNT',
+              investedBalance: 600000,
+              stockTotal: 500000,
+              bondTotal: 100000,
+              profitOrLoss: 120000,
+              profitPercent: 20,
+            ),
+            isDashboardDataReady: true,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(_buildOverviewTestApp(cubit));
+      await tester.pumpAndSettle();
+
+      final OverviewDashboardSummaryCard summary = tester.widget(
+        find.byType(OverviewDashboardSummaryCard),
+      );
+      expect(summary.showFinancialSummary, isTrue);
+      expect(find.byType(AllocationSummaryCard), findsOneWidget);
+    },
+  );
+
+  testWidgets(
     'enables trading nav action when the user has an active package',
     (
       WidgetTester tester,
