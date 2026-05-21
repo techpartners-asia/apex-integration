@@ -56,28 +56,13 @@ class _ApiDebugLogInterceptor extends Interceptor {
   /// Max debug-print chunk size to avoid truncation by the console.
   static const int _chunkSize = 800;
 
-  /// Header/body keys that must be redacted from debug logs.
-  static const Set<String> _sensitiveKeys = <String>{
-    'authorization',
-    'cookie',
-    'set-cookie',
-    'access_token',
-    'refresh_token',
-    'token',
-    'password',
-    'adm_session',
-    'session',
-    'x-auth-token',
-    'x-access-token',
-  };
-
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     _printBlock(' ----- [API REQ] ----- ', <String>[
       '${options.method.toUpperCase()} ${options.uri}',
       // 'ContentType: ${options.contentType ?? options.headers['Content-Type'] ?? '-'}',
       // 'DataType: ${options.data.runtimeType}',
-      'Headers: ${_formatValue(options.headers)}',
+      // 'Headers: ${_formatValue(options.headers)}',
       // 'Query: ${_formatValue(options.queryParameters)}',
       'Body: ${_formatValue(options.data)}',
     ]);
@@ -185,21 +170,6 @@ class _ApiDebugLogInterceptor extends Interceptor {
     }
 
     return value;
-  }
-
-  /// Returns true when a key likely contains credentials or session material.
-  bool _isSensitiveKey(String? key) {
-    final String normalized = key?.trim().toLowerCase() ?? '';
-    if (normalized.isEmpty) {
-      return false;
-    }
-
-    return _sensitiveKeys.contains(normalized) ||
-        normalized.contains('authorization') ||
-        normalized.contains('token') ||
-        normalized.contains('cookie') ||
-        normalized.contains('password') ||
-        normalized.contains('session');
   }
 }
 

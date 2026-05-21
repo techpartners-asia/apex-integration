@@ -2,8 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Function used by internals to ask the host shell to close safely.
-typedef ApexMiniAppSafeCloseHook =
-    Future<void> Function(BuildContext? context, Object? result);
+typedef ApexMiniAppSafeCloseHook = Future<void> Function(BuildContext? context, Object? result);
 
 /// Process-wide bridge from SDK internals back to the active host widget.
 ///
