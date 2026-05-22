@@ -1,7 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 void main() {
   group('resolveSecAcntFlowSteps', () {
     test('uses short flow for users with main account and no IPS account', () {
@@ -37,7 +36,7 @@ void main() {
       },
     );
 
-    test('returns no steps when account-opening request is already pending', () {
+    test('continues flow when account-opening request is already pending', () {
       expect(
         resolveSecAcntFlowSteps(
           _bootstrapState(
@@ -46,22 +45,32 @@ void main() {
             secAcntStatusCode: 0,
           ),
         ),
-        isEmpty,
+        const <SecAcntFlowStep>[
+          SecAcntFlowStep.consent,
+          SecAcntFlowStep.personalInformation,
+          SecAcntFlowStep.secAgreement,
+          SecAcntFlowStep.signature,
+          SecAcntFlowStep.payment,
+          SecAcntFlowStep.calculation,
+        ],
       );
     });
 
-    test('returns null initial step for pending account-opening request', () {
-      expect(
-        resolveInitialSecAcntFlowStep(
-          _bootstrapState(
-            hasAcnt: true,
-            hasIpsAcnt: true,
-            secAcntStatusCode: 0,
+    test(
+      'returns consent initial step for pending account-opening request',
+      () {
+        expect(
+          resolveInitialSecAcntFlowStep(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: 0,
+            ),
           ),
-        ),
-        isNull,
-      );
-    });
+          SecAcntFlowStep.consent,
+        );
+      },
+    );
 
     test('skips personal information when profile fields are complete', () {
       expect(

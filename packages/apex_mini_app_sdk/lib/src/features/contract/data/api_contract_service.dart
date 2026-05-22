@@ -34,17 +34,16 @@ class ApiContractService implements ContractService {
     // }
 
     await session.ensureLoginSession();
-    final FiBomInstDto fiBomInst = await fiBomInstRepository
-        .getDefaultFiBomInst();
+
+    UserEntityDto a = await session.ensureCurrentUser();
+    final FiBomInstDto fiBomInst = await fiBomInstRepository.getDefaultFiBomInst();
 
     final ContractResDto contractRes = await api.addBkrCustContract(
       AddBkrCustContractApiReq(
         srcFiCode: runtime.defaultSrcFiCode,
         bankCode: fiBomInst.fiCode,
-        bankAcntCode: '55855555555',
-        // contract.bankAcntCode!,
-        bankAcntName: 'sadf',
-        // contract.bankAcntName!,
+        bankAcntCode: a.account?.acntCode ?? '',
+        bankAcntName: '',
         verfType: IpsDefaults.contractVerificationType,
       ),
     );

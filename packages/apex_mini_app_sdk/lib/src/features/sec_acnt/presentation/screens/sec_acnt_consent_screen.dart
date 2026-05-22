@@ -57,9 +57,7 @@ class SecAcntConsentScreen extends StatelessWidget {
     }
 
     if (nextStep == null) {
-      if (hasPendingSecAcntOpeningRequest(bootstrapState)) {
-        await showPendingSecAcntOpeningRequestDialog(context);
-      }
+      await routeAfterSecAcntFlow(context, bootstrapState);
       return;
     }
 

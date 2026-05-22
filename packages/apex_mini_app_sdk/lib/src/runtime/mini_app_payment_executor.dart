@@ -152,38 +152,40 @@ class MiniAppPaymentExecutor {
       return result;
     }
 
-    try {
-      await appApi.getPaymentCallback(uuid: invoice.uuid ?? '');
-      return result;
-    } catch (error, stackTrace) {
-      logger.onError(
-        'payment_callback_failed_after_wallet_success',
-        error: error,
-        stackTrace: stackTrace,
-        data: <String, Object?>{
-          'invoiceId': request.invoiceId,
-          'flow': request.flow.name,
-        },
-      );
+    return result;
 
-      final String? backendMessage = switch (error) {
-        ApiException(:final String message) when message.trim().isNotEmpty =>
-          message.trim(),
-        _ => null,
-      };
-
-      return _attachPaymentContext(
-        MiniAppPaymentRes.failed(
-          message: backendMessage,
-          failure: MiniAppFailure(
-            code: 'payment_callback_failed',
-            message: backendMessage ?? 'payment_callback_failed',
-          ),
-          req: request,
-        ),
-        request: request,
-      );
-    }
+    // try {
+    //   await appApi.getPaymentCallback(uuid: invoice.uuid ?? '');
+    //   return result;
+    // } catch (error, stackTrace) {
+    //   logger.onError(
+    //     'payment_callback_failed_after_wallet_success',
+    //     error: error,
+    //     stackTrace: stackTrace,
+    //     data: <String, Object?>{
+    //       'invoiceId': request.invoiceId,
+    //       'flow': request.flow.name,
+    //     },
+    //   );
+    //
+    //   final String? backendMessage = switch (error) {
+    //     ApiException(:final String message) when message.trim().isNotEmpty =>
+    //       message.trim(),
+    //     _ => null,
+    //   };
+    //
+    //   return _attachPaymentContext(
+    //     MiniAppPaymentRes.failed(
+    //       message: backendMessage,
+    //       failure: MiniAppFailure(
+    //         code: 'payment_callback_failed',
+    //         message: backendMessage ?? 'payment_callback_failed',
+    //       ),
+    //       req: request,
+    //     ),
+    //     request: request,
+    //   );
+    // }
   }
 
   /// Ensures every host result carries the original SDK payment request.

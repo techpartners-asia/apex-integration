@@ -90,7 +90,9 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
       steps: <OverviewVerificationStep>[
         OverviewVerificationStep(
           title: l10n.ipsOverviewProfileMenuPersonalInfo,
-          subtitle: contractPaid ? l10n.ipsOverviewProfileVerified : l10n.ipsOverviewProfilePersonalInfoMissing,
+          subtitle: contractPaid
+              ? l10n.ipsOverviewProfileVerified
+              : l10n.ipsOverviewProfilePersonalInfoMissing,
           status: contractPaid ? StepStatus.completed : StepStatus.active,
           onTap: contractPaid
               ? null
@@ -106,7 +108,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           onTap: contractPaid
               ? () => launchIpsRoute(
                   context,
-                  route: MiniAppRoutes.secAcnt,
+                  route: MiniAppRoutes.questionnaire,
                   arguments: state,
                 )
               : null,
@@ -118,16 +120,20 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           isLast: true,
         ),
       ],
-      promoEyebrow: contractPaid ? l10n.ipsOverviewActionTitle : l10n.ipsOverviewProfileMenuPackInfo,
-      promoTitle: contractPaid ? l10n.ipsAcntOpenAcnt : l10n.ipsOverviewFirstPackTitle,
+      promoEyebrow: contractPaid
+          ? l10n.ipsOverviewActionTitle
+          : l10n.ipsOverviewProfileMenuPackInfo,
+      promoTitle: contractPaid
+          ? l10n.ipsAcntOpenAcnt
+          : l10n.ipsOverviewFirstPackTitle,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () async => (contractPaid && !state.hasAcnt)
-          ? await showPendingSecAcntOpeningRequestDialog(context)
-          : launchIpsRoute(
-              context,
-              route: contractPaid ? MiniAppRoutes.secAcnt : MiniAppRoutes.personalInfo,
-              arguments: contractPaid ? state : null,
-            ),
+      onPromoTap: () => launchIpsRoute(
+        context,
+        route: contractPaid
+            ? MiniAppRoutes.questionnaire
+            : MiniAppRoutes.personalInfo,
+        arguments: contractPaid ? state : null,
+      ),
     );
   }
 
@@ -147,7 +153,11 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           title: l10n.ipsAcntVerifyAcnt,
           subtitle: l10n.ipsAcntFlowBody,
           status: StepStatus.active,
-          onTap: !state.hasAcnt ? () async => await showPendingSecAcntOpeningRequestDialog(context) : () => launchIpsRoute(context, route: MiniAppRoutes.secAcnt),
+          onTap: () => launchIpsRoute(
+            context,
+            route: MiniAppRoutes.questionnaire,
+            arguments: state,
+          ),
         ),
         OverviewVerificationStep(
           title: l10n.ipsOverviewFinalStepLabel,
@@ -159,13 +169,11 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
       promoEyebrow: l10n.ipsOverviewActionTitle,
       promoTitle: l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () async => !state.hasAcnt
-          ? await showPendingSecAcntOpeningRequestDialog(context)
-          : launchIpsRoute(
-              context,
-              route: MiniAppRoutes.secAcnt,
-              arguments: state,
-            ),
+      onPromoTap: () => launchIpsRoute(
+        context,
+        route: MiniAppRoutes.questionnaire,
+        arguments: state,
+      ),
     );
   }
 
@@ -189,13 +197,15 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
         title: l10n.ipsQuestionnaireTitle,
         subtitle: l10n.ipsQuestionnaireSubtitle,
         status: StepStatus.active,
-        onTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+        onTap: () =>
+            launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
         isLast: true,
       ),
     ],
     promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
     promoTitle: l10n.ipsHomeRecommendedPackCta,
     promoButtonLabel: l10n.commonContinue,
-    onPromoTap: () => launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+    onPromoTap: () =>
+        launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
   );
 }

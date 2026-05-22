@@ -5,9 +5,6 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Cubit for broker contract setup and investment-pack purchase.
 class IpsContractCubit extends Cubit<IpsContractState> {
-  static const int _accountLoadAttempts = 5;
-  static const Duration _accountLoadDelay = Duration(seconds: 1);
-
   /// Contract API service.
   final ContractService contractService;
 
@@ -54,7 +51,8 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     try {
       final ContractRes contractRes =
           state.contractRes ?? await contractService.addBrokerCustContract();
-      final AcntBootstrapState bootstrapState = await _waitForIpsAccounts();
+      final AcntBootstrapState bootstrapState = await bootstrapService
+          .getSecAcntListState(forceRefresh: true);
       final PortfolioOverview overview = await portfolioService.getIpsBalance(
         context: const PortfolioContextResolver().resolve(
           bootstrapState: bootstrapState,
@@ -80,22 +78,6 @@ class IpsContractCubit extends Cubit<IpsContractState> {
         ),
       );
     }
-  }
-
-  Future<AcntBootstrapState> _waitForIpsAccounts() async {
-    for (int attempt = 0; attempt < _accountLoadAttempts; attempt += 1) {
-      final AcntBootstrapState currentState = await bootstrapService
-          .getSecAcntListState(forceRefresh: true);
-      if (currentState.hasRequiredIpsAccounts) {
-        return currentState;
-      }
-
-      if (attempt < _accountLoadAttempts - 1) {
-        await Future<void>.delayed(_accountLoadDelay);
-      }
-    }
-
-    throw StateError(l10n.ipsContractIpsAccountsMissing);
   }
 
   /// Appends a quantity digit from the custom keypad.

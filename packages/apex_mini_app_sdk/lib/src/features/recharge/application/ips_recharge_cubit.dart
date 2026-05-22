@@ -115,23 +115,24 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
     );
 
     try {
-      final RechargeReq req = RechargeReq(
-        packQty: state.packQty,
-        amount: state.totalPayable,
-      );
-      await service.chargeIpsAcnt(req);
-
       final paymentRes = await paymentExecutor.execute(
         flow: MiniAppPaymentFlow.ipsRecharge,
         invoiceRequest: CreateInvoiceApiReq(
-          amount: req.amount!.toInt(),
+          amount: state.totalPayable.toInt(),
           note: 'ips_recharge',
           isTransaction: true,
         ),
       );
 
-      final PortfolioOverview? refreshedOverview =
-          await _refreshBalanceAfterSuccess();
+      if (paymentRes.status == MiniAppPaymentStatus.success) {
+        final RechargeReq req = RechargeReq(
+          packQty: state.packQty,
+          amount: state.totalPayable,
+        );
+        await service.chargeIpsAcnt(req);
+      }
+
+      final PortfolioOverview? refreshedOverview = await _refreshBalanceAfterSuccess();
 
       emit(
         state.copyWith(

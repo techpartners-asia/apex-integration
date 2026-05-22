@@ -19,12 +19,9 @@ class MiniAppFailure {
   /// Trims and validates a failure code.
   static String normalizeCode(String value) {
     final String normalized = value.trim();
+
     if (normalized.isEmpty) {
-      throw ArgumentError.value(
-        value,
-        'code',
-        'MiniAppFailure.code must not be empty.',
-      );
+      throw ArgumentError.value(value, 'code', 'MiniAppFailure.code must not be empty.');
     }
 
     return normalized;

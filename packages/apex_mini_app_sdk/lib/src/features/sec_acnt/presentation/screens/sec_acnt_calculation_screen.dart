@@ -12,6 +12,9 @@ class SecAcntCalculationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final bool opensQuestionnaire = shouldOpenQuestionnaireAfterSecAcntFlow(
+      bootstrapState,
+    );
     final SecAcntWizardHeaderData header = buildSecAcntHeader(
       context,
       SecAcntFlowStep.calculation,
@@ -41,7 +44,9 @@ class SecAcntCalculationScreen extends StatelessWidget {
           message: context.l10n.secAcntCalculationPendingMessage,
         ),
         bottomNavigationBar: SecAcntWizardFooter(
-          buttonLabel: context.l10n.commonGoHome,
+          buttonLabel: opensQuestionnaire
+              ? context.l10n.commonContinue
+              : context.l10n.commonGoHome,
           onPressed: () => routeAfterSecAcntFlow(context, bootstrapState),
           enabled: true,
         ),
