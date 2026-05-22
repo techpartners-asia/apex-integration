@@ -42,8 +42,8 @@ class ApiContractService implements ContractService {
       AddBkrCustContractApiReq(
         srcFiCode: runtime.defaultSrcFiCode,
         bankCode: fiBomInst.fiCode,
-        bankAcntCode: a.account?.acntCode ?? '',
-        bankAcntName: '',
+        bankAcntCode: a.bank?.accountNumber ?? '',
+        bankAcntName: a.bank?.accountName ?? '',
         verfType: IpsDefaults.contractVerificationType,
       ),
     );
