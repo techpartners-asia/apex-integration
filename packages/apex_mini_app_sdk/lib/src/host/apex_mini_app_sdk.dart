@@ -265,6 +265,10 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
           callbacks: _callbacks,
         ),
       );
+      ApexMiniAppHostContext.bind(
+        nextCallbacks: _callbacks,
+        safeClose: _closeMiniAppSafely,
+      );
     } catch (error, stackTrace) {
       _sdk = null;
       _initializationError = error;
@@ -336,7 +340,13 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
 
     _isClosingMiniApp = true;
     try {
-      await _dismissAllMiniAppOverlays(context);
+      if (context != null && context.mounted) {
+        await _showCloseErrorDialog(context);
+      }
+
+      await _dismissAllMiniAppOverlays(
+        context != null && context.mounted ? context : null,
+      );
     } catch (error, stackTrace) {
       debugPrint('Failed to dismiss mini app overlays: $error');
       debugPrintStack(stackTrace: stackTrace);
@@ -358,13 +368,54 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     }
   }
 
+  /// Shows the mini-app-owned close error dialog before the host close callback.
+  Future<void> _showCloseErrorDialog(BuildContext context) async {
+    final SdkLocalizations l10n = context.l10n;
+    await showMiniAppDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      title: l10n.errorsGenericTitle,
+      body: CustomText(
+        l10n.errorsUnexpected,
+        variant: MiniAppTextVariant.body2,
+      ),
+      actions: <Widget>[
+        Builder(
+          builder: (BuildContext buttonContext) => FilledButton(
+            onPressed: () => Navigator.of(buttonContext).pop(),
+            child: CustomText(
+              l10n.commonClose,
+              variant: MiniAppTextVariant.buttonMedium,
+              color: Theme.of(buttonContext).colorScheme.onPrimary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   /// Dismisses SDK-owned transient UI so dialogs do not remain over the host.
   Future<void> _dismissAllMiniAppOverlays(BuildContext? context) async {
     MiniAppToast.hide();
     final Set<ScaffoldMessengerState> messengers =
         _resolveMiniAppScaffoldMessengers(context);
+    final NavigatorState? contextNavigator = context != null && context.mounted
+        ? Navigator.maybeOf(context)
+        : null;
+    final NavigatorState? contextRootNavigator =
+        context != null && context.mounted
+        ? Navigator.maybeOf(context, rootNavigator: true)
+        : null;
+    final NavigatorState? rootNavigator = _navigatorKey.currentState;
     _clearMiniAppScaffoldMessengers(messengers);
-    await _dismissMiniAppNavigatorRoutes();
+    await _dismissMiniAppNavigatorRoutes(contextNavigator);
+    if (!identical(contextRootNavigator, contextNavigator)) {
+      await _dismissMiniAppNavigatorRoutes(contextRootNavigator);
+    }
+    if (!identical(rootNavigator, contextNavigator) &&
+        !identical(rootNavigator, contextRootNavigator)) {
+      await _dismissMiniAppNavigatorRoutes(rootNavigator);
+    }
     _clearMiniAppScaffoldMessengers(messengers);
   }
 
@@ -408,8 +459,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   }
 
   /// Pops mini-app navigator routes such as dialogs, sheets, and pushed pages.
-  Future<void> _dismissMiniAppNavigatorRoutes() async {
-    final NavigatorState? navigator = _navigatorKey.currentState;
+  Future<void> _dismissMiniAppNavigatorRoutes(NavigatorState? navigator) async {
     if (navigator == null || !navigator.mounted) {
       return;
     }
