@@ -137,7 +137,7 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
           showBackButton: header.showBack,
           showCloseButton: header.showClose,
           onBack: _handleBack,
-          onClose: () => closeSecAcntFlow(context),
+          onDismiss: () => closeSecAcntFlow(context),
           hasSafeArea: false,
           backgroundColor: DesignTokens.softSurface,
           appBarBackgroundColor: DesignTokens.softSurface,

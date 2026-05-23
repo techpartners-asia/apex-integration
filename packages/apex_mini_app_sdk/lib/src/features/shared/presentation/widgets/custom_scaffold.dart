@@ -80,8 +80,8 @@ class CustomScaffold extends StatelessWidget {
   /// Optional back action override.
   final VoidCallback? onBack;
 
-  /// Optional close action override.
-  final VoidCallback? onClose;
+  /// Optional dismiss action override.
+  final VoidCallback? onDismiss;
 
   /// Optional clear action.
   final VoidCallback? onClear;
@@ -124,7 +124,7 @@ class CustomScaffold extends StatelessWidget {
     this.appBarBackgroundColor = DesignTokens.softSurface,
     this.appBarShowBottomBorder = false,
     this.onBack,
-    this.onClose,
+    this.onDismiss,
     this.onClear,
     this.hasSafeArea = true,
     this.floatingActionButton,
@@ -164,7 +164,7 @@ class CustomScaffold extends StatelessWidget {
                       backgroundColor: appBarBackgroundColor,
                       showBottomBorder: appBarShowBottomBorder,
                       onBack: onBack,
-                      onClose: onClose,
+                      onDismiss: onDismiss,
                       onClear: onClear,
                     )
               : null;

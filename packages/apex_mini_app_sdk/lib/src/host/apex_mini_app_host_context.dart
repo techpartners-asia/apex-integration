@@ -1,14 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-/// Function used by internals to ask the host shell to close safely.
-typedef ApexMiniAppSafeCloseHook = Future<void> Function(BuildContext? context, Object? result);
+/// Function used by internals to leave the current mini-app surface safely.
+typedef ApexMiniAppSafeCloseHook = Future<void> Function(BuildContext? context);
 
 /// Process-wide bridge from SDK internals back to the active host widget.
 ///
-/// The mini app has several feature layers that cannot receive host callbacks
-/// through constructors. This context stores the currently active callback
-/// bundle, controller, and safe-close hook while `ApexMiniAppSdk` is mounted.
+/// The mini app has several feature layers that cannot receive runtime
+/// dependencies through constructors. This context stores the currently active
+/// callback bundle, controller, and safe-close hook while `ApexMiniAppSdk` is
+/// mounted.
 class ApexMiniAppHostContext {
   ApexMiniAppHostContext._();
 
@@ -54,23 +55,17 @@ class ApexMiniAppHostContext {
     activeController = null;
   }
 
-  /// Emits a close result through the current host callback bundle.
-  static void emitClose([Object? result]) {
-    callbacks.onClose?.call(result);
-  }
-
-  /// Runs the active safe-close hook, falling back to direct close emission.
-  static Future<void> requestClose({
-    BuildContext? context,
-    Object? result,
-  }) async {
+  /// Runs the active safe-close hook, falling back to local navigator pop.
+  static Future<void> requestClose({BuildContext? context}) async {
     final ApexMiniAppSafeCloseHook? safeClose = _safeClose;
     if (safeClose == null) {
-      emitClose(result);
+      if (context != null && context.mounted) {
+        await Navigator.maybePop(context);
+      }
       return;
     }
 
-    await safeClose(context, result);
+    await safeClose(context);
   }
 
   /// Emits a navigation event to the host.

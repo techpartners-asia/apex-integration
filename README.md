@@ -48,8 +48,6 @@ flutter pub get
 
 Callback-уудыг `ApexMiniAppSdk` руу шууд дамжуулна:
 
-- `onClose`
-- `onCloseWithResult`
 - `onNavigate`
 - `onError`
 - `onTokenExpired`
@@ -117,10 +115,6 @@ class _HostHomePageState extends State<HostHomePage> {
           return ApexMiniAppSdk.config(
             hostConfig: hostConfig,
             navigatorKey: miniAppNavigatorKey,
-            onClose: closeMiniApp,
-            onCloseWithResult: (Object? result) {
-              debugPrint('Mini app closed with result: $result');
-            },
             onTokenExpired: () {
               debugPrint('Mini app token expired');
             },
@@ -156,22 +150,6 @@ class _HostHomePageState extends State<HostHomePage> {
         .whenComplete(() {
       _miniAppRouteOpen = false;
     });
-  }
-
-  void closeMiniApp() {
-    if (!_miniAppRouteOpen) {
-      return;
-    }
-
-    final NavigatorState? navigator = navigatorKey.currentState;
-
-    if (navigator == null || !navigator.canPop()) {
-      _miniAppRouteOpen = false;
-      return;
-    }
-
-    _miniAppRouteOpen = false;
-    navigator.pop();
   }
 
   @override

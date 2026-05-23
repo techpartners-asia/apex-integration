@@ -20,8 +20,22 @@ class SecAcntSuccessScreen extends StatelessWidget {
   /// Current profile used by skip logic.
   final UserEntityDto? currentUser;
 
-  /// Opens the service agreement step.
-  void _openNextStep(BuildContext context) {
+  /// Opens the next required short-flow step.
+  Future<void> _openNextStep(BuildContext context) async {
+    final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
+      SecAcntFlowStep.success,
+      bootstrapState,
+      currentUser: currentUser,
+    );
+    if (nextStep == null) {
+      await routeAfterSecAcntFlow(context, bootstrapState);
+      return;
+    }
+    if (nextStep != SecAcntFlowStep.serviceAgreement) {
+      await routeAfterSecAcntFlow(context, bootstrapState);
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => SecAcntAgreementScreen(
@@ -50,7 +64,7 @@ class SecAcntSuccessScreen extends StatelessWidget {
       showBackButton: header.showBack,
       showCloseButton: header.showClose,
       onBack: () => Navigator.of(context).maybePop(),
-      onClose: () => closeSecAcntFlow(context),
+      onDismiss: () => closeSecAcntFlow(context),
       hasSafeArea: false,
       backgroundColor: DesignTokens.softSurface,
       appBarBackgroundColor: DesignTokens.softSurface,

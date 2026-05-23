@@ -128,11 +128,11 @@ abstract class SdkLocalizations {
   /// **'Cancel'**
   String get commonCancel;
 
-  /// No description provided for @commonClose.
+  /// No description provided for @commonDismiss.
   ///
   /// In en, this message translates to:
   /// **'Close'**
-  String get commonClose;
+  String get commonDismiss;
 
   /// No description provided for @commonBack.
   ///

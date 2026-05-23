@@ -24,7 +24,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get commonCancel => 'Cancel';
 
   @override
-  String get commonClose => 'Close';
+  String get commonDismiss => 'Close';
 
   @override
   String get commonBack => 'Back';

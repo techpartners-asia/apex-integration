@@ -101,24 +101,58 @@ void main() {
       },
     );
 
-    test(
-      'skips account contract and signature when saved signature exists',
-      () {
-        expect(
-          resolveSecAcntFlowSteps(
-            _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
-            currentUser: _completeUser(
-              account: const AccountDto(signatureId: 31),
+    test('saved signature skips only signature capture', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+          currentUser: _completeUser(
+            account: const AccountDto(signatureId: 31),
+          ),
+        ),
+        const <SecAcntFlowStep>[
+          SecAcntFlowStep.consent,
+          SecAcntFlowStep.secAgreement,
+          SecAcntFlowStep.payment,
+          SecAcntFlowStep.calculation,
+        ],
+      );
+    });
+
+    test('completed invest contract skips only contract agreement', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+          currentUser: _completeUser(
+            account: const AccountDto(isInvestContract: true),
+          ),
+        ),
+        const <SecAcntFlowStep>[
+          SecAcntFlowStep.consent,
+          SecAcntFlowStep.signature,
+          SecAcntFlowStep.payment,
+          SecAcntFlowStep.calculation,
+        ],
+      );
+    });
+
+    test('completed contract and saved signature skip both signed steps', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+          currentUser: _completeUser(
+            account: const AccountDto(
+              isInvestContract: true,
+              signatureId: 31,
             ),
           ),
-          const <SecAcntFlowStep>[
-            SecAcntFlowStep.consent,
-            SecAcntFlowStep.payment,
-            SecAcntFlowStep.calculation,
-          ],
-        );
-      },
-    );
+        ),
+        const <SecAcntFlowStep>[
+          SecAcntFlowStep.consent,
+          SecAcntFlowStep.payment,
+          SecAcntFlowStep.calculation,
+        ],
+      );
+    });
 
     test('keeps signature flow when saved signature is missing', () {
       expect(
@@ -159,6 +193,46 @@ void main() {
         expect(state.hasOpenSecAcnt, isFalse);
       },
     );
+
+    test('paid contract skips short-flow success screen', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: true, hasIpsAcnt: false),
+          currentUser: _completeUser(
+            account: const AccountDto(isPaidContract: true),
+          ),
+        ),
+        const <SecAcntFlowStep>[
+          SecAcntFlowStep.consent,
+          SecAcntFlowStep.serviceAgreement,
+        ],
+      );
+    });
+
+    test('completed invest contract skips short-flow service agreement', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: true, hasIpsAcnt: false),
+          currentUser: _completeUser(
+            account: const AccountDto(isInvestContract: true),
+          ),
+        ),
+        const <SecAcntFlowStep>[
+          SecAcntFlowStep.consent,
+          SecAcntFlowStep.success,
+        ],
+      );
+    });
+
+    test('complete bank data does not require account holder name to skip', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+          currentUser: _completeUserWithoutAccountName(),
+        ),
+        isNot(contains(SecAcntFlowStep.personalInformation)),
+      );
+    });
 
     test(
       'unpaid contract keeps payment step when account is still missing',
@@ -212,6 +286,19 @@ UserEntityDto _completeUser({
     bank: const BankDto(
       accountNumber: '325005005800716755',
       accountName: 'Investor Name',
+      bankCode: '390000',
+      bankName: 'Хаан банк',
+    ),
+  );
+}
+
+UserEntityDto _completeUserWithoutAccountName() {
+  return UserEntityDto(
+    phone: '88993076',
+    phoneAddition: '99112233',
+    email: 'investx@example.com',
+    bank: const BankDto(
+      accountNumber: '325005005800716755',
       bankCode: '390000',
       bankName: 'Хаан банк',
     ),

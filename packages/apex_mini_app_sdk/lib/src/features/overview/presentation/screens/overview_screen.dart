@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +40,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
             return CustomScaffold(
               showBackButton: false,
               showCloseButton: true,
+              onDismiss: () => unawaited(closeMiniAppSafely(context)),
               appBarCenterTitle: false,
               appBarBackgroundColor: DesignTokens.softSurface,
               backgroundColor: DesignTokens.softSurface,
@@ -249,7 +252,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                 );
               },
 
-              onClosePack: () async {
+              onSellPack: () async {
                 await Navigator.of(sheetContext).maybePop();
 
                 if (!context.mounted) return;

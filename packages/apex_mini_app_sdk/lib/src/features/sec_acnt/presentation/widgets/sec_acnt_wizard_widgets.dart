@@ -84,8 +84,8 @@ class SecAcntWizardHeader extends StatelessWidget {
   /// Back action callback.
   final VoidCallback onBack;
 
-  /// Close action callback.
-  final VoidCallback onClose;
+  /// Dismiss action callback.
+  final VoidCallback onDismiss;
 
   /// Creates a shared wizard header.
   const SecAcntWizardHeader({
@@ -97,7 +97,7 @@ class SecAcntWizardHeader extends StatelessWidget {
     this.centerTitle = true,
     this.reserveLeadingSpace = true,
     required this.onBack,
-    required this.onClose,
+    required this.onDismiss,
   });
 
   @override
@@ -114,7 +114,7 @@ class SecAcntWizardHeader extends StatelessWidget {
       showBackButton: showBack,
       showCloseButton: showClose,
       onBack: onBack,
-      onClose: onClose,
+      onDismiss: onDismiss,
       centerTitle: centerTitle,
       reserveLeadingSpace: reserveLeadingSpace,
       titleSpacing: centerTitle ? null : responsive.dp(20),

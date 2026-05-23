@@ -1,9 +1,3 @@
-/// Called when the mini app should close without returning structured data.
-typedef ApexMiniAppCloseHook = void Function();
-
-/// Called when the mini app closes and returns a result to the host.
-typedef ApexMiniAppCloseResultHook = void Function(Object? result);
-
 /// Called when the mini app detects that the host token/session is no longer
 /// valid and the host must re-authenticate the user.
 typedef ApexMiniAppTokenExpiredHook = void Function();
@@ -35,7 +29,6 @@ typedef ApexMiniAppErrorHook =
 class ApexMiniAppHostCallbacks {
   /// Creates a host callback bundle.
   const ApexMiniAppHostCallbacks({
-    this.onClose,
     this.onTokenExpired,
     this.onNavigate,
     this.onError,
@@ -43,10 +36,6 @@ class ApexMiniAppHostCallbacks {
 
   /// Empty callback bundle used when the host did not provide callbacks.
   static const ApexMiniAppHostCallbacks empty = ApexMiniAppHostCallbacks();
-
-  /// Host close callback. The optional result is forwarded from completed
-  /// routes or explicit `closeMiniAppSafely` calls.
-  final ApexMiniAppCloseResultHook? onClose;
 
   /// Host token-expired callback.
   final ApexMiniAppTokenExpiredHook? onTokenExpired;

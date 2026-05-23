@@ -32,7 +32,7 @@ class SecAcntCalculationScreen extends StatelessWidget {
         showBackButton: header.showBack,
         showCloseButton: header.showClose,
         onBack: () => Navigator.of(context).maybePop(),
-        onClose: () => closeSecAcntFlow(context),
+        onDismiss: () => closeSecAcntFlow(context),
         hasSafeArea: false,
         backgroundColor: DesignTokens.softSurface,
         appBarBackgroundColor: DesignTokens.softSurface,

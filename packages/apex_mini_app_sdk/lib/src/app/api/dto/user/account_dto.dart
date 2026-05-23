@@ -69,6 +69,9 @@ class AccountDto {
   /// Signature file object returned by newer profile responses.
   final FileEntity? signatureFile;
 
+  /// Raw signature file value when the backend returns a non-object reference.
+  final String? signatureFileReference;
+
   /// Creates a user account DTO.
   const AccountDto({
     this.accountCreationDate,
@@ -91,12 +94,14 @@ class AccountDto {
     this.updatedAt,
     this.userId,
     this.signatureFile,
+    this.signatureFileReference,
   });
 
   /// Parses the account object with safe defaults for newer optional fields.
   factory AccountDto.fromJson(Map<String, Object?> json) {
+    final Object? rawSignatureFile = json['signature_file'];
     final Map<String, Object?> signatureFile = ApiParser.asObjectMap(
-      json['signature_file'],
+      rawSignatureFile,
     );
 
     return AccountDto(
@@ -128,6 +133,10 @@ class AccountDto {
       signatureFile: signatureFile.isEmpty
           ? null
           : FileEntity.fromJson(signatureFile),
+      signatureFileReference: _parseSignatureFileReference(
+        rawSignatureFile,
+        signatureFile,
+      ),
     );
   }
 
@@ -153,6 +162,7 @@ class AccountDto {
     String? updatedAt,
     int? userId,
     FileEntity? signatureFile,
+    String? signatureFileReference,
   }) {
     return AccountDto(
       accountCreationDate: accountCreationDate ?? this.accountCreationDate,
@@ -175,8 +185,13 @@ class AccountDto {
       updatedAt: updatedAt ?? this.updatedAt,
       userId: userId ?? this.userId,
       signatureFile: signatureFile ?? this.signatureFile,
+      signatureFileReference:
+          signatureFileReference ?? this.signatureFileReference,
     );
   }
+
+  /// Whether InvestX contract onboarding is already completed.
+  bool get hasInvestContract => isInvestContract == true;
 
   /// Whether contract/payment onboarding is already completed.
   bool get hasPaidContract => isPaidContract;
@@ -190,7 +205,8 @@ class AccountDto {
     return (signatureId != null && signatureId! > 0) ||
         (signatureFileId != null && signatureFileId > 0) ||
         _hasText(signatureFile?.physicalPath) ||
-        _hasText(signatureFile?.fileName);
+        _hasText(signatureFile?.fileName) ||
+        _hasText(signatureFileReference);
   }
 
   /// Returns true when a nullable backend string contains visible text.
@@ -205,5 +221,19 @@ class AccountDto {
       KycStatusType.rejected => status!,
       _ => KycStatusType.unknown,
     };
+  }
+
+  /// Preserves non-empty `signature_file` payloads even when their shape varies.
+  static String? _parseSignatureFileReference(
+    Object? rawValue,
+    Map<String, Object?> signatureFile,
+  ) {
+    if (signatureFile.isNotEmpty) {
+      return signatureFile.toString();
+    }
+    if (rawValue is Iterable && rawValue.isEmpty) {
+      return null;
+    }
+    return ApiParser.asNullableString(rawValue);
   }
 }

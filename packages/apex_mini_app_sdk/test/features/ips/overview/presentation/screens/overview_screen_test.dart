@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/src/host/apex_mini_app_host_context.dart';
 
 import '../../../../../test_helpers/widget_test_app.dart';
 
@@ -208,6 +209,41 @@ void main() {
       // expect(tradingAction.onPressed, isNotNull);
     },
   );
+
+  testWidgets('close button requests the SDK safe close path', (
+    WidgetTester tester,
+  ) async {
+    final _TestIpsOverviewCubit cubit = _TestIpsOverviewCubit(
+      LoadableState<IpsOverviewViewData>(
+        status: LoadableStatus.success,
+        data: IpsOverviewViewData(
+          bootstrapState: _openIpsBootstrapState(),
+          isDashboardDataReady: true,
+        ),
+      ),
+    );
+    var closeCallCount = 0;
+    BuildContext? closeContext;
+    ApexMiniAppHostContext.bind(
+      nextCallbacks: ApexMiniAppHostCallbacks.empty,
+      safeClose: (BuildContext? context) async {
+        closeCallCount += 1;
+        closeContext = context;
+      },
+    );
+    addTearDown(
+      () => ApexMiniAppHostContext.clear(ApexMiniAppHostCallbacks.empty),
+    );
+
+    await tester.pumpWidget(_buildOverviewTestApp(cubit));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(ActionButton).last);
+    await tester.pump();
+
+    expect(closeCallCount, 1);
+    expect(closeContext, isNotNull);
+  });
 }
 
 Widget _buildOverviewTestApp(_TestIpsOverviewCubit cubit) {

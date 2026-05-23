@@ -37,36 +37,31 @@ class PortfolioScreen extends StatelessWidget {
         }
 
         final IpsPortfolioViewData? data = state.data;
-        final PortfolioOverview? overview = data?.overview;
+        final PortfolioOverview overview =
+            data?.overview ?? PortfolioOverview(currency: '');
         final List<PortfolioHolding> yieldProfitHoldings =
             data?.yieldProfitHoldings ?? const <PortfolioHolding>[];
         final List<PortfolioHolding> stockYieldDetails =
             data?.stockYieldDetails ?? const <PortfolioHolding>[];
 
-        if (overview == null) {
-          return CustomScaffold(
-            appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
-            showCloseButton: false,
-            children: <Widget>[
-              MiniAppEmptyState(
-                title: l10n.ipsPortfolioTitle,
-                message: l10n.ipsPortfolioNoHoldings,
-              ),
-            ],
-          );
-        }
+        // if (overview == null) {
+        //   return CustomScaffold(
+        //     appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
+        //     showCloseButton: false,
+        //     children: <Widget>[
+        //       MiniAppEmptyState(
+        //         title: l10n.ipsPortfolioTitle,
+        //         message: l10n.ipsPortfolioNoHoldings,
+        //       ),
+        //     ],
+        //   );
+        // }
 
         final PortfolioYieldChartData chartData =
             PortfolioYieldChartDataMapper.fromResponses(
               yieldProfitHoldings: yieldProfitHoldings,
               stockYieldDetails: stockYieldDetails,
             );
-        final bool shouldRenderPackageBlocks =
-            PortfolioPackageVisibility.resolve(
-              overview: overview,
-              chartReturnsAmount: chartData.secondaryTotal,
-            ).shouldRenderPackageBlocks;
-
         return CustomScaffold(
           appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
           showCloseButton: false,
@@ -86,32 +81,32 @@ class PortfolioScreen extends StatelessWidget {
                     height: context.responsive.spacing.sectionSpacing,
                   ),
 
-                  if (shouldRenderPackageBlocks) ...<Widget>[
-                    /// Allocation
-                    AllocationSummaryCard(
-                      variant: AllocationSummaryCardVariant.dashboard,
-                      data: _buildAllocationSummaryData(overview, l10n),
-                    ),
-                    SizedBox(height: context.responsive.spacing.cardGap),
+                  // if (shouldRenderPackageBlocks) ...<Widget>[
+                  /// Allocation
+                  AllocationSummaryCard(
+                    variant: AllocationSummaryCardVariant.dashboard,
+                    data: _buildAllocationSummaryData(overview, l10n),
+                  ),
+                  SizedBox(height: context.responsive.spacing.cardGap),
 
-                    /// Reminder
-                    ReminderCard(
-                      title: l10n.ipsOverviewDashboardReminderTitle,
-                      message: l10n.ipsOverviewDashboardReminderBody,
-                    ),
+                  /// Reminder
+                  ReminderCard(
+                    title: l10n.ipsOverviewDashboardReminderTitle,
+                    message: l10n.ipsOverviewDashboardReminderBody,
+                  ),
 
-                    /// Profit section
-                    PortfolioYieldSection(
-                      overview: overview,
-                      chartData: chartData,
-                      l10n: l10n,
-                    ),
+                  /// Profit section
+                  PortfolioYieldSection(
+                    overview: overview,
+                    chartData: chartData,
+                    l10n: l10n,
+                  ),
 
-                    /// My portfolio
-                    PortfolioMyPackSection(overview: overview, l10n: l10n),
-                    SizedBox(height: context.responsive.spacing.sectionSpacing),
-                  ] else
-                    const SizedBox.shrink(),
+                  /// My portfolio
+                  PortfolioMyPackSection(overview: overview, l10n: l10n),
+                  SizedBox(height: context.responsive.spacing.sectionSpacing),
+                  // ] else
+                  //   const SizedBox.shrink(),
 
                   /// Quick actions
                   // PortfolioQuickActionsSection(

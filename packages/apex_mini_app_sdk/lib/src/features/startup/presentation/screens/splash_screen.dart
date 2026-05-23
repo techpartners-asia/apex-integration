@@ -43,7 +43,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
   /// Safely closes the mini app from splash after cancelling pending work.
   Future<void> _closeSplash(BuildContext context) async {
     _cancelPendingNavigation();
-    await closeMiniAppSafely(context);
+    Navigator.of(context).maybePop();
   }
 
   /// Schedules the resolved initial route after the current frame.
@@ -114,7 +114,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
             await closeMiniAppSafely(context);
           },
           child: CustomText(
-            l10n.commonClose,
+            l10n.commonDismiss,
             variant: MiniAppTextVariant.buttonMedium,
             color: Theme.of(context).colorScheme.primary,
           ),
@@ -138,88 +138,76 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<
-      MiniAppBootstrapCubit,
-      LoadableState<MiniAppBootstrapRes>
-    >(
-      listener:
-          (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
-            final MiniAppBootstrapRes? resolution = state.data;
-            if (state.isFailure) {
-              MiniAppToast.showError(
-                context,
-                message: state.errorMessage ?? context.l10n.errorsNetwork,
-              );
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                showErrorDialog(context, state);
-              });
-              return;
-            }
+    return BlocConsumer<MiniAppBootstrapCubit, LoadableState<MiniAppBootstrapRes>>(
+      listener: (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
+        final MiniAppBootstrapRes? resolution = state.data;
+        if (state.isFailure) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showErrorDialog(context, state);
+          });
 
-            if (navigated || resolution == null || !state.isSuccess) return;
+          return;
+        }
 
-            navigated = true;
-            // MiniAppToast.showSuccess(
-            //   context,
-            //   message: context.l10n.commonSuccess,
-            // );
+        if (navigated || resolution == null || !state.isSuccess) return;
 
-            _scheduleResolvedNavigation(resolution);
-          },
-      builder:
-          (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
-            final ThemeData theme = DesignTokens.theme(
-              Theme.of(context),
-            );
-            final responsive = context.responsive;
-            final double closeTop = responsive.safeTop + responsive.dp(14);
+        navigated = true;
 
-            return Theme(
-              data: theme,
-              child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        DesignTokens.rose,
-                        DesignTokens.coral,
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                  ),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      Align(
-                        alignment: const Alignment(0, -0.03),
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: CustomImage(
-                            path: Img.splashInvestX,
-                            height: responsive.dp(60),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: closeTop,
-                        right: responsive.space(AppSpacing.md),
-                        child: ActionButton(
-                          onPressed: () => _closeSplash(context),
-                          icon: Icons.close_rounded,
-                          iosIcon: CupertinoIcons.xmark,
-                          foregroundColor: Colors.white,
-                          backgroundColor: const Color(0x5B3A2834),
-                          boxShadow: const <BoxShadow>[],
-                        ),
-                      ),
-                    ],
-                  ),
+        _scheduleResolvedNavigation(resolution);
+      },
+      builder: (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
+        final ThemeData theme = DesignTokens.theme(
+          Theme.of(context),
+        );
+        final responsive = context.responsive;
+        final double closeTop = responsive.safeTop + responsive.dp(14);
+
+        return Theme(
+          data: theme,
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light,
+            child: DecoratedBox(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    DesignTokens.rose,
+                    DesignTokens.coral,
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                 ),
               ),
-            );
-          },
+              child: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  Align(
+                    alignment: const Alignment(0, -0.03),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomImage(
+                        path: Img.splashInvestX,
+                        height: responsive.dp(60),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: closeTop,
+                    right: responsive.space(AppSpacing.md),
+                    child: ActionButton(
+                      onPressed: () => _closeSplash(context),
+                      icon: Icons.close_rounded,
+                      iosIcon: CupertinoIcons.xmark,
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color(0x5B3A2834),
+                      boxShadow: const <BoxShadow>[],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

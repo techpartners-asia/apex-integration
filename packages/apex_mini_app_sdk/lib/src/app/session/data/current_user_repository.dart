@@ -98,8 +98,11 @@ class RemoteSignupBootstrapRepository implements CurrentUserRepository {
         'signup_profile_hydrated',
         data: <String, Object?>{'profileUserId': profileUser.userId},
       );
-      profileUser.admSession = adminToken;
-      return profileUser;
+      return _mergeHydratedProfile(
+        profileUser: profileUser,
+        bootstrapUser: bootstrapUser,
+        adminToken: adminToken,
+      );
     } catch (error, stackTrace) {
       logger.onError(
         'signup_profile_hydration_failed',
@@ -108,5 +111,150 @@ class RemoteSignupBootstrapRepository implements CurrentUserRepository {
       );
       return bootstrapUser;
     }
+  }
+
+  /// Merges signup-only onboarding flags into hydrated profile responses.
+  UserEntityDto _mergeHydratedProfile({
+    required UserEntityDto profileUser,
+    required UserEntityDto bootstrapUser,
+    required String? adminToken,
+  }) {
+    return UserEntityDto(
+      token: _firstText(profileUser.token, bootstrapUser.token),
+      account: _mergeAccount(profileUser.account, bootstrapUser.account),
+      bank: _mergeBank(profileUser.bank, bootstrapUser.bank),
+      id: profileUser.id ?? bootstrapUser.id,
+      registerNo: _firstText(profileUser.registerNo, bootstrapUser.registerNo),
+      firstName: _firstText(profileUser.firstName, bootstrapUser.firstName),
+      lastName: _firstText(profileUser.lastName, bootstrapUser.lastName),
+      phone: _firstText(profileUser.phone, bootstrapUser.phone),
+      phoneAddition: _firstText(
+        profileUser.phoneAddition,
+        bootstrapUser.phoneAddition,
+      ),
+      email: _firstText(profileUser.email, bootstrapUser.email),
+      gender: _firstText(profileUser.gender, bootstrapUser.gender),
+      integrationId: _firstText(
+        profileUser.integrationId,
+        bootstrapUser.integrationId,
+      ),
+      currentDepartment: _firstText(
+        profileUser.currentDepartment,
+        bootstrapUser.currentDepartment,
+      ),
+      currentPosition: _firstText(
+        profileUser.currentPosition,
+        bootstrapUser.currentPosition,
+      ),
+      image: profileUser.image ?? bootstrapUser.image,
+      imageId: profileUser.imageId ?? bootstrapUser.imageId,
+      platform: profileUser.platform != PlatformType.unknown
+          ? profileUser.platform
+          : bootstrapUser.platform,
+      region: profileUser.region ?? bootstrapUser.region,
+      regionId: profileUser.regionId ?? bootstrapUser.regionId,
+      residenceAddress: _firstText(
+        profileUser.residenceAddress,
+        bootstrapUser.residenceAddress,
+      ),
+      residenceCountry: _firstText(
+        profileUser.residenceCountry,
+        bootstrapUser.residenceCountry,
+      ),
+      createdAt: profileUser.createdAt ?? bootstrapUser.createdAt,
+      updatedAt: profileUser.updatedAt ?? bootstrapUser.updatedAt,
+      accessToken: _firstText(
+        profileUser.accessToken,
+        bootstrapUser.accessToken,
+      ),
+      admSession:
+          adminToken ??
+          _firstText(profileUser.admSession, bootstrapUser.admSession),
+    );
+  }
+
+  AccountDto? _mergeAccount(AccountDto? profile, AccountDto? bootstrap) {
+    if (profile == null) {
+      return bootstrap;
+    }
+    if (bootstrap == null) {
+      return profile;
+    }
+
+    return AccountDto(
+      accountCreationDate: _firstText(
+        profile.accountCreationDate,
+        bootstrap.accountCreationDate,
+      ),
+      acntCode: _firstText(profile.acntCode, bootstrap.acntCode),
+      createdAt: _firstText(profile.createdAt, bootstrap.createdAt),
+      id: profile.id ?? bootstrap.id,
+      investAmount: profile.investAmount ?? bootstrap.investAmount,
+      isInvest: _mergeNullableFlag(profile.isInvest, bootstrap.isInvest),
+      isInvestContract: _mergeNullableFlag(
+        profile.isInvestContract,
+        bootstrap.isInvestContract,
+      ),
+      isPaidContract: profile.isPaidContract || bootstrap.isPaidContract,
+      kycStatus: profile.kycStatus != KycStatusType.unknown
+          ? profile.kycStatus
+          : bootstrap.kycStatus,
+      packageCode: _firstText(profile.packageCode, bootstrap.packageCode),
+      profitAmount: profile.profitAmount ?? bootstrap.profitAmount,
+      profitPercent: profile.profitPercent ?? bootstrap.profitPercent,
+      scAcntCode: _firstText(profile.scAcntCode, bootstrap.scAcntCode),
+      signatureId: profile.signatureId ?? bootstrap.signatureId,
+      streak: _firstText(profile.streak, bootstrap.streak),
+      targetGoal: profile.targetGoal ?? bootstrap.targetGoal,
+      totalAmount: profile.totalAmount ?? bootstrap.totalAmount,
+      updatedAt: _firstText(profile.updatedAt, bootstrap.updatedAt),
+      userId: profile.userId ?? bootstrap.userId,
+      signatureFile: profile.signatureFile ?? bootstrap.signatureFile,
+      signatureFileReference: _firstText(
+        profile.signatureFileReference,
+        bootstrap.signatureFileReference,
+      ),
+    );
+  }
+
+  BankDto? _mergeBank(BankDto? profile, BankDto? bootstrap) {
+    if (profile == null) {
+      return bootstrap;
+    }
+    if (bootstrap == null) {
+      return profile;
+    }
+
+    return BankDto(
+      accountNumber: _firstText(
+        profile.accountNumber,
+        bootstrap.accountNumber,
+      ),
+      accountName: _firstText(profile.accountName, bootstrap.accountName),
+      bankId: _firstText(profile.bankId, bootstrap.bankId),
+      bankCode: _firstText(profile.bankCode, bootstrap.bankCode),
+      bankName: _firstText(profile.bankName, bootstrap.bankName),
+      id: profile.id ?? bootstrap.id,
+      userId: profile.userId ?? bootstrap.userId,
+      createdAt: _firstText(profile.createdAt, bootstrap.createdAt),
+      updatedAt: _firstText(profile.updatedAt, bootstrap.updatedAt),
+    );
+  }
+
+  bool? _mergeNullableFlag(bool? profile, bool? bootstrap) {
+    if (profile == true || bootstrap == true) {
+      return true;
+    }
+    return profile ?? bootstrap;
+  }
+
+  String? _firstText(String? primary, String? fallback) {
+    final String primaryText = primary?.trim() ?? '';
+    if (primaryText.isNotEmpty) {
+      return primaryText;
+    }
+
+    final String fallbackText = fallback?.trim() ?? '';
+    return fallbackText.isEmpty ? null : fallbackText;
   }
 }

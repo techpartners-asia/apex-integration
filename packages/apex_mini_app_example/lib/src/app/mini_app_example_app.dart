@@ -25,7 +25,8 @@ class MiniAppExampleApp extends StatefulWidget {
 
 class MiniAppExampleAppState extends State<MiniAppExampleApp> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> miniAppNavigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> miniAppNavigatorKey =
+      GlobalKey<NavigatorState>();
   final ValueNotifier<List<String>> hostEvents = ValueNotifier<List<String>>(
     <String>[],
   );
@@ -47,8 +48,13 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
             recordHostEvent('payment status: ${result.status}');
           },
         );
-    hostConfig = widget.hostConfig ?? _hostConfigFromSdkConfig(widget.sdkConfig) ?? exampleHostConfig;
-    userDataSourceMode = widget.sdkConfig?.userDataSourceMode ?? MiniAppUserDataSourceMode.realUser;
+    hostConfig =
+        widget.hostConfig ??
+        _hostConfigFromSdkConfig(widget.sdkConfig) ??
+        exampleHostConfig;
+    userDataSourceMode =
+        widget.sdkConfig?.userDataSourceMode ??
+        MiniAppUserDataSourceMode.realUser;
   }
 
   @override
@@ -134,10 +140,6 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
               walletPaymentHandler: walletPaymentHandler,
               navigatorKey: miniAppNavigatorKey,
               userDataSourceMode: userDataSourceMode,
-              onClose: closeMiniApp,
-              onCloseWithResult: (Object? result) {
-                recordHostEvent('closed result: $result');
-              },
               onTokenExpired: () => recordHostEvent('token expired'),
               onNavigate: (String? route, Object? arguments) {
                 recordHostEvent('navigate: ${route ?? '-'}');
@@ -150,23 +152,8 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
         )
         .whenComplete(() {
           _miniAppRouteOpen = false;
+          recordHostEvent('closed');
         });
-  }
-
-  void closeMiniApp() {
-    recordHostEvent('closed');
-    if (!_miniAppRouteOpen) {
-      return;
-    }
-
-    final NavigatorState? navigator = navigatorKey.currentState;
-    if (navigator == null || !navigator.canPop()) {
-      _miniAppRouteOpen = false;
-      return;
-    }
-
-    _miniAppRouteOpen = false;
-    navigator.pop();
   }
 
   void recordHostEvent(String message) {
@@ -193,7 +180,9 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
 
     final SchedulerPhase phase = WidgetsBinding.instance.schedulerPhase;
 
-    if (phase == SchedulerPhase.persistentCallbacks || phase == SchedulerPhase.transientCallbacks || phase == SchedulerPhase.midFrameMicrotasks) {
+    if (phase == SchedulerPhase.persistentCallbacks ||
+        phase == SchedulerPhase.transientCallbacks ||
+        phase == SchedulerPhase.midFrameMicrotasks) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         writeEvent();
       });

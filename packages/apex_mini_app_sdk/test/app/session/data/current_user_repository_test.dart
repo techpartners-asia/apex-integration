@@ -1,7 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 class _FakeSignUpBackendApi extends SignUpBackendApi {
   _FakeSignUpBackendApi(this.response) : super(executor: null);
 
@@ -106,6 +105,61 @@ void main() {
       expect(adminTokenProvider.currentAccessToken, 'signup-jwt-token');
       expect(user.admSession, 'signup-jwt-token');
       expect(user.phone, '88993076');
+    },
+  );
+
+  test(
+    'signup repository preserves signup-only secondary account flags after hydration',
+    () async {
+      final signUpApi = _FakeSignUpBackendApi(
+        UserEntityDto.fromJson(<String, Object?>{
+          'message': '',
+          'body': <String, Object?>{
+            'token': 'signup-jwt-token',
+            'user': <String, Object?>{
+              'rd': '',
+              'first_name': '',
+              'last_name': '',
+              'phone': '88993076',
+              'phone_addition': '99112233',
+              'email': 'signup@example.com',
+              'account_number': 'MN991122334455667788',
+              'bank_code': '390000',
+              'bank_name': 'Хаан банк',
+              'is_invest_contract': true,
+              'is_paid_contract': true,
+              'signature_id': 31,
+            },
+          },
+        }),
+      );
+      final profileApi = _FakeMiniAppApiBackend(
+        UserEntityDto.fromJson(<String, Object?>{
+          'message': '',
+          'body': <String, Object?>{
+            'rd': 'AB12345678',
+            'first_name': 'Bold',
+            'last_name': 'Baatar',
+            'phone': '88993076',
+          },
+        }),
+      );
+
+      final repo = RemoteSignupBootstrapRepository(
+        api: signUpApi,
+        profileApi: profileApi,
+        adminTokenProvider: MutableTokenProvider(),
+      );
+
+      final user = await repo.getCurrentUser(userToken: 'host-user-token');
+
+      expect(user.account?.hasInvestContract, isTrue);
+      expect(user.account?.hasPaidContract, isTrue);
+      expect(user.account?.hasSavedSignature, isTrue);
+      expect(user.phoneAddition, '99112233');
+      expect(user.email, 'signup@example.com');
+      expect(user.bank?.accountNumber, 'MN991122334455667788');
+      expect(user.bank?.bankCode, '390000');
     },
   );
 }

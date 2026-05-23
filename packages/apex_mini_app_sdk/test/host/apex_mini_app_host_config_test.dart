@@ -213,12 +213,11 @@ void main() {
 
   group('ApexMiniAppSdk widget', () {
     testWidgets(
-      'accepts Zahii-style close callback and reports missing token',
+      'reports missing token without requiring a dismiss hook',
       (
         WidgetTester tester,
       ) async {
         Object? reportedError;
-        bool closed = false;
 
         await tester.pumpWidget(
           ApexMiniAppSdk(
@@ -235,9 +234,6 @@ void main() {
                 ),
               );
             },
-            onClose: () {
-              closed = true;
-            },
             onError: (Object error, StackTrace? stackTrace) {
               reportedError = error;
             },
@@ -249,8 +245,6 @@ void main() {
 
         await tester.pumpWidget(const SizedBox.shrink());
         await tester.pump(const Duration(milliseconds: 150));
-
-        expect(closed, isTrue);
       },
     );
 
@@ -288,59 +282,15 @@ void main() {
       await tester.pump(const Duration(milliseconds: 150));
     });
 
-    testWidgets('safe close shows mini app error dialog before host close', (
+    testWidgets('safe close dismisses the current mini app dialog', (
       WidgetTester tester,
     ) async {
-      var closeCount = 0;
-
       await tester.pumpWidget(
         ApexMiniAppSdk(
           token: 'host-token',
           locale: const Locale('mn'),
           initialRoute: MiniAppRoutes.reward,
           walletPaymentHandler: _walletPaymentHandler,
-          onClose: () {
-            closeCount += 1;
-          },
-        ),
-      );
-      await tester.pump();
-
-      final BuildContext miniAppContext = tester.element(
-        find.byType(MiniAppHostShell),
-      );
-
-      final Future<void> closeFuture = ApexMiniAppHostContext.requestClose(
-        context: miniAppContext,
-      );
-      await _pumpDialog(tester);
-
-      expect(find.text('Алдаа гарлаа'), findsOneWidget);
-      expect(find.text('Санамсаргүй алдаа гарлаа.'), findsOneWidget);
-      expect(closeCount, 0);
-
-      await _tapCloseAndWait(tester, closeFuture);
-      expect(closeCount, 1);
-      expect(find.text('Алдаа гарлаа'), findsNothing);
-      expect(find.text('Санамсаргүй алдаа гарлаа.'), findsNothing);
-
-      await tester.pumpWidget(const SizedBox.shrink());
-    });
-
-    testWidgets('safe close dismisses existing overlays after dialog OK', (
-      WidgetTester tester,
-    ) async {
-      var closeCount = 0;
-
-      await tester.pumpWidget(
-        ApexMiniAppSdk(
-          token: 'host-token',
-          locale: const Locale('mn'),
-          initialRoute: MiniAppRoutes.reward,
-          walletPaymentHandler: _walletPaymentHandler,
-          onClose: () {
-            closeCount += 1;
-          },
         ),
       );
       await tester.pump();
@@ -364,34 +314,23 @@ void main() {
       final Future<void> closeFuture = ApexMiniAppHostContext.requestClose(
         context: miniAppContext,
       );
-      await _pumpDialog(tester);
+      await _finishCloseRequest(tester, closeFuture);
 
-      expect(find.text('Алдаа гарлаа'), findsOneWidget);
-      expect(closeCount, 0);
-
-      await _tapCloseAndWait(tester, closeFuture);
-      expect(closeCount, 1);
-      expect(find.text('Алдаа гарлаа'), findsNothing);
       expect(find.text('Backend dialog'), findsNothing);
       expect(find.text('Startup failed'), findsNothing);
-
+      expect(find.byType(MiniAppHostShell), findsOneWidget);
       await tester.pumpWidget(const SizedBox.shrink());
     });
 
-    testWidgets('safe close ignores duplicate close requests', (
+    testWidgets('safe close tolerates duplicate close requests', (
       WidgetTester tester,
     ) async {
-      var closeCount = 0;
-
       await tester.pumpWidget(
         ApexMiniAppSdk(
           token: 'host-token',
           locale: const Locale('mn'),
           initialRoute: MiniAppRoutes.reward,
           walletPaymentHandler: _walletPaymentHandler,
-          onClose: () {
-            closeCount += 1;
-          },
         ),
       );
       await tester.pump();
@@ -404,48 +343,37 @@ void main() {
         ApexMiniAppHostContext.requestClose(context: miniAppContext),
         ApexMiniAppHostContext.requestClose(context: miniAppContext),
       ]);
-      await _pumpDialog(tester);
+      await _finishCloseRequest(tester, closeFuture);
 
-      expect(find.text('Алдаа гарлаа'), findsOneWidget);
-      expect(closeCount, 0);
-
-      await _tapCloseAndWait(tester, closeFuture);
-      expect(closeCount, 1);
+      expect(find.byType(MiniAppHostShell), findsOneWidget);
 
       await tester.pumpWidget(const SizedBox.shrink());
     });
 
-    testWidgets('request close without context bypasses error dialog', (
+    testWidgets('request close without context is a no-op', (
       WidgetTester tester,
     ) async {
-      var closeCount = 0;
-
       await tester.pumpWidget(
         ApexMiniAppSdk(
           token: 'host-token',
           locale: const Locale('mn'),
           initialRoute: MiniAppRoutes.reward,
           walletPaymentHandler: _walletPaymentHandler,
-          onClose: () {
-            closeCount += 1;
-          },
         ),
       );
       await tester.pump();
 
       final Future<void> closeFuture = ApexMiniAppHostContext.requestClose();
-      await _finishCloseWithoutDialog(tester, closeFuture);
+      await _finishCloseRequest(tester, closeFuture);
 
-      expect(find.text('Алдаа гарлаа'), findsNothing);
-      expect(closeCount, 1);
+      expect(find.byType(MiniAppHostShell), findsOneWidget);
 
       await tester.pumpWidget(const SizedBox.shrink());
     });
 
-    testWidgets('request close with unmounted context bypasses error dialog', (
+    testWidgets('request close with unmounted context is a no-op', (
       WidgetTester tester,
     ) async {
-      var closeCount = 0;
       var showProbe = true;
       BuildContext? staleContext;
 
@@ -467,9 +395,6 @@ void main() {
                 ),
             ],
           ),
-          onClose: () {
-            closeCount += 1;
-          },
         );
       }
 
@@ -486,60 +411,57 @@ void main() {
       final Future<void> closeFuture = ApexMiniAppHostContext.requestClose(
         context: staleContext,
       );
-      await _finishCloseWithoutDialog(tester, closeFuture);
+      await _finishCloseRequest(tester, closeFuture);
 
-      expect(find.text('Алдаа гарлаа'), findsNothing);
-      expect(closeCount, 1);
+      expect(find.byType(MiniAppHostShell), findsOneWidget);
 
       await tester.pumpWidget(const SizedBox.shrink());
     });
 
-    testWidgets('runtime recreation preserves close handler', (
+    testWidgets('safe close pops the embedding host route as fallback', (
       WidgetTester tester,
     ) async {
-      var firstCloseCount = 0;
-      var secondCloseCount = 0;
-
       await tester.pumpWidget(
-        ApexMiniAppSdk(
-          token: 'host-token',
-          locale: const Locale('mn'),
-          initialRoute: MiniAppRoutes.reward,
-          walletPaymentHandler: _walletPaymentHandler,
-          onClose: () {
-            firstCloseCount += 1;
-          },
+        MaterialApp(
+          home: Builder(
+            builder: (BuildContext hostContext) {
+              return Scaffold(
+                body: TextButton(
+                  onPressed: () {
+                    Navigator.of(hostContext).push<void>(
+                      MaterialPageRoute<void>(
+                        builder: (_) => ApexMiniAppSdk(
+                          token: 'host-token',
+                          locale: const Locale('mn'),
+                          initialRoute: MiniAppRoutes.reward,
+                          walletPaymentHandler: _walletPaymentHandler,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Open mini app'),
+                ),
+              );
+            },
+          ),
         ),
       );
-      await tester.pump();
 
-      await tester.pumpWidget(
-        ApexMiniAppSdk(
-          token: 'new-host-token',
-          locale: const Locale('mn'),
-          initialRoute: MiniAppRoutes.reward,
-          walletPaymentHandler: _walletPaymentHandler,
-          onClose: () {
-            secondCloseCount += 1;
-          },
-        ),
-      );
-      await tester.pump();
+      await tester.tap(find.text('Open mini app'));
+      await tester.pumpAndSettle();
+      expect(find.byType(MiniAppHostShell), findsOneWidget);
 
       final BuildContext miniAppContext = tester.element(
         find.byType(MiniAppHostShell),
       );
-
       final Future<void> closeFuture = ApexMiniAppHostContext.requestClose(
         context: miniAppContext,
       );
-      await _pumpDialog(tester);
-      await _tapCloseAndWait(tester, closeFuture);
+      await _finishCloseRequest(tester, closeFuture);
+      await tester.pumpAndSettle();
 
-      expect(firstCloseCount, 0);
-      expect(secondCloseCount, 1);
-
-      await tester.pumpWidget(const SizedBox.shrink());
+      expect(find.byType(MiniAppHostShell), findsNothing);
+      expect(find.text('Open mini app'), findsOneWidget);
     });
   });
 }
@@ -549,19 +471,7 @@ Future<void> _pumpDialog(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 250));
 }
 
-Future<void> _tapCloseAndWait(
-  WidgetTester tester,
-  Future<void> closeFuture,
-) async {
-  await tester.tap(find.text('Хаах').last);
-  await tester.pump();
-  await tester.pump(const Duration(seconds: 2));
-  await closeFuture;
-  await tester.pump();
-  await tester.pump(const Duration(milliseconds: 250));
-}
-
-Future<void> _finishCloseWithoutDialog(
+Future<void> _finishCloseRequest(
   WidgetTester tester,
   Future<void> closeFuture,
 ) async {

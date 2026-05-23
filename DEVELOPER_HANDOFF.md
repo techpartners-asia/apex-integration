@@ -10,7 +10,7 @@ Repository root: `/Users/o.battogtokh/products/front_app/apex_mini_app`
 
 ### Энэ төсөл юу вэ
 
-Энэ repository нь Apex/InvestX хөрөнгө оруулалтын mini app-ийг host Flutter апп дотор embed хийх SDK юм. Host апп нь хэрэглэгчийн token, runtime URL, credential, locale, wallet payment callback, хаах/алдаа/token-expired callback зэргийг өгнө. SDK нь дотроо тусгаарласан mini app navigation/runtime үүсгээд InvestX-ийн onboarding, үнэт цаасны данс, асуулга, багц сонголт, гэрээ, цэнэглэлт, зарлага, portfolio, захиалга, хуулга, тусламж, санал хүсэлт, profile засварын урсгалыг харуулдаг.
+Энэ repository нь Apex/InvestX хөрөнгө оруулалтын mini app-ийг host Flutter апп дотор embed хийх SDK юм. Host апп нь хэрэглэгчийн token, runtime URL, credential, locale, wallet payment callback, алдаа/token-expired callback зэргийг өгнө. SDK нь дотроо тусгаарласан mini app navigation/runtime үүсгээд InvestX-ийн onboarding, үнэт цаасны данс, асуулга, багц сонголт, гэрээ, цэнэглэлт, зарлага, portfolio, захиалга, хуулга, тусламж, санал хүсэлт, profile засварын урсгалыг харуулдаг.
 
 Repository нь дараах package-уудаас бүрдэнэ.
 
@@ -101,7 +101,7 @@ flowchart TD
 | `packages/apex_mini_app_core/lib` | Runtime contract, registry, launch/payment model. |
 | `packages/apex_mini_app_ui/lib` | Mini app UI shell, runtime controller, theme, responsive, common widgets. |
 | `packages/apex_mini_app_sdk/lib/apex_mini_app_sdk.dart` | SDK public export. |
-| `packages/apex_mini_app_sdk/lib/src/host` | Host config, callbacks, SDK root widget, close/token-expired bridge. |
+| `packages/apex_mini_app_sdk/lib/src/host` | Host config, callbacks, SDK root widget, local close/token-expired bridge. |
 | `packages/apex_mini_app_sdk/lib/src/config` | Internal `MiniAppSdkConfig`. |
 | `packages/apex_mini_app_sdk/lib/src/di` | Manual dependency composition. |
 | `packages/apex_mini_app_sdk/lib/src/core/api` | Dio client, headers, executor, parser, API config, error handling. |
@@ -490,7 +490,7 @@ HTTP 401/403 нь `ApiUnauthorizedException`, timeout/network нь `ApiNetworkEx
 
 | Screen/widget | File | Яаж хүрэх вэ | Data/state | Interaction |
 |---|---|---|---|---|
-| `ApexMiniAppSdk` | `host/apex_mini_app_sdk.dart` | Host embed | host config/payment/callbacks | Close, token expired, initial page. |
+| `ApexMiniAppSdk` | `host/apex_mini_app_sdk.dart` | Host embed | host config/payment/callbacks | Local close, token expired, initial page. |
 | `LauncherHomePage` | example app | Example root | local event list | SDK нээх. |
 | `IpsSplashScreen` | startup presentation | `/splash` | `MiniAppBootstrapCubit` | Success бол replace route, failure retry/close. |
 | `IpsOverviewScreen` | overview screen | `/overview` | `IpsOverviewCubit`, `MiniAppSessionStore` | Tabs, recharge/sell, portfolio/statements/help/profile. |
@@ -1014,11 +1014,11 @@ sequenceDiagram
 | File | Үүрэг | Эрсдэл |
 |---|---|---|
 | `lib/apex_mini_app_sdk.dart` | Public SDK export. | Host import surface. |
-| `src/host/apex_mini_app_sdk.dart` | SDK root widget. | Safe-close pop loop 20 хүртэл. |
+| `src/host/apex_mini_app_sdk.dart` | SDK root widget. | Local safe-close navigator pop. |
 | `src/host/apex_mini_app_host_config.dart` | Host config/validation. | Credential validation хийж чадахгүй. |
 | `src/host/apex_mini_app_host_context.dart` | Static callback/controller bridge. | Multiple instance дээр анхаарах. |
 | `src/config/mini_app_sdk_config.dart` | Normalized config. | Locale -> backend language mapping. |
-| `src/runtime/mini_app_sdk.dart` | Feature runtime. | `launch()` success close emit хийдэг. |
+| `src/runtime/mini_app_sdk.dart` | Feature runtime. | `launch()` success result-ийг caller-д буцаана. |
 | `src/di/mini_app_sdk_di.dart` | Composition root. | Dependency нэмэх гол цэг. |
 | `src/di/ips_dependencies.dart` | Feature dependency bundle. | Route builder хэрэглэнэ. |
 

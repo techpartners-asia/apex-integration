@@ -89,7 +89,7 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
       showBackButton: header.showBack,
       showCloseButton: header.showClose,
       onBack: () => Navigator.of(context).maybePop(),
-      onClose: () => closeSecAcntFlow(context),
+      onDismiss: () => closeSecAcntFlow(context),
       hasSafeArea: false,
       headerWidget: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.responsive.dp(16)),

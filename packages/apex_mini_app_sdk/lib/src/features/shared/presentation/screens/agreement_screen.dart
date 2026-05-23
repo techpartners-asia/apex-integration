@@ -31,8 +31,8 @@ class AgreementScreen extends StatelessWidget {
   /// Back action.
   final VoidCallback? onBack;
 
-  /// Close action.
-  final VoidCallback? onClose;
+  /// Dismiss action.
+  final VoidCallback? onDismiss;
 
   /// Whether back button is visible.
   final bool showBackButton;
@@ -73,7 +73,7 @@ class AgreementScreen extends StatelessWidget {
     required this.continueLabel,
     required this.onContinue,
     this.onBack,
-    this.onClose,
+    this.onDismiss,
     this.showBackButton = true,
     this.showCloseButton = false,
     this.appBarCenterTitle = true,
@@ -92,7 +92,7 @@ class AgreementScreen extends StatelessWidget {
       showBackButton: showBackButton,
       showCloseButton: showCloseButton,
       onBack: onBack,
-      onClose: onClose,
+      onDismiss: onDismiss,
       appBarCenterTitle: appBarCenterTitle,
       appBarReserveLeadingSpace: appBarReserveLeadingSpace,
       appBarTitleSpacing: appBarTitleSpacing,

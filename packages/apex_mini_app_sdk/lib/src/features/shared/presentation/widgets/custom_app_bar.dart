@@ -6,8 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Standard Apex mini-app app bar with safe close/back behavior.
-class CustomAppBar extends StatelessWidget
-    implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
   /// Optional title. When omitted, InvestX logo is shown.
   final String? title;
 
@@ -26,8 +25,8 @@ class CustomAppBar extends StatelessWidget
   /// Back action override.
   final VoidCallback? onBack;
 
-  /// Close action override.
-  final VoidCallback? onClose;
+  /// Dismiss action override.
+  final VoidCallback? onDismiss;
 
   /// Clear action.
   final VoidCallback? onClear;
@@ -62,7 +61,7 @@ class CustomAppBar extends StatelessWidget
     this.showCloseButton = true,
     this.showClearButton = false,
     this.onBack,
-    this.onClose,
+    this.onDismiss,
     this.onClear,
     this.titleStyle,
     this.centerTitle = true,
@@ -109,12 +108,8 @@ class CustomAppBar extends StatelessWidget
       toolbarHeight: kToolbarHeight,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: centerTitle,
-      titleSpacing:
-          titleSpacing ??
-          (centerTitle ? responsive.space(AppSpacing.sm) : responsive.dp(20)),
-      leadingWidth: showLeadingSlot
-          ? actionSlotWidth + responsive.space(AppSpacing.md)
-          : 0,
+      titleSpacing: titleSpacing ?? (centerTitle ? responsive.space(AppSpacing.sm) : responsive.dp(20)),
+      leadingWidth: showLeadingSlot ? actionSlotWidth + responsive.space(AppSpacing.md) : 0,
       leading: showLeadingSlot
           ? _CustomAppBarActionSlot(
               leftPadding: responsive.space(AppSpacing.md),
@@ -163,8 +158,7 @@ class CustomAppBar extends StatelessWidget
           _CustomAppBarActionSlot(
             width: actionSlotWidth,
             child: ActionButton(
-              onPressed:
-                  onClose ?? () => unawaited(closeMiniAppSafely(context)),
+              onPressed: onDismiss ?? () => unawaited(Navigator.maybePop(context)),
               img: Img.close,
               foregroundColor: DesignTokens.muted,
             ),

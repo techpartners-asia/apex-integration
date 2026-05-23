@@ -171,14 +171,14 @@ class OverviewDashboardActionSheetContent extends StatelessWidget {
   /// Recharge action.
   final VoidCallback? onRecharge;
 
-  /// Sell/close-pack action.
-  final VoidCallback? onClosePack;
+  /// Sell-pack action.
+  final VoidCallback? onSellPack;
 
   /// Creates dashboard action sheet content.
   const OverviewDashboardActionSheetContent({
     super.key,
     this.onRecharge,
-    this.onClosePack,
+    this.onSellPack,
   });
 
   @override
@@ -205,7 +205,7 @@ class OverviewDashboardActionSheetContent extends StatelessWidget {
         SizedBox(height: responsive.dp(12)),
         SecondaryButton(
           label: l10n.ipsOverviewDashboardActionSell,
-          onPressed: onClosePack ?? () {},
+          onPressed: onSellPack ?? () {},
           height: responsive.dp(50),
           borderRadius: BorderRadius.circular(responsive.radius(14)),
           foregroundColor: DesignTokens.rose,

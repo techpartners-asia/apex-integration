@@ -59,20 +59,17 @@ bool isIpsNavigationControllerAvailable(BuildContext context) {
     return false;
   }
 
-  final MiniAppHostController? localController =
-      MiniAppHostControllerProvider.maybeOf(context);
+  final MiniAppHostController? localController = MiniAppHostControllerProvider.maybeOf(context);
   if (_usableController(localController) != null) {
     return true;
   }
 
-  final MiniAppHostController? registryController =
-      MiniAppHostControllerProvider.activeController;
+  final MiniAppHostController? registryController = MiniAppHostControllerProvider.activeController;
   if (_usableController(registryController) != null) {
     return true;
   }
 
-  final MiniAppHostController? hostController =
-      ApexMiniAppHostContext.activeController;
+  final MiniAppHostController? hostController = ApexMiniAppHostContext.activeController;
   return _usableController(hostController) != null;
 }
 
@@ -84,29 +81,21 @@ _ResolvedMiniAppNavigation? _resolveMiniAppNavigation(
   required String action,
 }) {
   final bool contextMounted = context.mounted;
-  final MiniAppHostController? localController = contextMounted
-      ? MiniAppHostControllerProvider.maybeOf(context)
-      : null;
+  final MiniAppHostController? localController = contextMounted ? MiniAppHostControllerProvider.maybeOf(context) : null;
   final MiniAppHostController? usableLocalController = _usableController(
     localController,
   );
   final MiniAppHostController? registryController = _usableController(
     MiniAppHostControllerProvider.activeController,
   );
-  final MiniAppHostController? rawHostController =
-      ApexMiniAppHostContext.activeController;
+  final MiniAppHostController? rawHostController = ApexMiniAppHostContext.activeController;
   final MiniAppHostController? hostController = _usableController(
     rawHostController,
   );
-  final MiniAppHostController? controller =
-      usableLocalController ?? registryController ?? hostController;
+  final MiniAppHostController? controller = usableLocalController ?? registryController ?? hostController;
   final bool localControllerDisposed = _isDisposed(localController);
   final bool hostControllerDisposed = _isDisposed(rawHostController);
-  final bool navigationAttemptedAfterDispose =
-      contextMounted &&
-      localControllerDisposed &&
-      registryController == null &&
-      hostController == null;
+  final bool navigationAttemptedAfterDispose = contextMounted && localControllerDisposed && registryController == null && hostController == null;
 
   if (controller == null) {
     _reportNavigationResolutionFailure(
@@ -126,8 +115,7 @@ _ResolvedMiniAppNavigation? _resolveMiniAppNavigation(
     return null;
   }
 
-  final BuildContext? activeContext =
-      MiniAppHostControllerProvider.activeContextFor(controller);
+  final BuildContext? activeContext = MiniAppHostControllerProvider.activeContextFor(controller);
   final BuildContext launchContext = activeContext ?? context;
   if (!launchContext.mounted) {
     _reportNavigationResolutionFailure(

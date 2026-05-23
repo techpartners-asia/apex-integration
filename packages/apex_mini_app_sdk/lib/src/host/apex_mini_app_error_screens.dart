@@ -20,10 +20,7 @@ class ApexMiniAppMissingTokenScreen extends StatelessWidget {
 /// Host-facing fallback shown when the current host token/session expires.
 class ApexMiniAppSessionExpiredScreen extends StatelessWidget {
   /// Creates the session-expired fallback screen.
-  const ApexMiniAppSessionExpiredScreen({super.key, this.onClose});
-
-  /// Optional host close callback.
-  final VoidCallback? onClose;
+  const ApexMiniAppSessionExpiredScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,7 @@ class ApexMiniAppSessionExpiredScreen extends StatelessWidget {
       message: 'Please refresh the host token and reopen the Apex mini app.',
       icon: Icons.lock_clock_outlined,
       actionLabel: 'Close',
-      onAction: onClose,
+      onAction: () => Navigator.maybePop(context),
     );
   }
 }
@@ -64,14 +61,10 @@ class ApexMiniAppInitializationFailureScreen extends StatelessWidget {
   const ApexMiniAppInitializationFailureScreen({
     super.key,
     this.message,
-    this.onClose,
   });
 
   /// Optional failure message.
   final String? message;
-
-  /// Optional host close callback.
-  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +72,8 @@ class ApexMiniAppInitializationFailureScreen extends StatelessWidget {
       title: 'Initialization failed',
       message: message ?? 'Apex mini app could not be initialized.',
       icon: Icons.warning_amber_rounded,
-      actionLabel: onClose == null ? null : 'Close',
-      onAction: onClose,
+      actionLabel: 'Close',
+      onAction: () => Navigator.maybePop(context),
     );
   }
 }

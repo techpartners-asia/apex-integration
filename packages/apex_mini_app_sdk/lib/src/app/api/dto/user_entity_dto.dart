@@ -142,13 +142,15 @@ class UserEntityDto {
         : json;
     final Map<String, Object?> image = ApiParser.asObjectMap(source['image']);
     final Map<String, Object?> region = ApiParser.asObjectMap(source['region']);
+    final Map<String, Object?> account = _accountJsonFrom(source);
+    final Map<String, Object?> bank = _bankJsonFrom(source);
     final String? resolvedToken =
         ApiParser.asNullableString(payload['token']) ??
         ApiParser.asNullableString(json['token']);
 
     return UserEntityDto(
-      account: AccountDto.fromJson(ApiParser.asObjectMap(source['account'])),
-      bank: BankDto.fromJson(ApiParser.asObjectMap(source['bank'])),
+      account: AccountDto.fromJson(account),
+      bank: BankDto.fromJson(bank),
       id: ApiParser.asNullableInt(source['id']),
       // registerNo: 'ЪЪ98100630', // isBootstrapUserPayload ? _asRequiredBootstrapText(source['rd']) : ApiParser.asNullableString(source['rd']),
       registerNo: isBootstrapUserPayload
@@ -162,9 +164,13 @@ class UserEntityDto {
           ? _asRequiredBootstrapText(source['last_name'])
           : ApiParser.asNullableString(source['last_name']),
       phone: isBootstrapUserPayload
-          ? _asRequiredBootstrapText(source['phone'])
-          : ApiParser.asNullableString(source['phone']),
-      phoneAddition: ApiParser.asNullableString(source['phone_addition']),
+          ? _asRequiredBootstrapText(source['phone'] ?? source['mobile'])
+          : ApiParser.asNullableString(source['phone']) ??
+                ApiParser.asNullableString(source['mobile']),
+      phoneAddition:
+          ApiParser.asNullableString(source['phone_addition']) ??
+          ApiParser.asNullableString(source['secondary_mobile']) ??
+          ApiParser.asNullableString(source['secondaryMobile']),
       email: ApiParser.asNullableString(source['email']),
       gender: ApiParser.asNullableString(source['gender']),
       integrationId: ApiParser.asNullableString(source['integration_id']),
@@ -191,6 +197,52 @@ class UserEntityDto {
   /// Keeps bootstrap-required text fields non-null after parsing.
   static String _asRequiredBootstrapText(Object? value) {
     return value?.toString().trim() ?? '';
+  }
+
+  /// Builds the account map from nested and flat signup/profile fields.
+  static Map<String, Object?> _accountJsonFrom(Map<String, Object?> source) {
+    final Map<String, Object?> account = <String, Object?>{
+      ...ApiParser.asObjectMap(source['account']),
+    };
+    for (final String key in const <String>[
+      'is_invest',
+      'is_invest_contract',
+      'is_paid_contract',
+      'kyc_status',
+      'package_code',
+      'signature_id',
+      'signature_file',
+    ]) {
+      if (source.containsKey(key) && !account.containsKey(key)) {
+        account[key] = source[key];
+      }
+    }
+    return account;
+  }
+
+  /// Builds the bank map from nested and flat signup/profile fields.
+  static Map<String, Object?> _bankJsonFrom(Map<String, Object?> source) {
+    final Map<String, Object?> bank = <String, Object?>{
+      ...ApiParser.asObjectMap(source['bank']),
+    };
+    for (final String key in const <String>[
+      'account_number',
+      'account_name',
+      'bank_id',
+      'bank_code',
+      'bank_name',
+      'user_id',
+      'created_at',
+      'updated_at',
+    ]) {
+      if (source.containsKey(key) && !bank.containsKey(key)) {
+        bank[key] = source[key];
+      }
+    }
+    if (source.containsKey('iban') && !bank.containsKey('account_number')) {
+      bank['account_number'] = source['iban'];
+    }
+    return bank;
   }
 
   /// Normalizes unknown platform values.

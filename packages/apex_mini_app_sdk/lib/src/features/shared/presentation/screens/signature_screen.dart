@@ -33,8 +33,8 @@ class SignatureScreen extends StatelessWidget {
   /// Back action.
   final VoidCallback? onBack;
 
-  /// Close action.
-  final VoidCallback? onClose;
+  /// Dismiss action.
+  final VoidCallback? onDismiss;
 
   /// Whether the app bar back button is visible.
   final bool showBackButton;
@@ -91,7 +91,7 @@ class SignatureScreen extends StatelessWidget {
     required this.continueEnabled,
     required this.onContinue,
     this.onBack,
-    this.onClose,
+    this.onDismiss,
     this.showBackButton = true,
     this.showCloseButton = false,
     this.appBarCenterTitle = true,
@@ -115,7 +115,7 @@ class SignatureScreen extends StatelessWidget {
       showBackButton: showBackButton,
       showCloseButton: showCloseButton,
       onBack: onBack,
-      onClose: onClose,
+      onDismiss: onDismiss,
       appBarCenterTitle: appBarCenterTitle,
       appBarReserveLeadingSpace: appBarReserveLeadingSpace,
       appBarTitleSpacing: appBarTitleSpacing,

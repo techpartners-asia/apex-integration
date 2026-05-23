@@ -9,7 +9,7 @@ import 'apex_mini_app_host_context.dart';
 /// Public widget used by a host app to embed the Apex mini app.
 ///
 /// This widget owns the SDK runtime, navigator key, host callbacks, controller
-/// binding, and safe close behavior. Host apps should prefer this entry point
+/// binding, and local close behavior. Host apps should prefer this entry point
 /// over constructing lower-level runtime classes directly.
 class ApexMiniAppSdk extends StatefulWidget {
   /// Creates the mini app from individual host parameters.
@@ -43,8 +43,6 @@ class ApexMiniAppSdk extends StatefulWidget {
     this.paymentTimeout = MiniAppSdkConfig.defaultPaymentTimeout,
     this.logger = const DebugMiniAppLogger(),
     this.userDataSourceMode = MiniAppUserDataSourceMode.realUser,
-    this.onClose,
-    this.onCloseWithResult,
     this.onTokenExpired,
     this.onNavigate,
     this.onError,
@@ -83,8 +81,6 @@ class ApexMiniAppSdk extends StatefulWidget {
     this.paymentTimeout = MiniAppSdkConfig.defaultPaymentTimeout,
     this.logger = const DebugMiniAppLogger(),
     this.userDataSourceMode = MiniAppUserDataSourceMode.realUser,
-    this.onClose,
-    this.onCloseWithResult,
     this.onTokenExpired,
     this.onNavigate,
     this.onError,
@@ -123,12 +119,6 @@ class ApexMiniAppSdk extends StatefulWidget {
   /// Selects real-user or contract-user session source.
   final MiniAppUserDataSourceMode userDataSourceMode;
 
-  /// Called when the mini app requests close without a result.
-  final ApexMiniAppCloseHook? onClose;
-
-  /// Called when the mini app closes and returns a result.
-  final ApexMiniAppCloseResultHook? onCloseWithResult;
-
   /// Called when the SDK detects an expired/missing token flow.
   final ApexMiniAppTokenExpiredHook? onTokenExpired;
 
@@ -165,11 +155,11 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   /// Signature used to avoid duplicate initial-route launch callbacks.
   String? _preparedLaunchSignature;
 
-  /// Whether host close callbacks have already been emitted.
-  bool _closeEmitted = false;
-
   /// Guard that prevents concurrent safe-close flows.
   bool _isClosingMiniApp = false;
+
+  /// Allows safe close to pop the route that embeds the SDK.
+  bool _allowEmbeddingRoutePop = false;
 
   @override
   void initState() {
@@ -200,7 +190,6 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
 
   @override
   void dispose() {
-    _emitClose(null);
     _disposeAllSdks();
     ApexMiniAppHostContext.clear(_callbacks);
     super.dispose();
@@ -239,7 +228,6 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
 
   /// Validates host config, binds callbacks, and builds the SDK runtime.
   void _configure() {
-    _closeEmitted = false;
     _isClosingMiniApp = false;
     _initializationError = null;
     _callbacks = _buildCallbacks();
@@ -279,7 +267,6 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   /// Creates the callback bundle stored in the static host context.
   ApexMiniAppHostCallbacks _buildCallbacks() {
     return ApexMiniAppHostCallbacks(
-      onClose: _emitClose,
       onTokenExpired: _handleTokenExpired,
       onNavigate: widget.onNavigate,
       onError: _emitHostError,
@@ -320,103 +307,29 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     _retiredSdks.clear();
   }
 
-  /// Starts the safe close flow without awaiting from synchronous callbacks.
-  void _emitClose(Object? result) {
-    unawaited(_closeMiniAppSafely(null, result));
-  }
-
-  /// Clears mini-app overlays/routes before notifying the host that the mini
-  /// app has closed.
-  Future<void> _closeMiniAppSafely(
-    BuildContext? context,
-    Object? result,
-  ) async {
-    if (_closeEmitted) {
-      return;
-    }
+  /// Clears transient UI and pops the current mini-app route when possible.
+  Future<void> _closeMiniAppSafely(BuildContext? context) async {
     if (_isClosingMiniApp) {
       return;
     }
 
     _isClosingMiniApp = true;
     try {
-      if (context != null && context.mounted) {
-        await _showCloseErrorDialog(context);
-      }
-
-      await _dismissAllMiniAppOverlays(
-        context != null && context.mounted ? context : null,
-      );
+      MiniAppToast.hide();
+      final BuildContext? mountedContext = context != null && context.mounted
+          ? context
+          : null;
+      final Set<ScaffoldMessengerState> messengers =
+          _resolveMiniAppScaffoldMessengers(mountedContext);
+      _clearMiniAppScaffoldMessengers(messengers);
+      await _popCurrentMiniAppRoute(mountedContext);
+      _clearMiniAppScaffoldMessengers(messengers);
     } catch (error, stackTrace) {
-      debugPrint('Failed to dismiss mini app overlays: $error');
+      debugPrint('Failed to close mini app route: $error');
       debugPrintStack(stackTrace: stackTrace);
-    }
-
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-
-    if (_closeEmitted) {
-      _isClosingMiniApp = false;
-      return;
-    }
-
-    _closeEmitted = true;
-    try {
-      widget.onClose?.call();
-      widget.onCloseWithResult?.call(result);
     } finally {
       _isClosingMiniApp = false;
     }
-  }
-
-  /// Shows the mini-app-owned close error dialog before the host close callback.
-  Future<void> _showCloseErrorDialog(BuildContext context) async {
-    final SdkLocalizations l10n = context.l10n;
-    await showMiniAppDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      title: l10n.errorsGenericTitle,
-      body: CustomText(
-        l10n.errorsUnexpected,
-        variant: MiniAppTextVariant.body2,
-      ),
-      actions: <Widget>[
-        Builder(
-          builder: (BuildContext buttonContext) => FilledButton(
-            onPressed: () => Navigator.of(buttonContext).pop(),
-            child: CustomText(
-              l10n.commonClose,
-              variant: MiniAppTextVariant.buttonMedium,
-              color: Theme.of(buttonContext).colorScheme.onPrimary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// Dismisses SDK-owned transient UI so dialogs do not remain over the host.
-  Future<void> _dismissAllMiniAppOverlays(BuildContext? context) async {
-    MiniAppToast.hide();
-    final Set<ScaffoldMessengerState> messengers =
-        _resolveMiniAppScaffoldMessengers(context);
-    final NavigatorState? contextNavigator = context != null && context.mounted
-        ? Navigator.maybeOf(context)
-        : null;
-    final NavigatorState? contextRootNavigator =
-        context != null && context.mounted
-        ? Navigator.maybeOf(context, rootNavigator: true)
-        : null;
-    final NavigatorState? rootNavigator = _navigatorKey.currentState;
-    _clearMiniAppScaffoldMessengers(messengers);
-    await _dismissMiniAppNavigatorRoutes(contextNavigator);
-    if (!identical(contextRootNavigator, contextNavigator)) {
-      await _dismissMiniAppNavigatorRoutes(contextRootNavigator);
-    }
-    if (!identical(rootNavigator, contextNavigator) &&
-        !identical(rootNavigator, contextRootNavigator)) {
-      await _dismissMiniAppNavigatorRoutes(rootNavigator);
-    }
-    _clearMiniAppScaffoldMessengers(messengers);
   }
 
   /// Finds scaffold messengers from the active context and navigator context.
@@ -458,18 +371,98 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     }
   }
 
-  /// Pops mini-app navigator routes such as dialogs, sheets, and pushed pages.
-  Future<void> _dismissMiniAppNavigatorRoutes(NavigatorState? navigator) async {
-    if (navigator == null || !navigator.mounted) {
+  /// Pops the closest available mini-app navigator route.
+  Future<void> _popCurrentMiniAppRoute(BuildContext? context) async {
+    final NavigatorState? contextNavigator = context != null && context.mounted
+        ? Navigator.maybeOf(context)
+        : null;
+    final ModalRoute<dynamic>? contextRoute = context != null && context.mounted
+        ? ModalRoute.of(context)
+        : null;
+    final bool hasCoveringRoute =
+        contextRoute != null && !contextRoute.isCurrent;
+
+    if (hasCoveringRoute && await _maybePopNavigator(contextNavigator)) {
       return;
     }
 
-    var popCount = 0;
-    while (navigator.mounted && navigator.canPop() && popCount < 20) {
+    final NavigatorState? contextRootNavigator =
+        context != null && context.mounted
+        ? Navigator.maybeOf(context, rootNavigator: true)
+        : null;
+    if (hasCoveringRoute &&
+        !identical(contextRootNavigator, contextNavigator) &&
+        await _maybePopNavigator(contextRootNavigator)) {
+      return;
+    }
+
+    if (mounted) {
+      final NavigatorState? embeddingNavigator = Navigator.maybeOf(
+        this.context,
+      );
+      if (!identical(embeddingNavigator, contextNavigator) &&
+          await _maybePopEmbeddingNavigator(embeddingNavigator)) {
+        return;
+      }
+    }
+
+    final NavigatorState? miniAppNavigator = _navigatorKey.currentState;
+    if (!identical(miniAppNavigator, contextNavigator) &&
+        !identical(miniAppNavigator, contextRootNavigator) &&
+        await _maybePopNavigator(miniAppNavigator)) {
+      return;
+    }
+
+    if (!hasCoveringRoute && await _maybePopNavigator(contextNavigator)) {
+      return;
+    }
+
+    if (!hasCoveringRoute &&
+        !identical(contextRootNavigator, contextNavigator)) {
+      await _maybePopNavigator(contextRootNavigator);
+    }
+  }
+
+  /// Pops [navigator] once when it has an internal route to remove.
+  Future<bool> _maybePopNavigator(NavigatorState? navigator) async {
+    if (navigator == null || !navigator.mounted) {
+      return false;
+    }
+
+    if (!navigator.canPop()) {
+      return false;
+    }
+
+    navigator.pop();
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    return true;
+  }
+
+  /// Pops the host route that contains the SDK without invoking host callbacks.
+  Future<bool> _maybePopEmbeddingNavigator(NavigatorState? navigator) async {
+    if (navigator == null || !navigator.mounted || !navigator.canPop()) {
+      return false;
+    }
+
+    if (mounted && !_allowEmbeddingRoutePop) {
+      setState(() {
+        _allowEmbeddingRoutePop = true;
+      });
+      await WidgetsBinding.instance.endOfFrame;
+    }
+
+    if (navigator.mounted && navigator.canPop()) {
       navigator.pop();
-      popCount += 1;
       await Future<void>.delayed(const Duration(milliseconds: 50));
     }
+
+    if (mounted && _allowEmbeddingRoutePop) {
+      setState(() {
+        _allowEmbeddingRoutePop = false;
+      });
+    }
+
+    return true;
   }
 
   /// Emits an error to the host if the host provided an error callback.
@@ -492,9 +485,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
 
     navigator.pushAndRemoveUntil<void>(
       MaterialPageRoute<void>(
-        builder: (_) => ApexMiniAppSessionExpiredScreen(
-          onClose: () => _emitClose(null),
-        ),
+        builder: (_) => const ApexMiniAppSessionExpiredScreen(),
       ),
       (Route<dynamic> route) => false,
     );
@@ -512,7 +503,6 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       return _buildApp(
         home: ApexMiniAppInitializationFailureScreen(
           message: _initializationError?.toString(),
-          onClose: () => _emitClose(null),
         ),
       );
     }
@@ -572,10 +562,10 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     return MiniAppHostControllerScope(
       controller: sdk.runtime.controller,
       child: PopScope<Object?>(
-        canPop: false,
+        canPop: _allowEmbeddingRoutePop,
         onPopInvokedWithResult: (bool didPop, Object? result) {
           if (!didPop) {
-            _emitClose(result);
+            unawaited(_closeMiniAppSafely(context));
           }
         },
         child: MiniAppHostShell(

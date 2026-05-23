@@ -53,6 +53,10 @@ bool isShortSecAcntFlow(AcntBootstrapState? state) =>
 bool hasPaidSecAcntContract(UserEntityDto? user) =>
     user?.account?.hasPaidContract ?? false;
 
+/// Whether the current profile says the InvestX contract is already complete.
+bool hasCompletedSecAcntContract(UserEntityDto? user) =>
+    user?.account?.hasInvestContract ?? false;
+
 /// Whether the current profile already has a stored signature.
 bool hasSavedSecAcntSignature(UserEntityDto? user) =>
     user?.account?.hasSavedSignature ?? false;
@@ -73,21 +77,22 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
     user: currentUser,
   );
   final bool hasSignature = hasSavedSecAcntSignature(currentUser);
+  final bool hasCompletedContract = hasCompletedSecAcntContract(currentUser);
   final bool hasPaidContract = hasPaidSecAcntContract(currentUser);
 
   if (isShortSecAcntFlow(state)) {
     return <SecAcntFlowStep>[
       SecAcntFlowStep.consent,
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
-      SecAcntFlowStep.success,
-      SecAcntFlowStep.serviceAgreement,
+      if (!hasPaidContract) SecAcntFlowStep.success,
+      if (!hasCompletedContract) SecAcntFlowStep.serviceAgreement,
     ];
   }
 
   return <SecAcntFlowStep>[
     SecAcntFlowStep.consent,
     if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
-    if (!hasSignature) SecAcntFlowStep.secAgreement,
+    if (!hasCompletedContract) SecAcntFlowStep.secAgreement,
     if (!hasSignature) SecAcntFlowStep.signature,
     if (!hasPaidContract) SecAcntFlowStep.payment,
     SecAcntFlowStep.calculation,
@@ -244,12 +249,11 @@ class SecAcntFlowDraft {
     bankLabel: _trimToNull(selectedBank?.label),
   );
 
-  /// Whether all required contact, bank, and holder fields are valid.
+  /// Whether all required contact and bank fields are valid.
   bool get hasCompletePersonalInfo {
     return hasCompleteContactInfo &&
         _isValidIban(iban) &&
-        _trimToNull(selectedBank?.id) != null &&
-        _trimToNull(acntName) != null;
+        _trimToNull(selectedBank?.id) != null;
   }
 
   /// Whether mobile, secondary mobile, and email values are valid.

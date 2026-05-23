@@ -24,7 +24,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get commonCancel => 'Цуцлах';
 
   @override
-  String get commonClose => 'Хаах';
+  String get commonDismiss => 'Хаах';
 
   @override
   String get commonBack => 'Буцах';

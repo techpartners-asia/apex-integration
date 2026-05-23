@@ -106,11 +106,7 @@ class MiniAppSdk {
       return failure;
     }
 
-    final MiniAppLaunchRes res = await runtime.launch(context, req);
-    if (res.status == MiniAppLaunchStatus.success) {
-      ApexMiniAppHostContext.emitClose(res.data);
-    }
-    return res;
+    return runtime.launch(context, req);
   }
 
   /// Tears down callbacks, controller registry entries, and runtime resources.

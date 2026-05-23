@@ -114,7 +114,7 @@ class _SecAcntSignatureScreenState extends State<SecAcntSignatureScreen> {
       showBackButton: header.showBack,
       showCloseButton: header.showClose,
       onBack: () => Navigator.of(context).maybePop(),
-      onClose: () => closeMiniAppSafely(context),
+      onDismiss: () => closeMiniAppSafely(context),
       hasSafeArea: false,
       headerWidget: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.responsive.dp(16)),
