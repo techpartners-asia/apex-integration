@@ -37,29 +37,22 @@ bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 bool requiresSecAcntOpeningPayment(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
-}) =>
-    (state?.requiresSecAcntPayment ?? false) &&
-    !hasPaidSecAcntContract(currentUser);
+}) => (state?.requiresSecAcntPayment ?? false) && !hasPaidSecAcntContract(currentUser);
 
 /// Whether the backend says account-opening request is already pending.
-bool hasPendingSecAcntOpeningRequest(AcntBootstrapState? state) =>
-    state?.requiresSecAcntPayment ?? false;
+bool hasPendingSecAcntOpeningRequest(AcntBootstrapState? state) => state?.requiresSecAcntPayment ?? false;
 
 /// Whether the user has a securities account but has not enabled IPS.
-bool isShortSecAcntFlow(AcntBootstrapState? state) =>
-    state?.hasAcnt == true && state?.hasIpsAcnt == false;
+bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && state?.hasIpsAcnt == false;
 
 /// Whether the current profile says the contract/payment fee is already paid.
-bool hasPaidSecAcntContract(UserEntityDto? user) =>
-    user?.account?.hasPaidContract ?? false;
+bool hasPaidSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
 
 /// Whether the current profile says the InvestX contract is already complete.
-bool hasCompletedSecAcntContract(UserEntityDto? user) =>
-    user?.account?.hasInvestContract ?? false;
+bool hasCompletedSecAcntContract(UserEntityDto? user) => user?.account?.hasInvestContract ?? false;
 
 /// Whether the current profile already has a stored signature.
-bool hasSavedSecAcntSignature(UserEntityDto? user) =>
-    user?.account?.hasSavedSignature ?? false;
+bool hasSavedSecAcntSignature(UserEntityDto? user) => user?.account?.hasSavedSignature ?? false;
 
 /// Whether profile/bootstrap data is enough to skip personal info entry.
 bool hasCompleteSecAcntPersonalInfo(
@@ -82,7 +75,7 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
 
   if (isShortSecAcntFlow(state)) {
     return <SecAcntFlowStep>[
-      SecAcntFlowStep.consent,
+      if (!hasCompletePersonalInfo) SecAcntFlowStep.consent,
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
       if (!hasPaidContract) SecAcntFlowStep.success,
       if (!hasCompletedContract) SecAcntFlowStep.serviceAgreement,
@@ -90,7 +83,7 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   }
 
   return <SecAcntFlowStep>[
-    SecAcntFlowStep.consent,
+    if (!hasCompletePersonalInfo) SecAcntFlowStep.consent,
     if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
     if (!hasCompletedContract) SecAcntFlowStep.secAgreement,
     if (!hasSignature) SecAcntFlowStep.signature,
@@ -146,11 +139,7 @@ class SecAcntBankOption {
   const SecAcntBankOption(this.id, this.label, this.shortLabel, this.logoUrl);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SecAcntBankOption &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+  bool operator ==(Object other) => identical(this, other) || other is SecAcntBankOption && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -232,9 +221,7 @@ class SecAcntFlowDraft {
       email: email ?? this.email,
       iban: iban ?? this.iban,
       acntName: acntName ?? this.acntName,
-      selectedBank: selectedBank == _sentinel
-          ? this.selectedBank
-          : selectedBank as SecAcntBankOption?,
+      selectedBank: selectedBank == _sentinel ? this.selectedBank : selectedBank as SecAcntBankOption?,
     );
   }
 
@@ -251,16 +238,12 @@ class SecAcntFlowDraft {
 
   /// Whether all required contact and bank fields are valid.
   bool get hasCompletePersonalInfo {
-    return hasCompleteContactInfo &&
-        _isValidIban(iban) &&
-        _trimToNull(selectedBank?.id) != null;
+    return hasCompleteContactInfo && _isValidIban(iban) && _trimToNull(selectedBank?.id) != null;
   }
 
   /// Whether mobile, secondary mobile, and email values are valid.
   bool get hasCompleteContactInfo {
-    return _isValidPhone(mobile) &&
-        _isValidPhone(secondaryMobile) &&
-        _isValidEmail(email);
+    return _isValidPhone(mobile) && _isValidPhone(secondaryMobile) && _isValidEmail(email);
   }
 
   static const Object _sentinel = Object();
@@ -288,26 +271,38 @@ String? _resolveBootstrapBankCode(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) {
+  final String? userBankCode = _trimToNull(
+    user?.bank?.bankCode ?? user?.bank?.bankId,
+  );
+  if (userBankCode != null) {
+    return userBankCode;
+  }
+
   final String? bankCode = _trimToNull(state?.bootstrapBankCode);
   if (bankCode != null) {
     return bankCode;
   }
 
-  return _trimToNull(user?.bank?.bankCode ?? user?.bank?.bankId);
+  return null;
 }
 
 String? _resolveBootstrapBankName(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) {
+  final String? userBankName = _trimToNull(
+    user?.bank?.bankName ?? user?.bank?.bankId ?? user?.bank?.bankCode,
+  );
+  if (userBankName != null) {
+    return userBankName;
+  }
+
   final String? bankName = _trimToNull(state?.bootstrapBankName);
   if (bankName != null) {
     return bankName;
   }
 
-  return _trimToNull(
-    user?.bank?.bankName ?? user?.bank?.bankId ?? user?.bank?.bankCode,
-  );
+  return null;
 }
 
 String? _resolveBootstrapAcntName(
@@ -335,15 +330,12 @@ String? _resolveBootstrapIban(
 }
 
 String? _sanitizeIbanDigits(String? value) {
-  final String normalized =
-      value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
+  final String normalized = value?.replaceAll(RegExp(r'[^A-Za-z0-9]'), '') ?? '';
   if (normalized.isEmpty) {
     return null;
   }
 
-  final String withoutPrefix = normalized.toUpperCase().startsWith('MN')
-      ? normalized.substring(2)
-      : normalized;
+  final String withoutPrefix = normalized.toUpperCase().startsWith('MN') ? normalized.substring(2) : normalized;
   final String digitsOnly = withoutPrefix.replaceAll(RegExp(r'\D'), '');
   return digitsOnly.isEmpty ? null : digitsOnly;
 }

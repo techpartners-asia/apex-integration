@@ -35,8 +35,7 @@ class SecAcntPersonalInfoScreen extends StatefulWidget {
   });
 
   @override
-  State<SecAcntPersonalInfoScreen> createState() =>
-      _SecAcntPersonalInfoScreenState();
+  State<SecAcntPersonalInfoScreen> createState() => _SecAcntPersonalInfoScreenState();
 }
 
 /// Owns form state, validation, bank lookup, and profile submission.
@@ -62,8 +61,14 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   /// Currently selected settlement bank.
   SecAcntBankOption? _selectedBank;
 
+  /// Loaded bank options used to canonicalize profile/draft bank selections.
+  List<SecAcntBankOption> _bankOptions = const <SecAcntBankOption>[];
+
   /// Whether bank options have been warmed once for matching existing data.
   bool _didWarmBankOptions = false;
+
+  /// Whether the user manually selected a bank in this screen.
+  bool _userChangedBank = false;
 
   /// Whether the user has changed or attempted to submit personal info.
   bool _didInteractWithPersonalInfo = false;
@@ -84,8 +89,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   bool get _isShortFlow => isShortSecAcntFlow(widget.bootstrapState);
 
   /// Whether contact fields can be skipped because profile data is complete.
-  bool get _usesBankOnlyShortForm =>
-      _isShortFlow && widget.initialDraft.hasCompleteContactInfo;
+  bool get _usesBankOnlyShortForm => _isShortFlow && widget.initialDraft.hasCompleteContactInfo;
 
   @override
   void initState() {
@@ -96,7 +100,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
     _emailController = TextEditingController(text: widget.initialDraft.email);
     _ibanController = TextEditingController(text: widget.initialDraft.iban);
-    _selectedBank = widget.initialDraft.selectedBank;
+    _selectedBank = _initialSelectedBank();
     _profileSubmissionService = SecAcntProfileSubmissionService(
       appApi: widget.appApi,
       bankAccountLookupRepository: widget.bankAccountLookupRepository,
@@ -107,6 +111,16 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     _secondaryMobileController.addListener(_refresh);
     _emailController.addListener(_refresh);
     _ibanController.addListener(_refresh);
+  }
+
+  @override
+  void didUpdateWidget(covariant SecAcntPersonalInfoScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_userChangedBank || _initialBankFingerprint(oldWidget) == _initialBankFingerprint(widget)) {
+      return;
+    }
+
+    _syncInitialSelectedBank();
   }
 
   @override
@@ -146,18 +160,75 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       return;
     }
 
-    final SecAcntBankOption? matchedBank = _matchBankOption(
-      bankOptions: bankOptions,
-      bankCode: _selectedBank?.id,
-      bankName: _selectedBank?.label,
+    final SecAcntBankOption? matchedBank = _resolveInitialSelectedBank(
+      bankOptions,
     );
 
     setState(() {
-      if (matchedBank != null) {
+      _bankOptions = bankOptions;
+      if (!_userChangedBank && matchedBank != null) {
         _selectedBank = matchedBank;
       }
       _isWarmingBankOptions = false;
     });
+  }
+
+  /// Synchronizes profile/draft bank values after async inputs change.
+  void _syncInitialSelectedBank() {
+    if (_userChangedBank || !mounted) {
+      return;
+    }
+
+    final SecAcntBankOption? matchedBank = _resolveInitialSelectedBank(
+      _bankOptions,
+    );
+    if (_sameBankOption(_selectedBank, matchedBank)) {
+      return;
+    }
+
+    setState(() {
+      _selectedBank = matchedBank;
+    });
+  }
+
+  /// Resolves the initial bank, preferring profile bank code over fallbacks.
+  SecAcntBankOption? _resolveInitialSelectedBank(
+    List<SecAcntBankOption> bankOptions,
+  ) {
+    final SecAcntBankOption? profileBank = _profileSelectedBank();
+    final String? profileBankCode = _trimToNull(profileBank?.id);
+    if (profileBankCode != null) {
+      return _matchBankOptionByCode(bankOptions, profileBankCode) ?? profileBank;
+    }
+
+    final SecAcntBankOption? draftBank = widget.initialDraft.selectedBank;
+    if (draftBank == null) {
+      return null;
+    }
+
+    return _matchBankOption(
+          bankOptions: bankOptions,
+          bankCode: draftBank.id,
+          bankName: draftBank.label,
+        ) ??
+        draftBank;
+  }
+
+  /// Initial bank alias from profile response or draft fallback.
+  SecAcntBankOption? _initialSelectedBank() {
+    return _profileSelectedBank() ?? widget.initialDraft.selectedBank;
+  }
+
+  /// Builds an initial bank option directly from profile `bank.bank_code`.
+  SecAcntBankOption? _profileSelectedBank() {
+    final BankDto? bank = widget.currentUser?.bank;
+    final String? bankCode = _trimToNull(bank?.bankCode);
+    if (bankCode == null) {
+      return null;
+    }
+
+    final String label = _trimToNull(bank?.bankName) ?? bankCode;
+    return SecAcntBankOption(bankCode, label, label, '');
   }
 
   /// Finds a bank option matching an existing bank code or display name.
@@ -166,16 +237,64 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     String? bankCode,
     String? bankName,
   }) {
+    final SecAcntBankOption? codeMatch = _matchBankOptionByCode(
+      bankOptions,
+      bankCode,
+    );
+    if (codeMatch != null) {
+      return codeMatch;
+    }
+
+    final String? normalizedBankName = _trimToNull(bankName)?.toLowerCase();
+    if (normalizedBankName == null) {
+      return null;
+    }
+
     for (final SecAcntBankOption option in bankOptions) {
-      if (bankCode != null && option.id.trim() == bankCode.trim()) {
-        return option;
-      }
-      if (bankName != null &&
-          option.label.trim().toLowerCase() == bankName.trim().toLowerCase()) {
+      if (option.label.trim().toLowerCase() == normalizedBankName) {
         return option;
       }
     }
     return null;
+  }
+
+  /// Finds a bank option by normalized bank code.
+  SecAcntBankOption? _matchBankOptionByCode(
+    List<SecAcntBankOption> bankOptions,
+    String? bankCode,
+  ) {
+    final String? normalizedBankCode = _trimToNull(bankCode);
+    if (normalizedBankCode == null) {
+      return null;
+    }
+
+    for (final SecAcntBankOption option in bankOptions) {
+      if (option.id.trim() == normalizedBankCode) {
+        return option;
+      }
+    }
+    return null;
+  }
+
+  /// Returns true when two bank options carry the same display data.
+  bool _sameBankOption(SecAcntBankOption? a, SecAcntBankOption? b) {
+    return a?.id == b?.id && a?.label == b?.label && a?.shortLabel == b?.shortLabel && a?.logoUrl == b?.logoUrl;
+  }
+
+  /// Profile/draft bank fields that should trigger initial-bank resync.
+  String _initialBankFingerprint(SecAcntPersonalInfoScreen widget) {
+    return <String?>[
+      widget.currentUser?.bank?.bankCode,
+      widget.currentUser?.bank?.bankName,
+      widget.initialDraft.selectedBank?.id,
+      widget.initialDraft.selectedBank?.label,
+    ].map((String? value) => _trimToNull(value) ?? '').join('|');
+  }
+
+  /// Returns trimmed text or null when empty.
+  String? _trimToNull(String? value) {
+    final String trimmed = value?.trim() ?? '';
+    return trimmed.isEmpty ? null : trimmed;
   }
 
   /// Validates the primary mobile field when contact info is required.
@@ -218,9 +337,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   }
 
   /// Form autovalidation mode after first interaction.
-  AutovalidateMode get _autovalidateMode => _didInteractWithPersonalInfo
-      ? AutovalidateMode.always
-      : AutovalidateMode.disabled;
+  AutovalidateMode get _autovalidateMode => _didInteractWithPersonalInfo ? AutovalidateMode.always : AutovalidateMode.disabled;
 
   /// Returns bank selector error text only after relevant interaction.
   String? _bankErrorText(BuildContext context) {
@@ -233,13 +350,11 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   /// Returns whether all fields required by the active flow are valid.
   bool _canContinue(BuildContext context) {
     if (_usesBankOnlyShortForm) {
-      return _validateIban(context, _ibanController.text) == null &&
-          _validateSelectedBank(context) == null;
+      return _validateIban(context, _ibanController.text) == null && _validateSelectedBank(context) == null;
     }
 
     return _validateMobile(context, _mobileController.text) == null &&
-        _validateSecondaryMobile(context, _secondaryMobileController.text) ==
-            null &&
+        _validateSecondaryMobile(context, _secondaryMobileController.text) == null &&
         _validateEmail(context, _emailController.text) == null &&
         _validateIban(context, _ibanController.text) == null &&
         _validateSelectedBank(context) == null;
@@ -251,26 +366,26 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       setState(() => _didTouchBankSelector = true);
     }
 
-    final SecAcntBankOption? selected =
-        await showModalBottomSheet<SecAcntBankOption>(
-          context: context,
-          useSafeArea: false,
-          backgroundColor: MiniAppStateColors.bottomSheetBackground,
-          isScrollControlled: true,
-          showDragHandle: false,
-          builder: (BuildContext context) {
-            return SecAcntBankSelectionSheet(
-              selectedBank: _selectedBank,
-              bankOptionsRepository: widget.bankOptionsRepository,
-            );
-          },
+    final SecAcntBankOption? selected = await showModalBottomSheet<SecAcntBankOption>(
+      context: context,
+      useSafeArea: false,
+      backgroundColor: MiniAppStateColors.bottomSheetBackground,
+      isScrollControlled: true,
+      showDragHandle: false,
+      builder: (BuildContext context) {
+        return SecAcntBankSelectionSheet(
+          selectedBank: _selectedBank,
+          bankOptionsRepository: widget.bankOptionsRepository,
         );
+      },
+    );
 
     if (selected == null || !mounted) {
       return;
     }
 
     setState(() {
+      _userChangedBank = true;
       _selectedBank = selected;
       _submitErrorMessage = null;
     });
@@ -372,11 +487,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final double footerClearance =
-        responsive.dp(24) +
-        responsive.spacing.buttonHeight +
-        4 +
-        responsive.safeBottom;
+    final double footerClearance = responsive.dp(24) + responsive.spacing.buttonHeight + 4 + responsive.safeBottom;
     final SecAcntWizardHeaderData header = buildSecAcntHeader(
       context,
       SecAcntFlowStep.personalInformation,
@@ -456,16 +567,13 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
               onSelectBank: () => _selectBank(context),
               isShortFlow: _usesBankOnlyShortForm,
               autovalidateMode: _autovalidateMode,
-              mobileValidator: (String? value) =>
-                  _validateMobile(context, value),
-              secondaryMobileValidator: (String? value) =>
-                  _validateSecondaryMobile(context, value),
+              mobileValidator: (String? value) => _validateMobile(context, value),
+              secondaryMobileValidator: (String? value) => _validateSecondaryMobile(context, value),
               emailValidator: (String? value) => _validateEmail(context, value),
               ibanValidator: (String? value) => _validateIban(context, value),
               bankErrorText: _bankErrorText(context),
             ),
-            if (_hasSubmitError)
-              _SubmitErrorBanner(message: _submitErrorMessage!),
+            if (_hasSubmitError) _SubmitErrorBanner(message: _submitErrorMessage!),
           ],
         ),
       ),
@@ -473,8 +581,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   }
 
   /// Whether a non-empty submission error should be shown.
-  bool get _hasSubmitError =>
-      _submitErrorMessage != null && _submitErrorMessage!.trim().isNotEmpty;
+  bool get _hasSubmitError => _submitErrorMessage != null && _submitErrorMessage!.trim().isNotEmpty;
 
   @override
   void dispose() {

@@ -63,7 +63,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get commonMessage => 'Мессеж';
 
   @override
-  String get commonNoData => 'Өгөгдөл алга';
+  String get commonNoData => 'Мэдээлэл алга';
 
   @override
   String get commonRequired => 'Шаардлагатай';
@@ -75,7 +75,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get errorsServiceUnavailable => 'Үйлчилгээ одоогоор боломжгүй байна.';
 
   @override
-  String get errorsUnexpected => 'Санамсаргүй алдаа гарлаа.';
+  String get errorsUnexpected => 'Алдаа гарлаа.';
 
   @override
   String get errorsNetwork =>
@@ -86,8 +86,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Таны session хүчингүй байна. Mini app-аа дахин нээнэ үү.';
 
   @override
-  String get errorsConfig =>
-      'Энэ mini app integration зөв тохируулагдаагүй байна.';
+  String get errorsConfig => 'mini app integration өгөгдөл алдаатай байна.';
 
   @override
   String get errorsSessionExpired =>
@@ -111,7 +110,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Backend-ийн нарийн contract хараахан бэлэн болоогүй байна.';
 
   @override
-  String get errorsUnknownRoute => 'Хүссэн урсгалын route бүртгэгдээгүй байна.';
+  String get errorsUnknownRoute => 'Route бүртгэгдээгүй байна.';
 
   @override
   String get validationRequired => 'Энэ талбарыг заавал бөглөнө.';
@@ -174,14 +173,13 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsHomeTitle => 'IPS тойм';
 
   @override
-  String get ipsHomeSubtitle =>
-      'ҮЦ дансны баталгаажуулалт болон IPS эрхийн урсгал.';
+  String get ipsHomeSubtitle => 'ҮЦ данс баталгаажуулалт';
 
   @override
   String get ipsHomeOverviewCardTitle => 'Одоогийн төлөв';
 
   @override
-  String get ipsHomeOpenAcntCta => 'Дансны урсгал';
+  String get ipsHomeOpenAcntCta => 'Данс нээх';
 
   @override
   String get ipsHomeQuestionnaireCta => 'Асуумж';
@@ -200,7 +198,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsHomeNextStepsSubtitle =>
-      'Одоогийн төлөв дээр тулгуурлан IPS-ийн дараагийн урсгалыг нээнэ.';
+      'Одоогийн төлөв дээр тулгуурлан IPS-ийн дараагийн алхмыг хийнэ.';
 
   @override
   String get ipsHomeSecAcntLabel => 'ҮЦ данс';
@@ -327,7 +325,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsAcntSubtitle =>
-      'Танилцуулга, зөвшөөрөл, данс нээх хүсэлт, QR үүсгэх урсгал.';
+      'Танилцуулга, зөвшөөрөл, данс нээх хүсэлт, QR үүсгэх.';
 
   @override
   String get ipsAcntOpenAcnt => 'ҮЦ данс нээх';
@@ -358,11 +356,11 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsAcntBalance => 'ҮЦ дансны үлдэгдэл';
 
   @override
-  String get ipsAcntFlowBody => 'Данс нээх урсгал.';
+  String get ipsAcntFlowBody => 'Данс нээх.';
 
   @override
   String get ipsAcntPendingQrMessage =>
-      'ҮЦ данс нээх урсгалыг үргэлжлүүлэхийн тулд QR үүсгэнэ үү.';
+      'ҮЦ данс нээх алхмыг үргэлжлүүлэхийн тулд QR үүсгэнэ үү.';
 
   @override
   String get ipsBootstrapMissingService =>
@@ -376,14 +374,14 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsSplashSubtitle =>
-      'Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийн урсгалыг ажиллуулна.';
+      'Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.';
 
   @override
   String get ipsQuestionnaireTitle => 'Асуумж';
 
   @override
   String get ipsQuestionnaireSubtitle =>
-      'Асуумжийн жагсаалт авах болон оноо тооцох урсгал.';
+      'Асуумжийн жагсаалт авах болон оноо тооцох.';
 
   @override
   String get ipsQuestionnaireCalculateScore => 'Оноо тооцоолох';
@@ -457,7 +455,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsPackTitle => 'Санал болгосон багц';
 
   @override
-  String get ipsPackSubtitle => 'IPS багцын санал болон сонголтын урсгал.';
+  String get ipsPackSubtitle => 'Багцын санал болон сонголт';
 
   @override
   String get ipsPackRecommendedBadge => 'Санал болгосон';
@@ -566,8 +564,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsPortfolioTitle => 'Хөрөнгө оруулалтын багц';
 
   @override
-  String get ipsPortfolioSubtitle =>
-      'IPS дансны тойм, эзэмшил, өгөөж, ашиг/алдагдал.';
+  String get ipsPortfolioSubtitle => 'IPS дансны багц, өгөөж, ашиг/алдагдал.';
 
   @override
   String get ipsPortfolioAvailableBalance => 'Боломжит үлдэгдэл';
@@ -585,7 +582,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsPortfolioHoldings => 'Миний багц';
 
   @override
-  String get ipsPortfolioNoHoldings => 'Эзэмшлийн мэдээлэл алга.';
+  String get ipsPortfolioNoHoldings => 'Мэдээлэл алга.';
 
   @override
   String get ipsPortfolioRecharge => 'Цэнэглэх';
@@ -622,10 +619,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsOrdersTitle => 'Захиалга';
 
   @override
-  String get ipsOrdersSubtitle => 'IPS захиалгын жагсаалт болон цуцлах урсгал.';
+  String get ipsOrdersSubtitle => 'IPS захиалгын жагсаалт болон цуцлах';
 
   @override
-  String get ipsOrdersNoOrders => 'IPS захиалга алга.';
+  String get ipsOrdersNoOrders => 'Захиалга байхгүй байна';
 
   @override
   String get ipsOrdersCancelOrder => 'Захиалга цуцлах';
@@ -670,7 +667,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsPaymentRechargeSubtitle =>
-      'Солилцоо/цэнэглэлт болон QR үүсгэх урсгал.';
+      'Солилцоо/цэнэглэлт болон QR үүсгэх.';
 
   @override
   String get ipsPaymentRechargeQuantityHint => 'Авах ширхэгийн тоог оруулна уу';
@@ -695,7 +692,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsPaymentQrValue => 'QR утга';
 
   @override
-  String get ipsPaymentAcntFlow => 'Дансны урсгал';
+  String get ipsPaymentAcntFlow => 'Данс нээх алхамууд';
 
   @override
   String get ipsPaymentCreateInvoiceAndPay => 'Нэхэмжлэл үүсгээд төлөх';
@@ -732,7 +729,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsSellCloseTitle => 'Багц хаах';
 
   @override
-  String get ipsSellSubtitle => 'IPS багцын зарах захиалга үүсгэх урсгал.';
+  String get ipsSellSubtitle => 'Багц зарах захиалга үүсгэх';
 
   @override
   String get ipsSellMissingService =>
@@ -824,7 +821,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsProfitTitle => 'Ашиг алдагдал';
 
   @override
-  String get ipsProfitSubtitle => 'IPS эзэмшлийн ашиг алдагдлын товч мэдээлэл.';
+  String get ipsProfitSubtitle => 'Багцын ашиг алдагдлын мэдээлэл.';
 
   @override
   String get ipsProfitSummary => 'Ашиг алдагдлын тойм';
@@ -949,7 +946,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get internalProfileProcessing => 'Боловсруулж байна...';
 
   @override
-  String get internalProfileFlowProgressTitle => 'Урсгалын явц';
+  String get internalProfileFlowProgressTitle => 'Progress';
 
   @override
   String internalProfileFlowProgressStep(Object step, Object total) {
@@ -1020,7 +1017,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get internalAuthRouteRegistrationDescription =>
-      'Auth дизайны жишээнээс хөрвүүлсэн бүртгэлийн урсгал.';
+      'Auth дизайны жишээнээс хөрвүүлсэн бүртгэл';
 
   @override
   String get internalAuthRouteRegistrationConfirmationTitle => 'Бүртгэл батлах';

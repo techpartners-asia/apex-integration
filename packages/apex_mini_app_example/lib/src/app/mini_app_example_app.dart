@@ -25,8 +25,7 @@ class MiniAppExampleApp extends StatefulWidget {
 
 class MiniAppExampleAppState extends State<MiniAppExampleApp> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> miniAppNavigatorKey =
-      GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> miniAppNavigatorKey = GlobalKey<NavigatorState>();
   final ValueNotifier<List<String>> hostEvents = ValueNotifier<List<String>>(
     <String>[],
   );
@@ -48,13 +47,8 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
             recordHostEvent('payment status: ${result.status}');
           },
         );
-    hostConfig =
-        widget.hostConfig ??
-        _hostConfigFromSdkConfig(widget.sdkConfig) ??
-        exampleHostConfig;
-    userDataSourceMode =
-        widget.sdkConfig?.userDataSourceMode ??
-        MiniAppUserDataSourceMode.realUser;
+    hostConfig = widget.hostConfig ?? _hostConfigFromSdkConfig(widget.sdkConfig) ?? exampleHostConfig;
+    userDataSourceMode = widget.sdkConfig?.userDataSourceMode ?? MiniAppUserDataSourceMode.contract;
   }
 
   @override
@@ -180,9 +174,7 @@ class MiniAppExampleAppState extends State<MiniAppExampleApp> {
 
     final SchedulerPhase phase = WidgetsBinding.instance.schedulerPhase;
 
-    if (phase == SchedulerPhase.persistentCallbacks ||
-        phase == SchedulerPhase.transientCallbacks ||
-        phase == SchedulerPhase.midFrameMicrotasks) {
+    if (phase == SchedulerPhase.persistentCallbacks || phase == SchedulerPhase.transientCallbacks || phase == SchedulerPhase.midFrameMicrotasks) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         writeEvent();
       });

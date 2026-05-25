@@ -251,7 +251,7 @@ abstract class SdkLocalizations {
   /// No description provided for @errorsConfig.
   ///
   /// In en, this message translates to:
-  /// **'This mini app integration is not configured correctly.'**
+  /// **'mini app integration is not configured correctly.'**
   String get errorsConfig;
 
   /// No description provided for @errorsSessionExpired.
@@ -1115,7 +1115,7 @@ abstract class SdkLocalizations {
   /// No description provided for @ipsPortfolioSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'IPS acnt overview, holdings, yield, and profit.'**
+  /// **'IPS acnt overview, pack, yield, and profit.'**
   String get ipsPortfolioSubtitle;
 
   /// No description provided for @ipsPortfolioAvailableBalance.
@@ -1151,7 +1151,7 @@ abstract class SdkLocalizations {
   /// No description provided for @ipsPortfolioNoHoldings.
   ///
   /// In en, this message translates to:
-  /// **'No holdings data is available.'**
+  /// **'No data is available.'**
   String get ipsPortfolioNoHoldings;
 
   /// No description provided for @ipsPortfolioRecharge.
@@ -1202,7 +1202,7 @@ abstract class SdkLocalizations {
   /// **'Current value'**
   String get ipsPortfolioHoldingValueLabel;
 
-  /// Summary line for a holding entry.
+  /// Summary line for a pack entry.
   ///
   /// In en, this message translates to:
   /// **'Qty {quantity} • Value {value}'**
@@ -1577,7 +1577,7 @@ abstract class SdkLocalizations {
   /// No description provided for @ipsProfitSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Profit and loss summary for IPS holdings.'**
+  /// **'Profit and loss summary for IPS packs.'**
   String get ipsProfitSubtitle;
 
   /// No description provided for @ipsProfitSummary.

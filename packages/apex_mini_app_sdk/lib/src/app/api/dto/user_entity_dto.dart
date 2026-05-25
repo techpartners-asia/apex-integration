@@ -134,7 +134,6 @@ class UserEntityDto {
     final Map<String, Object?> nestedUser = ApiParser.asObjectMap(
       payload['user'],
     );
-    final bool isBootstrapUserPayload = nestedUser.isNotEmpty;
     final Map<String, Object?> source = nestedUser.isNotEmpty
         ? nestedUser
         : payload.isNotEmpty
@@ -152,25 +151,12 @@ class UserEntityDto {
       account: AccountDto.fromJson(account),
       bank: BankDto.fromJson(bank),
       id: ApiParser.asNullableInt(source['id']),
-      // registerNo: 'ЪЪ98100630', // isBootstrapUserPayload ? _asRequiredBootstrapText(source['rd']) : ApiParser.asNullableString(source['rd']),
-      registerNo: isBootstrapUserPayload
-          ? _asRequiredBootstrapText(source['rd'])
-          : ApiParser.asNullableString(source['rd']),
+      registerNo: ApiParser.asNullableString(source['rd']),
       token: resolvedToken,
-      firstName: isBootstrapUserPayload
-          ? _asRequiredBootstrapText(source['first_name'])
-          : ApiParser.asNullableString(source['first_name']),
-      lastName: isBootstrapUserPayload
-          ? _asRequiredBootstrapText(source['last_name'])
-          : ApiParser.asNullableString(source['last_name']),
-      phone: isBootstrapUserPayload
-          ? _asRequiredBootstrapText(source['phone'] ?? source['mobile'])
-          : ApiParser.asNullableString(source['phone']) ??
-                ApiParser.asNullableString(source['mobile']),
-      phoneAddition:
-          ApiParser.asNullableString(source['phone_addition']) ??
-          ApiParser.asNullableString(source['secondary_mobile']) ??
-          ApiParser.asNullableString(source['secondaryMobile']),
+      firstName: ApiParser.asNullableString(source['first_name']),
+      lastName: ApiParser.asNullableString(source['last_name']),
+      phone: ApiParser.asNullableString(source['phone']),
+      phoneAddition: ApiParser.asNullableString(source['phone_addition']),
       email: ApiParser.asNullableString(source['email']),
       gender: ApiParser.asNullableString(source['gender']),
       integrationId: ApiParser.asNullableString(source['integration_id']),
@@ -192,11 +178,6 @@ class UserEntityDto {
           ApiParser.asNullableString(source['adm_session']) ??
           ApiParser.asNullableString(source['admSession']),
     );
-  }
-
-  /// Keeps bootstrap-required text fields non-null after parsing.
-  static String _asRequiredBootstrapText(Object? value) {
-    return value?.toString().trim() ?? '';
   }
 
   /// Builds the account map from nested and flat signup/profile fields.

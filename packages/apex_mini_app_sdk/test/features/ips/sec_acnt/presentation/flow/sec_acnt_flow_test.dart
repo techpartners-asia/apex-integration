@@ -270,6 +270,35 @@ void main() {
       expect(draft.iban, '991122334455');
     },
   );
+
+  test('fromBootstrap prefers profile bank code over bootstrap bank code', () {
+    final SecAcntFlowDraft draft = SecAcntFlowDraft.fromBootstrap(
+      const AcntBootstrapState(
+        response: GetSecuritiesAcntListResDto(
+          detail: GetSecuritiesAcntListDetailDto(
+            hasAcnt: true,
+            hasIpsAcnt: false,
+            bankCode: 'OLD001',
+            bankName: 'Old Bank',
+          ),
+          acnts: <GetSecAcntListAccountDto>[],
+          stlAcnts: <GetSecAcntSettlementAccountDto>[],
+          responseCode: 0,
+        ),
+      ),
+      user: UserEntityDto(
+        bank: const BankDto(
+          bankCode: '040000',
+          bankName: 'ХХБанк',
+          accountNumber: '670004000453182074',
+        ),
+      ),
+    );
+
+    expect(draft.selectedBank, isNotNull);
+    expect(draft.selectedBank!.id, '040000');
+    expect(draft.selectedBank!.label, 'ХХБанк');
+  });
 }
 
 UserEntityDto _completeUser({

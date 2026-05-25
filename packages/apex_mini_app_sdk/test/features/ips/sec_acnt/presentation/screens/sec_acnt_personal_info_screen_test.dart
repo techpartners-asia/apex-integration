@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 
 import '../../../../../test_helpers/widget_test_app.dart';
 
@@ -48,18 +48,155 @@ void main() {
       expect(api.lastUpdateProfileReq!.bank?.bankName, 'Khan Bank');
     },
   );
+
+  testWidgets(
+    'initializes selected bank from profile bank code after bank options load',
+    (WidgetTester tester) async {
+      final _FakeMiniAppApiRepository api = _FakeMiniAppApiRepository();
+
+      await tester.pumpWidget(
+        buildSdkTestApp(
+          SecAcntPersonalInfoScreen(
+            bootstrapState: _openSecAccountBootstrapState(),
+            bankOptionsRepository: const _FakeBankOptionsRepository(
+              <SecAcntBankOption>[
+                SecAcntBankOption('390000', 'Хаан банк', 'ХБ', ''),
+                SecAcntBankOption('040000', 'ХХБанк', 'ХХБ', ''),
+              ],
+            ),
+            bankAccountLookupRepository: const _FakeLookupRepository(),
+            appApi: api,
+            currentUser: UserEntityDto(
+              phone: '99112233',
+              phoneAddition: '88112233',
+              email: 'cached@example.com',
+              bank: const BankDto(
+                bankCode: ' 040000 ',
+                bankName: 'ХХБанк',
+                accountNumber: '670004000453182074',
+              ),
+            ),
+            initialDraft: const SecAcntFlowDraft(
+              mobile: '99112233',
+              secondaryMobile: '88112233',
+              email: 'cached@example.com',
+              iban: '670004000453182074',
+              acntName: 'АПЕКС КАПИТАЛ ҮЦК',
+              selectedBank: SecAcntBankOption(
+                '390000',
+                'Хаан банк',
+                'ХБ',
+                '',
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('ХХБанк'), findsOneWidget);
+
+      await tester.tap(find.text('Continue'));
+      await tester.pumpAndSettle();
+
+      expect(api.lastUpdateProfileReq, isNotNull);
+      expect(api.lastUpdateProfileReq!.bank?.bankCode, '040000');
+      expect(api.lastUpdateProfileReq!.bank?.bankName, 'ХХБанк');
+    },
+  );
+
+  testWidgets(
+    'does not overwrite a manually selected bank when profile bank changes',
+    (WidgetTester tester) async {
+      final _FakeMiniAppApiRepository api = _FakeMiniAppApiRepository();
+      const List<SecAcntBankOption> bankOptions = <SecAcntBankOption>[
+        SecAcntBankOption('390000', 'Хаан банк', 'ХБ', ''),
+        SecAcntBankOption('040000', 'ХХБанк', 'ХХБ', ''),
+        SecAcntBankOption('050000', 'Голомт банк', 'ГБ', ''),
+      ];
+      const SecAcntFlowDraft initialDraft = SecAcntFlowDraft(
+        mobile: '99112233',
+        secondaryMobile: '88112233',
+        email: 'cached@example.com',
+        iban: '670004000453182074',
+        acntName: 'АПЕКС КАПИТАЛ ҮЦК',
+      );
+
+      Widget buildScreen(UserEntityDto currentUser) {
+        return buildSdkTestApp(
+          SecAcntPersonalInfoScreen(
+            bootstrapState: _openSecAccountBootstrapState(),
+            bankOptionsRepository: const _FakeBankOptionsRepository(
+              bankOptions,
+            ),
+            bankAccountLookupRepository: const _FakeLookupRepository(),
+            appApi: api,
+            currentUser: currentUser,
+            initialDraft: initialDraft,
+          ),
+        );
+      }
+
+      await tester.pumpWidget(
+        buildScreen(
+          UserEntityDto(
+            phone: '99112233',
+            phoneAddition: '88112233',
+            email: 'cached@example.com',
+            bank: const BankDto(bankCode: '040000', bankName: 'ХХБанк'),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('ХХБанк'), findsOneWidget);
+
+      await tester.tap(find.text('ХХБанк'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Хаан банк'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Хаан банк'), findsOneWidget);
+
+      await tester.pumpWidget(
+        buildScreen(
+          UserEntityDto(
+            phone: '99112233',
+            phoneAddition: '88112233',
+            email: 'cached@example.com',
+            bank: const BankDto(bankCode: '050000', bankName: 'Голомт банк'),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Хаан банк'), findsOneWidget);
+      expect(find.text('Голомт банк'), findsNothing);
+
+      await tester.tap(find.text('Continue'));
+      await tester.pumpAndSettle();
+
+      expect(api.lastUpdateProfileReq, isNotNull);
+      expect(api.lastUpdateProfileReq!.bank?.bankCode, '390000');
+      expect(api.lastUpdateProfileReq!.bank?.bankName, 'Хаан банк');
+    },
+  );
 }
 
 class _FakeBankOptionsRepository implements SecAcntBankOptionsRepository {
-  const _FakeBankOptionsRepository();
+  const _FakeBankOptionsRepository([
+    this.options = const <SecAcntBankOption>[
+      SecAcntBankOption('FI001', 'Khan Bank', 'Khan', ''),
+    ],
+  ]);
+
+  final List<SecAcntBankOption> options;
 
   @override
   Future<List<SecAcntBankOption>> getBankOptions({
     bool forceRefresh = false,
   }) async {
-    return const <SecAcntBankOption>[
-      SecAcntBankOption('FI001', 'Khan Bank', 'Khan', ''),
-    ];
+    return options;
   }
 }
 

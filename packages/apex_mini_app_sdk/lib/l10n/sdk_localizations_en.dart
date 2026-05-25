@@ -86,7 +86,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get errorsConfig =>
-      'This mini app integration is not configured correctly.';
+      'mini app integration is not configured correctly.';
 
   @override
   String get errorsSessionExpired => 'Session is invalid or has expired.';
@@ -563,7 +563,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get ipsPortfolioSubtitle =>
-      'IPS acnt overview, holdings, yield, and profit.';
+      'IPS acnt overview, pack, yield, and profit.';
 
   @override
   String get ipsPortfolioAvailableBalance => 'Available balance';
@@ -581,7 +581,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsPortfolioHoldings => 'Holdings';
 
   @override
-  String get ipsPortfolioNoHoldings => 'No holdings data is available.';
+  String get ipsPortfolioNoHoldings => 'No data is available.';
 
   @override
   String get ipsPortfolioRecharge => 'Recharge';
@@ -817,7 +817,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsProfitTitle => 'Profit and loss';
 
   @override
-  String get ipsProfitSubtitle => 'Profit and loss summary for IPS holdings.';
+  String get ipsProfitSubtitle => 'Profit and loss summary for IPS packs.';
 
   @override
   String get ipsProfitSummary => 'Profit summary';
