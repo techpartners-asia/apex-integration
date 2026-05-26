@@ -23,7 +23,7 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
       if (!mounted) {
         return;
       }
-      context.read<IpsContractCubit>().initialize();
+      context.read<ContractCubit>().initialize();
     });
   }
 
@@ -49,12 +49,9 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<IpsContractCubit, IpsContractState>(
-      listenWhen: (IpsContractState previous, IpsContractState current) =>
-          (previous.isReady != current.isReady && current.isReady) ||
-          (previous.errorMessage != current.errorMessage &&
-              (current.errorMessage?.trim().isNotEmpty ?? false)),
-      listener: (BuildContext context, IpsContractState state) async {
+    return BlocListener<ContractCubit, ContractState>(
+      listenWhen: (ContractState previous, ContractState current) => (previous.isReady != current.isReady && current.isReady) || (previous.errorMessage != current.errorMessage && (current.errorMessage?.trim().isNotEmpty ?? false)),
+      listener: (BuildContext context, ContractState state) async {
         final String? errorMessage = state.errorMessage?.trim();
         if (errorMessage != null && errorMessage.isNotEmpty) {
           MiniAppToast.showError(context, message: errorMessage);
@@ -73,14 +70,13 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
           context,
           message: context.l10n.ipsSuccessContractCreated,
         );
+
         await _openRechargeBottomSheetAfterReady(context);
       },
-      child: BlocBuilder<IpsContractCubit, IpsContractState>(
-        builder: (BuildContext context, IpsContractState state) {
+      child: BlocBuilder<ContractCubit, ContractState>(
+        builder: (BuildContext context, ContractState state) {
           final l10n = context.l10n;
-          final bool showLoading =
-              state.isInitializing ||
-              (!state.isReady && state.errorMessage == null);
+          final bool showLoading = state.isInitializing || (!state.isReady && state.errorMessage == null);
 
           return CustomScaffold(
             showBackButton: true,
@@ -101,7 +97,7 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
                         title: l10n.errorsActionFailed,
                         message: state.errorMessage ?? l10n.errorsActionFailed,
                         retryLabel: l10n.commonRetry,
-                        onRetry: context.read<IpsContractCubit>().initialize,
+                        onRetry: context.read<ContractCubit>().initialize,
                       ),
               ),
             ),

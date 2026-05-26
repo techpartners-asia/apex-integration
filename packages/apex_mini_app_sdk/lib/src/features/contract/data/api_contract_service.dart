@@ -27,23 +27,17 @@ class ApiContractService implements ContractService {
   Future<ContractRes> addBrokerCustContract() async {
     final SdkRuntimeConfig runtime = config.runtime;
 
-    // if (!contract.isConfigured) {
-    //   throw const ApiIntegrationException(
-    //     'Contract defaults are not configured inside the SDK.',
-    //   );
-    // }
-
     await session.ensureLoginSession();
 
-    UserEntityDto a = await session.ensureCurrentUser();
+    final UserEntityDto user = await session.ensureCurrentUser();
     final FiBomInstDto fiBomInst = await fiBomInstRepository.getDefaultFiBomInst();
 
     final ContractResDto contractRes = await api.addBkrCustContract(
       AddBkrCustContractApiReq(
         srcFiCode: runtime.defaultSrcFiCode,
         bankCode: fiBomInst.fiCode,
-        bankAcntCode: a.bank?.accountNumber ?? '',
-        bankAcntName: a.bank?.accountName ?? '',
+        bankAcntCode: user.bank?.accountNumber ?? '',
+        bankAcntName: user.bank?.accountName ?? '',
         verfType: IpsDefaults.contractVerificationType,
       ),
     );

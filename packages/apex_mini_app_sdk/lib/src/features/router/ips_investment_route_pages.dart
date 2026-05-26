@@ -118,8 +118,8 @@ Widget buildIpsContractPage(
 
   return RepositoryProvider<IpsDependencies>.value(
     value: dependencies,
-    child: BlocProvider<IpsContractCubit>(
-      create: (BuildContext context) => IpsContractCubit(
+    child: BlocProvider<ContractCubit>(
+      create: (BuildContext context) => ContractCubit(
         contractService: contractService,
         bootstrapService: bootstrapService,
         portfolioService: portfolioService,

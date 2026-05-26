@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Cubit for broker contract setup and investment-pack purchase.
-class IpsContractCubit extends Cubit<IpsContractState> {
+class ContractCubit extends Cubit<ContractState> {
   /// Contract API service.
   final ContractService contractService;
 
@@ -29,7 +29,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
   /// Diagnostic logger.
   final MiniAppLogger logger;
 
-  IpsContractCubit({
+  ContractCubit({
     required this.contractService,
     required this.bootstrapService,
     required this.portfolioService,
@@ -38,7 +38,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     required this.payload,
     required this.l10n,
     this.logger = const SilentMiniAppLogger(),
-  }) : super(const IpsContractState());
+  }) : super(const ContractState());
 
   /// Creates contract, waits for accounts, and loads purchase pricing.
   Future<void> initialize() async {
@@ -49,10 +49,8 @@ class IpsContractCubit extends Cubit<IpsContractState> {
     emit(state.copyWith(isInitializing: true, errorMessage: null));
 
     try {
-      final ContractRes contractRes =
-          state.contractRes ?? await contractService.addBrokerCustContract();
-      final AcntBootstrapState bootstrapState = await bootstrapService
-          .getSecAcntListState(forceRefresh: true);
+      final ContractRes contractRes = state.contractRes ?? await contractService.addBrokerCustContract();
+      final AcntBootstrapState bootstrapState = await bootstrapService.getSecAcntListState(forceRefresh: true);
       final PortfolioOverview overview = await portfolioService.getIpsBalance(
         context: const PortfolioContextResolver().resolve(
           bootstrapState: bootstrapState,
@@ -65,9 +63,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
           contractRes: contractRes,
           bootstrapState: bootstrapState,
           overview: overview,
-          errorMessage: overview.packAmount == null
-              ? l10n.ipsContractPackPricingUnavailable
-              : null,
+          errorMessage: overview.packAmount == null ? l10n.ipsContractPackPricingUnavailable : null,
         ),
       );
     } catch (error) {
@@ -78,43 +74,6 @@ class IpsContractCubit extends Cubit<IpsContractState> {
         ),
       );
     }
-  }
-
-  /// Appends a quantity digit from the custom keypad.
-  void appendDigit(int digit) {
-    if (digit < 0 || digit > 9 || state.isSubmitting || state.isInitializing) {
-      return;
-    }
-
-    final String currentValue = state.purchaseQty <= 0
-        ? ''
-        : state.purchaseQty.toString();
-    final String nextValue = '${currentValue == '0' ? '' : currentValue}$digit';
-    final int parsed = int.tryParse(nextValue) ?? state.purchaseQty;
-    _updatePurchaseQty(parsed);
-  }
-
-  /// Removes the last quantity digit from the custom keypad.
-  void backspaceDigit() {
-    if (state.isSubmitting || state.isInitializing) {
-      return;
-    }
-
-    final String currentValue = state.purchaseQty.toString();
-    if (currentValue.isEmpty) {
-      return;
-    }
-
-    final String nextValue = currentValue.length <= 1
-        ? ''
-        : currentValue.substring(0, currentValue.length - 1);
-    _updatePurchaseQty(int.tryParse(nextValue) ?? 0);
-  }
-
-  void _updatePurchaseQty(int value) {
-    emit(
-      state.copyWith(purchaseQty: value, paymentRes: null, errorMessage: null),
-    );
   }
 
   /// Pays for packs, creates recharge order, and refreshes balance.
@@ -153,8 +112,7 @@ class IpsContractCubit extends Cubit<IpsContractState> {
         amount: state.totalPayable,
       );
       await ordersService.chargeIpsAcnt(req);
-      final PortfolioOverview? refreshedOverview =
-          await _refreshBalanceAfterSuccess();
+      final PortfolioOverview? refreshedOverview = await _refreshBalanceAfterSuccess();
 
       emit(
         state.copyWith(

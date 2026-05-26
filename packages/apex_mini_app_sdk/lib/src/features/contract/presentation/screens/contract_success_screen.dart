@@ -13,7 +13,7 @@ class ContractSuccessScreen extends StatelessWidget {
     final responsive = context.responsive;
     final String contractId =
         context.select(
-          (IpsContractCubit cubit) => cubit.state.contractRes?.contractId,
+          (ContractCubit cubit) => cubit.state.contractRes?.contractId,
         ) ??
         '';
 

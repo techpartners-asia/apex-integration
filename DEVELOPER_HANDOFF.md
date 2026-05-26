@@ -49,7 +49,7 @@ Startup route шийдвэрлэх үндсэн дүрэм `packages/apex_mini_a
 | Bootstrap | `/splash` | `IpsSplashScreen` -> `MiniAppBootstrapCubit` -> `MiniAppBootstrapFlow.resolve()` -> session/profile/login/account APIs -> `replaceIpsRoute(nextRoute)`. |
 | Үнэт цаасны данс | `/sec-acnt` | Consent -> personal info -> agreement -> signature -> payment/calculation -> questionnaire/overview. |
 | Асуулга | `/questionnaire` | Agreement -> signature -> recommendation intro -> questions -> score calculation -> `/packs`. |
-| Багц/гэрээ | `/packs` -> `/contract` | `PackSelectionScreen` -> `ContractPayload` -> `IpsContractCubit.initialize()` -> `addBkrCustContract` -> IPS account refresh -> recharge sheet. |
+| Багц/гэрээ | `/packs` -> `/contract` | `PackSelectionScreen` -> `ContractPayload` -> `ContractCubit.initialize()` -> `addBkrCustContract` -> IPS account refresh -> recharge sheet. |
 | Dashboard | `/overview` | `IpsOverviewCubit` -> bootstrap + portfolio + pack -> home/profile tabs. |
 | Portfolio | `/portfolio` | `IpsPortfolioCubit` -> `PortfolioService.getDashboardData()` -> balance/holding/chart widgets. |
 | Recharge | `/recharge` эсвэл bottom sheet | `IpsRechargeCubit` -> pricing -> `chargeIpsAcnt` -> invoice -> host wallet -> callback. |
@@ -135,7 +135,7 @@ flowchart TD
 State management нь `flutter_bloc` Cubit дээр суурилсан.
 
 - Generic state: `features/shared/application/loadable_state.dart` дотор `LoadableState<T>`.
-- Feature state: `FeedbackState`, `IpsRechargeState`, `IpsSellState`, `IpsOrdersState`, `IpsContractState`, `IpsQuestionnaireState`, `IpsSecAcntState`.
+- Feature state: `FeedbackState`, `IpsRechargeState`, `IpsSellState`, `IpsOrdersState`, `ContractState`, `IpsQuestionnaireState`, `IpsSecAcntState`.
 - Session state: `MiniAppSessionStore extends Cubit<MiniAppSessionState>`.
 - Ихэнх Cubit route builder дээр `BlocProvider`-оор үүсдэг.
 
@@ -500,7 +500,7 @@ HTTP 401/403 нь `ApiUnauthorizedException`, timeout/network нь `ApiNetworkEx
 | `SecAcntScreen` | sec_acnt screens | `/sec-acnt` | `IpsSecAcntCubit`, bank repos | Nested account opening steps. |
 | `QuestionnaireScreen` | questionnaire screens | `/questionnaire` | `IpsQuestionnaireCubit` | Agreement/signature/questions/calculation. |
 | `PackSelectionScreen` | pack screens | `/packs` | `IpsPackSelectionCubit`, optional `QuestionnaireRes` | Choose pack -> `/contract`. |
-| `ContractScreen` | contract screens | `/contract` | `IpsContractCubit`, required `ContractPayload` | Create contract, open recharge sheet. |
+| `ContractScreen` | contract screens | `/contract` | `ContractCubit`, required `ContractPayload` | Create contract, open recharge sheet. |
 | `PortfolioScreen` | portfolio screens | `/portfolio` | `IpsPortfolioCubit` | Refresh, charts, allocation. |
 | `OrdersScreen` | orders screens | `/orders` | `IpsOrdersCubit` | Refresh/cancel pending. |
 | `RechargeScreen` | recharge screens | `/recharge` | `IpsRechargeCubit` | Quantity, submit payment. |
@@ -1072,7 +1072,7 @@ sequenceDiagram
 - Sec-account opening request `!requiresOpeningPaymentFlow` дээр л дуудагдаж байна. Баталгаажуулах.
 - `StaticApiConfig` global mutable state.
 - `ApiRuntime` debug interceptor-г `enableDebugLogs`-оос үл хамаарч attach хийдэг, гэхдээ debug build дээр л хэвлэнэ.
-- `ContractPurchaseScreen`, `ContractSuccessScreen`, `IpsContractCubit.submit` одоогоор unreachable мэт харагдсан.
+- `ContractPurchaseScreen`, `ContractSuccessScreen`, `ContractCubit.submit` одоогоор unreachable мэт харагдсан.
 - Profile Achievements/Terms action бүрэн wired биш.
 
 ### Missing/unclear

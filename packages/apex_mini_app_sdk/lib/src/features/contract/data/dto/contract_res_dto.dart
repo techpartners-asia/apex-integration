@@ -26,9 +26,7 @@ class ContractResDto {
     );
 
     return ContractResDto(
-      contractId:
-          ApiParser.asNullableString(json['refNo']) ??
-          IpsDefaults.contractIdFallback,
+      contractId: ApiParser.asNullableString(json['refNo']) ?? IpsDefaults.contractIdFallback,
       message: ApiActionResultParser.messageOf(json) ?? 'IPS contract created.',
       deepLink: ApiParser.asNullableString(json['deepLink']),
     );

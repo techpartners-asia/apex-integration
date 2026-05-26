@@ -144,10 +144,7 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     // final bool hasKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
-      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
-          (prev.paymentRes != curr.paymentRes && curr.paymentRes != null) ||
-          (prev.errorMessage != curr.errorMessage &&
-              (curr.errorMessage?.trim().isNotEmpty ?? false)),
+      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) => (prev.paymentRes != curr.paymentRes && curr.paymentRes != null) || (prev.errorMessage != curr.errorMessage && (curr.errorMessage?.trim().isNotEmpty ?? false)),
       listener: (BuildContext context, IpsRechargeState state) {
         if (state.paymentRes != null) {
           if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
@@ -174,15 +171,14 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
                 title: l10n.ipsPaymentRechargeTitle,
                 showDivider: false,
                 backgroundColor: DesignTokens.softSurface,
-                btmPad: 0, // MediaQuery.of(context).viewInsets.bottom,
+                btmPad: 0,
+                // MediaQuery.of(context).viewInsets.bottom,
                 child: _RechargeSheetBody(
                   controller: _controller,
                   focusNode: _focusNode,
                   state: state,
                   onRequestFocus: _focusQuantityInput,
-                  onQuantityChanged: context
-                      .read<IpsRechargeCubit>()
-                      .updatePackQty,
+                  onQuantityChanged: context.read<IpsRechargeCubit>().updatePackQty,
                 ),
               );
             },
@@ -274,9 +270,7 @@ class _RechargeSheetBody extends StatelessWidget {
         SizedBox(height: responsive.spacing.sectionSpacing),
         PrimaryButton(
           label: state.isSubmitting ? l10n.commonLoading : l10n.commonPay,
-          onPressed: state.canSubmit
-              ? context.read<IpsRechargeCubit>().submit
-              : null,
+          onPressed: state.canSubmit ? context.read<IpsRechargeCubit>().submit : null,
         ),
         SizedBox(height: responsive.spacing.inlineSpacing),
       ],

@@ -339,7 +339,7 @@
   "ipsProfitSummary": "Ашиг алдагдлын тойм",
   "ipsSuccessReqCreated": "Хүсэлт амжилттай үүслээ.",
   "ipsSuccessOrderCancelled": "Захиалгыг амжилттай цуцаллаа.",
-  "ipsSuccessContractCreated": "Гэрээг амжилттай үүсгэлээ.",
+  "ipsSuccessContractCreated": "Данс нээх хүсэлт амжилттай",
   "ipsSuccessQrCreated": "QR амжилттай үүслээ.",
   "ipsStatusPending": "Хүлээгдэж буй",
   "ipsStatusNew": "Хүлээгдэж буй",
