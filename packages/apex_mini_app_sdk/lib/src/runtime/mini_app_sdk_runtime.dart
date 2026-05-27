@@ -44,9 +44,7 @@ class MiniAppSdk {
   String get miniAppDisplayName => InvestXFeatureInfo.displayName;
 
   /// First route opened by the SDK, with a feature default fallback.
-  String get initialRoute => config.initialRoute.trim().isEmpty
-      ? InvestXFeatureInfo.initialRoute
-      : config.initialRoute.trim();
+  String get initialRoute => config.initialRoute.trim().isEmpty ? InvestXFeatureInfo.initialRoute : config.initialRoute.trim();
 
   /// Launches a route and ensures host token/session data is available to it.
   Future<MiniAppLaunchRes> launch(BuildContext context, MiniAppLaunchReq req) {
@@ -62,6 +60,7 @@ class MiniAppSdk {
               arguments: arguments,
             ),
           );
+
     return _launchGuarded(context, normalizedReq);
   }
 
@@ -92,9 +91,7 @@ class MiniAppSdk {
     MiniAppLaunchReq req,
   ) async {
     final Object? arguments = req.arguments;
-    final String? userToken = arguments is MiniAppLaunchContext
-        ? arguments.userToken
-        : config.userToken;
+    final String? userToken = arguments is MiniAppLaunchContext ? arguments.userToken : config.userToken;
 
     if ((userToken ?? '').trim().isEmpty) {
       final MiniAppLaunchRes failure = MiniAppLaunchRes.failure(

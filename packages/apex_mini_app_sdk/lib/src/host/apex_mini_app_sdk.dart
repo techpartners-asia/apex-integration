@@ -206,10 +206,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   }
 
   /// Compares only config fields that affect runtime construction.
-  bool _hasSameRuntimeHostConfig(
-    ApexMiniAppHostConfig previous,
-    ApexMiniAppHostConfig next,
-  ) {
+  bool _hasSameRuntimeHostConfig(ApexMiniAppHostConfig previous, ApexMiniAppHostConfig next) {
     return previous.token == next.token &&
         previous.devMode == next.devMode &&
         previous.baseUrl == next.baseUrl &&
@@ -316,11 +313,8 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     _isClosingMiniApp = true;
     try {
       MiniAppToast.hide();
-      final BuildContext? mountedContext = context != null && context.mounted
-          ? context
-          : null;
-      final Set<ScaffoldMessengerState> messengers =
-          _resolveMiniAppScaffoldMessengers(mountedContext);
+      final BuildContext? mountedContext = context != null && context.mounted ? context : null;
+      final Set<ScaffoldMessengerState> messengers = _resolveMiniAppScaffoldMessengers(mountedContext);
       _clearMiniAppScaffoldMessengers(messengers);
       await _popCurrentMiniAppRoute(mountedContext);
       _clearMiniAppScaffoldMessengers(messengers);
@@ -373,26 +367,16 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
 
   /// Pops the closest available mini-app navigator route.
   Future<void> _popCurrentMiniAppRoute(BuildContext? context) async {
-    final NavigatorState? contextNavigator = context != null && context.mounted
-        ? Navigator.maybeOf(context)
-        : null;
-    final ModalRoute<dynamic>? contextRoute = context != null && context.mounted
-        ? ModalRoute.of(context)
-        : null;
-    final bool hasCoveringRoute =
-        contextRoute != null && !contextRoute.isCurrent;
+    final NavigatorState? contextNavigator = context != null && context.mounted ? Navigator.maybeOf(context) : null;
+    final ModalRoute<dynamic>? contextRoute = context != null && context.mounted ? ModalRoute.of(context) : null;
+    final bool hasCoveringRoute = contextRoute != null && !contextRoute.isCurrent;
 
     if (hasCoveringRoute && await _maybePopNavigator(contextNavigator)) {
       return;
     }
 
-    final NavigatorState? contextRootNavigator =
-        context != null && context.mounted
-        ? Navigator.maybeOf(context, rootNavigator: true)
-        : null;
-    if (hasCoveringRoute &&
-        !identical(contextRootNavigator, contextNavigator) &&
-        await _maybePopNavigator(contextRootNavigator)) {
+    final NavigatorState? contextRootNavigator = context != null && context.mounted ? Navigator.maybeOf(context, rootNavigator: true) : null;
+    if (hasCoveringRoute && !identical(contextRootNavigator, contextNavigator) && await _maybePopNavigator(contextRootNavigator)) {
       return;
     }
 
@@ -400,16 +384,13 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       final NavigatorState? embeddingNavigator = Navigator.maybeOf(
         this.context,
       );
-      if (!identical(embeddingNavigator, contextNavigator) &&
-          await _maybePopEmbeddingNavigator(embeddingNavigator)) {
+      if (!identical(embeddingNavigator, contextNavigator) && await _maybePopEmbeddingNavigator(embeddingNavigator)) {
         return;
       }
     }
 
     final NavigatorState? miniAppNavigator = _navigatorKey.currentState;
-    if (!identical(miniAppNavigator, contextNavigator) &&
-        !identical(miniAppNavigator, contextRootNavigator) &&
-        await _maybePopNavigator(miniAppNavigator)) {
+    if (!identical(miniAppNavigator, contextNavigator) && !identical(miniAppNavigator, contextRootNavigator) && await _maybePopNavigator(miniAppNavigator)) {
       return;
     }
 
@@ -417,8 +398,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       return;
     }
 
-    if (!hasCoveringRoute &&
-        !identical(contextRootNavigator, contextNavigator)) {
+    if (!hasCoveringRoute && !identical(contextRootNavigator, contextNavigator)) {
       await _maybePopNavigator(contextRootNavigator);
     }
   }
@@ -521,11 +501,8 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       navigatorKey: _navigatorKey,
       title: 'Apex Mini App',
       locale: widget.hostConfig.locale,
-      localizationsDelegates:
-          widget.localizationsDelegates ??
-          SdkLocalizations.localizationsDelegates,
-      supportedLocales:
-          widget.supportedLocales ?? SdkLocalizations.supportedLocales,
+      localizationsDelegates: widget.localizationsDelegates ?? SdkLocalizations.localizationsDelegates,
+      supportedLocales: widget.supportedLocales ?? SdkLocalizations.supportedLocales,
       theme: widget.theme ?? _defaultTheme(Brightness.light),
       darkTheme: widget.darkTheme ?? _defaultTheme(Brightness.dark),
       builder: widget.builder,
@@ -583,11 +560,8 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   void _prepareInitialLaunch(UiMiniAppModule module, MiniAppLaunchReq req) {
     final Object? arguments = req.arguments;
     final Object? publicArguments = _publicLaunchArguments(arguments);
-    final String? userToken = arguments is MiniAppLaunchContext
-        ? arguments.userToken
-        : widget.hostConfig.normalizedToken;
-    final String signature =
-        '${req.route}|$userToken|${identityHashCode(publicArguments)}';
+    final String? userToken = arguments is MiniAppLaunchContext ? arguments.userToken : widget.hostConfig.normalizedToken;
+    final String signature = '${req.route}|$userToken|${identityHashCode(publicArguments)}';
     if (_preparedLaunchSignature == signature) {
       return;
     }

@@ -23,13 +23,11 @@ class MiniAppHostControllerScope extends StatefulWidget {
   });
 
   @override
-  State<MiniAppHostControllerScope> createState() =>
-      _MiniAppHostControllerScopeState();
+  State<MiniAppHostControllerScope> createState() => _MiniAppHostControllerScopeState();
 }
 
 /// Registers the scope context while the widget is mounted.
-class _MiniAppHostControllerScopeState
-    extends State<MiniAppHostControllerScope> {
+class _MiniAppHostControllerScopeState extends State<MiniAppHostControllerScope> {
   /// Registry handle for this mounted controller/context pair.
   MiniAppHostControllerRegistration? _registration;
 

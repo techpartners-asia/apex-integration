@@ -78,6 +78,7 @@ class DefaultMiniAppHostController
     if (isDisposed) {
       return false;
     }
+    
     return resolveLaunchReq(req) != null;
   }
 

@@ -7,19 +7,17 @@ import 'mini_app_host_controller.dart';
 /// The registry is a fallback for callbacks whose `BuildContext` no longer has
 /// a direct provider lookup path, for example delayed/native callbacks.
 class MiniAppHostControllerRegistry {
-  static final List<MiniAppHostControllerRegistration> _registrations =
-      <MiniAppHostControllerRegistration>[];
+  static final List<MiniAppHostControllerRegistration> _registrations = <MiniAppHostControllerRegistration>[];
 
   /// Registers a controller/context pair while a scope is mounted.
   static MiniAppHostControllerRegistration attach({
     required MiniAppHostController controller,
     required BuildContext context,
   }) {
-    final MiniAppHostControllerRegistration registration =
-        MiniAppHostControllerRegistration._(
-          controller: controller,
-          context: context,
-        );
+    final MiniAppHostControllerRegistration registration = MiniAppHostControllerRegistration._(
+      controller: controller,
+      context: context,
+    );
     _registrations.add(registration);
     return registration;
   }
@@ -50,8 +48,7 @@ class MiniAppHostControllerRegistry {
       return preferred;
     }
 
-    for (final MiniAppHostControllerRegistration registration
-        in _registrations.reversed) {
+    for (final MiniAppHostControllerRegistration registration in _registrations.reversed) {
       final MiniAppHostController controller = registration.controller;
       if (!_isDisposed(controller) && registration.context.mounted) {
         return controller;
@@ -65,11 +62,8 @@ class MiniAppHostControllerRegistry {
   static BuildContext? activeContextFor(MiniAppHostController controller) {
     _pruneInactiveRegistrations();
 
-    for (final MiniAppHostControllerRegistration registration
-        in _registrations.reversed) {
-      if (identical(registration.controller, controller) &&
-          registration.context.mounted &&
-          !_isDisposed(registration.controller)) {
+    for (final MiniAppHostControllerRegistration registration in _registrations.reversed) {
+      if (identical(registration.controller, controller) && registration.context.mounted && !_isDisposed(registration.controller)) {
         return registration.context;
       }
     }
@@ -93,8 +87,7 @@ class MiniAppHostControllerRegistry {
     _registrations.removeWhere((
       MiniAppHostControllerRegistration registration,
     ) {
-      return !registration.context.mounted ||
-          _isDisposed(registration.controller);
+      return !registration.context.mounted || _isDisposed(registration.controller);
     });
   }
 

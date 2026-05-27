@@ -6,12 +6,8 @@ abstract interface class InvestmentBootstrapService {
   Future<AcntBootstrapState> getSecAcntListState({bool forceRefresh = false});
 
   /// Loads balance details and merges them into [currentState].
-  Future<AcntBootstrapState> getSecAcntBalanceState({
-    required AcntBootstrapState currentState,
-  });
+  Future<AcntBootstrapState> getSecAcntBalanceState({required AcntBootstrapState currentState});
 
   /// Submits a securities-account opening request.
-  Future<SecAcntRequestResult> addSecuritiesAcntReq({
-    SecAcntPersonalInfoData? personalInfo,
-  });
+  Future<SecAcntRequestResult> addSecuritiesAcntReq({SecAcntPersonalInfoData? personalInfo});
 }

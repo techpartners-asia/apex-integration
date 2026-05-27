@@ -23,9 +23,7 @@ class MiniAppHostControllerProvider extends InheritedWidget {
     final MiniAppHostController? controller = maybeActiveOf(context);
 
     if (controller == null) {
-      throw StateError(
-        'No MiniAppHostControllerProvider found in the widget tree.',
-      );
+      throw StateError('No MiniAppHostControllerProvider found in the widget tree.');
     }
 
     return controller;
@@ -33,9 +31,7 @@ class MiniAppHostControllerProvider extends InheritedWidget {
 
   /// Returns the controller stored directly in the nearest provider.
   static MiniAppHostController? maybeOf(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<MiniAppHostControllerProvider>()
-        ?.controller;
+    return context.dependOnInheritedWidgetOfExactType<MiniAppHostControllerProvider>()?.controller;
   }
 
   /// Returns a usable controller from the local provider or active registry.
