@@ -14,7 +14,7 @@ const ApexMiniAppHostConfig exampleHostConfig = ApexMiniAppHostConfig(
     // lastName: 'Host',
     // phone: '99112233',
   ),
-  devMode: false,
+  devMode: true,
 );
 
 MiniAppSdkConfig buildExampleMiniAppSdkConfig({
