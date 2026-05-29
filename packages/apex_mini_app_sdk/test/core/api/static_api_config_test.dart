@@ -35,7 +35,7 @@ void main() {
   test('uses legacy development values when devMode is true', () {
     StaticApiConfig.configure(devMode: true);
 
-    expect(StaticApiConfig.techInvestXUrl, 'http://192.168.88.120:7001/api/v1');
+    expect(StaticApiConfig.techInvestXUrl, 'http://192.168.88.120:7001');
     expect(StaticApiConfig.loginSessionBaseUrl, 'http://202.21.105.150:40654');
     expect(StaticApiConfig.ipsApiBaseUrl, 'http://202.21.105.150:40651');
     expect(StaticApiConfig.appId, '156');
