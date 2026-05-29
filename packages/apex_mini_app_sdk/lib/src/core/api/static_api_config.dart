@@ -7,7 +7,7 @@ class StaticApiConfig {
   StaticApiConfig._();
 
   /// Legacy development Tech InvestX API base URL.
-  static const String devTechInvestXUrl = 'http://192.168.88.120:7001/api/v1';
+  static const String devTechInvestXUrl = 'http://192.168.88.120:7001';
 
   /// Legacy development login-session API base URL.
   static const String devLoginSessionBaseUrl = 'http://202.21.105.150:40654';
