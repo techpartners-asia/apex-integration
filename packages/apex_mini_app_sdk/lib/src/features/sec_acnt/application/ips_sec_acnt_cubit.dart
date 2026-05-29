@@ -18,11 +18,10 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     required this.l10n,
   }) : super(const IpsSecAcntState());
 
-  /// Runs opening-fee payment and optionally submits account-opening request.
+  /// Submits account-opening request, then runs opening-fee payment.
   Future<MiniAppPaymentRes?> submitOpeningPayment({
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
-    required bool requiresOpeningPaymentFlow,
   }) async {
     if (state.isSubmitting) {
       return state.paymentRes;
@@ -33,6 +32,9 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     );
 
     try {
+      final SecAcntRequestResult requestResult = await service
+          .addSecuritiesAcntReq(personalInfo: personalInfo);
+
       final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
         flow: MiniAppPaymentFlow.secAcntOpening,
         invoiceRequest: CreateInvoiceApiReq(
@@ -41,15 +43,6 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
           isTransaction: false,
         ),
       );
-
-      SecAcntRequestResult? requestResult;
-      if (paymentRes.success) {
-        if (!requiresOpeningPaymentFlow) {
-          requestResult = await service.addSecuritiesAcntReq(
-            personalInfo: personalInfo,
-          );
-        }
-      }
 
       emit(
         state.copyWith(
