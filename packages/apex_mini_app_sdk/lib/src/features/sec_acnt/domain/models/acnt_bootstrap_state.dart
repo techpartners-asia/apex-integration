@@ -2,6 +2,8 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Domain wrapper around securities-account list/balance bootstrap responses.
 class AcntBootstrapState {
+  static const double _defaultVerificationTransferAmount = 10000;
+
   final GetSecuritiesAcntListResDto _response;
 
   /// Creates bootstrap state from the securities-account list response.
@@ -59,8 +61,8 @@ class AcntBootstrapState {
   /// IPS CASA available balance, falling back to total balance.
   double? get ipsBalance => _ipsCasaAccount?.availableBalance ?? _ipsCasaAccount?.balance;
 
-  /// Commission value from the bootstrap detail payload.
-  double? get commission => _detail.commission;
+  /// Commission value used for account-verification payment.
+  double? get commission => _defaultVerificationTransferAmount;
 
   /// Display currency resolved from primary or IPS CASA account data.
   String get currency => _response.primaryAccount?.symbol ?? _ipsCasaAccount?.symbol ?? IpsDefaults.defaultCurrency;
