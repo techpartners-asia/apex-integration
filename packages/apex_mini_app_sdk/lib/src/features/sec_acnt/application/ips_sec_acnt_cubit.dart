@@ -9,14 +9,50 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
   /// Host-payment executor.
   final MiniAppPaymentExecutor paymentExecutor;
 
+  /// Payments API used for account opening fee lookup.
+  final MiniAppPaymentsRepository paymentsRepository;
+
   /// Localizations used for error/payment messages.
   final SdkLocalizations l10n;
 
   IpsSecAcntCubit({
     required this.service,
     required this.paymentExecutor,
+    required this.paymentsRepository,
     required this.l10n,
   }) : super(const IpsSecAcntState());
+
+  /// Loads the additional account fee added to the opening commission total.
+  Future<void> loadAccountFeesAmount() async {
+    if (state.isLoadingAccountFees || state.hasLoadedAccountFees) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        isLoadingAccountFees: true,
+        errorMessage: null,
+      ),
+    );
+
+    try {
+      final double amount = await paymentsRepository.getAccountFeesAmount();
+      emit(
+        state.copyWith(
+          isLoadingAccountFees: false,
+          hasLoadedAccountFees: true,
+          accountFeesAmount: amount,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          isLoadingAccountFees: false,
+          errorMessage: formatIpsError(error, l10n),
+        ),
+      );
+    }
+  }
 
   /// Submits account-opening request, then runs opening-fee payment.
   Future<MiniAppPaymentRes?> submitOpeningPayment({
@@ -35,10 +71,11 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
       final SecAcntRequestResult requestResult = await service
           .addSecuritiesAcntReq(personalInfo: personalInfo);
 
+      final double invoiceAmount = state.totalPayableAmount(payableAmount);
       final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
         flow: MiniAppPaymentFlow.secAcntOpening,
         invoiceRequest: CreateInvoiceApiReq(
-          amount: payableAmount,
+          amount: invoiceAmount,
           note: 'sec_acnt_opening_fee',
           isTransaction: false,
         ),

@@ -220,6 +220,11 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<double> getAccountFeesAmount() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
     // TODO: implement createInvoice
     throw UnimplementedError();
@@ -289,6 +294,11 @@ class _FailingApi implements MiniAppApiRepository {
       responseCode: 1,
       message: 'Server error',
     );
+  }
+
+  @override
+  Future<double> getAccountFeesAmount() {
+    throw UnimplementedError();
   }
 
   @override

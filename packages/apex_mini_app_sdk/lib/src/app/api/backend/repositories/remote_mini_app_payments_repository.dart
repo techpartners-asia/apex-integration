@@ -19,6 +19,22 @@ class RemoteMiniAppPaymentsRepository implements MiniAppPaymentsRepository {
   });
 
   @override
+  Future<double> getAccountFeesAmount() async {
+    try {
+      await _ensureAdminAuthToken(session);
+      final AccountFeesAmountDto response = await api.getAccountFeesAmount();
+      return response.amount;
+    } catch (error, stackTrace) {
+      logger.onError(
+        'load_account_fees_amount_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) async {
     try {
       await _ensureAdminAuthToken(session);

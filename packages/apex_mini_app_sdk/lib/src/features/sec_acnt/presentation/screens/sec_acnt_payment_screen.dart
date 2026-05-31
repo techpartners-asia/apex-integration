@@ -41,6 +41,12 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
   void initState() {
     super.initState();
     _bootstrapState = widget.bootstrapState;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      context.read<IpsSecAcntCubit>().loadAccountFeesAmount();
+    });
   }
 
   /// Payable account-opening commission from the current bootstrap snapshot.
@@ -121,9 +127,12 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
         final double? payableCommission = _payableCommission;
         final bool canPay =
             !state.isSubmitting &&
+            !state.isLoadingAccountFees &&
+            state.hasLoadedAccountFees &&
             payableCommission != null &&
             payableCommission.isFinite &&
-            payableCommission > 0;
+            payableCommission > 0 &&
+            (state.errorMessage == null || state.errorMessage!.trim().isEmpty);
 
         return CustomScaffold(
           appBarTitle: header.title,
@@ -162,6 +171,8 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
                         errorMessage: state.errorMessage,
                         isSubmitting: state.isSubmitting,
                         payableAmount: payableCommission ?? 0,
+                        accountFeesAmount: state.accountFeesAmount,
+                        isLoadingAccountFees: state.isLoadingAccountFees,
                       ),
                     ],
                   ),

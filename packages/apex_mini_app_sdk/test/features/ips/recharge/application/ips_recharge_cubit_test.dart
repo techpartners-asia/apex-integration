@@ -249,6 +249,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<double> getAccountFeesAmount() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
     // TODO: implement createInvoice
     throw UnimplementedError();
