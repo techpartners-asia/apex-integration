@@ -17,7 +17,31 @@ void main() {
     });
 
     test(
-      'routes users with main account and complete profile to questionnaire',
+      'routes short-flow users with complete onboarding to overview',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: true,
+          hasIpsAcnt: false,
+          secAcntStatusCode: 1,
+        );
+
+        expect(
+          MiniAppBootstrapFlow.resolveNextRoute(
+            state,
+            currentUser: _completeUser(
+              account: const AccountDto(
+                isPaidContract: true,
+                isInvestContract: true,
+              ),
+            ),
+          ),
+          MiniAppRoutes.overview,
+        );
+      },
+    );
+
+    test(
+      'routes short-flow open accounts to overview even when contract is pending',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -30,13 +54,53 @@ void main() {
             state,
             currentUser: _completeUser(),
           ),
-          MiniAppRoutes.questionnaire,
+          MiniAppRoutes.overview,
         );
       },
     );
 
     test(
-      'routes users with main account but incomplete profile to sec account',
+      'routes short-flow pending accounts to overview',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: true,
+          hasIpsAcnt: false,
+          secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
+        );
+
+        expect(
+          MiniAppBootstrapFlow.resolveNextRoute(
+            state,
+            currentUser: _completeUser(),
+          ),
+          MiniAppRoutes.overview,
+        );
+      },
+    );
+
+    test(
+      'routes short-flow unpaid accounts to sec account',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: true,
+          hasIpsAcnt: false,
+          secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+        );
+
+        expect(
+          MiniAppBootstrapFlow.resolveNextRoute(
+            state,
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: true),
+            ),
+          ),
+          MiniAppRoutes.secAcnt,
+        );
+      },
+    );
+
+    test(
+      'routes short-flow users with incomplete profile to sec account',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -127,7 +191,7 @@ void main() {
     );
 
     test(
-      'routes to overview when onboarding is complete and only calculation remains',
+      'routes to sec account when API status is unpaid even if profile is paid',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -146,7 +210,7 @@ void main() {
               ),
             ),
           ),
-          MiniAppRoutes.overview,
+          MiniAppRoutes.secAcnt,
         );
       },
     );

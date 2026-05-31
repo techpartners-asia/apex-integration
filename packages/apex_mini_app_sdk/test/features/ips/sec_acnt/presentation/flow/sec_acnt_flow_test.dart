@@ -6,12 +6,15 @@ void main() {
     test('uses short flow for users with main account and no IPS account', () {
       expect(
         resolveSecAcntFlowSteps(
-          _bootstrapState(hasAcnt: true, hasIpsAcnt: false),
+          _bootstrapState(
+            hasAcnt: true,
+            hasIpsAcnt: false,
+            secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+          ),
         ),
         const <SecAcntFlowStep>[
           SecAcntFlowStep.consent,
           SecAcntFlowStep.personalInformation,
-          SecAcntFlowStep.success,
           SecAcntFlowStep.serviceAgreement,
         ],
       );
@@ -188,6 +191,25 @@ void main() {
       },
     );
 
+    test(
+      'short flow keeps payment step when opening fee is unpaid',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: false,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: true),
+            ),
+          ),
+          contains(SecAcntFlowStep.payment),
+        );
+      },
+    );
+
     test('paid contract skips short-flow success screen', () {
       expect(
         resolveSecAcntFlowSteps(
@@ -205,14 +227,16 @@ void main() {
     test('completed invest contract skips short-flow service agreement', () {
       expect(
         resolveSecAcntFlowSteps(
-          _bootstrapState(hasAcnt: true, hasIpsAcnt: false),
+          _bootstrapState(
+            hasAcnt: true,
+            hasIpsAcnt: false,
+            secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+          ),
           currentUser: _completeUser(
             account: const AccountDto(isInvestContract: true),
           ),
         ),
-        const <SecAcntFlowStep>[
-          SecAcntFlowStep.success,
-        ],
+        isEmpty,
       );
     });
 
@@ -238,6 +262,29 @@ void main() {
             ),
             currentUser: _completeUser(
               account: const AccountDto(isPaidContract: false),
+            ),
+          ),
+          contains(SecAcntFlowStep.payment),
+        );
+      },
+    );
+
+    test(
+      'status=2 keeps payment step when profile contract flag is stale',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(
+                isInvestContract: true,
+                isPaidContract: true,
+                signatureId: 31,
+              ),
             ),
           ),
           contains(SecAcntFlowStep.payment),

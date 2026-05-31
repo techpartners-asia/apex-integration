@@ -60,6 +60,11 @@ bool hasPaidSecAcntOpeningFee(
     return true;
   }
 
+  if (state?.hasAcnt == true &&
+      state!.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid) {
+    return false;
+  }
+
   return hasPaidSecAcntContract(currentUser);
 }
 
@@ -92,10 +97,16 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   );
 
   if (isShortSecAcntFlow(state)) {
+    final bool needsPayment = requiresSecAcntOpeningPayment(
+      state,
+      currentUser: currentUser,
+    );
+
     return <SecAcntFlowStep>[
       if (!hasCompletePersonalInfo) SecAcntFlowStep.consent,
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
-      if (!hasPaidContract) SecAcntFlowStep.success,
+      if (needsPayment) SecAcntFlowStep.payment,
+      if (!needsPayment && !hasPaidContract) SecAcntFlowStep.success,
       if (!hasCompletedContract) SecAcntFlowStep.serviceAgreement,
     ];
   }

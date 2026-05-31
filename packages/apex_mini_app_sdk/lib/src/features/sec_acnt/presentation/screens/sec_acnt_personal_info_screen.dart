@@ -322,10 +322,14 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
 
     if (nextStep == SecAcntFlowStep.success && _isShortFlow) {
-      await replaceIpsRoute(
-        context,
-        route: MiniAppRoutes.questionnaire,
-        arguments: widget.bootstrapState,
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => SecAcntSuccessScreen(
+            bootstrapState: widget.bootstrapState,
+            draft: draft,
+            currentUser: widget.currentUser,
+          ),
+        ),
       );
       return;
     }
