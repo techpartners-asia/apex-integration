@@ -35,10 +35,18 @@ void main() {
           ),
         ),
       );
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       expect(find.text('Phone number'), findsNothing);
       expect(find.text('Email'), findsNothing);
+
+      await tester.tap(find.text('Select'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Khan Bank'));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(EditableText).last, '991122334455667788');
+      await tester.pump();
 
       await tester.tap(find.text('Continue'));
       await tester.pumpAndSettle();
@@ -50,7 +58,7 @@ void main() {
   );
 
   testWidgets(
-    'initializes selected bank from profile bank code after bank options load',
+    'does not pre-fill iban or bank from profile after bank options load',
     (WidgetTester tester) async {
       final _FakeMiniAppApiRepository api = _FakeMiniAppApiRepository();
 
@@ -94,7 +102,15 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('ХХБанк'), findsOneWidget);
+      expect(find.text('ХХБанк'), findsNothing);
+
+      await tester.tap(find.text('Select'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('ХХБанк'));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(EditableText).last, '670004000453182074');
+      await tester.pump();
 
       await tester.tap(find.text('Continue'));
       await tester.pumpAndSettle();
@@ -147,6 +163,13 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
+
+      expect(find.text('ХХБанк'), findsNothing);
+
+      await tester.tap(find.text('Select'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('ХХБанк'));
       await tester.pumpAndSettle();
 
       expect(find.text('ХХБанк'), findsOneWidget);

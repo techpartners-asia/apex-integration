@@ -243,7 +243,9 @@ class SecAcntFlowDraft {
 
   /// Whether mobile, secondary mobile, and email values are valid.
   bool get hasCompleteContactInfo {
-    return _isValidPhone(mobile) && _isValidPhone(secondaryMobile) && _isValidEmail(email);
+    return _isValidPhone(mobile) &&
+        _isOptionalPhone(secondaryMobile) &&
+        _isValidEmail(email);
   }
 
   static const Object _sentinel = Object();
@@ -252,6 +254,14 @@ class SecAcntFlowDraft {
 bool _isValidPhone(String? value) {
   final String? normalized = _trimToNull(value);
   return normalized != null && RegExp(r'^\d{8}$').hasMatch(normalized);
+}
+
+bool _isOptionalPhone(String? value) {
+  final String? normalized = _trimToNull(value);
+  if (normalized == null) {
+    return true;
+  }
+  return RegExp(r'^\d{8}$').hasMatch(normalized);
 }
 
 bool _isValidEmail(String? value) {
