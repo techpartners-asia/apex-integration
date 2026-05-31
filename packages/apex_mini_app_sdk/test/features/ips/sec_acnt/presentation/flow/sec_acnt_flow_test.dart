@@ -42,7 +42,7 @@ void main() {
           _bootstrapState(
             hasAcnt: true,
             hasIpsAcnt: true,
-            secAcntStatusCode: 0,
+            secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
           ),
         ),
         const <SecAcntFlowStep>[
@@ -50,7 +50,6 @@ void main() {
           SecAcntFlowStep.personalInformation,
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.signature,
-          SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
         ],
       );
@@ -79,7 +78,6 @@ void main() {
           currentUser: _completeUser(),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.signature,
           SecAcntFlowStep.payment,
@@ -110,7 +108,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
@@ -127,7 +124,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.signature,
           SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
@@ -147,7 +143,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
         ],
@@ -183,7 +178,6 @@ void main() {
             ),
           ),
           const <SecAcntFlowStep>[
-            SecAcntFlowStep.consent,
             SecAcntFlowStep.secAgreement,
             SecAcntFlowStep.signature,
             SecAcntFlowStep.calculation,
@@ -203,7 +197,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.serviceAgreement,
         ],
       );
@@ -218,7 +211,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.success,
         ],
       );
@@ -233,6 +225,44 @@ void main() {
         isNot(contains(SecAcntFlowStep.personalInformation)),
       );
     });
+
+    test(
+      'status=2 keeps payment step when opening fee is still unpaid',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: false),
+            ),
+          ),
+          contains(SecAcntFlowStep.payment),
+        );
+      },
+    );
+
+    test(
+      'status=0 skips payment when backend marks opening fee as paid',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: false),
+            ),
+          ),
+          isNot(contains(SecAcntFlowStep.payment)),
+        );
+      },
+    );
 
     test(
       'unpaid contract keeps payment step when account is still missing',

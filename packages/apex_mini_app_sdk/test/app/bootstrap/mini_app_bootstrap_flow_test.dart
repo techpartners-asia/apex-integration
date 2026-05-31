@@ -92,7 +92,7 @@ void main() {
       final AcntBootstrapState state = _bootstrapState(
         hasAcnt: true,
         hasIpsAcnt: true,
-        secAcntStatusCode: 0,
+        secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
       );
 
       expect(
@@ -100,6 +100,56 @@ void main() {
         MiniAppRoutes.secAcnt,
       );
     });
+
+    test(
+      'routes to overview when paid pending account only has calculation left',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: true,
+          hasIpsAcnt: true,
+          secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
+        );
+
+        expect(
+          MiniAppBootstrapFlow.resolveNextRoute(
+            state,
+            currentUser: _completeUser(
+              account: const AccountDto(
+                isInvestContract: true,
+                isPaidContract: false,
+                signatureId: 31,
+              ),
+            ),
+          ),
+          MiniAppRoutes.overview,
+        );
+      },
+    );
+
+    test(
+      'routes to overview when onboarding is complete and only calculation remains',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: true,
+          hasIpsAcnt: true,
+          secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+        );
+
+        expect(
+          MiniAppBootstrapFlow.resolveNextRoute(
+            state,
+            currentUser: _completeUser(
+              account: const AccountDto(
+                isInvestContract: true,
+                isPaidContract: true,
+                signatureId: 31,
+              ),
+            ),
+          ),
+          MiniAppRoutes.overview,
+        );
+      },
+    );
   });
 }
 

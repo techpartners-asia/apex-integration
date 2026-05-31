@@ -92,11 +92,13 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
       return;
     }
 
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) =>
-            SecAcntCalculationScreen(bootstrapState: _bootstrapState),
-      ),
+    await pushSecAcntFlowStep(
+      context,
+      step: SecAcntFlowStep.calculation,
+      bootstrapState: _bootstrapState,
+      draft: widget.draft,
+      appApi: null,
+      currentUser: widget.currentUser,
     );
   }
 

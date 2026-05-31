@@ -51,7 +51,10 @@ class MiniAppBootstrapFlow {
     AcntBootstrapState bootstrapState, {
     UserEntityDto? currentUser,
   }) {
-    if (bootstrapState.hasAcnt && bootstrapState.hasIpsAcnt && bootstrapState.hasOpenSecAcnt) {
+    if (_shouldRouteToOverviewAfterSecAcntOnboarding(
+      bootstrapState,
+      currentUser: currentUser,
+    )) {
       return MiniAppRoutes.overview;
     }
 
@@ -60,5 +63,22 @@ class MiniAppBootstrapFlow {
     }
 
     return MiniAppRoutes.secAcnt;
+  }
+
+  /// Routes to overview when onboarding is done and only account activation remains.
+  static bool _shouldRouteToOverviewAfterSecAcntOnboarding(
+    AcntBootstrapState bootstrapState, {
+    UserEntityDto? currentUser,
+  }) {
+    if (bootstrapState.hasOpenSecAcnt && bootstrapState.hasIpsAcnt) {
+      return true;
+    }
+
+    final SecAcntFlowStep? initialStep = resolveInitialSecAcntFlowStep(
+      bootstrapState,
+      currentUser: currentUser,
+    );
+
+    return initialStep == null || initialStep == SecAcntFlowStep.calculation;
   }
 }

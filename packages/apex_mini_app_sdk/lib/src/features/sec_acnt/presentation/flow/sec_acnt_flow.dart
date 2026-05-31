@@ -37,16 +37,31 @@ bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 bool requiresSecAcntOpeningPayment(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
-}) => (state?.requiresSecAcntPayment ?? false) && !hasPaidSecAcntContract(currentUser);
+}) =>
+    (state?.requiresSecAcntOpeningFeePayment ?? true) &&
+    !hasPaidSecAcntOpeningFee(state, currentUser: currentUser);
 
 /// Whether the backend says account-opening request is already pending.
-bool hasPendingSecAcntOpeningRequest(AcntBootstrapState? state) => state?.requiresSecAcntPayment ?? false;
+bool hasPendingSecAcntOpeningRequest(AcntBootstrapState? state) =>
+    state?.hasPendingSecAcntActivation ?? false;
 
 /// Whether the user has a securities account but has not enabled IPS.
 bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && state?.hasIpsAcnt == false;
 
 /// Whether the current profile says the contract/payment fee is already paid.
 bool hasPaidSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
+
+/// Whether opening-fee payment is complete according to bootstrap and profile.
+bool hasPaidSecAcntOpeningFee(
+  AcntBootstrapState? state, {
+  UserEntityDto? currentUser,
+}) {
+  if (state?.hasPaidSecAcntOpeningFeeFromApi ?? false) {
+    return true;
+  }
+
+  return hasPaidSecAcntContract(currentUser);
+}
 
 /// Whether the current profile says the InvestX contract is already complete.
 bool hasCompletedSecAcntContract(UserEntityDto? user) => user?.account?.hasInvestContract ?? false;
@@ -71,7 +86,10 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   );
   final bool hasSignature = hasSavedSecAcntSignature(currentUser);
   final bool hasCompletedContract = hasCompletedSecAcntContract(currentUser);
-  final bool hasPaidContract = hasPaidSecAcntContract(currentUser);
+  final bool hasPaidContract = hasPaidSecAcntOpeningFee(
+    state,
+    currentUser: currentUser,
+  );
 
   if (isShortSecAcntFlow(state)) {
     return <SecAcntFlowStep>[
