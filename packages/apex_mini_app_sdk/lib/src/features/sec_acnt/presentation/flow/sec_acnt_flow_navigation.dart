@@ -12,7 +12,21 @@ Future<void> closeSecAcntFlow(BuildContext context) async {
 
 /// Whether the account flow should continue into questionnaire/pack ordering.
 bool shouldOpenQuestionnaireAfterSecAcntFlow(AcntBootstrapState? state) =>
-    state == null || !state.hasOpenSecAcnt || !state.hasIpsAcnt;
+    state != null &&
+    state.hasOpenSecAcnt &&
+    state.hasIpsAcnt;
+
+/// Routes to the next mini-app destination after account onboarding ends.
+Future<void> routeAfterSecAcntFlow(
+  BuildContext context,
+  AcntBootstrapState? state,
+) async {
+  final String nextRoute = shouldOpenQuestionnaireAfterSecAcntFlow(state)
+      ? MiniAppRoutes.questionnaire
+      : MiniAppRoutes.overview;
+
+  await replaceIpsRoute(context, route: nextRoute, arguments: state);
+}
 
 /// Shows the pending-request dialog and closes the mini app from the OK action.
 Future<void> showPendingSecAcntOpeningRequestDialog(
@@ -44,21 +58,6 @@ Future<void> showPendingSecAcntOpeningRequestDialog(
       ),
     ],
   );
-}
-
-/// Routes to the next mini-app destination after account onboarding ends.
-Future<void> routeAfterSecAcntFlow(
-  BuildContext context,
-  AcntBootstrapState? state,
-) async {
-  final bool shouldOpenQuestionnaire = shouldOpenQuestionnaireAfterSecAcntFlow(
-    state,
-  );
-  final String nextRoute = shouldOpenQuestionnaire
-      ? MiniAppRoutes.questionnaire
-      : MiniAppRoutes.overview;
-
-  await replaceIpsRoute(context, route: nextRoute, arguments: state);
 }
 
 /// Builds a screen for post-consent/post-personal-info onboarding steps.

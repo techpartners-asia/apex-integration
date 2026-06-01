@@ -99,8 +99,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       text: widget.initialDraft.secondaryMobile,
     );
     _emailController = TextEditingController(text: widget.initialDraft.email);
-    _ibanController = TextEditingController(text: widget.initialDraft.iban);
-    _selectedBank = _initialSelectedBank();
+    _ibanController = TextEditingController();
     _profileSubmissionService = SecAcntProfileSubmissionService(
       appApi: widget.appApi,
       bankAccountLookupRepository: widget.bankAccountLookupRepository,
@@ -111,16 +110,6 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     _secondaryMobileController.addListener(_refresh);
     _emailController.addListener(_refresh);
     _ibanController.addListener(_refresh);
-  }
-
-  @override
-  void didUpdateWidget(covariant SecAcntPersonalInfoScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (_userChangedBank || _initialBankFingerprint(oldWidget) == _initialBankFingerprint(widget)) {
-      return;
-    }
-
-    _syncInitialSelectedBank();
   }
 
   @override
@@ -160,135 +149,10 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       return;
     }
 
-    final SecAcntBankOption? matchedBank = _resolveInitialSelectedBank(
-      bankOptions,
-    );
-
     setState(() {
       _bankOptions = bankOptions;
-      if (!_userChangedBank && matchedBank != null) {
-        _selectedBank = matchedBank;
-      }
       _isWarmingBankOptions = false;
     });
-  }
-
-  /// Synchronizes profile/draft bank values after async inputs change.
-  void _syncInitialSelectedBank() {
-    if (_userChangedBank || !mounted) {
-      return;
-    }
-
-    final SecAcntBankOption? matchedBank = _resolveInitialSelectedBank(
-      _bankOptions,
-    );
-    if (_sameBankOption(_selectedBank, matchedBank)) {
-      return;
-    }
-
-    setState(() {
-      _selectedBank = matchedBank;
-    });
-  }
-
-  /// Resolves the initial bank, preferring profile bank code over fallbacks.
-  SecAcntBankOption? _resolveInitialSelectedBank(
-    List<SecAcntBankOption> bankOptions,
-  ) {
-    final SecAcntBankOption? profileBank = _profileSelectedBank();
-    final String? profileBankCode = _trimToNull(profileBank?.id);
-    if (profileBankCode != null) {
-      return _matchBankOptionByCode(bankOptions, profileBankCode) ?? profileBank;
-    }
-
-    final SecAcntBankOption? draftBank = widget.initialDraft.selectedBank;
-    if (draftBank == null) {
-      return null;
-    }
-
-    return _matchBankOption(
-          bankOptions: bankOptions,
-          bankCode: draftBank.id,
-          bankName: draftBank.label,
-        ) ??
-        draftBank;
-  }
-
-  /// Initial bank alias from profile response or draft fallback.
-  SecAcntBankOption? _initialSelectedBank() {
-    return _profileSelectedBank() ?? widget.initialDraft.selectedBank;
-  }
-
-  /// Builds an initial bank option directly from profile `bank.bank_code`.
-  SecAcntBankOption? _profileSelectedBank() {
-    final BankDto? bank = widget.currentUser?.bank;
-    final String? bankCode = _trimToNull(bank?.bankCode);
-    if (bankCode == null) {
-      return null;
-    }
-
-    final String label = _trimToNull(bank?.bankName) ?? bankCode;
-    return SecAcntBankOption(bankCode, label, label, '');
-  }
-
-  /// Finds a bank option matching an existing bank code or display name.
-  SecAcntBankOption? _matchBankOption({
-    required List<SecAcntBankOption> bankOptions,
-    String? bankCode,
-    String? bankName,
-  }) {
-    final SecAcntBankOption? codeMatch = _matchBankOptionByCode(
-      bankOptions,
-      bankCode,
-    );
-    if (codeMatch != null) {
-      return codeMatch;
-    }
-
-    final String? normalizedBankName = _trimToNull(bankName)?.toLowerCase();
-    if (normalizedBankName == null) {
-      return null;
-    }
-
-    for (final SecAcntBankOption option in bankOptions) {
-      if (option.label.trim().toLowerCase() == normalizedBankName) {
-        return option;
-      }
-    }
-    return null;
-  }
-
-  /// Finds a bank option by normalized bank code.
-  SecAcntBankOption? _matchBankOptionByCode(
-    List<SecAcntBankOption> bankOptions,
-    String? bankCode,
-  ) {
-    final String? normalizedBankCode = _trimToNull(bankCode);
-    if (normalizedBankCode == null) {
-      return null;
-    }
-
-    for (final SecAcntBankOption option in bankOptions) {
-      if (option.id.trim() == normalizedBankCode) {
-        return option;
-      }
-    }
-    return null;
-  }
-
-  /// Returns true when two bank options carry the same display data.
-  bool _sameBankOption(SecAcntBankOption? a, SecAcntBankOption? b) {
-    return a?.id == b?.id && a?.label == b?.label && a?.shortLabel == b?.shortLabel && a?.logoUrl == b?.logoUrl;
-  }
-
-  /// Profile/draft bank fields that should trigger initial-bank resync.
-  String _initialBankFingerprint(SecAcntPersonalInfoScreen widget) {
-    return <String?>[
-      widget.currentUser?.bank?.bankCode,
-      widget.currentUser?.bank?.bankName,
-      widget.initialDraft.selectedBank?.id,
-      widget.initialDraft.selectedBank?.label,
-    ].map((String? value) => _trimToNull(value) ?? '').join('|');
   }
 
   /// Returns trimmed text or null when empty.
@@ -313,7 +177,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     if (_usesBankOnlyShortForm) {
       return null;
     }
-    return Validators.phone(context.l10n)(value);
+    return Validators.phone(context.l10n, required: false)(value);
   }
 
   /// Validates the email field when contact info is required.
@@ -458,10 +322,14 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
 
     if (nextStep == SecAcntFlowStep.success && _isShortFlow) {
-      await replaceIpsRoute(
-        context,
-        route: MiniAppRoutes.questionnaire,
-        arguments: widget.bootstrapState,
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => SecAcntSuccessScreen(
+            bootstrapState: widget.bootstrapState,
+            draft: draft,
+            currentUser: widget.currentUser,
+          ),
+        ),
       );
       return;
     }

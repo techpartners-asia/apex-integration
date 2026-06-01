@@ -6,12 +6,15 @@ void main() {
     test('uses short flow for users with main account and no IPS account', () {
       expect(
         resolveSecAcntFlowSteps(
-          _bootstrapState(hasAcnt: true, hasIpsAcnt: false),
+          _bootstrapState(
+            hasAcnt: true,
+            hasIpsAcnt: false,
+            secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+          ),
         ),
         const <SecAcntFlowStep>[
           SecAcntFlowStep.consent,
           SecAcntFlowStep.personalInformation,
-          SecAcntFlowStep.success,
           SecAcntFlowStep.serviceAgreement,
         ],
       );
@@ -42,7 +45,7 @@ void main() {
           _bootstrapState(
             hasAcnt: true,
             hasIpsAcnt: true,
-            secAcntStatusCode: 0,
+            secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
           ),
         ),
         const <SecAcntFlowStep>[
@@ -50,7 +53,6 @@ void main() {
           SecAcntFlowStep.personalInformation,
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.signature,
-          SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
         ],
       );
@@ -79,7 +81,6 @@ void main() {
           currentUser: _completeUser(),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.signature,
           SecAcntFlowStep.payment,
@@ -110,7 +111,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
@@ -127,7 +127,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.signature,
           SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
@@ -147,7 +146,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.payment,
           SecAcntFlowStep.calculation,
         ],
@@ -183,7 +181,6 @@ void main() {
             ),
           ),
           const <SecAcntFlowStep>[
-            SecAcntFlowStep.consent,
             SecAcntFlowStep.secAgreement,
             SecAcntFlowStep.signature,
             SecAcntFlowStep.calculation,
@@ -191,6 +188,25 @@ void main() {
         );
         expect(state.hasAcnt, isFalse);
         expect(state.hasOpenSecAcnt, isFalse);
+      },
+    );
+
+    test(
+      'short flow keeps payment step when opening fee is unpaid',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: false,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: true),
+            ),
+          ),
+          contains(SecAcntFlowStep.payment),
+        );
       },
     );
 
@@ -203,7 +219,6 @@ void main() {
           ),
         ),
         const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
           SecAcntFlowStep.serviceAgreement,
         ],
       );
@@ -212,15 +227,16 @@ void main() {
     test('completed invest contract skips short-flow service agreement', () {
       expect(
         resolveSecAcntFlowSteps(
-          _bootstrapState(hasAcnt: true, hasIpsAcnt: false),
+          _bootstrapState(
+            hasAcnt: true,
+            hasIpsAcnt: false,
+            secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+          ),
           currentUser: _completeUser(
             account: const AccountDto(isInvestContract: true),
           ),
         ),
-        const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
-          SecAcntFlowStep.success,
-        ],
+        isEmpty,
       );
     });
 
@@ -233,6 +249,67 @@ void main() {
         isNot(contains(SecAcntFlowStep.personalInformation)),
       );
     });
+
+    test(
+      'status=2 keeps payment step when opening fee is still unpaid',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: false),
+            ),
+          ),
+          contains(SecAcntFlowStep.payment),
+        );
+      },
+    );
+
+    test(
+      'status=2 keeps payment step when profile contract flag is stale',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(
+                isInvestContract: true,
+                isPaidContract: true,
+                signatureId: 31,
+              ),
+            ),
+          ),
+          contains(SecAcntFlowStep.payment),
+        );
+      },
+    );
+
+    test(
+      'status=0 skips payment when backend marks opening fee as paid',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
+            ),
+            currentUser: _completeUser(
+              account: const AccountDto(isPaidContract: false),
+            ),
+          ),
+          isNot(contains(SecAcntFlowStep.payment)),
+        );
+      },
+    );
 
     test(
       'unpaid contract keeps payment step when account is still missing',

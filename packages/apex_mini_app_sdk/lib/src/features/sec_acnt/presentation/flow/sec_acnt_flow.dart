@@ -37,16 +37,36 @@ bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 bool requiresSecAcntOpeningPayment(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
-}) => (state?.requiresSecAcntPayment ?? false) && !hasPaidSecAcntContract(currentUser);
+}) =>
+    (state?.requiresSecAcntOpeningFeePayment ?? true) &&
+    !hasPaidSecAcntOpeningFee(state, currentUser: currentUser);
 
 /// Whether the backend says account-opening request is already pending.
-bool hasPendingSecAcntOpeningRequest(AcntBootstrapState? state) => state?.requiresSecAcntPayment ?? false;
+bool hasPendingSecAcntOpeningRequest(AcntBootstrapState? state) =>
+    state?.hasPendingSecAcntActivation ?? false;
 
 /// Whether the user has a securities account but has not enabled IPS.
 bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && state?.hasIpsAcnt == false;
 
 /// Whether the current profile says the contract/payment fee is already paid.
 bool hasPaidSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
+
+/// Whether opening-fee payment is complete according to bootstrap and profile.
+bool hasPaidSecAcntOpeningFee(
+  AcntBootstrapState? state, {
+  UserEntityDto? currentUser,
+}) {
+  if (state?.hasPaidSecAcntOpeningFeeFromApi ?? false) {
+    return true;
+  }
+
+  if (state?.hasAcnt == true &&
+      state!.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid) {
+    return false;
+  }
+
+  return hasPaidSecAcntContract(currentUser);
+}
 
 /// Whether the current profile says the InvestX contract is already complete.
 bool hasCompletedSecAcntContract(UserEntityDto? user) => user?.account?.hasInvestContract ?? false;
@@ -71,13 +91,22 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   );
   final bool hasSignature = hasSavedSecAcntSignature(currentUser);
   final bool hasCompletedContract = hasCompletedSecAcntContract(currentUser);
-  final bool hasPaidContract = hasPaidSecAcntContract(currentUser);
+  final bool hasPaidContract = hasPaidSecAcntOpeningFee(
+    state,
+    currentUser: currentUser,
+  );
 
   if (isShortSecAcntFlow(state)) {
+    final bool needsPayment = requiresSecAcntOpeningPayment(
+      state,
+      currentUser: currentUser,
+    );
+
     return <SecAcntFlowStep>[
       if (!hasCompletePersonalInfo) SecAcntFlowStep.consent,
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
-      if (!hasPaidContract) SecAcntFlowStep.success,
+      if (needsPayment) SecAcntFlowStep.payment,
+      if (!needsPayment && !hasPaidContract) SecAcntFlowStep.success,
       if (!hasCompletedContract) SecAcntFlowStep.serviceAgreement,
     ];
   }
@@ -243,7 +272,9 @@ class SecAcntFlowDraft {
 
   /// Whether mobile, secondary mobile, and email values are valid.
   bool get hasCompleteContactInfo {
-    return _isValidPhone(mobile) && _isValidPhone(secondaryMobile) && _isValidEmail(email);
+    return _isValidPhone(mobile) &&
+        _isOptionalPhone(secondaryMobile) &&
+        _isValidEmail(email);
   }
 
   static const Object _sentinel = Object();
@@ -252,6 +283,14 @@ class SecAcntFlowDraft {
 bool _isValidPhone(String? value) {
   final String? normalized = _trimToNull(value);
   return normalized != null && RegExp(r'^\d{8}$').hasMatch(normalized);
+}
+
+bool _isOptionalPhone(String? value) {
+  final String? normalized = _trimToNull(value);
+  if (normalized == null) {
+    return true;
+  }
+  return RegExp(r'^\d{8}$').hasMatch(normalized);
 }
 
 bool _isValidEmail(String? value) {

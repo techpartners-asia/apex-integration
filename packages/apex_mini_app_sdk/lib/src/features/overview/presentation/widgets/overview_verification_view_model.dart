@@ -71,6 +71,21 @@ class OverviewVerificationViewModel {
   });
 }
 
+void _launchSecAcntFlow(
+  BuildContext context,
+  AcntBootstrapState state,
+) {
+  launchIpsRoute(
+    context,
+    route: MiniAppRoutes.secAcnt,
+    arguments: state,
+  );
+}
+
+void _launchQuestionnaire(BuildContext context) {
+  launchIpsRoute(context, route: MiniAppRoutes.questionnaire);
+}
+
 /// Builds the onboarding checklist model from account bootstrap state.
 OverviewVerificationViewModel buildOverviewVerificationViewModel(
   BuildContext context,
@@ -106,11 +121,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           subtitle: l10n.ipsAcntFlowBody,
           status: contractPaid ? StepStatus.active : StepStatus.upcoming,
           onTap: contractPaid
-              ? () => launchIpsRoute(
-                  context,
-                  route: MiniAppRoutes.questionnaire,
-                  arguments: state,
-                )
+              ? () => _launchSecAcntFlow(context, state)
               : null,
         ),
         OverviewVerificationStep(
@@ -127,13 +138,52 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           ? l10n.ipsAcntOpenAcnt
           : l10n.ipsOverviewFirstPackTitle,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => launchIpsRoute(
-        context,
-        route: contractPaid
-            ? MiniAppRoutes.questionnaire
-            : MiniAppRoutes.personalInfo,
-        arguments: contractPaid ? state : null,
-      ),
+      onPromoTap: () => contractPaid
+          ? _launchSecAcntFlow(context, state)
+          : launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+    );
+  }
+
+  if (!state.hasIpsAcnt) {
+    return OverviewVerificationViewModel(
+      title: l10n.ipsOverviewVerificationTitle,
+      subtitle: l10n.ipsOverviewVerificationSubtitle,
+      progressCurrent: state.hasOpenSecAcnt ? 2 : 1,
+      progressTotal: 3,
+      steps: <OverviewVerificationStep>[
+        OverviewVerificationStep(
+          title: l10n.ipsOverviewProfileMenuPersonalInfo,
+          subtitle: l10n.ipsOverviewProfileVerified,
+          status: StepStatus.completed,
+        ),
+        OverviewVerificationStep(
+          title: l10n.ipsAcntVerifyAcnt,
+          subtitle: state.hasOpenSecAcnt
+              ? l10n.ipsAcntHasAcnt
+              : l10n.ipsAcntFlowBody,
+          status: state.hasOpenSecAcnt
+              ? StepStatus.completed
+              : StepStatus.active,
+          onTap: state.hasOpenSecAcnt
+              ? null
+              : () => _launchSecAcntFlow(context, state),
+        ),
+        OverviewVerificationStep(
+          title: l10n.ipsAcntOpenAcnt,
+          subtitle: l10n.ipsAcntFlowBody,
+          status: state.hasOpenSecAcnt
+              ? StepStatus.active
+              : StepStatus.upcoming,
+          onTap: state.hasOpenSecAcnt
+              ? () => _launchSecAcntFlow(context, state)
+              : null,
+          isLast: true,
+        ),
+      ],
+      promoEyebrow: l10n.ipsOverviewActionTitle,
+      promoTitle: l10n.ipsAcntOpenAcnt,
+      promoButtonLabel: l10n.commonContinue,
+      onPromoTap: () => _launchSecAcntFlow(context, state),
     );
   }
 
@@ -153,11 +203,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           title: l10n.ipsAcntVerifyAcnt,
           subtitle: l10n.ipsAcntFlowBody,
           status: StepStatus.active,
-          onTap: () => launchIpsRoute(
-            context,
-            route: MiniAppRoutes.questionnaire,
-            arguments: state,
-          ),
+          onTap: () => _launchSecAcntFlow(context, state),
         ),
         OverviewVerificationStep(
           title: l10n.ipsOverviewFinalStepLabel,
@@ -169,11 +215,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
       promoEyebrow: l10n.ipsOverviewActionTitle,
       promoTitle: l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => launchIpsRoute(
-        context,
-        route: MiniAppRoutes.questionnaire,
-        arguments: state,
-      ),
+      onPromoTap: () => _launchSecAcntFlow(context, state),
     );
   }
 
@@ -197,15 +239,13 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
         title: l10n.ipsQuestionnaireTitle,
         subtitle: l10n.ipsQuestionnaireSubtitle,
         status: StepStatus.active,
-        onTap: () =>
-            launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+        onTap: () => _launchQuestionnaire(context),
         isLast: true,
       ),
     ],
     promoEyebrow: l10n.ipsOverviewProfileMenuPackInfo,
     promoTitle: l10n.ipsHomeRecommendedPackCta,
     promoButtonLabel: l10n.commonContinue,
-    onPromoTap: () =>
-        launchIpsRoute(context, route: MiniAppRoutes.questionnaire),
+    onPromoTap: () => _launchQuestionnaire(context),
   );
 }

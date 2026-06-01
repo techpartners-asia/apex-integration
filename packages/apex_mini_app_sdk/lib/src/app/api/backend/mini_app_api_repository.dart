@@ -54,6 +54,9 @@ abstract interface class MiniAppSupportRepository {
 
 /// Payment repository operations used by contract/payment flows.
 abstract interface class MiniAppPaymentsRepository {
+  /// Loads the account opening fee added to the sec-acnt payment total.
+  Future<double> getAccountFeesAmount();
+
   /// Creates a payment invoice for a mini-app action.
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req);
 
@@ -157,6 +160,10 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
 
   @override
   Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) => supportRepository.getCompanyInfo(forceRefresh: forceRefresh);
+
+  @override
+  Future<double> getAccountFeesAmount() =>
+      paymentsRepository.getAccountFeesAmount();
 
   @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) => paymentsRepository.createInvoice(req);

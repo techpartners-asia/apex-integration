@@ -39,6 +39,18 @@ class MiniAppApiBackend {
     return QuestionnaireQuestionDto.listFromQuestionApiRaw(json);
   }
 
+  /// Loads the additional account fee amount for securities account opening.
+  Future<AccountFeesAmountDto> getAccountFeesAmount() async {
+    final ApiExecutor executor =
+        _requireAuthorizedExecutor('getAccountFeesAmount');
+    final Map<String, Object?> json = await executor.getJson(
+      ApiEndpoints.accountFeesAmount,
+      context: const ReqContext(operName: 'getAccountFeesAmount'),
+    );
+
+    return AccountFeesAmountDto.fromJson(json);
+  }
+
   /// Creates an invoice through the authorized API.
   Future<CreateInvoiceResponseDto> createInvoice(CreateInvoiceApiReq req) async {
     final ApiExecutor executor = _requireAuthorizedExecutor('createInvoice');

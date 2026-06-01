@@ -9,8 +9,14 @@ class SecAcntPaymentStep extends StatelessWidget {
   /// Whether payment submission is in progress.
   final bool isSubmitting;
 
-  /// Amount payable for account opening.
+  /// Base opening commission from bootstrap.
   final double payableAmount;
+
+  /// Additional account fee added to the opening commission.
+  final double accountFeesAmount;
+
+  /// Whether the account-fees endpoint is still loading.
+  final bool isLoadingAccountFees;
 
   /// Creates the payment step content.
   const SecAcntPaymentStep({
@@ -18,17 +24,24 @@ class SecAcntPaymentStep extends StatelessWidget {
     required this.errorMessage,
     required this.isSubmitting,
     required this.payableAmount,
+    this.accountFeesAmount = 0,
+    this.isLoadingAccountFees = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final responsive = context.responsive;
-    final bool hasAmount = payableAmount.isFinite && payableAmount > 0;
+    final bool hasBaseAmount = payableAmount.isFinite && payableAmount > 0;
     final bool hasError =
         errorMessage != null && errorMessage!.trim().isNotEmpty;
-    final String? amountLabel = hasAmount
-        ? formatIpsPaymentAmount(payableAmount, 'MNT')
+    final double totalPayableAmount = hasBaseAmount
+        ? payableAmount + accountFeesAmount
+        : 0;
+    final bool showTotalAmount =
+        hasBaseAmount && !isLoadingAccountFees;
+    final String? amountLabel = showTotalAmount
+        ? formatIpsPaymentAmount(totalPayableAmount, 'MNT')
         : null;
 
     return Column(
@@ -57,12 +70,14 @@ class SecAcntPaymentStep extends StatelessWidget {
               : const Color(0xFFFFF0DD),
           message: hasError
               ? errorMessage!.trim()
-              : hasAmount
+              : isLoadingAccountFees
+              ? l10n.commonLoading
+              : hasBaseAmount
               ? l10n.secAcntPaymentNoticeMessage
               : l10n.secAcntPaymentAmountUnavailable,
           textColor: hasError ? DesignTokens.danger : DesignTokens.ink,
         ),
-        if (hasAmount) ...<Widget>[
+        if (showTotalAmount) ...<Widget>[
           SizedBox(height: responsive.space(AppSpacing.lg)),
           Padding(
             padding: responsive.insetsSymmetric(horizontal: AppSpacing.xs),

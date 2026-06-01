@@ -2,7 +2,6 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Domain wrapper around securities-account list/balance bootstrap responses.
 class AcntBootstrapState {
-  static const double _defaultVerificationTransferAmount = 10000;
 
   final GetSecuritiesAcntListResDto _response;
 
@@ -20,8 +19,20 @@ class AcntBootstrapState {
   /// Whether both IPS master and CASA accounts are present.
   bool get hasRequiredIpsAccounts => _ipsMasterAccount != null && _ipsCasaAccount != null;
 
+  /// Backend status for a newly created account with an unpaid opening fee.
+  static const int secAcntStatusUnpaid = 2;
+
+  /// Backend status for a paid account that is still pending activation.
+  static const int secAcntStatusPending = 0;
+
+  /// Backend status for an opened securities account.
+  static const int secAcntStatusOpen = 1;
+
   /// Whether the backend says the user has a securities-account request/account.
-  bool get hasAcnt => _detail.hasAcnt;
+  ///
+  /// Uses both [GetSecuritiesAcntListDetailDto.hasAcnt] and the presence of a
+  /// flag `3` account row because the backend can return either signal.
+  bool get hasAcnt => _detail.hasAcnt || _securitiesAccount != null;
 
   /// Whether IPS account data is present.
   bool get hasIpsAcnt => _detail.hasIpsAcnt || _ipsMasterAccount != null || _ipsCasaAccount != null;
@@ -61,8 +72,8 @@ class AcntBootstrapState {
   /// IPS CASA available balance, falling back to total balance.
   double? get ipsBalance => _ipsCasaAccount?.availableBalance ?? _ipsCasaAccount?.balance;
 
-  /// Commission value used for account-verification payment.
-  double? get commission => _defaultVerificationTransferAmount;
+  /// Commission value from the bootstrap detail payload.
+  double? get commission => _detail.commission;
 
   /// Display currency resolved from primary or IPS CASA account data.
   String get currency => _response.primaryAccount?.symbol ?? _ipsCasaAccount?.symbol ?? IpsDefaults.defaultCurrency;
@@ -145,10 +156,51 @@ class AcntBootstrapState {
   }
 
   /// Whether a securities account exists and is open/active.
-  bool get hasOpenSecAcnt => hasAcnt && secAcntStatusCode == 1;
+  bool get hasOpenSecAcnt =>
+      hasAcnt && secAcntStatusCode == secAcntStatusOpen;
+
+  /// Whether the opening fee is paid according to flag `3` status or `isPaid`.
+  bool get hasPaidSecAcntOpeningFeeFromApi {
+    final GetSecAcntListAccountDto? account = _securitiesAccount;
+    if (account == null) {
+      return false;
+    }
+
+    if (account.isPaid) {
+      return true;
+    }
+
+    final int? status = account.status;
+    if (status == secAcntStatusOpen || status == secAcntStatusPending) {
+      return true;
+    }
+
+    if (status == secAcntStatusUnpaid) {
+      return false;
+    }
+
+    return false;
+  }
+
+  /// Whether the securities account is paid but still waiting for activation.
+  bool get hasPendingSecAcntActivation =>
+      hasAcnt && secAcntStatusCode == secAcntStatusPending;
+
+  /// Whether opening-fee payment is still required from backend account state.
+  bool get requiresSecAcntOpeningFeePayment {
+    if (hasOpenSecAcnt) {
+      return false;
+    }
+
+    if (!hasAcnt) {
+      return true;
+    }
+
+    return !hasPaidSecAcntOpeningFeeFromApi;
+  }
 
   /// Whether the flow should continue through pending account/payment state.
-  bool get requiresSecAcntPayment => hasAcnt && !hasOpenSecAcnt;
+  bool get requiresSecAcntPayment => requiresSecAcntOpeningFeePayment;
 
   /// Returns a copy with fee/balance fields merged from [balanceState].
   AcntBootstrapState copyWithBalanceState(

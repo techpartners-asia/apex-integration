@@ -32,6 +32,10 @@ class ApiEndpoints {
   /// Invoice creation endpoint used before host wallet handoff.
   static const String createInvoice = '/api/v1/user/invoice/create';
 
+  /// Securities account opening fee amount added to the payment total.
+  static const String accountFeesAmount =
+      '/api/v1/user/payment/account-fees-amount';
+
   /// Backend payment callback endpoint called after wallet success.
   static const String paymentCallback = '/api/v1/webhooks/payment/callback';
 

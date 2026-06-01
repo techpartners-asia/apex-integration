@@ -41,6 +41,10 @@ class SecAcntScreen extends StatelessWidget {
       currentUser: currentUser,
     );
 
+    if (initialStep == null) {
+      return SecAcntCalculationScreen(bootstrapState: initialBootstrapState);
+    }
+
     return switch (initialStep) {
       SecAcntFlowStep.payment => SecAcntPaymentScreen(
         bootstrapState: initialBootstrapState,
@@ -51,7 +55,41 @@ class SecAcntScreen extends StatelessWidget {
       SecAcntFlowStep.calculation => SecAcntCalculationScreen(
         bootstrapState: initialBootstrapState,
       ),
-      null => SecAcntCalculationScreen(bootstrapState: initialBootstrapState),
+      SecAcntFlowStep.consent => SecAcntConsentScreen(
+        bootstrapState: initialBootstrapState,
+        bankOptionsRepository: bankOptionsRepository,
+        bankAccountLookupRepository: bankAccountLookupRepository,
+        appApi: appApi,
+        currentUser: currentUser,
+        initialDraft: initialDraft,
+      ),
+      SecAcntFlowStep.personalInformation => SecAcntPersonalInfoScreen(
+        bootstrapState: initialBootstrapState,
+        bankOptionsRepository: bankOptionsRepository,
+        bankAccountLookupRepository: bankAccountLookupRepository,
+        appApi: appApi,
+        currentUser: currentUser,
+        initialDraft: initialDraft,
+      ),
+      SecAcntFlowStep.secAgreement ||
+      SecAcntFlowStep.serviceAgreement => SecAcntAgreementScreen(
+        step: initialStep,
+        bootstrapState: initialBootstrapState,
+        draft: initialDraft,
+        appApi: appApi,
+        currentUser: currentUser,
+      ),
+      SecAcntFlowStep.signature => SecAcntSignatureScreen(
+        bootstrapState: initialBootstrapState,
+        draft: initialDraft,
+        appApi: appApi,
+        currentUser: currentUser,
+      ),
+      SecAcntFlowStep.success => SecAcntSuccessScreen(
+        bootstrapState: initialBootstrapState,
+        draft: initialDraft,
+        currentUser: currentUser,
+      ),
       _ => SecAcntConsentScreen(
         bootstrapState: initialBootstrapState,
         bankOptionsRepository: bankOptionsRepository,

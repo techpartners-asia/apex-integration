@@ -129,4 +129,57 @@ class GetSecuritiesAcntListDetailDto {
       templateType: ApiParser.asNullableString(json['templateType']),
     );
   }
+
+  /// Returns a copy with selected fields replaced.
+  GetSecuritiesAcntListDetailDto copyWith({
+    bool? hasAcnt,
+    bool? hasIpsAcnt,
+    double? commission,
+    String? intro,
+    String? introIps,
+    String? info,
+    String? registerCode,
+    String? brokerCode,
+    String? verfType,
+    String? bankCode,
+    String? bankName,
+    String? toAcntCode,
+    String? toAcntName,
+    String? toAcntCurCode,
+    String? description,
+    String? toFiCode,
+    String? toFiName,
+    String? qrCode,
+    String? verfStatus,
+    String? paymentStatus,
+    String? esignStatus,
+    bool? hideBalance,
+    String? templateType,
+  }) {
+    return GetSecuritiesAcntListDetailDto(
+      hasAcnt: hasAcnt ?? this.hasAcnt,
+      hasIpsAcnt: hasIpsAcnt ?? this.hasIpsAcnt,
+      commission: commission ?? this.commission,
+      intro: intro ?? this.intro,
+      introIps: introIps ?? this.introIps,
+      info: info ?? this.info,
+      registerCode: registerCode ?? this.registerCode,
+      brokerCode: brokerCode ?? this.brokerCode,
+      verfType: verfType ?? this.verfType,
+      bankCode: bankCode ?? this.bankCode,
+      bankName: bankName ?? this.bankName,
+      toAcntCode: toAcntCode ?? this.toAcntCode,
+      toAcntName: toAcntName ?? this.toAcntName,
+      toAcntCurCode: toAcntCurCode ?? this.toAcntCurCode,
+      description: description ?? this.description,
+      toFiCode: toFiCode ?? this.toFiCode,
+      toFiName: toFiName ?? this.toFiName,
+      qrCode: qrCode ?? this.qrCode,
+      verfStatus: verfStatus ?? this.verfStatus,
+      paymentStatus: paymentStatus ?? this.paymentStatus,
+      esignStatus: esignStatus ?? this.esignStatus,
+      hideBalance: hideBalance ?? this.hideBalance,
+      templateType: templateType ?? this.templateType,
+    );
+  }
 }

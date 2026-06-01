@@ -106,6 +106,9 @@ class _FakePaymentsRepository implements MiniAppPaymentsRepository {
   final List<String> callbackInvoiceIds = <String>[];
 
   @override
+  Future<double> getAccountFeesAmount() async => 0;
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) async {
     return const MiniAppPayment(
       id: 1,

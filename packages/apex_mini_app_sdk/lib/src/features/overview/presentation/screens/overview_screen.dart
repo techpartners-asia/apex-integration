@@ -270,8 +270,10 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
               viewModel: buildOverviewVerificationViewModel(
                 sheetContext,
                 bootstrapState,
-                hasPaidSecAcntContract:
-                    currentUser?.account?.hasPaidContract ?? false,
+                hasPaidSecAcntContract: hasPaidSecAcntOpeningFee(
+                  bootstrapState,
+                  currentUser: currentUser,
+                ),
               ),
               compact: true,
             ),

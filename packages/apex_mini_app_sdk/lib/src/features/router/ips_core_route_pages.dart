@@ -70,6 +70,7 @@ Widget buildIpsSecAcntPage(
       create: (BuildContext context) => IpsSecAcntCubit(
         service: service,
         paymentExecutor: dependencies.paymentExecutor,
+        paymentsRepository: dependencies.appApi,
         l10n: l10n,
       ),
       child: SecAcntScreen(

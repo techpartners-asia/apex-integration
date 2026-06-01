@@ -6,15 +6,20 @@ class SecAcntCalculationScreen extends StatelessWidget {
   /// Creates the calculation screen.
   const SecAcntCalculationScreen({super.key, required this.bootstrapState});
 
-  /// Bootstrap state used to decide the route after the flow.
+  /// Bootstrap state passed through to overview after this step.
   final AcntBootstrapState? bootstrapState;
+
+  Future<void> _goToOverview(BuildContext context) {
+    return replaceIpsRoute(
+      context,
+      route: MiniAppRoutes.overview,
+      arguments: bootstrapState,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final bool opensQuestionnaire = shouldOpenQuestionnaireAfterSecAcntFlow(
-      bootstrapState,
-    );
     final SecAcntWizardHeaderData header = buildSecAcntHeader(
       context,
       SecAcntFlowStep.calculation,
@@ -44,10 +49,8 @@ class SecAcntCalculationScreen extends StatelessWidget {
           message: context.l10n.secAcntCalculationPendingMessage,
         ),
         bottomNavigationBar: SecAcntWizardFooter(
-          buttonLabel: opensQuestionnaire
-              ? context.l10n.commonContinue
-              : context.l10n.commonGoHome,
-          onPressed: () => routeAfterSecAcntFlow(context, bootstrapState),
+          buttonLabel: context.l10n.commonContinue,
+          onPressed: () => _goToOverview(context),
           enabled: true,
         ),
       ),

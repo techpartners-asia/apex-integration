@@ -41,7 +41,10 @@ class OverviewHomeTab extends StatelessWidget {
         buildOverviewVerificationViewModel(
           context,
           data,
-          hasPaidSecAcntContract: user?.account?.hasPaidContract ?? false,
+          hasPaidSecAcntContract: hasPaidSecAcntOpeningFee(
+            data,
+            currentUser: user,
+          ),
         );
 
     if (onRefresh == null) {
