@@ -139,6 +139,7 @@ class SdkRuntimeConfig {
         baseUrl: techInvestXUrl,
         credentials: credentials,
         enableDebugLogs: enableDebugLogs,
+        backendLoggerBaseUrl: techInvestXUrl,
       ),
       tokenProvider: tokenProvider ?? StaticTokenProvider(accessToken),
       tokenHeaderName: ApiHeaderNames.authorization,
@@ -165,6 +166,7 @@ class SdkRuntimeConfig {
         baseUrl: ipsApiBaseUrl,
         credentials: credentials,
         enableDebugLogs: enableDebugLogs,
+        backendLoggerBaseUrl: techInvestXUrl,
       ),
       tokenProvider: tokenProvider ?? StaticTokenProvider(accessToken),
       onRefreshSession: onRefreshSession,
@@ -180,6 +182,7 @@ class SdkRuntimeConfig {
         baseUrl: loginSessionBaseUrl,
         credentials: credentials,
         enableDebugLogs: enableDebugLogs,
+        backendLoggerBaseUrl: techInvestXUrl,
       ),
       tokenProvider: const StaticTokenProvider(null),
     );

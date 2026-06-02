@@ -76,6 +76,15 @@ MiniAppSessionRuntime buildMiniAppSessionRuntime({
     initialCurrentUser: initialCurrentUser,
     initialLoginSession: initialLoginSession,
   );
+  BackendLoggerContext.configure(
+    resolveMessageSuffix: () {
+      final UserEntityDto? user = store.currentUser;
+      if (user == null || user.userId == 0) {
+        return null;
+      }
+      return 'userId: ${user.userId}';
+    },
+  );
   final MutableTokenProvider currentUserTokenProvider = MutableTokenProvider(
     initialCurrentUser?.admSession ?? initialUserToken,
   );

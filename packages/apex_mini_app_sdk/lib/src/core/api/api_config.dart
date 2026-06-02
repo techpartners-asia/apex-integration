@@ -20,6 +20,12 @@ class ApiConfig {
   /// Whether Dio debug logs should be attached in debug mode.
   final bool enableDebugLogs;
 
+  /// Whether API calls should be mirrored to the admin backend logger.
+  final bool enableBackendLogger;
+
+  /// Base URL used for `/api/v1/logger/create` (admin root, not IPS prefix).
+  final String? backendLoggerBaseUrl;
+
   /// Creates HTTP configuration for one Dio-backed API runtime.
   const ApiConfig({
     required this.baseUrl,
@@ -28,5 +34,7 @@ class ApiConfig {
     this.sendTimeout = ApiTimeouts.send,
     this.receiveTimeout = ApiTimeouts.receive,
     this.enableDebugLogs = false,
+    this.enableBackendLogger = true,
+    this.backendLoggerBaseUrl,
   });
 }

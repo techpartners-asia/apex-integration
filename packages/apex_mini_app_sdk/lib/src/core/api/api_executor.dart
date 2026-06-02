@@ -2,6 +2,7 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:dio/dio.dart';
 
 import '../../host/apex_mini_app_host_context.dart';
+import 'backend_logger_request_extra.dart';
 
 /// Guarded HTTP request executor used by repositories and backend API clients.
 class ApiExecutor {
@@ -151,7 +152,11 @@ class ApiExecutor {
     return client.dio.post<dynamic>(
       path,
       data: body,
-      options: Options(headers: headers, contentType: contentType),
+      options: Options(
+        headers: headers,
+        contentType: contentType,
+        extra: _loggerExtra(context),
+      ),
     );
   }
 
@@ -169,7 +174,11 @@ class ApiExecutor {
     return client.dio.put<dynamic>(
       path,
       data: body,
-      options: Options(headers: headers, contentType: contentType),
+      options: Options(
+        headers: headers,
+        contentType: contentType,
+        extra: _loggerExtra(context),
+      ),
     );
   }
 
@@ -186,8 +195,18 @@ class ApiExecutor {
     return client.dio.get<dynamic>(
       path,
       queryParameters: queryParameters,
-      options: Options(headers: headers),
+      options: Options(headers: headers, extra: _loggerExtra(context)),
     );
+  }
+
+  Map<String, Object?> _loggerExtra(ReqContext context) {
+    final String? operName = context.operName?.trim();
+    if (operName == null || operName.isEmpty) {
+      return const <String, Object?>{};
+    }
+    return <String, Object?>{
+      BackendLoggerRequestExtra.operName: operName,
+    };
   }
 
   /// Parses [raw] as a JSON object.
