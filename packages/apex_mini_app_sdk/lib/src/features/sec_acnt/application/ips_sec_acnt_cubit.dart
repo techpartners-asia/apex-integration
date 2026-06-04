@@ -54,10 +54,14 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     }
   }
 
-  /// Submits account-opening request, then runs opening-fee payment.
+  /// Submits account-opening request when needed, then runs opening-fee payment.
+  ///
+  /// Skips [InvestmentBootstrapService.addSecuritiesAcntReq] when
+  /// [bootstrapState.hasAcnt] is already true (short-flow opening fee only).
   Future<MiniAppPaymentRes?> submitOpeningPayment({
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
+    AcntBootstrapState? bootstrapState,
   }) async {
     if (state.isSubmitting) {
       return state.paymentRes;
@@ -68,8 +72,14 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     );
 
     try {
-      final SecAcntRequestResult requestResult = await service
-          .addSecuritiesAcntReq(personalInfo: personalInfo);
+      final SecAcntRequestResult? requestResult;
+      if (bootstrapState?.hasAcnt == true) {
+        requestResult = null;
+      } else {
+        requestResult = await service.addSecuritiesAcntReq(
+          personalInfo: personalInfo,
+        );
+      }
 
       final double invoiceAmount = state.totalPayableAmount(payableAmount);
       final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
