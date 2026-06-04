@@ -1310,6 +1310,12 @@ abstract class SdkLocalizations {
   /// **'Enter the quantity to purchase'**
   String get ipsPaymentRechargeQuantityHint;
 
+  /// No description provided for @ipsPaymentRechargeQuantityUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'pcs'**
+  String get ipsPaymentRechargeQuantityUnit;
+
   /// No description provided for @ipsPaymentRechargeTotalAmount.
   ///
   /// In en, this message translates to:

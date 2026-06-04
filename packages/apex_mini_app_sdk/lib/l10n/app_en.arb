@@ -273,6 +273,7 @@
   "ipsPaymentRechargeTitle": "Top up package",
   "ipsPaymentRechargeSubtitle": "Exchange/recharge flow and QR generation.",
   "ipsPaymentRechargeQuantityHint": "Enter the quantity to purchase",
+  "ipsPaymentRechargeQuantityUnit": "pcs",
   "ipsPaymentRechargeTotalAmount": "Total amount",
   "ipsPaymentCreateQr": "Create QR",
   "ipsPaymentQrGenerated": "Payment QR generated",

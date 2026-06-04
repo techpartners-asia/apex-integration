@@ -670,6 +670,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsPaymentRechargeQuantityHint => 'Enter the quantity to purchase';
 
   @override
+  String get ipsPaymentRechargeQuantityUnit => 'pcs';
+
+  @override
   String get ipsPaymentRechargeTotalAmount => 'Total amount';
 
   @override

@@ -673,6 +673,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsPaymentRechargeQuantityHint => 'Авах ширхэгийн тоог оруулна уу';
 
   @override
+  String get ipsPaymentRechargeQuantityUnit => 'ш';
+
+  @override
   String get ipsPaymentRechargeTotalAmount => 'Нийт дүн';
 
   @override
@@ -833,7 +836,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsSuccessOrderCancelled => 'Захиалгыг амжилттай цуцаллаа.';
 
   @override
-  String get ipsSuccessContractCreated => 'Гэрээг амжилттай үүсгэлээ.';
+  String get ipsSuccessContractCreated => 'Данс нээх хүсэлт амжилттай';
 
   @override
   String get ipsSuccessQrCreated => 'QR амжилттай үүслээ.';

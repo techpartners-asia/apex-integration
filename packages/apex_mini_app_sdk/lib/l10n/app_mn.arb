@@ -273,6 +273,7 @@
   "ipsPaymentRechargeTitle": "Багц цэнэглэх",
   "ipsPaymentRechargeSubtitle": "Солилцоо/цэнэглэлт болон QR үүсгэх.",
   "ipsPaymentRechargeQuantityHint": "Авах ширхэгийн тоог оруулна уу",
+  "ipsPaymentRechargeQuantityUnit": "ш",
   "ipsPaymentRechargeTotalAmount": "Нийт дүн",
   "ipsPaymentCreateQr": "QR үүсгэх",
   "ipsPaymentQrGenerated": "Төлбөрийн QR үүслээ",
