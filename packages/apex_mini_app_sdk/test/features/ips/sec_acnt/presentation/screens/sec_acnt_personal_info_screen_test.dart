@@ -204,6 +204,32 @@ void main() {
       expect(api.lastUpdateProfileReq!.bank?.bankName, 'Хаан банк');
     },
   );
+
+  testWidgets(
+    'typing in one field does not validate untouched empty fields',
+    (WidgetTester tester) async {
+      final _FakeMiniAppApiRepository api = _FakeMiniAppApiRepository();
+
+      await tester.pumpWidget(
+        buildSdkTestApp(
+          SecAcntPersonalInfoScreen(
+            bootstrapState: _fullOnboardingBootstrapState(),
+            bankOptionsRepository: const _FakeBankOptionsRepository(),
+            bankAccountLookupRepository: const _FakeLookupRepository(),
+            appApi: api,
+            currentUser: null,
+            initialDraft: const SecAcntFlowDraft(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(EditableText).first, '99112233');
+      await tester.pump();
+
+      expect(find.text('This field is required.'), findsNothing);
+    },
+  );
 }
 
 class _FakeBankOptionsRepository implements SecAcntBankOptionsRepository {
@@ -261,6 +287,9 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<double> getAccountFeesAmount() async => 0;
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
     throw UnimplementedError();
   }
@@ -310,6 +339,20 @@ AcntBootstrapState _openSecAccountBootstrapState() {
       acnts: const <GetSecAcntListAccountDto>[
         GetSecAcntListAccountDto(flag: 3, status: 1),
       ],
+      stlAcnts: const <GetSecAcntSettlementAccountDto>[],
+      responseCode: 0,
+    ),
+  );
+}
+
+AcntBootstrapState _fullOnboardingBootstrapState() {
+  return AcntBootstrapState(
+    response: GetSecuritiesAcntListResDto(
+      detail: const GetSecuritiesAcntListDetailDto(
+        hasAcnt: false,
+        hasIpsAcnt: false,
+      ),
+      acnts: const <GetSecAcntListAccountDto>[],
       stlAcnts: const <GetSecAcntSettlementAccountDto>[],
       responseCode: 0,
     ),
