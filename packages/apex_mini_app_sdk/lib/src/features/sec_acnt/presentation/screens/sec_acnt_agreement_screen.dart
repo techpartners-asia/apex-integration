@@ -42,11 +42,6 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
 
   /// Opens the next screen for service or securities agreement completion.
   Future<void> _openNextStep() async {
-    if (widget.step == SecAcntFlowStep.serviceAgreement) {
-      await routeAfterSecAcntFlow(context, widget.bootstrapState);
-      return;
-    }
-
     final SecAcntFlowStep nextStep =
         resolveNextSecAcntFlowStep(
           SecAcntFlowStep.secAgreement,

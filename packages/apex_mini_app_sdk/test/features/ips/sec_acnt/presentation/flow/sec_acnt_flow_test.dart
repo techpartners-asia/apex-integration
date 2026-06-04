@@ -15,7 +15,6 @@ void main() {
         const <SecAcntFlowStep>[
           SecAcntFlowStep.consent,
           SecAcntFlowStep.personalInformation,
-          SecAcntFlowStep.serviceAgreement,
         ],
       );
     });
@@ -218,9 +217,7 @@ void main() {
             account: const AccountDto(isPaidContract: true),
           ),
         ),
-        const <SecAcntFlowStep>[
-          SecAcntFlowStep.serviceAgreement,
-        ],
+        isEmpty,
       );
     });
 

@@ -105,7 +105,6 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
       if (needsPayment) SecAcntFlowStep.payment,
       if (!needsPayment && !hasPaidContract) SecAcntFlowStep.success,
-      if (!hasCompletedContract) SecAcntFlowStep.serviceAgreement,
     ];
   }
 

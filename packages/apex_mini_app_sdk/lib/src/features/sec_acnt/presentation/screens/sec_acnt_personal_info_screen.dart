@@ -335,7 +335,11 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     }
 
     if (nextStep == null) {
-      await routeAfterSecAcntFlow(context, widget.bootstrapState);
+      await routeAfterSecAcntFlow(
+        context,
+        bootstrapState: widget.bootstrapState,
+        currentUser: widget.currentUser,
+      );
       return;
     }
 
