@@ -38,7 +38,7 @@ class OverviewVerificationCard extends StatelessWidget {
           ),
           SizedBox(height: responsive.dp(10)),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: Column(
