@@ -61,11 +61,41 @@ void main() {
       expect(model?.onPromoTap, isNotNull);
     },
   );
+
+  testWidgets(
+    'open securities account without IPS routes final step to questionnaire',
+    (WidgetTester tester) async {
+      OverviewVerificationViewModel? model;
+
+      await tester.pumpWidget(
+        buildSdkTestApp(
+          Builder(
+            builder: (BuildContext context) {
+              model = buildOverviewVerificationViewModel(
+                context,
+                _bootstrapState(
+                  hasAcnt: true,
+                  hasIpsAcnt: false,
+                  secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+                ),
+              );
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+
+      expect(model?.steps[2].title, isNotEmpty);
+      expect(model?.steps[2].onTap, isNotNull);
+      expect(model?.onPromoTap, isNotNull);
+    },
+  );
 }
 
 AcntBootstrapState _bootstrapState({
   required bool hasAcnt,
   required bool hasIpsAcnt,
+  int? secAcntStatusCode,
 }) {
   return AcntBootstrapState(
     response: GetSecuritiesAcntListResDto(
@@ -73,7 +103,14 @@ AcntBootstrapState _bootstrapState({
         hasAcnt: hasAcnt,
         hasIpsAcnt: hasIpsAcnt,
       ),
-      acnts: const <GetSecAcntListAccountDto>[],
+      acnts: secAcntStatusCode == null
+          ? const <GetSecAcntListAccountDto>[]
+          : <GetSecAcntListAccountDto>[
+              GetSecAcntListAccountDto(
+                flag: 3,
+                status: secAcntStatusCode,
+              ),
+            ],
       stlAcnts: const <GetSecAcntSettlementAccountDto>[],
       responseCode: 0,
     ),
