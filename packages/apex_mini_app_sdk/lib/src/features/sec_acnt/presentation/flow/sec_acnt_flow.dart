@@ -52,20 +52,18 @@ bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && 
 bool hasPaidSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
 
 /// Whether opening-fee payment is complete according to bootstrap and profile.
+///
+/// Profile [isPaidContract] is checked first because account-list status can lag
+/// behind payment completion on the backend.
 bool hasPaidSecAcntOpeningFee(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
 }) {
-  if (state?.hasPaidSecAcntOpeningFeeFromApi ?? false) {
+  if (hasPaidSecAcntContract(currentUser)) {
     return true;
   }
 
-  if (state?.hasAcnt == true &&
-      state!.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid) {
-    return false;
-  }
-
-  return hasPaidSecAcntContract(currentUser);
+  return state?.hasPaidSecAcntOpeningFeeFromApi ?? false;
 }
 
 /// Whether the current profile says the InvestX contract is already complete.

@@ -68,7 +68,11 @@ class MiniAppBootstrapFlow {
     }
 
     if (bootstrapState.secAcntStatusCode ==
-        AcntBootstrapState.secAcntStatusUnpaid) {
+            AcntBootstrapState.secAcntStatusUnpaid &&
+        !hasPaidSecAcntOpeningFee(
+          bootstrapState,
+          currentUser: currentUser,
+        )) {
       return false;
     }
 

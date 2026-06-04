@@ -1,4 +1,8 @@
 export 'api_action_result_parser.dart';
+export 'backend_api_logger.dart';
+export 'backend_logger_context.dart';
+export 'backend_logger_payload.dart';
+export 'backend_logger_request_extra.dart';
 export 'api_client.dart';
 export 'api_config.dart';
 export 'api_endpoints.dart';

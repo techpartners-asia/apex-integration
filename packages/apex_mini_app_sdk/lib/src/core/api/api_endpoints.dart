@@ -92,4 +92,7 @@ class ApiEndpoints {
 
   /// Account-name lookup endpoint for account codes.
   static const String getAcntNameByAcntCode = '/api/v1.0/getAcntNameByAcntCode';
+
+  /// Remote client API diagnostic logger endpoint.
+  static const String loggerCreate = '/api/v1/logger/create';
 }

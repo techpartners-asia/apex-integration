@@ -6,6 +6,8 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 
 import 'api_config.dart';
+import 'backend_api_logger.dart';
+import 'backend_logger_interceptor.dart';
 
 /// Dio client wrapper that applies base options, cookies, and debug logging.
 class ApiClient {
@@ -29,6 +31,28 @@ class ApiClient {
       responseType: ResponseType.json,
     );
     this.dio.interceptors.add(CookieManager(this.cookieJar));
+    attachBackendLoggerInterceptor();
+  }
+
+  /// Adds remote backend logger interceptor when enabled in [ApiConfig].
+  void attachBackendLoggerInterceptor() {
+    if (!config.enableBackendLogger) {
+      return;
+    }
+    final String? loggerBaseUrl = config.backendLoggerBaseUrl?.trim();
+    if (loggerBaseUrl == null || loggerBaseUrl.isEmpty) {
+      return;
+    }
+    final bool alreadyAttached = dio.interceptors.any(
+      (Interceptor interceptor) => interceptor is BackendLoggerInterceptor,
+    );
+    if (!alreadyAttached) {
+      dio.interceptors.add(
+        BackendLoggerInterceptor(
+          logger: BackendApiLogger.shared(loggerBaseUrl),
+        ),
+      );
+    }
   }
 
   /// Adds debug request/response logging once in debug builds.
