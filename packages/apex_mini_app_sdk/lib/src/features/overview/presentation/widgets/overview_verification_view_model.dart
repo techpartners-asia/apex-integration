@@ -98,7 +98,7 @@ void _launchSecAcntOrQuestionnaire(
   BuildContext context,
   AcntBootstrapState state,
 ) {
-  if (state.hasOpenSecAcnt && !state.hasIpsAcnt) {
+  if (state.canContinueToQuestionnaireFromOverview && !state.hasIpsAcnt) {
     _launchQuestionnaire(context, state: state);
     return;
   }
@@ -165,10 +165,13 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
   }
 
   if (!state.hasIpsAcnt) {
+    final bool canContinueToQuestionnaire =
+        state.canContinueToQuestionnaireFromOverview;
+
     return OverviewVerificationViewModel(
       title: l10n.ipsOverviewVerificationTitle,
       subtitle: l10n.ipsOverviewVerificationSubtitle,
-      progressCurrent: state.hasOpenSecAcnt ? 2 : 1,
+      progressCurrent: canContinueToQuestionnaire ? 2 : 1,
       progressTotal: 3,
       steps: <OverviewVerificationStep>[
         OverviewVerificationStep(
@@ -178,34 +181,34 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
         ),
         OverviewVerificationStep(
           title: l10n.ipsAcntVerifyAcnt,
-          subtitle: state.hasOpenSecAcnt
+          subtitle: canContinueToQuestionnaire
               ? l10n.ipsAcntHasAcnt
               : l10n.ipsAcntFlowBody,
-          status: state.hasOpenSecAcnt
+          status: canContinueToQuestionnaire
               ? StepStatus.completed
               : StepStatus.active,
-          onTap: state.hasOpenSecAcnt
+          onTap: canContinueToQuestionnaire
               ? null
               : () => _launchSecAcntFlow(context, state),
         ),
         OverviewVerificationStep(
-          title: state.hasOpenSecAcnt
+          title: canContinueToQuestionnaire
               ? l10n.ipsQuestionnaireTitle
               : l10n.ipsAcntOpenAcnt,
-          subtitle: state.hasOpenSecAcnt
+          subtitle: canContinueToQuestionnaire
               ? l10n.ipsQuestionnaireSubtitle
               : l10n.ipsAcntFlowBody,
-          status: state.hasOpenSecAcnt
+          status: canContinueToQuestionnaire
               ? StepStatus.active
               : StepStatus.upcoming,
-          onTap: state.hasOpenSecAcnt
+          onTap: canContinueToQuestionnaire
               ? () => _launchQuestionnaire(context, state: state)
               : null,
           isLast: true,
         ),
       ],
       promoEyebrow: l10n.ipsOverviewActionTitle,
-      promoTitle: state.hasOpenSecAcnt
+      promoTitle: canContinueToQuestionnaire
           ? l10n.ipsHomeRecommendedPackCta
           : l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
