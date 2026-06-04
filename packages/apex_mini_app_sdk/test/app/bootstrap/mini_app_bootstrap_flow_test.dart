@@ -191,7 +191,7 @@ void main() {
     );
 
     test(
-      'routes to sec account when API status is unpaid even if profile is paid',
+      'routes to overview when API status is unpaid but profile is paid',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -210,7 +210,7 @@ void main() {
               ),
             ),
           ),
-          MiniAppRoutes.secAcnt,
+          MiniAppRoutes.overview,
         );
       },
     );

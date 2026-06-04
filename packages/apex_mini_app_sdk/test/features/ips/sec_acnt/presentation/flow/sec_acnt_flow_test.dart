@@ -192,7 +192,7 @@ void main() {
     );
 
     test(
-      'short flow keeps payment step when opening fee is unpaid',
+      'short flow skips payment when profile says opening fee is paid',
       () {
         expect(
           resolveSecAcntFlowSteps(
@@ -205,7 +205,7 @@ void main() {
               account: const AccountDto(isPaidContract: true),
             ),
           ),
-          contains(SecAcntFlowStep.payment),
+          isNot(contains(SecAcntFlowStep.payment)),
         );
       },
     );
@@ -270,7 +270,7 @@ void main() {
     );
 
     test(
-      'status=2 keeps payment step when profile contract flag is stale',
+      'status=2 skips payment when profile says opening fee is paid',
       () {
         expect(
           resolveSecAcntFlowSteps(
@@ -287,7 +287,7 @@ void main() {
               ),
             ),
           ),
-          contains(SecAcntFlowStep.payment),
+          isNot(contains(SecAcntFlowStep.payment)),
         );
       },
     );
