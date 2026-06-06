@@ -1,5 +1,4 @@
 export 'api_investment_bootstrap_service.dart';
-export 'dev_bootstrap_overrides.dart';
 export 'bootstrap_state_resolver.dart';
 export 'ips_backend_bootstrap_api.dart';
 export 'investment_bootstrap_service.dart';

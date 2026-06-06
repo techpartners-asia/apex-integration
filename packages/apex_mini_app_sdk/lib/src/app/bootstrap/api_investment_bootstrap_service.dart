@@ -83,11 +83,7 @@ class ApiInvestmentBootstrapService implements InvestmentBootstrapService {
           forceRefresh: forceRefresh,
         );
 
-    final GetSecuritiesAcntListResDto patchedResponse =
-        secAcntList.applyDevBootstrapOverrides();
-    logDevBootstrapSnapshot(patchedResponse);
-
-    return AcntBootstrapState(response: patchedResponse);
+    return AcntBootstrapState(response: secAcntList);
   }
 
   @override
