@@ -1,3 +1,5 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
@@ -30,13 +32,7 @@ class OverviewVerificationCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          CustomImage(
-            path: Img.wallet,
-            width: responsive.dp(32),
-            height: responsive.dp(32),
-          ),
-          SizedBox(height: responsive.dp(10)),
+        children: <Widget>[ 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -44,6 +40,12 @@ class OverviewVerificationCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    CustomImage(
+                      path: Img.wallet,
+                      width: responsive.dp(32),
+                      height: responsive.dp(32),
+                    ),
+                    SizedBox(height: responsive.dp(10)),
                     CustomText(
                       viewModel.title,
                       variant: MiniAppTextVariant.subtitle2,
@@ -70,14 +72,8 @@ class OverviewVerificationCard extends StatelessWidget {
             (OverviewVerificationStep step) => _OverviewTimelineRow(
               step: step,
               footer: step.isLast
-                  ? _OverviewPromoCard(
-                      eyebrow: viewModel.promoEyebrow,
-                      title: viewModel.promoTitle,
-                      buttonLabel: viewModel.promoButtonLabel,
-                      onTap: viewModel.onPromoTap,
-                    )
+                  ? _OverviewPromoCard(onTap: viewModel.onPromoTap)
                   : null,
-              footerSpacing: compact ? responsive.dp(6) : responsive.dp(8),
             ),
           ),
         ],
@@ -141,17 +137,13 @@ class _OverviewTimelineRow extends StatelessWidget {
   /// Step to render.
   final OverviewVerificationStep step;
 
-  /// Optional footer rendered after the row.
+  /// Optional footer rendered beside the timeline icon on the last step.
   final Widget? footer;
-
-  /// Gap between row and footer.
-  final double footerSpacing;
 
   /// Creates a verification timeline row.
   const _OverviewTimelineRow({
     required this.step,
     this.footer,
-    this.footerSpacing = 0,
   });
 
   @override
@@ -171,75 +163,118 @@ class _OverviewTimelineRow extends StatelessWidget {
       StepStatus.active => Img.singleLock,
       StepStatus.upcoming => Img.singleLock,
     };
+    final bool isTappable = step.onTap != null;
+    final Color chevronColor = switch (step.status) {
+      StepStatus.upcoming => DesignTokens.border,
+      _ => DesignTokens.muted,
+    };
+    final Widget iconColumn = _OverviewTimelineIconColumn(
+      imagePath: img,
+      accent: accent,
+      showConnector: footer == null && !step.isLast,
+    );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Material(
-          color: DesignTokens.white,
-          child: InkWell(
-            onTap: step.onTap,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+    if (footer != null) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          iconColumn,
+          SizedBox(width: responsive.dp(12)),
+          Expanded(child: footer!),
+        ],
+      );
+    }
+
+    return Material(
+      color: DesignTokens.white,
+      child: InkWell(
+        onTap: step.onTap,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            iconColumn,
+            SizedBox(width: responsive.dp(12)),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: responsive.dp(16)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(
-                      width: responsive.dp(28),
-                      child: Center(
-                        child: CustomImage(
-                          path: img,
-                          width: responsive.dp(20),
-                          height: responsive.dp(20),
-                        ),
-                      ),
+                    CustomText(
+                      step.title,
+                      variant: MiniAppTextVariant.subtitle3,
+                      color: textColor,
                     ),
-                    if (!step.isLast)
-                      Container(
-                        width: responsive.dp(2),
-                        height: responsive.dp(50),
-                        margin: EdgeInsets.symmetric(
-                          vertical: responsive.dp(4),
-                        ),
-                        decoration: BoxDecoration(
-                          color: accent.withValues(alpha: 0.35),
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
+                    SizedBox(height: responsive.dp(4)),
+                    CustomText(
+                      step.subtitle,
+                      variant: MiniAppTextVariant.caption1,
+                      color: DesignTokens.muted,
+                      maxLines: 2,
+                    ),
                   ],
                 ),
-                SizedBox(width: responsive.dp(12)),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: responsive.dp(16)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        CustomText(
-                          step.title,
-                          variant: MiniAppTextVariant.subtitle3,
-                          color: textColor,
-                        ),
-                        SizedBox(height: responsive.dp(4)),
-                        CustomText(
-                          step.subtitle,
-                          variant: MiniAppTextVariant.caption1,
-                          color: DesignTokens.muted,
-                          maxLines: 2,
-                        ),
-                      ],
-                    ),
-                  ),
+              ),
+            ),
+            if (isTappable) ...<Widget>[
+              SizedBox(width: responsive.dp(8)),
+              Padding(
+                padding: EdgeInsets.only(top: responsive.dp(2)),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: chevronColor,
+                  size: responsive.dp(20),
                 ),
-              ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Timeline icon and optional connector rendered beside a step or promo card.
+class _OverviewTimelineIconColumn extends StatelessWidget {
+  const _OverviewTimelineIconColumn({
+    required this.imagePath,
+    required this.accent,
+    required this.showConnector,
+  });
+
+  final String imagePath;
+  final Color accent;
+  final bool showConnector;
+
+  @override
+  Widget build(BuildContext context) {
+    final responsive = context.responsive;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          width: responsive.dp(28),
+          child: Center(
+            child: CustomImage(
+              path: imagePath,
+              width: responsive.dp(20),
+              height: responsive.dp(20),
             ),
           ),
         ),
-        if (footer != null) ...<Widget>[
-          SizedBox(height: footerSpacing),
-          footer!,
-        ],
+        if (showConnector)
+          Container(
+            width: responsive.dp(2),
+            height: responsive.dp(50),
+            margin: EdgeInsets.symmetric(
+              vertical: responsive.dp(4),
+            ),
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.35),
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
       ],
     );
   }
@@ -248,21 +283,7 @@ class _OverviewTimelineRow extends StatelessWidget {
 /// Promo/action card rendered at the end of the verification timeline.
 class _OverviewPromoCard extends StatelessWidget {
   /// Creates the promo card.
-  const _OverviewPromoCard({
-    required this.eyebrow,
-    required this.title,
-    required this.buttonLabel,
-    this.onTap,
-  });
-
-  /// Small accent label above the title.
-  final String eyebrow;
-
-  /// Promo title.
-  final String title;
-
-  /// Primary button label.
-  final String buttonLabel;
+  const _OverviewPromoCard({this.onTap});
 
   /// Optional promo action.
   final VoidCallback? onTap;
@@ -270,35 +291,111 @@ class _OverviewPromoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
+    final l10n = context.l10n;
 
-    return Container(
-      padding: EdgeInsets.all(responsive.dp(16)),
-      decoration: BoxDecoration(
-        color: DesignTokens.softSurface,
-        borderRadius: BorderRadius.circular(responsive.radius(16)),
-        border: Border.all(color: DesignTokens.border),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(responsive.radius(16)),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(responsive.radius(16)),
+          image: DecorationImage(
+            image: AssetImage(Img.cardPack, package: packageName),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(responsive.dp(16)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CustomText(
+                l10n.ipsOverviewFinalStepLabel,
+                variant: MiniAppTextVariant.caption1,
+                color: Colors.white.withValues(alpha: 0.85),
+              ),
+              SizedBox(height: responsive.dp(4)),
+              CustomText(
+                l10n.ipsOverviewFirstPackTitle,
+                variant: MiniAppTextVariant.subtitle2,
+                color: Colors.white,
+              ),
+              SizedBox(height: responsive.dp(14)),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: _OverviewPromoGlassButton(onTap: onTap),
+              ),
+            ],
+          ),
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          CustomText(
-            eyebrow,
-            variant: MiniAppTextVariant.caption1,
-            color: DesignTokens.rose,
+    );
+  }
+}
+
+/// Frosted-glass CTA used on the promo card background.
+class _OverviewPromoGlassButton extends StatelessWidget {
+  const _OverviewPromoGlassButton({this.onTap});
+
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final responsive = context.responsive;
+    final l10n = context.l10n;
+    final BorderRadius borderRadius = BorderRadius.circular(responsive.radiusSm);
+
+    return ClipRRect(
+      borderRadius: borderRadius,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: borderRadius,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: responsive.dp(10),
+              sigmaY: responsive.dp(10),
+            ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.55),
+                  width: responsive.dp(1),
+                ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.white.withValues(alpha: 0.12),
+                    blurRadius: responsive.dp(10),
+                    offset: Offset(0, responsive.dp(2)),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: responsive.dp(16),
+                  vertical: responsive.dp(10),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CustomText(
+                      l10n.ipsPackChoosePack,
+                      variant: MiniAppTextVariant.buttonSmall,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: responsive.dp(4)),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      size: responsive.dp(20),
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          SizedBox(height: responsive.dp(4)),
-          CustomText(
-            title,
-            variant: MiniAppTextVariant.subtitle3,
-            color: DesignTokens.ink,
-          ),
-          SizedBox(height: responsive.dp(14)),
-          PrimaryButton(
-            label: buttonLabel,
-            onPressed: onTap,
-            height: responsive.dp(42),
-          ),
-        ],
+        ),
       ),
     );
   }
