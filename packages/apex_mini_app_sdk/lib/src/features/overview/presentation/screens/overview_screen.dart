@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
@@ -48,7 +47,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
               appBarReserveLeadingSpace: false,
               body: _buildBody(context, state, sessionState),
               isTradingEnabled: isTradingEnabled,
-              adaptiveBottomNavigationBar: data == null || !state.isSuccess
+              bottomNavigationBar: data == null || !state.isSuccess
                   ? null
                   : buildOverviewBottomNavigationBar(
                       context,
@@ -63,17 +62,6 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                           : null,
                       isActionEnabled: isTradingEnabled,
                     ),
-              floatingActionButton:
-                  isTradingEnabled && PlatformInfo.isIOS26OrHigher()
-                  ? _InvestXFloatingButton(
-                      selected: true,
-                      onTap: () => _showActionSheet(
-                        context,
-                        data!,
-                        sessionState.currentUser,
-                      ),
-                    )
-                  : null,
             );
           },
     );
@@ -280,59 +268,6 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-/// Circular floating InvestX action button used on iOS 26+ surfaces.
-class _InvestXFloatingButton extends StatelessWidget {
-  /// Whether the button should expose selected semantics.
-  final bool selected;
-
-  /// Callback invoked when the action button is tapped.
-  final VoidCallback onTap;
-
-  /// Creates the floating InvestX button.
-  const _InvestXFloatingButton({
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final responsive = context.responsive;
-
-    return Padding(
-      padding: EdgeInsets.only(
-        right: responsive.dp(5),
-        bottom: responsive.dp(5),
-      ),
-      child: Semantics(
-        button: true,
-        selected: selected,
-        label: context.l10n.ipsOverviewActionTitle,
-        child: GestureDetector(
-          onTap: onTap,
-          behavior: HitTestBehavior.opaque,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOut,
-            width: responsive.dp(62),
-            height: responsive.dp(62),
-            decoration: BoxDecoration(
-              gradient: DesignTokens.primaryGradient,
-              shape: BoxShape.circle,
-            ),
-            child:
-                // CustomImage(path: Img.trophyBlue, width: 24, height: 37,),
-                Icon(
-                  Icons.trending_up_rounded,
-                  color: DesignTokens.white,
-                  size: 37,
-                ),
-          ),
-        ),
-      ),
     );
   }
 }
