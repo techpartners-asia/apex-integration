@@ -272,7 +272,7 @@ class ApiExecutor {
     if (statusCode != null) {
       if (serverMessage != null && serverMessage.isNotEmpty) {
         final ApiBusinessException exception = ApiBusinessException(
-          responseCode: statusCode,
+          responseCode: _businessCodeFrom(error.response?.data) ?? statusCode,
           message: serverMessage,
           cause: error,
           stackTrace: stackTrace,
@@ -306,6 +306,14 @@ class ApiExecutor {
   /// Extracts a readable backend error message from varied response shapes.
   String? extractServerMessage(Object? raw) {
     return ApiResponseMessageParser.extract(raw);
+  }
+
+  int? _businessCodeFrom(Object? raw) {
+    if (raw is! Map) {
+      return null;
+    }
+
+    return ApiParser.asNullableInt(raw['code']);
   }
 
   /// Runs [action] and normalizes known network/parsing/runtime failures.

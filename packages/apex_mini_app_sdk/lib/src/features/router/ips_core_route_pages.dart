@@ -24,6 +24,20 @@ Widget buildIpsSplashPage(
   );
 }
 
+/// Builds the startup blocked route shown after signup bootstrap failures.
+Widget buildIpsStartupBlockedPage(
+  BuildContext context, {
+  required String route,
+  required Object? arguments,
+  required SdkLocalizations l10n,
+}) {
+  if (arguments is! StartupBlockedArguments) {
+    return missingScreen(context, route, l10n.errorsUnexpected);
+  }
+
+  return StartupBlockedScreen(arguments: arguments);
+}
+
 /// Builds the overview route with bootstrap, portfolio, and pack dependencies.
 Widget buildIpsOverviewPage(
   BuildContext context, {

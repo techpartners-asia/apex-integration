@@ -374,6 +374,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
       'Launch startup flow for the current user, login session, and IPS state.';
 
   @override
+  String get ipsStartupBlockedTitle => 'Your profile information is incomplete';
+
+  @override
   String get ipsQuestionnaireTitle => 'Questionnaire';
 
   @override

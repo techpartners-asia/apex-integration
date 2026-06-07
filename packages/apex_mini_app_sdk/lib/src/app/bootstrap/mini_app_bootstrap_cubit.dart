@@ -13,6 +13,9 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
   /// Diagnostic logger.
   final MiniAppLogger logger;
 
+  /// Backend response code from the latest bootstrap failure, when available.
+  int? failureResponseCode;
+
   MiniAppBootstrapCubit({
     required this.bootstrapFlow,
     required this.l10n,
@@ -22,6 +25,7 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
   /// Starts the bootstrap request flow.
   Future<void> load() async {
     emit(state.copyWith(status: LoadableStatus.loading, errorMessage: null));
+    failureResponseCode = null;
 
     try {
       final MiniAppBootstrapRes resolution = await bootstrapFlow.resolve();
@@ -46,6 +50,9 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
       );
 
       final String errorMessage = formatIpsError(error, l10n);
+      failureResponseCode = error is ApiBusinessException
+          ? error.responseCode
+          : null;
 
       emit(
         LoadableState<MiniAppBootstrapRes>(

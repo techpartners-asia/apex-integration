@@ -145,6 +145,7 @@
   "ipsBootstrapLoading": "Дансны эхний төлөвийг шалгаж байна.",
   "ipsSplashTitle": "InvestX эхлэл",
   "ipsSplashSubtitle": "Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.",
+  "ipsStartupBlockedTitle": "Таны хувийн мэдээлэл дутуу байна",
   "ipsQuestionnaireTitle": "Асуумж",
   "ipsQuestionnaireSubtitle": "Асуумжийн жагсаалт авах болон оноо тооцох.",
   "ipsQuestionnaireCalculateScore": "Оноо тооцоолох",

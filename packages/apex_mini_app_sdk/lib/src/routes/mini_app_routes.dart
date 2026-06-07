@@ -3,6 +3,9 @@ final class MiniAppRoutes {
   /// Startup/bootstrap route.
   static const String splash = '/splash';
 
+  /// Startup gate shown when signup/bootstrap blocks entry.
+  static const String startupBlocked = '/startup-blocked';
+
   /// Main overview/dashboard route.
   static const String overview = '/overview';
 
@@ -51,6 +54,7 @@ final class MiniAppRoutes {
   /// Routes that can be launched through the host controller.
   static const List<String> publicRoutes = <String>[
     splash,
+    startupBlocked,
     overview,
     secAcnt,
     questionnaire,

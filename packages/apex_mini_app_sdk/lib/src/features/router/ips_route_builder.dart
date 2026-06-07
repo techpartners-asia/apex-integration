@@ -18,6 +18,13 @@ Widget buildIpsPageForRoute(
         dependencies: dependencies,
         l10n: l10n,
       );
+    case MiniAppRoutes.startupBlocked:
+      return buildIpsStartupBlockedPage(
+        context,
+        route: route,
+        arguments: arguments,
+        l10n: l10n,
+      );
     case MiniAppRoutes.overview:
       return buildIpsOverviewPage(
         context,

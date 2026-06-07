@@ -377,6 +377,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.';
 
   @override
+  String get ipsStartupBlockedTitle => 'Таны хувийн мэдээлэл дутуу байна';
+
+  @override
   String get ipsQuestionnaireTitle => 'Асуумж';
 
   @override

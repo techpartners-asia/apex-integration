@@ -40,6 +40,23 @@ void main() {
         isA<LoadableState<MiniAppBootstrapRes>>().having((s) => s.isFailure, 'isFailure', true).having((s) => s.errorMessage, 'errorMessage', isNotNull),
       ],
     );
+
+    blocTest<MiniAppBootstrapCubit, LoadableState<MiniAppBootstrapRes>>(
+      'stores signup business response code on bootstrap failure',
+      build: () => MiniAppBootstrapCubit(
+        bootstrapFlow: _ProfileNotVerifiedBootstrapFlow(),
+        l10n: l10n,
+      ),
+      act: (cubit) async {
+        await cubit.load();
+      },
+      verify: (MiniAppBootstrapCubit cubit) {
+        expect(
+          cubit.failureResponseCode,
+          SignupBusinessCodes.profileNotVerified,
+        );
+      },
+    );
   });
 }
 
@@ -79,6 +96,22 @@ class _FailingBootstrapFlow extends MiniAppBootstrapFlow {
   @override
   Future<MiniAppBootstrapRes> resolve() async {
     throw const ApiNetworkException('Server unreachable');
+  }
+}
+
+class _ProfileNotVerifiedBootstrapFlow extends MiniAppBootstrapFlow {
+  _ProfileNotVerifiedBootstrapFlow()
+    : super(
+        sessionController: _NoopSessionController(),
+        bootstrapService: _NoopBootstrapService(),
+      );
+
+  @override
+  Future<MiniAppBootstrapRes> resolve() async {
+    throw const ApiBusinessException(
+      responseCode: SignupBusinessCodes.profileNotVerified,
+      message: 'Profile not verified.',
+    );
   }
 }
 

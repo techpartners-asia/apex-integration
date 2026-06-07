@@ -776,6 +776,12 @@ abstract class SdkLocalizations {
   /// **'Launch startup flow for the current user, login session, and IPS state.'**
   String get ipsSplashSubtitle;
 
+  /// No description provided for @ipsStartupBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile information is incomplete'**
+  String get ipsStartupBlockedTitle;
+
   /// No description provided for @ipsQuestionnaireTitle.
   ///
   /// In en, this message translates to:

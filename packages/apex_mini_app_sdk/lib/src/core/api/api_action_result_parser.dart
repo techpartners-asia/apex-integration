@@ -43,6 +43,14 @@ final class ApiActionResultParser {
       );
     }
 
+    final int? businessCode = ApiParser.asNullableInt(json['code']);
+    if (businessCode != null && businessCode != 0) {
+      throw ApiBusinessException(
+        responseCode: businessCode,
+        message: _failureMessageOf(json) ?? fallbackErrorMessage,
+      );
+    }
+
     if (json.containsKey('success') &&
         !ApiParser.asFlag(json['success'], defaultValue: true)) {
       throw ApiBusinessException(
