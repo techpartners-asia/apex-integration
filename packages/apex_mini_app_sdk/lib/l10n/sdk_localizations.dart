@@ -776,18 +776,6 @@ abstract class SdkLocalizations {
   /// **'Launch startup flow for the current user, login session, and IPS state.'**
   String get ipsSplashSubtitle;
 
-  /// No description provided for @ipsSplashIncompleteProfileTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Profile incomplete'**
-  String get ipsSplashIncompleteProfileTitle;
-
-  /// No description provided for @ipsSplashIncompleteProfileMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Register number, name, phone number, or email is missing. Complete your profile in the host app before continuing.'**
-  String get ipsSplashIncompleteProfileMessage;
-
   /// No description provided for @ipsQuestionnaireTitle.
   ///
   /// In en, this message translates to:

@@ -23,11 +23,8 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
   /// Prevents multiple startup error dialogs from stacking.
   bool errorDialogVisible = false;
 
-  /// Prevents multiple incomplete-profile dialogs from stacking.
-  bool incompleteProfileDialogVisible = false;
-
-  /// Whether bootstrap success has already been handled.
-  bool bootstrapHandled = false;
+  /// Whether bootstrap success has already scheduled navigation.
+  bool navigated = false;
 
   Timer? _navigationTimer;
 
@@ -139,50 +136,6 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
     errorDialogVisible = false;
   }
 
-  /// Shows a blocking dialog when required profile fields are missing.
-  Future<void> showIncompleteProfileDialog(BuildContext context) async {
-    if (incompleteProfileDialogVisible || !mounted) {
-      return;
-    }
-
-    incompleteProfileDialogVisible = true;
-    final l10n = context.l10n;
-
-    await showMiniAppDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      title: l10n.ipsSplashIncompleteProfileTitle,
-      body: CustomText(
-        l10n.ipsSplashIncompleteProfileMessage,
-        variant: MiniAppTextVariant.body2,
-      ),
-      icon: Icon(
-        Icons.info_outline_rounded,
-        color: DesignTokens.rose,
-        size: 35,
-      ),
-      actions: <Widget>[
-        FilledButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-            await Future<void>.delayed(const Duration(milliseconds: 100));
-            if (!mounted || !context.mounted) {
-              return;
-            }
-            await closeMiniAppSafely(context);
-          },
-          child: CustomText(
-            l10n.commonDismiss,
-            variant: MiniAppTextVariant.buttonMedium,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-        ),
-      ],
-    );
-
-    incompleteProfileDialogVisible = false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MiniAppBootstrapCubit, LoadableState<MiniAppBootstrapRes>>(
@@ -196,18 +149,9 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
           return;
         }
 
-        if (bootstrapHandled || resolution == null || !state.isSuccess) return;
+        if (navigated || resolution == null || !state.isSuccess) return;
 
-        bootstrapHandled = true;
-
-        final UserEntityDto? currentUser =
-            context.read<MiniAppSessionStore>().currentUser;
-        if (!hasRequiredUserProfileFields(currentUser)) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            showIncompleteProfileDialog(context);
-          });
-          return;
-        }
+        navigated = true;
 
         _scheduleResolvedNavigation(resolution);
       },

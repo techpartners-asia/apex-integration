@@ -7,4 +7,3 @@ export 'mini_app_session_controller.dart';
 export 'mini_app_session_runtime.dart';
 export 'mini_app_session_state.dart';
 export 'mini_app_session_store.dart';
-export 'mini_app_user_profile_validation.dart';
