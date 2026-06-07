@@ -145,6 +145,8 @@
   "ipsBootstrapLoading": "Дансны эхний төлөвийг шалгаж байна.",
   "ipsSplashTitle": "InvestX эхлэл",
   "ipsSplashSubtitle": "Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.",
+  "ipsSplashIncompleteProfileTitle": "Профайл дутуу байна",
+  "ipsSplashIncompleteProfileMessage": "Регистрийн дугаар, нэр, утас эсвэл имэйл мэдээлэл дутуу байна. Үргэлжлүүлэхийн өмнө host апп дээр профайлаа бүрэн болгоно уу.",
   "ipsQuestionnaireTitle": "Асуумж",
   "ipsQuestionnaireSubtitle": "Асуумжийн жагсаалт авах болон оноо тооцох.",
   "ipsQuestionnaireCalculateScore": "Оноо тооцоолох",

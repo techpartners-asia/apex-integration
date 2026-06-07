@@ -374,6 +374,13 @@ class SdkLocalizationsEn extends SdkLocalizations {
       'Launch startup flow for the current user, login session, and IPS state.';
 
   @override
+  String get ipsSplashIncompleteProfileTitle => 'Profile incomplete';
+
+  @override
+  String get ipsSplashIncompleteProfileMessage =>
+      'Register number, name, phone number, or email is missing. Complete your profile in the host app before continuing.';
+
+  @override
   String get ipsQuestionnaireTitle => 'Questionnaire';
 
   @override

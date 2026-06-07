@@ -377,6 +377,13 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.';
 
   @override
+  String get ipsSplashIncompleteProfileTitle => 'Профайл дутуу байна';
+
+  @override
+  String get ipsSplashIncompleteProfileMessage =>
+      'Регистрийн дугаар, нэр, утас эсвэл имэйл мэдээлэл дутуу байна. Үргэлжлүүлэхийн өмнө host апп дээр профайлаа бүрэн болгоно уу.';
+
+  @override
   String get ipsQuestionnaireTitle => 'Асуумж';
 
   @override

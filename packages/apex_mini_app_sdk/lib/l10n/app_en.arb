@@ -145,6 +145,8 @@
   "ipsBootstrapLoading": "Checking acnt bootstrap state.",
   "ipsSplashTitle": "InvestX Splash",
   "ipsSplashSubtitle": "Launch startup flow for the current user, login session, and IPS state.",
+  "ipsSplashIncompleteProfileTitle": "Profile incomplete",
+  "ipsSplashIncompleteProfileMessage": "Register number, name, phone number, or email is missing. Complete your profile in the host app before continuing.",
   "ipsQuestionnaireTitle": "Questionnaire",
   "ipsQuestionnaireSubtitle": "Question list retrieval and score calculation.",
   "ipsQuestionnaireCalculateScore": "Calculate score",
