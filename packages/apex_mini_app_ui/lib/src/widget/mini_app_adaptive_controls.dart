@@ -1,6 +1,7 @@
 import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/mini_app_design_tokens.dart';
 import '../../apex_mini_app_ui.dart';
 
 /// Adaptive icon/image button with SDK sizing and platform behavior.
@@ -82,7 +83,10 @@ class MiniAppAdaptiveIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool enabled = onPressed != null;
     final BorderRadius radius = borderRadius ?? BorderRadius.circular(circular ? size / 2 : 14);
-    final Color? effectiveBackground = enabled ? backgroundColor : disabledBackgroundColor ?? backgroundColor?.withValues(alpha: 0.72);
+    final Color effectiveBackground = enabled
+        ? (backgroundColor ?? DesignTokens.glassChrome)
+        : (disabledBackgroundColor ??
+              (backgroundColor ?? DesignTokens.glassChrome).withValues(alpha: 0.72));
     final Color? effectiveForeground = enabled ? foregroundColor : disabledForegroundColor ?? foregroundColor?.withValues(alpha: 0.52);
     final IconData resolvedIcon = PlatformInfo.isIOS && iosIcon != null ? iosIcon! : icon ?? Icons.add;
     // The native iOS 26 button implementation is a UiKitView with fixed-height
@@ -90,47 +94,80 @@ class MiniAppAdaptiveIconButton extends StatelessWidget {
     // opting into the platform-view path by default causes UIKit conflicts.
     final bool preferNativePlatformView = useNativePlatformView && PlatformInfo.isIOS26OrHigher();
 
-    Widget child = SizedBox.square(
+    final Widget buttonContent = SizedBox.square(
       dimension: size,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: effectiveBackground,
-          borderRadius: radius,
-          border: border,
-          boxShadow: boxShadow,
-        ),
-        child: AdaptiveButton.child(
-          onPressed: onPressed,
-          enabled: enabled,
-          style: AdaptiveButtonStyle.glass,
-          padding: padding,
-          borderRadius: radius,
-          minSize: Size.square(size),
-          useSmoothRectangleBorder: !circular,
-          useNative: preferNativePlatformView,
-          child: Center(
-            child: (img != null)
-                ? Image.asset(
-                    img!,
-                    package: 'apex_mini_app_sdk',
-                    width: iconSize,
-                    height: iconSize,
-                  )
-                : Icon(
-                    resolvedIcon,
-                    size: iconSize,
-                    color: effectiveForeground,
-                  ),
-          ),
+      child: AdaptiveButton.child(
+        onPressed: onPressed,
+        enabled: enabled,
+        style: preferNativePlatformView
+            ? AdaptiveButtonStyle.glass
+            : AdaptiveButtonStyle.plain,
+        color: Colors.transparent,
+        padding: padding,
+        borderRadius: radius,
+        minSize: Size.square(size),
+        useSmoothRectangleBorder: !circular,
+        useNative: preferNativePlatformView,
+        child: Center(
+          child: (img != null)
+              ? Image.asset(
+                  img!,
+                  package: 'apex_mini_app_sdk',
+                  width: iconSize,
+                  height: iconSize,
+                )
+              : Icon(
+                  resolvedIcon,
+                  size: iconSize,
+                  color: effectiveForeground,
+                ),
         ),
       ),
     );
 
+    final Widget child = circular
+        ? Material(
+            color: effectiveBackground,
+            elevation: boxShadow == null
+                ? DesignTokens.glassChromeElevation
+                : 0,
+            shadowColor: DesignTokens.glassChromeShadowColor,
+            shape: CircleBorder(
+              side: border?.top ?? BorderSide.none,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: boxShadow == null
+                ? buttonContent
+                : DecoratedBox(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: boxShadow,
+                    ),
+                    child: buttonContent,
+                  ),
+          )
+        : Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: effectiveBackground,
+              borderRadius: radius,
+              border: border,
+              boxShadow: boxShadow ?? DesignTokens.glassChromeShadow,
+            ),
+            child: ClipRRect(
+              borderRadius: radius,
+              child: buttonContent,
+            ),
+          );
+
+    Widget result = child;
+
     if (tooltip != null && tooltip!.trim().isNotEmpty) {
-      child = Tooltip(message: tooltip!, child: child);
+      result = Tooltip(message: tooltip!, child: result);
     }
 
-    return child;
+    return result;
   }
 }
 
@@ -171,7 +208,8 @@ class MiniAppAdaptivePressable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool preferNativePlatformView = useNativePlatformView && PlatformInfo.isIOS26OrHigher();
+    final bool preferNativePlatformView =
+        useNativePlatformView && PlatformInfo.isIOS26OrHigher();
 
     return AdaptiveButton.child(
       onPressed: onPressed,

@@ -79,6 +79,25 @@ final class DesignTokens {
   /// White constant for design-token call sites.
   static const Color white = Colors.white;
 
+  /// Frosted glass chrome fill used by header/icon controls.
+  static const Color glassChrome = Color(0xCCFFFFFF);
+
+  /// Soft radial shadow for circular glass icon buttons.
+  static const double glassChromeElevation = 5;
+
+  /// Shadow tint used by [glassChromeElevation].
+  static const Color glassChromeShadowColor = Color(0x240F172A);
+
+  /// Fallback shadow for non-circular icon buttons.
+  static const List<BoxShadow> glassChromeShadow = <BoxShadow>[
+    BoxShadow(
+      color: Color(0x180F172A),
+      blurRadius: 16,
+      spreadRadius: 1,
+      offset: Offset.zero,
+    ),
+  ];
+
   /// Primary warm brand gradient.
   static const Gradient primaryGradient = LinearGradient(
     colors: <Color>[rose, coral],

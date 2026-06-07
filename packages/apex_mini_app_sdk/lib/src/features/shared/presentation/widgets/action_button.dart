@@ -38,7 +38,7 @@ class ActionButton extends StatelessWidget {
     this.icon,
     this.iosIcon,
     required this.foregroundColor,
-    this.backgroundColor = DesignTokens.softSurface,
+    this.backgroundColor = DesignTokens.glassChrome,
     this.boxShadow,
     this.size,
     this.iconSize,
