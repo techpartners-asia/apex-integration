@@ -19,6 +19,9 @@ class ApiQuestionnaireService implements QuestionnaireService {
   /// Cache for questionnaire definitions and goal options.
   final TimedMemoryCache<List<QuestionnaireQuestion>> _questionsCache;
 
+  /// Cache for grape questionnaire completion state.
+  final TimedMemoryCache<GrapeQuestionnaireCompletionStatus> _completionCache;
+
   /// Creates the questionnaire service.
   ApiQuestionnaireService({
     required this.api,
@@ -26,24 +29,48 @@ class ApiQuestionnaireService implements QuestionnaireService {
     required this.config,
     required this.session,
     TimedMemoryCache<List<QuestionnaireQuestion>>? questionsCache,
+    TimedMemoryCache<GrapeQuestionnaireCompletionStatus>? completionCache,
   }) : _questionsCache =
            questionsCache ??
            TimedMemoryCache<List<QuestionnaireQuestion>>(
              ttl: _questionsCacheTtl,
+           ),
+       _completionCache =
+           completionCache ??
+           TimedMemoryCache<GrapeQuestionnaireCompletionStatus>(
+             ttl: _questionsCacheTtl,
            );
 
   @override
-  Future<QuestionnaireRes> calculateScore(
-    List<QuestionnaireAnswer> answers,
-  ) async {
-    await session.ensureLoginSession();
-
-    final QuestionnaireResDto res = await api.calculateScore(
-      answers,
-      srcFiCode: config.runtime.defaultSrcFiCode,
+  Future<GrapeQuestionnaireCompletionStatus> checkCompletionStatus({
+    bool forceRefresh = false,
+  }) {
+    return _completionCache.getOrLoad(
+      () async {
+        await session.ensureLoginSession();
+        return appApi.checkGrapeQuestionnaireCompleted();
+      },
+      forceRefresh: forceRefresh,
     );
+  }
 
-    return res.toDomain(true);
+  @override
+  Future<void> completeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  }) async {
+    await session.ensureLoginSession();
+    await appApi.completeGrapeQuestionnaire(questions: questions);
+    _completionCache.invalidate();
+  }
+
+  @override
+  Future<QuestionnaireRes> saveTotalScore(int totalScore) async {
+    await session.ensureLoginSession();
+    final QuestionnaireRes res = await appApi.setGrapeQuestionnaireScore(
+      totalScore: totalScore,
+    );
+    _completionCache.invalidate();
+    return res;
   }
 
   @override

@@ -11,6 +11,18 @@ class ApiEndpoints {
   /// Investor questionnaire/goal list endpoint.
   static const String getAllGoals = '/api/v1/user/question/get-all';
 
+  /// Grape questionnaire completion check endpoint.
+  static const String checkGrapeQuestionnaireCompleted =
+      '/api/v1/user/question/grape/check-completed';
+
+  /// Grape questionnaire bulk save endpoint.
+  static const String completeGrapeQuestionnaire =
+      '/api/v1/user/question/grape/complete';
+
+  /// Grape questionnaire score persistence endpoint.
+  static const String setGrapeQuestionnaireScore =
+      '/api/v1/user/question/grape/set-score';
+
   /// User profile update endpoint.
   static const String updateProfile = '/api/v1/user/profile/update';
 

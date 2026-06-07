@@ -243,6 +243,25 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> completeGrapeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<QuestionnaireRes> setGrapeQuestionnaireScore({
+    required int totalScore,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<UserEntityDto> getProfileInfo() {
     // TODO: implement getProfileInfo
     throw UnimplementedError();
@@ -316,6 +335,25 @@ class _FailingApi implements MiniAppApiRepository {
   @override
   Future<List<QuestionnaireQuestion>> getAllGoals() {
     // TODO: implement getAllGoals
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> completeGrapeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<QuestionnaireRes> setGrapeQuestionnaireScore({
+    required int totalScore,
+  }) {
     throw UnimplementedError();
   }
 

@@ -246,6 +246,28 @@ class QuestionnaireResDto {
     );
   }
 
+  /// Parses the grape set-score response.
+  factory QuestionnaireResDto.fromGrapeSetScoreJson(
+    Map<String, Object?> json, {
+    required int fallbackScore,
+  }) {
+    final Map<String, Object?> payload = _unwrapEnvelopeBody(json);
+    final int score =
+        ApiParser.asNullableInt(payload['total_score']) ??
+        ApiParser.asNullableInt(payload['totalScore']) ??
+        ApiParser.asNullableInt(payload['score']) ??
+        ApiParser.asNullableInt(json['total_score']) ??
+        ApiParser.asNullableInt(json['totalScore']) ??
+        ApiParser.asNullableInt(json['score']) ??
+        fallbackScore;
+
+    return QuestionnaireResDto(
+      score: score,
+      customerCode: ApiParser.asNullableString(payload['custCode']),
+      summary: ApiParser.asNullableString(payload['responseDesc']),
+    );
+  }
+
   /// Calculated total score.
   final int score;
 
@@ -264,4 +286,50 @@ class QuestionnaireResDto {
       showRecomended: showRecomended,
     );
   }
+}
+
+/// Completion payload returned by the grape check-completed endpoint.
+class GrapeQuestionnaireCheckCompletedResDto {
+  /// Creates the check-completed response DTO.
+  const GrapeQuestionnaireCheckCompletedResDto({
+    required this.completed,
+    this.score,
+  });
+
+  /// Whether the questionnaire is complete on the backend.
+  final bool completed;
+
+  /// Persisted score, when available.
+  final int? score;
+
+  /// Parses the grape check-completed response envelope.
+  factory GrapeQuestionnaireCheckCompletedResDto.fromEnvelope(
+    Map<String, Object?> json,
+  ) {
+    final Map<String, Object?> payload = _unwrapEnvelopeBody(json);
+
+    return GrapeQuestionnaireCheckCompletedResDto(
+      completed: ApiParser.asFlag(payload['completed']),
+      score: ApiParser.asNullableInt(payload['score']),
+    );
+  }
+
+  /// Converts the DTO into the domain completion status model.
+  GrapeQuestionnaireCompletionStatus toDomain() {
+    return GrapeQuestionnaireCompletionStatus(
+      completed: completed,
+      score: score,
+    );
+  }
+}
+
+Map<String, Object?> _unwrapEnvelopeBody(Map<String, Object?> json) {
+  final Object? body = json['body'];
+  if (body is Map) {
+    return body.map(
+      (Object? key, Object? value) => MapEntry(key.toString(), value),
+    );
+  }
+
+  return json;
 }

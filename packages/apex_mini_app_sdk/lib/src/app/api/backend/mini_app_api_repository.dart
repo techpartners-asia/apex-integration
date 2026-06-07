@@ -20,6 +20,19 @@ abstract interface class MiniAppProfileRepository {
   /// Loads all questionnaire goals.
   Future<List<QuestionnaireQuestion>> getAllGoals();
 
+  /// Checks grape questionnaire completion state.
+  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted();
+
+  /// Persists all grape questionnaire answers in one request.
+  Future<void> completeGrapeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  });
+
+  /// Persists the grape questionnaire total score.
+  Future<QuestionnaireRes> setGrapeQuestionnaireScore({
+    required int totalScore,
+  });
+
   /// Updates the selected investment target goal.
   Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req);
 
@@ -131,6 +144,20 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
 
   @override
   Future<List<QuestionnaireQuestion>> getAllGoals() => profileRepository.getAllGoals();
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() =>
+      profileRepository.checkGrapeQuestionnaireCompleted();
+
+  @override
+  Future<void> completeGrapeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  }) => profileRepository.completeGrapeQuestionnaire(questions: questions);
+
+  @override
+  Future<QuestionnaireRes> setGrapeQuestionnaireScore({
+    required int totalScore,
+  }) => profileRepository.setGrapeQuestionnaireScore(totalScore: totalScore);
 
   @override
   Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) => profileRepository.updateTargetGoal(req);

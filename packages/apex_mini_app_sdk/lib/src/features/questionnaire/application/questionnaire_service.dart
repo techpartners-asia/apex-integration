@@ -5,6 +5,16 @@ abstract interface class QuestionnaireService {
   /// Loads questionnaire questions.
   Future<List<QuestionnaireQuestion>> getQuestions({bool forceRefresh = false});
 
-  /// Calculates questionnaire score from selected answers.
-  Future<QuestionnaireRes> calculateScore(List<QuestionnaireAnswer> answers);
+  /// Checks whether the grape questionnaire is already complete.
+  Future<GrapeQuestionnaireCompletionStatus> checkCompletionStatus({
+    bool forceRefresh = false,
+  });
+
+  /// Persists all grape questionnaire answers in one request.
+  Future<void> completeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  });
+
+  /// Persists the calculated grape questionnaire score.
+  Future<QuestionnaireRes> saveTotalScore(int totalScore);
 }

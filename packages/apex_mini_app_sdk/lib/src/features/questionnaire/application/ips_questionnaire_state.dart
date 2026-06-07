@@ -11,6 +11,9 @@ class IpsQuestionnaireState {
   /// Whether selected target goal is being saved.
   final bool isSavingTargetGoal;
 
+  /// Whether questionnaire answers are being persisted to the backend.
+  final bool isPersistingAnswers;
+
   /// Account bootstrap state associated with the questionnaire.
   final AcntBootstrapState? bootstrapState;
 
@@ -23,6 +26,12 @@ class IpsQuestionnaireState {
   /// Score calculation result.
   final QuestionnaireRes? res;
 
+  /// Whether contract and question steps should be skipped.
+  final bool skipContractAndQuestions;
+
+  /// Whether the calculation step should be skipped.
+  final bool skipCalculation;
+
   /// User-facing error message.
   final String? errorMessage;
 
@@ -31,10 +40,13 @@ class IpsQuestionnaireState {
     this.isLoading = false,
     this.isSubmitting = false,
     this.isSavingTargetGoal = false,
+    this.isPersistingAnswers = false,
     this.bootstrapState,
     this.questions = const <QuestionnaireQuestion>[],
     this.answers = const <String, String>{},
     this.res,
+    this.skipContractAndQuestions = false,
+    this.skipCalculation = false,
     this.errorMessage,
   });
 
@@ -46,22 +58,29 @@ class IpsQuestionnaireState {
     bool? isLoading,
     bool? isSubmitting,
     bool? isSavingTargetGoal,
+    bool? isPersistingAnswers,
     Object? bootstrapState = sentinel,
     List<QuestionnaireQuestion>? questions,
     Map<String, String>? answers,
     Object? res = sentinel,
+    bool? skipContractAndQuestions,
+    bool? skipCalculation,
     Object? errorMessage = sentinel,
   }) {
     return IpsQuestionnaireState(
       isLoading: isLoading ?? this.isLoading,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSavingTargetGoal: isSavingTargetGoal ?? this.isSavingTargetGoal,
+      isPersistingAnswers: isPersistingAnswers ?? this.isPersistingAnswers,
       bootstrapState: bootstrapState == sentinel
           ? this.bootstrapState
           : bootstrapState as AcntBootstrapState?,
       questions: questions ?? this.questions,
       answers: answers ?? this.answers,
       res: res == sentinel ? this.res : res as QuestionnaireRes?,
+      skipContractAndQuestions:
+          skipContractAndQuestions ?? this.skipContractAndQuestions,
+      skipCalculation: skipCalculation ?? this.skipCalculation,
       errorMessage: errorMessage == sentinel
           ? this.errorMessage
           : errorMessage as String?,
