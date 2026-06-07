@@ -1326,7 +1326,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsOverviewPackPrompt => 'Та өөрт тохирсон багцаа сонгоно уу';
 
   @override
-  String get ipsPackPerfectFit => 'Танд тэгс тохирох';
+  String get ipsPackPerfectFit => 'Танд төгс тохирох';
 
   @override
   String get advice => 'Зөвлөмж';

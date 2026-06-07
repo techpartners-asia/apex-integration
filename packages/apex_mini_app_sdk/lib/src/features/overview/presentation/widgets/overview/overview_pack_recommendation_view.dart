@@ -160,43 +160,35 @@ class _PackRecommendationCard extends StatelessWidget {
         ],
       ),
       clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          responsive.dp(12),
-          responsive.dp(12),
-          responsive.dp(12),
-          responsive.dp(16),
-        ),
-        child: Column(
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _PackRecommendationHero(pack: pack, stackIndex: stackIndex),
             SizedBox(height: responsive.dp(18)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: responsive.dp(10)),
+              padding: EdgeInsets.all(responsive.dp(16)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CustomImage(
                         path: Img.trophyBlue,
-                        width: responsive.dp(18),
-                        height: responsive.dp(18),
+                        width: responsive.dp(24),
+                        height: responsive.dp(24),
                       ),
                       SizedBox(width: responsive.dp(8)),
-                      Expanded(
-                        child: CustomText(
-                          l10n.ipsPackPerfectFit,
-                          variant: MiniAppTextVariant.subtitle3,
-                          color: DesignTokens.ink,
-                        ),
+                      CustomText(
+                        l10n.ipsPackPerfectFit,
+                        variant: MiniAppTextVariant.subtitle2,
+                        color: DesignTokens.ink,
                       ),
                     ],
                   ),
-                  SizedBox(height: responsive.dp(14)),
+                  SizedBox(height: responsive.dp(24)),
                   ...buildPackBenefits(context, pack),
-                  SizedBox(height: responsive.dp(14)),
+                  SizedBox(height: responsive.dp(12)),
                   Center(
                     child: SizedBox(
                       width: responsive.dp(138),
@@ -221,7 +213,7 @@ class _PackRecommendationCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      
     );
   }
 }
@@ -251,7 +243,7 @@ class _PackRecommendationHero extends StatelessWidget {
     );
 
     return SizedBox(
-      height: responsive.dp(176),
+      height: responsive.dp(256),
       child: Stack(
         clipBehavior: Clip.none,
         children: <Widget>[

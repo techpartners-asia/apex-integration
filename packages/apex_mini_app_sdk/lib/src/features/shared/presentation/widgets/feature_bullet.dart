@@ -9,11 +9,19 @@ class FeatureBullet extends StatelessWidget {
   /// Icon used as the bullet marker.
   final IconData icon;
 
+  /// Typography variant for the label.
+  final MiniAppTextVariant textVariant;
+
+  /// Optional font weight override for the label.
+  final FontWeight? fontWeight;
+
   /// Creates a feature bullet row.
   const FeatureBullet({
     super.key,
     required this.label,
     this.icon = Icons.circle,
+    this.textVariant = MiniAppTextVariant.body2,
+    this.fontWeight,
   });
 
   @override
@@ -37,7 +45,8 @@ class FeatureBullet extends StatelessWidget {
         Expanded(
           child: CustomText(
             label,
-            variant: MiniAppTextVariant.body2,
+            variant: textVariant,
+            fontWeight: fontWeight,
             color: DesignTokens.ink,
           ),
         ),

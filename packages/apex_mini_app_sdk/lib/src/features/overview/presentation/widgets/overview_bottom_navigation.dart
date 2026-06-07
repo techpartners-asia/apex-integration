@@ -45,14 +45,16 @@ class OverviewBottomNavigationBar extends StatelessWidget {
   static const double _barHeight = 72;
   static const double _barBorderRadius = 32;
   static final Color _indicatorTint = DesignTokens.softPeach.withAlpha(30);
-  static final LiquidGlassSettings _indicatorGlassSettings = LiquidGlassSettings(
-    glassColor: DesignTokens.softPeach.withAlpha(30),
-    blur: 0,
-    thickness: 10,
-    saturation: 1.3,
-    lightIntensity: 0.3,
-    specularSharpness: GlassSpecularSharpness.medium,
-  );
+  static final LiquidGlassSettings _indicatorGlassSettings =
+      LiquidGlassSettings(
+        glassColor: _indicatorTint,
+        blur: 0,
+        thickness: 0,
+        saturation: 1,
+        lightIntensity: 0,
+        chromaticAberration: 0,
+        specularSharpness: GlassSpecularSharpness.medium,
+      );
 
   Widget _iconWidget(Object icon, Color color) {
     if (icon is IconData) {
