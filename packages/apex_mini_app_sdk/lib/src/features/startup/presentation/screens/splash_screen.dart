@@ -20,11 +20,17 @@ class IpsSplashScreen extends StatefulWidget {
 /// Owns delayed navigation and startup error dialog lifecycle so pending work
 /// is cancelled when the mini app closes during splash.
 class IpsSplashScreenState extends State<IpsSplashScreen> {
+  /// Prevents multiple startup error dialogs from stacking.
+  bool errorDialogVisible = false;
+
   /// Whether bootstrap success has already scheduled navigation.
   bool navigated = false;
 
-  /// Prevents multiple startup error dialogs from stacking.
-  bool errorDialogVisible = false;
+  /// Prevents duplicate navigation to the startup blocked screen.
+  bool startupBlockedHandled = false;
+
+  /// Whether startup blocked navigation is currently in flight.
+  bool redirectToStartupBlockedInFlight = false;
 
   Timer? _navigationTimer;
 
@@ -69,6 +75,28 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
         );
       });
     });
+  }
+
+  /// Replaces splash with the startup blocked screen for signup gate failures.
+  Future<void> _redirectToStartupBlocked(String message) async {
+    if (startupBlockedHandled ||
+        redirectToStartupBlockedInFlight ||
+        !mounted) {
+      return;
+    }
+
+    redirectToStartupBlockedInFlight = true;
+
+    try {
+      await replaceIpsRoute(
+        context,
+        route: MiniAppRoutes.startupBlocked,
+        arguments: StartupBlockedArguments(message: message),
+      );
+      startupBlockedHandled = true;
+    } finally {
+      redirectToStartupBlockedInFlight = false;
+    }
   }
 
   /// Shows the fatal startup error dialog with close and retry actions.
@@ -142,6 +170,20 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
       listener: (BuildContext context, LoadableState<MiniAppBootstrapRes> state) {
         final MiniAppBootstrapRes? resolution = state.data;
         if (state.isFailure) {
+          final MiniAppBootstrapCubit cubit =
+              context.read<MiniAppBootstrapCubit>();
+          final SdkLocalizations l10n = context.l10n;
+
+          if (cubit.failureResponseCode ==
+              SignupBusinessCodes.profileNotVerified) {
+            unawaited(
+              _redirectToStartupBlocked(
+                state.errorMessage ?? l10n.errorsUnexpected,
+              ),
+            );
+            return;
+          }
+
           WidgetsBinding.instance.addPostFrameCallback((_) {
             showErrorDialog(context, state);
           });

@@ -20,31 +20,12 @@ class SecAcntSuccessScreen extends StatelessWidget {
   /// Current profile used by skip logic.
   final UserEntityDto? currentUser;
 
-  /// Opens the next required short-flow step.
+  /// Continues into questionnaire when InvestX agreement is still required.
   Future<void> _openNextStep(BuildContext context) async {
-    final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
-      SecAcntFlowStep.success,
-      bootstrapState,
+    await routeAfterSecAcntFlow(
+      context,
+      bootstrapState: bootstrapState,
       currentUser: currentUser,
-    );
-    if (nextStep == null) {
-      await routeAfterSecAcntFlow(context, bootstrapState);
-      return;
-    }
-    if (nextStep != SecAcntFlowStep.serviceAgreement) {
-      await routeAfterSecAcntFlow(context, bootstrapState);
-      return;
-    }
-
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => SecAcntAgreementScreen(
-          step: SecAcntFlowStep.serviceAgreement,
-          bootstrapState: bootstrapState,
-          draft: draft,
-          currentUser: currentUser,
-        ),
-      ),
     );
   }
 

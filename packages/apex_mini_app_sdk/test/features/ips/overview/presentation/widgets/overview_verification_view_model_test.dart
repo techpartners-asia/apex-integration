@@ -61,11 +61,115 @@ void main() {
       expect(model?.onPromoTap, isNotNull);
     },
   );
+
+  testWidgets(
+    'open securities account without IPS routes final step to questionnaire',
+    (WidgetTester tester) async {
+      OverviewVerificationViewModel? model;
+
+      await tester.pumpWidget(
+        buildSdkTestApp(
+          Builder(
+            builder: (BuildContext context) {
+              model = buildOverviewVerificationViewModel(
+                context,
+                _bootstrapState(
+                  hasAcnt: true,
+                  hasIpsAcnt: false,
+                  secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+                ),
+              );
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+
+      expect(model?.progressCurrent, 2);
+      expect(model?.steps[1].status, StepStatus.completed);
+      expect(model?.steps[1].onTap, isNull);
+      expect(model?.steps[2].status, StepStatus.active);
+      expect(model?.steps[2].onTap, isNotNull);
+      expect(model?.onPromoTap, isNotNull);
+    },
+  );
+
+  testWidgets(
+    'pending paid securities account without IPS matches open overview flow',
+    (WidgetTester tester) async {
+      OverviewVerificationViewModel? openModel;
+      OverviewVerificationViewModel? pendingModel;
+
+      await tester.pumpWidget(
+        buildSdkTestApp(
+          Builder(
+            builder: (BuildContext context) {
+              openModel = buildOverviewVerificationViewModel(
+                context,
+                _bootstrapState(
+                  hasAcnt: true,
+                  hasIpsAcnt: false,
+                  secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+                ),
+              );
+              pendingModel = buildOverviewVerificationViewModel(
+                context,
+                _bootstrapState(
+                  hasAcnt: true,
+                  hasIpsAcnt: false,
+                  secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
+                ),
+              );
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+
+      expect(pendingModel?.progressCurrent, openModel?.progressCurrent);
+      expect(pendingModel?.steps[1].status, openModel?.steps[1].status);
+      expect(pendingModel?.steps[1].onTap, isNull);
+      expect(pendingModel?.steps[2].status, StepStatus.active);
+      expect(pendingModel?.steps[2].onTap, isNotNull);
+    },
+  );
+
+  testWidgets(
+    'unpaid securities account without IPS keeps payment step active',
+    (WidgetTester tester) async {
+      OverviewVerificationViewModel? model;
+
+      await tester.pumpWidget(
+        buildSdkTestApp(
+          Builder(
+            builder: (BuildContext context) {
+              model = buildOverviewVerificationViewModel(
+                context,
+                _bootstrapState(
+                  hasAcnt: true,
+                  hasIpsAcnt: false,
+                  secAcntStatusCode: AcntBootstrapState.secAcntStatusUnpaid,
+                ),
+              );
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+
+      expect(model?.progressCurrent, 1);
+      expect(model?.steps[1].status, StepStatus.active);
+      expect(model?.steps[1].onTap, isNotNull);
+      expect(model?.steps[2].status, StepStatus.upcoming);
+      expect(model?.steps[2].onTap, isNull);
+    },
+  );
 }
 
 AcntBootstrapState _bootstrapState({
   required bool hasAcnt,
   required bool hasIpsAcnt,
+  int? secAcntStatusCode,
 }) {
   return AcntBootstrapState(
     response: GetSecuritiesAcntListResDto(
@@ -73,7 +177,14 @@ AcntBootstrapState _bootstrapState({
         hasAcnt: hasAcnt,
         hasIpsAcnt: hasIpsAcnt,
       ),
-      acnts: const <GetSecAcntListAccountDto>[],
+      acnts: secAcntStatusCode == null
+          ? const <GetSecAcntListAccountDto>[]
+          : <GetSecAcntListAccountDto>[
+              GetSecAcntListAccountDto(
+                flag: 3,
+                status: secAcntStatusCode,
+              ),
+            ],
       stlAcnts: const <GetSecAcntSettlementAccountDto>[],
       responseCode: 0,
     ),

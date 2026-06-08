@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:apex_mini_app_sdk/src/app/session/signup_business_codes.dart';
 import 'package:apex_mini_app_sdk/src/core/api/api_client.dart';
 import 'package:apex_mini_app_sdk/src/core/api/api_config.dart';
 import 'package:apex_mini_app_sdk/src/core/api/api_executor.dart';
@@ -71,6 +72,41 @@ void main() {
 
       expect(mapped, isA<ApiBusinessException>());
       expect(mapped.message, 'IBAN дугаар буруу байна.');
+    });
+
+    test('prefers TechInvestX business code over HTTP status code', () {
+      final ApiExecutor executor = _buildExecutor();
+      final RequestOptions requestOptions = RequestOptions(
+        path: '/api/v1/user/signup',
+        method: 'POST',
+      );
+      final DioException error = DioException(
+        requestOptions: requestOptions,
+        response: Response<dynamic>(
+          requestOptions: requestOptions,
+          statusCode: 400,
+          data: <String, Object?>{
+            'code': 1001,
+            'message': 'Profile not verified.',
+            'body': null,
+          },
+        ),
+        type: DioExceptionType.badResponse,
+      );
+
+      final ApiException mapped = executor.mapDioException(
+        requestOptions.path,
+        const ReqContext(operName: 'signUp'),
+        error,
+        StackTrace.current,
+      );
+
+      expect(mapped, isA<ApiBusinessException>());
+      expect(
+        (mapped as ApiBusinessException).responseCode,
+        SignupBusinessCodes.profileNotVerified,
+      );
+      expect(mapped.message, 'Profile not verified.');
     });
   });
 }

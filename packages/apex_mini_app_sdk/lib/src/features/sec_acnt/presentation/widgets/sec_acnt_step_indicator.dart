@@ -22,7 +22,7 @@ class SecAcntStepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<SecAcntFlowStep> steps = resolveSecAcntFlowSteps(
+    final List<SecAcntFlowStep> steps = resolveSecAcntFlowProgressSteps(
       bootstrapState,
       currentUser: currentUser,
     );

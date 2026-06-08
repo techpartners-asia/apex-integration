@@ -39,6 +39,63 @@ class MiniAppApiBackend {
     return QuestionnaireQuestionDto.listFromQuestionApiRaw(json);
   }
 
+  /// Checks whether the grape questionnaire is already complete.
+  Future<GrapeQuestionnaireCheckCompletedResDto>
+  checkGrapeQuestionnaireCompleted() async {
+    final ApiExecutor executor =
+        _requireAuthorizedExecutor('checkGrapeQuestionnaireCompleted');
+    final Map<String, Object?> json = await executor.getJson(
+      ApiEndpoints.checkGrapeQuestionnaireCompleted,
+      context: const ReqContext(operName: 'checkGrapeQuestionnaireCompleted'),
+    );
+
+    return GrapeQuestionnaireCheckCompletedResDto.fromEnvelope(json);
+  }
+
+  /// Persists all grape questionnaire answers in one request.
+  Future<ApiActionResponseDto> completeGrapeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  }) async {
+    final ApiExecutor executor =
+        _requireAuthorizedExecutor('completeGrapeQuestionnaire');
+    final Map<String, Object?> json = await executor.postJson(
+      ApiEndpoints.completeGrapeQuestionnaire,
+      body: <String, Object?>{
+        'questions': questions
+            .map(
+              (GrapeQuestionAnswerSubmission question) => question.toJson(),
+            )
+            .toList(growable: false),
+      },
+      context: const ReqContext(operName: 'completeGrapeQuestionnaire'),
+    );
+
+    return ApiActionResponseDto.fromJson(
+      json,
+      failureMessage: 'Failed to complete the questionnaire.',
+    );
+  }
+
+  /// Persists the grape questionnaire total score.
+  Future<QuestionnaireResDto> setGrapeQuestionnaireScore({
+    required int totalScore,
+  }) async {
+    final ApiExecutor executor =
+        _requireAuthorizedExecutor('setGrapeQuestionnaireScore');
+    final Map<String, Object?> json = await executor.putJson(
+      ApiEndpoints.setGrapeQuestionnaireScore,
+      body: <String, Object?>{
+        'total_score': totalScore,
+      },
+      context: const ReqContext(operName: 'setGrapeQuestionnaireScore'),
+    );
+
+    return QuestionnaireResDto.fromGrapeSetScoreJson(
+      json,
+      fallbackScore: totalScore,
+    );
+  }
+
   /// Loads the additional account fee amount for securities account opening.
   Future<AccountFeesAmountDto> getAccountFeesAmount() async {
     final ApiExecutor executor =

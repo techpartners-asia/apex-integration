@@ -190,7 +190,11 @@ List<Widget> buildPackBenefits(BuildContext context, IpsPack pack) {
           padding: EdgeInsets.only(
             bottom: context.responsive.spacing.inlineSpacing * 0.75,
           ),
-          child: FeatureBullet(label: point),
+          child: FeatureBullet(
+            label: point,
+            textVariant: MiniAppTextVariant.body3,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       )
       .toList(growable: false);

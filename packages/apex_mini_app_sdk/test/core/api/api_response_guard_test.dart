@@ -112,6 +112,23 @@ void main() {
       );
     });
 
+    test('throws for non-zero TechInvestX code field', () {
+      expect(
+        () => ensureDefault(
+          const <String, Object?>{
+            'code': 1001,
+            'message': 'Profile not verified.',
+            'body': null,
+          },
+        ),
+        throwsA(
+          isA<ApiBusinessException>()
+              .having((e) => e.responseCode, 'responseCode', 1001)
+              .having((e) => e.message, 'message', 'Profile not verified.'),
+        ),
+      );
+    });
+
     test('prefers message field over fallback', () {
       expect(
         () => ensureDefault(

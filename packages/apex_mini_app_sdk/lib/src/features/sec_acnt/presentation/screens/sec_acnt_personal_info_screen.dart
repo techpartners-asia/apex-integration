@@ -70,11 +70,11 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   /// Whether the user manually selected a bank in this screen.
   bool _userChangedBank = false;
 
-  /// Whether the user has changed or attempted to submit personal info.
-  bool _didInteractWithPersonalInfo = false;
-
   /// Whether the bank selector has been touched.
   bool _didTouchBankSelector = false;
+
+  /// Whether a submit attempt should surface validation on every field.
+  bool _showAllValidationErrors = false;
 
   /// Whether initial bank option warming is in progress.
   bool _isWarmingBankOptions = false;
@@ -126,10 +126,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     if (!mounted) {
       return;
     }
-    setState(() {
-      _didInteractWithPersonalInfo = true;
-      _submitErrorMessage = null;
-    });
+    setState(() => _submitErrorMessage = null);
   }
 
   /// Loads bank options once to replace draft bank aliases with canonical data.
@@ -200,12 +197,14 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     );
   }
 
-  /// Form autovalidation mode after first interaction.
-  AutovalidateMode get _autovalidateMode => _didInteractWithPersonalInfo ? AutovalidateMode.always : AutovalidateMode.disabled;
+  /// Validates only touched fields until the user attempts to continue.
+  AutovalidateMode get _autovalidateMode => _showAllValidationErrors
+      ? AutovalidateMode.always
+      : AutovalidateMode.onUserInteraction;
 
-  /// Returns bank selector error text only after relevant interaction.
+  /// Returns bank selector error text only after bank interaction or submit.
   String? _bankErrorText(BuildContext context) {
-    if (!_didInteractWithPersonalInfo && !_didTouchBankSelector) {
+    if (!_didTouchBankSelector && !_showAllValidationErrors) {
       return null;
     }
     return _validateSelectedBank(context);
@@ -269,7 +268,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
   /// Submits profile data and opens the next onboarding step when successful.
   Future<void> _submitAndOpenNextStep() async {
     setState(() {
-      _didInteractWithPersonalInfo = true;
+      _showAllValidationErrors = true;
       _didTouchBankSelector = true;
     });
 
@@ -335,7 +334,11 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     }
 
     if (nextStep == null) {
-      await routeAfterSecAcntFlow(context, widget.bootstrapState);
+      await routeAfterSecAcntFlow(
+        context,
+        bootstrapState: widget.bootstrapState,
+        currentUser: widget.currentUser,
+      );
       return;
     }
 

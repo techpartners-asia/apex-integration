@@ -46,6 +46,13 @@ class _QuestionnaireQuestionScreenState
 
     final int totalSteps = state.questions.length;
     if (_currentStepIndex >= totalSteps - 1) {
+      final bool completed = await context
+          .read<IpsQuestionnaireCubit>()
+          .completeQuestionnaire();
+      if (!mounted || !completed) {
+        return;
+      }
+
       Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => const QuestionnaireCalculationScreen(),
@@ -174,10 +181,14 @@ class _QuestionnaireQuestionScreenState
                     totalSteps: totalSteps,
                   ),
                 ),
-                if (state.isLoading || state.isSavingTargetGoal)
+                if (state.isLoading ||
+                    state.isSavingTargetGoal ||
+                    state.isPersistingAnswers)
                   BlockingLoadingOverlay(
                     title: l10n.commonLoading,
-                    message: state.isSavingTargetGoal
+                    message: state.isPersistingAnswers
+                        ? l10n.ipsQuestionnaireLoading
+                        : state.isSavingTargetGoal
                         ? l10n.commonLoading
                         : l10n.ipsQuestionnaireLoading,
                   ),
@@ -188,7 +199,9 @@ class _QuestionnaireQuestionScreenState
                 label: isLastStep
                     ? l10n.ipsQuestionnaireViewPacks
                     : l10n.commonContinue,
-                onPressed: _hasCurrentAnswer(state) && !state.isSavingTargetGoal
+                onPressed: _hasCurrentAnswer(state) &&
+                        !state.isSavingTargetGoal &&
+                        !state.isPersistingAnswers
                     ? () => _goNext(state)
                     : null,
               ),

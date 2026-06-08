@@ -29,41 +29,59 @@ class RechargeQuantityInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
+    final TextStyle valueStyle = MiniAppTypography.h3.copyWith(
+      color: DesignTokens.ink,
+      height: 1.2,
+    );
 
     return SizedBox(
       width: double.infinity,
       height: responsive.dp(96),
       child: Center(
-        child: TextField(
-          controller: controller,
-          focusNode: focusNode,
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.unspecified,
-          showCursor: true,
-          onTap: () => focusNode.requestFocus(),
-          onTapOutside: unfocusOnTapOutside
-              ? (_) => FocusScope.of(context).unfocus()
-              : null,
-          textAlign: TextAlign.center,
-          textAlignVertical: TextAlignVertical.center,
-          style: MiniAppTypography.h3.copyWith(
-            color: DesignTokens.ink,
-            height: 1.2,
-          ),
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            contentPadding: EdgeInsets.zero,
-            isDense: true,
-            filled: true,
-            fillColor: DesignTokens.softSurface,
-          ),
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            IntrinsicWidth(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minWidth: responsive.dp(56)),
+                child: TextField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.unspecified,
+                  showCursor: true,
+                  onTap: () => focusNode.requestFocus(),
+                  onTapOutside: unfocusOnTapOutside
+                      ? (_) => FocusScope.of(context).unfocus()
+                      : null,
+                  textAlign: TextAlign.center,
+                  textAlignVertical: TextAlignVertical.center,
+                  style: valueStyle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
+                    isDense: true,
+                    filled: true,
+                    fillColor: DesignTokens.softSurface,
+                  ),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(4),
+                  ],
+                  onChanged: onChanged,
+                ),
+              ),
+            ),
+            SizedBox(width: responsive.dp(8)),
+            CustomText(
+              context.l10n.ipsPaymentRechargeQuantityUnit,
+              variant: MiniAppTextVariant.h3,
+              color: DesignTokens.ink,
+            ),
           ],
-          onChanged: onChanged,
         ),
       ),
     );

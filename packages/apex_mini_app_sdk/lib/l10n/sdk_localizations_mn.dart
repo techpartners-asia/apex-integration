@@ -377,6 +377,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.';
 
   @override
+  String get ipsStartupBlockedTitle => 'Таны хувийн мэдээлэл дутуу байна';
+
+  @override
   String get ipsQuestionnaireTitle => 'Асуумж';
 
   @override
@@ -673,6 +676,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsPaymentRechargeQuantityHint => 'Авах ширхэгийн тоог оруулна уу';
 
   @override
+  String get ipsPaymentRechargeQuantityUnit => 'ш';
+
+  @override
   String get ipsPaymentRechargeTotalAmount => 'Нийт дүн';
 
   @override
@@ -833,7 +839,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsSuccessOrderCancelled => 'Захиалгыг амжилттай цуцаллаа.';
 
   @override
-  String get ipsSuccessContractCreated => 'Гэрээг амжилттай үүсгэлээ.';
+  String get ipsSuccessContractCreated => 'Данс нээх хүсэлт амжилттай';
 
   @override
   String get ipsSuccessQrCreated => 'QR амжилттай үүслээ.';
@@ -1323,7 +1329,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsOverviewPackPrompt => 'Та өөрт тохирсон багцаа сонгоно уу';
 
   @override
-  String get ipsPackPerfectFit => 'Танд тэгс тохирох';
+  String get ipsPackPerfectFit => 'Танд төгс тохирох';
 
   @override
   String get advice => 'Зөвлөмж';

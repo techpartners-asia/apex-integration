@@ -67,7 +67,7 @@ bool hasPaidSecAcntOpeningFee(
 }
 
 /// Whether the current profile says the InvestX contract is already complete.
-bool hasCompletedSecAcntContract(UserEntityDto? user) => user?.account?.hasInvestContract ?? false;
+bool hasCompletedSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
 
 /// Whether the current profile already has a stored signature.
 bool hasSavedSecAcntSignature(UserEntityDto? user) => user?.account?.hasSavedSignature ?? false;
@@ -105,7 +105,6 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
       if (needsPayment) SecAcntFlowStep.payment,
       if (!needsPayment && !hasPaidContract) SecAcntFlowStep.success,
-      if (!hasCompletedContract) SecAcntFlowStep.serviceAgreement,
     ];
   }
 
@@ -129,6 +128,20 @@ SecAcntFlowStep? resolveInitialSecAcntFlowStep(
     currentUser: currentUser,
   );
   return steps.isEmpty ? null : steps.first;
+}
+
+/// Steps used by the top progress indicator.
+///
+/// [SecAcntFlowStep.consent] is excluded because that intro screen does not
+/// show the indicator; the first visible bar should align with
+/// [SecAcntFlowStep.personalInformation].
+List<SecAcntFlowStep> resolveSecAcntFlowProgressSteps(
+  AcntBootstrapState? state, {
+  UserEntityDto? currentUser,
+}) {
+  return resolveSecAcntFlowSteps(state, currentUser: currentUser)
+      .where((SecAcntFlowStep step) => step != SecAcntFlowStep.consent)
+      .toList(growable: false);
 }
 
 /// Returns the next step after [currentStep], or null when the flow is done.

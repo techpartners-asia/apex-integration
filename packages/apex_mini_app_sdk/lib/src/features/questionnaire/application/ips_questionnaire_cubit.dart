@@ -41,8 +41,14 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
           state.bootstrapState ??
           initialBootstrapState ??
           await BootstrapStateResolver(service: bootstrapService!).load();
-      final List<QuestionnaireQuestion> questions = await service
-          .getQuestions();
+      final GrapeQuestionnaireCompletionStatus completionStatus =
+          await service.checkCompletionStatus();
+      final List<QuestionnaireQuestion> questions = await service.getQuestions();
+      final QuestionnaireRes? existingResult =
+          completionStatus.toQuestionnaireRes();
+      final bool skipContractAndQuestions = completionStatus.completed;
+      final bool skipCalculation =
+          skipContractAndQuestions && completionStatus.hasPersistedScore;
 
       emit(
         state.copyWith(
@@ -50,7 +56,9 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
           bootstrapState: bootstrapState,
           questions: questions,
           answers: const <String, String>{},
-          res: null,
+          res: existingResult,
+          skipContractAndQuestions: skipContractAndQuestions,
+          skipCalculation: skipCalculation,
           errorMessage: null,
         ),
       );
@@ -64,12 +72,57 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     }
   }
 
-  /// Stores the selected option for a question.
+  /// Stores the selected option for a question in local state only.
   void selectAnswer({required String questionId, required String optionId}) {
     final Map<String, String> nextAnswers = Map<String, String>.from(
       state.answers,
     )..[questionId] = optionId;
     emit(state.copyWith(answers: nextAnswers, errorMessage: null));
+  }
+
+  /// Persists all selected answers through the grape complete endpoint.
+  Future<bool> completeQuestionnaire() async {
+    if (state.isPersistingAnswers) {
+      return false;
+    }
+
+    emit(
+      state.copyWith(
+        isPersistingAnswers: true,
+        errorMessage: null,
+      ),
+    );
+
+    try {
+      final List<GrapeQuestionAnswerSubmission>? submissions =
+          _buildQuestionnaireSubmissions();
+      if (submissions == null) {
+        emit(
+          state.copyWith(
+            isPersistingAnswers: false,
+            errorMessage: l10n.validationQuestionnaireIncomplete,
+          ),
+        );
+        return false;
+      }
+
+      await service.completeQuestionnaire(questions: submissions);
+      emit(
+        state.copyWith(
+          isPersistingAnswers: false,
+          errorMessage: null,
+        ),
+      );
+      return true;
+    } catch (error) {
+      emit(
+        state.copyWith(
+          isPersistingAnswers: false,
+          errorMessage: formatIpsError(error, l10n),
+        ),
+      );
+      return false;
+    }
   }
 
   /// Saves the selected investment target goal to the profile API.
@@ -117,24 +170,22 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     }
   }
 
-  /// Submits non-goal answers for risk-score calculation.
+  /// Submits the calculated score through the grape set-score endpoint.
   Future<void> submit() async {
-    if (state.isSubmitting) return;
+    if (state.isSubmitting) {
+      return;
+    }
+
+    final QuestionnaireRes? existingResult = state.res;
+    if (existingResult != null) {
+      return;
+    }
 
     emit(state.copyWith(isSubmitting: true, errorMessage: null));
 
     try {
-      final List<QuestionnaireAnswer> answers = state.questions
-          .where((el) => !el.isGoal)
-          .map(
-            (QuestionnaireQuestion question) => QuestionnaireAnswer(
-              questionId: question.id,
-              optionId: state.answers[question.id] ?? '',
-            ),
-          )
-          .where((QuestionnaireAnswer answer) => answer.optionId.isNotEmpty)
-          .toList(growable: false);
-      final QuestionnaireRes res = await service.calculateScore(answers);
+      final int totalScore = _resolveTotalScore();
+      final QuestionnaireRes res = await service.saveTotalScore(totalScore);
 
       emit(state.copyWith(isSubmitting: false, res: res, errorMessage: null));
     } catch (error) {
@@ -145,5 +196,62 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
         ),
       );
     }
+  }
+
+  List<GrapeQuestionAnswerSubmission>? _buildQuestionnaireSubmissions() {
+    final List<GrapeQuestionAnswerSubmission> submissions =
+        <GrapeQuestionAnswerSubmission>[];
+
+    for (final QuestionnaireQuestion question in state.questions) {
+      final String? answerId = state.answers[question.id]?.trim();
+      if (answerId == null || answerId.isEmpty) {
+        return null;
+      }
+
+      final int? questionId = int.tryParse(question.id);
+      final int? parsedAnswerId = int.tryParse(answerId);
+      if (questionId == null || parsedAnswerId == null) {
+        return null;
+      }
+
+      submissions.add(
+        GrapeQuestionAnswerSubmission(
+          questionId: questionId,
+          answerId: parsedAnswerId,
+          scoreValue: _resolveScoreValue(question, answerId),
+        ),
+      );
+    }
+
+    return submissions;
+  }
+
+  int _resolveScoreValue(QuestionnaireQuestion question, String answerId) {
+    for (final QuestionnaireOption option in question.options) {
+      if (option.id == answerId) {
+        return option.scoreValue ?? 0;
+      }
+    }
+
+    return 0;
+  }
+
+  int _resolveTotalScore() {
+    int totalScore = 0;
+
+    for (final QuestionnaireQuestion question in state.questions) {
+      if (question.isGoal) {
+        continue;
+      }
+
+      final String? selectedAnswerId = state.answers[question.id];
+      if (selectedAnswerId == null) {
+        continue;
+      }
+
+      totalScore += _resolveScoreValue(question, selectedAnswerId);
+    }
+
+    return totalScore;
   }
 }

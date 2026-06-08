@@ -57,7 +57,11 @@ class SecAcntConsentScreen extends StatelessWidget {
     }
 
     if (nextStep == null) {
-      await routeAfterSecAcntFlow(context, bootstrapState);
+      await routeAfterSecAcntFlow(
+        context,
+        bootstrapState: bootstrapState,
+        currentUser: currentUser,
+      );
       return;
     }
 

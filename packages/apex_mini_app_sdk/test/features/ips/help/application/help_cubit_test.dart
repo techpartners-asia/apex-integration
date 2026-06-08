@@ -112,6 +112,25 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> completeGrapeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<QuestionnaireRes> setGrapeQuestionnaireScore({
+    required int totalScore,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<UserEntityDto> getProfileInfo() {
     throw UnimplementedError();
   }

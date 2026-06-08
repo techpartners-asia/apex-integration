@@ -110,6 +110,8 @@ void main() {
 
       expect(pendingState.hasPaidSecAcntOpeningFeeFromApi, isTrue);
       expect(pendingState.hasPendingSecAcntActivation, isTrue);
+      expect(pendingState.canContinueToQuestionnaireFromOverview, isTrue);
+      expect(pendingState.hasOpenSecAcnt, isFalse);
       expect(paidFlagState.hasPaidSecAcntOpeningFeeFromApi, isTrue);
     },
   );

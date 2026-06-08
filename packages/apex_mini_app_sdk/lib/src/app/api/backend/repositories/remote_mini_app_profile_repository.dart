@@ -55,6 +55,60 @@ class RemoteMiniAppProfileRepository implements MiniAppProfileRepository {
   }
 
   @override
+  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() async {
+    try {
+      await _ensureAdminAuthToken(session);
+      final GrapeQuestionnaireCheckCompletedResDto res =
+          await api.checkGrapeQuestionnaireCompleted();
+      return res.toDomain();
+    } catch (error, stackTrace) {
+      logger.onError(
+        'check_grape_questionnaire_completed_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> completeGrapeQuestionnaire({
+    required List<GrapeQuestionAnswerSubmission> questions,
+  }) async {
+    try {
+      await _ensureAdminAuthToken(session);
+      await api.completeGrapeQuestionnaire(questions: questions);
+    } catch (error, stackTrace) {
+      logger.onError(
+        'complete_grape_questionnaire_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future<QuestionnaireRes> setGrapeQuestionnaireScore({
+    required int totalScore,
+  }) async {
+    try {
+      await _ensureAdminAuthToken(session);
+      final QuestionnaireResDto res = await api.setGrapeQuestionnaireScore(
+        totalScore: totalScore,
+      );
+      return res.toDomain(true);
+    } catch (error, stackTrace) {
+      logger.onError(
+        'set_grape_questionnaire_score_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  @override
   Future<UserEntityDto> updateTargetGoal(UpdateTargetGoalApiReq req) async {
     try {
       final UserEntityDto currentUser = await _ensureAdminAuthToken(session);

@@ -159,6 +159,13 @@ class AcntBootstrapState {
   bool get hasOpenSecAcnt =>
       hasAcnt && secAcntStatusCode == secAcntStatusOpen;
 
+  /// Whether overview can treat securities onboarding as complete before IPS.
+  ///
+  /// Flag `3` [secAcntStatusOpen] and paid-pending [secAcntStatusPending] both
+  /// continue to questionnaire from overview; unpaid [secAcntStatusUnpaid] does not.
+  bool get canContinueToQuestionnaireFromOverview =>
+      hasOpenSecAcnt || hasPendingSecAcntActivation;
+
   /// Whether the opening fee is paid according to flag `3` status or `isPaid`.
   bool get hasPaidSecAcntOpeningFeeFromApi {
     final GetSecAcntListAccountDto? account = _securitiesAccount;

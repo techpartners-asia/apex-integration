@@ -2,6 +2,28 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('throws backend message when signup returns TechInvestX code 1001', () {
+    expect(
+      () => UserEntityDto.fromJson(
+        const <String, Object?>{
+          'code': 1001,
+          'message':
+              'Таны хувийн мэдээлэл бүрэн баталгаажаагүй байна.\nҮргэлжлүүлэхийн тулд ДАН системээр хувийн мэдээллээ баталгаажуулаад дахин нэвтэрнэ үү.',
+          'body': null,
+        },
+      ),
+      throwsA(
+        isA<ApiBusinessException>()
+            .having((e) => e.responseCode, 'responseCode', 1001)
+            .having(
+              (e) => e.message,
+              'message',
+              contains('ДАН системээр'),
+            ),
+      ),
+    );
+  });
+
   test('throws backend message when user response returns success false', () {
     expect(
       () => UserEntityDto.fromJson(

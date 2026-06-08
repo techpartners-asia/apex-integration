@@ -10,22 +10,28 @@ Future<void> closeSecAcntFlow(BuildContext context) async {
   await closeMiniAppSafely(context);
 }
 
-/// Whether the account flow should continue into questionnaire/pack ordering.
-bool shouldOpenQuestionnaireAfterSecAcntFlow(AcntBootstrapState? state) =>
-    state != null &&
-    state.hasOpenSecAcnt &&
-    state.hasIpsAcnt;
+/// Whether onboarding should continue in the questionnaire flow.
+bool shouldOpenQuestionnaireAfterSecAcntFlow({
+  UserEntityDto? currentUser,
+}) => !hasCompletedSecAcntContract(currentUser);
 
-/// Routes to the next mini-app destination after account onboarding ends.
+/// Routes to questionnaire when InvestX agreement is still required, otherwise overview.
 Future<void> routeAfterSecAcntFlow(
-  BuildContext context,
-  AcntBootstrapState? state,
-) async {
-  final String nextRoute = shouldOpenQuestionnaireAfterSecAcntFlow(state)
+  BuildContext context, {
+  required AcntBootstrapState? bootstrapState,
+  UserEntityDto? currentUser,
+}) async {
+  final String nextRoute = shouldOpenQuestionnaireAfterSecAcntFlow(
+    currentUser: currentUser,
+  )
       ? MiniAppRoutes.questionnaire
       : MiniAppRoutes.overview;
 
-  await replaceIpsRoute(context, route: nextRoute, arguments: state);
+  await replaceIpsRoute(
+    context,
+    route: nextRoute,
+    arguments: bootstrapState,
+  );
 }
 
 /// Shows the pending-request dialog and closes the mini app from the OK action.
