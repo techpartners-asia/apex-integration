@@ -82,6 +82,12 @@ class MiniAppBootstrapFlow {
     UserEntityDto? currentUser,
   }) {
     if (bootstrapState.hasOpenSecAcnt && bootstrapState.hasIpsAcnt) {
+      if (!hasCompleteSecAcntPersonalInfo(
+        bootstrapState,
+        user: currentUser,
+      )) {
+        return false;
+      }
       return true;
     }
 

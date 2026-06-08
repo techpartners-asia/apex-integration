@@ -11,10 +11,32 @@ void main() {
       );
 
       expect(
-        MiniAppBootstrapFlow.resolveNextRoute(state),
+        MiniAppBootstrapFlow.resolveNextRoute(
+          state,
+          currentUser: _completeUser(),
+        ),
         MiniAppRoutes.overview,
       );
     });
+
+    test(
+      'routes open IPS users with incomplete profile to sec account',
+      () {
+        final AcntBootstrapState state = _bootstrapState(
+          hasAcnt: true,
+          hasIpsAcnt: true,
+          secAcntStatusCode: 1,
+        );
+
+        expect(
+          MiniAppBootstrapFlow.resolveNextRoute(
+            state,
+            currentUser: _completeUser(email: ''),
+          ),
+          MiniAppRoutes.secAcnt,
+        );
+      },
+    );
 
     test(
       'routes short-flow users with complete onboarding to overview',

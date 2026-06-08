@@ -285,10 +285,19 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     });
 
     try {
-      await _profileSubmissionService.submit(
+      final UserEntityDto updatedUser = await _profileSubmissionService.submit(
         UpdateProfileActionType.updateProfile,
         draft.toPersonalInfoData(),
       );
+      if (!mounted) {
+        return;
+      }
+      setState(() => _isSubmittingProfile = false);
+      MiniAppToast.showSuccess(
+        context,
+        message: context.l10n.internalProfileUpdateSuccess,
+      );
+      await _openNextStep(draft, updatedUser: updatedUser);
     } catch (error) {
       if (!mounted) {
         return;
@@ -299,25 +308,18 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       });
       return;
     }
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() => _isSubmittingProfile = false);
-    MiniAppToast.showSuccess(
-      context,
-      message: context.l10n.internalProfileUpdateSuccess,
-    );
-    _openNextStep(draft);
   }
 
   /// Resolves and opens the next step after personal information is complete.
-  Future<void> _openNextStep(SecAcntFlowDraft draft) async {
+  Future<void> _openNextStep(
+    SecAcntFlowDraft draft, {
+    UserEntityDto? updatedUser,
+  }) async {
+    final UserEntityDto? currentUser = updatedUser ?? widget.currentUser;
     final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
       SecAcntFlowStep.personalInformation,
       widget.bootstrapState,
-      currentUser: widget.currentUser,
+      currentUser: currentUser,
     );
 
     if (nextStep == SecAcntFlowStep.success && _isShortFlow) {
@@ -326,7 +328,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
           builder: (_) => SecAcntSuccessScreen(
             bootstrapState: widget.bootstrapState,
             draft: draft,
-            currentUser: widget.currentUser,
+            currentUser: currentUser,
           ),
         ),
       );
@@ -337,7 +339,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       await routeAfterSecAcntFlow(
         context,
         bootstrapState: widget.bootstrapState,
-        currentUser: widget.currentUser,
+        currentUser: currentUser,
       );
       return;
     }
@@ -349,7 +351,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
           bootstrapState: widget.bootstrapState,
           draft: draft,
           appApi: widget.appApi,
-          currentUser: widget.currentUser,
+          currentUser: currentUser,
         ),
       ),
     );
