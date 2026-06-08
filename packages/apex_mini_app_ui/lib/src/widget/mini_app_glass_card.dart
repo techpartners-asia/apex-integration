@@ -29,7 +29,7 @@ class MiniAppGlassCard extends StatelessWidget {
     this.padding,
     this.radius = 16,
     this.showShadow = true,
-    this.blurSigma = 18,
+    this.blurSigma = 22,
   });
 
   @override

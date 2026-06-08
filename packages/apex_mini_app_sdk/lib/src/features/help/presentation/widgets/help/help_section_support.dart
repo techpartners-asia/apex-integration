@@ -48,45 +48,61 @@ class _ContactRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-
-    final Widget content = Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: responsive.dp(18),
-        vertical: responsive.dp(14),
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                CustomText(
-                  label,
-                  variant: MiniAppTextVariant.caption1,
-                  color: DesignTokens.muted,
-                ),
-                SizedBox(height: responsive.dp(4)),
-                CustomText(
-                  value,
-                  variant: MiniAppTextVariant.subtitle2,
-                ),
-              ],
-            ),
+    final BorderRadius borderRadius = BorderRadius.circular(
+      responsive.radius(16),
+    );
+    final EdgeInsets padding = EdgeInsets.symmetric(
+      horizontal: responsive.dp(18),
+      vertical: responsive.dp(14),
+    );
+    final Widget row = Row(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CustomText(
+                label,
+                variant: MiniAppTextVariant.body3,
+                fontWeight: FontWeight.w400,
+                color: DesignTokens.muted,
+              ),
+              SizedBox(height: responsive.dp(4)),
+              CustomText(
+                value,
+                variant: MiniAppTextVariant.subtitle2,
+              ),
+            ],
           ),
-          if (trailing case final Widget w) w,
-        ],
-      ),
+        ),
+        if (trailing case final Widget w) w,
+      ],
     );
 
-    if (launchUri == null) return content;
+    if (launchUri == null) {
+      return MiniAppGlassCard(
+        radius: responsive.radius(16),
+        padding: padding,
+        child: row,
+      );
+    }
 
-    return Material(
-      color: DesignTokens.white,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () => _launchUri(context, launchUri!),
-        child: content,
+    return MiniAppGlassCard(
+      radius: responsive.radius(16),
+      padding: EdgeInsets.zero,
+      child: Material(
+        color: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        child: InkWell(
+          borderRadius: borderRadius,
+          splashColor: DesignTokens.ink.withValues(alpha: 0.05),
+          highlightColor: DesignTokens.ink.withValues(alpha: 0.03),
+          onTap: () => _launchUri(context, launchUri!),
+          child: Padding(
+            padding: padding,
+            child: row,
+          ),
+        ),
       ),
     );
   }
@@ -106,26 +122,23 @@ class _SocialChip extends StatelessWidget {
     final _SocialMeta meta = _socialMeta(link.type ?? '');
     final String? iconUrl = _httpUrlOrNull(link.iconUrl);
     final Uri? linkUri = _webUri(link.link);
+    final double radius = responsive.radius(14);
+    final BorderRadius borderRadius = BorderRadius.circular(radius);
+    final EdgeInsets padding = EdgeInsets.symmetric(
+      horizontal: responsive.dp(14),
+      vertical: responsive.dp(12),
+    );
 
-    final Widget content = AdaptiveCard(
-      color: linkUri == null ? DesignTokens.white : Colors.transparent,
-      padding: EdgeInsets.symmetric(
-        horizontal: responsive.dp(14),
-        vertical: responsive.dp(12),
-      ),
-      borderRadius: BorderRadius.circular(responsive.radius(14)),
+    final Widget chipContent = SizedBox.expand(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Flexible(
-            child: CustomText(
-              '@${link.displayLabel}',
-              variant: MiniAppTextVariant.subtitle3,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              color: DesignTokens.ink,
-            ),
+          CustomText(
+            '@${link.displayLabel}',
+            variant: MiniAppTextVariant.subtitle3,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            color: DesignTokens.ink,
           ),
           SizedBox(height: responsive.dp(10)),
           Container(
@@ -156,20 +169,26 @@ class _SocialChip extends StatelessWidget {
       ),
     );
 
-    if (linkUri == null) return content;
+    final Widget cardChild = linkUri == null
+        ? chipContent
+        : Material(
+            color: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
+            child: InkWell(
+              borderRadius: borderRadius,
+              onTap: () => _launchUri(
+                context,
+                linkUri,
+                mode: LaunchMode.externalApplication,
+              ),
+              child: chipContent,
+            ),
+          );
 
-    return Material(
-      color: DesignTokens.white,
-      borderRadius: BorderRadius.circular(responsive.radius(14)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(responsive.radius(14)),
-        onTap: () => _launchUri(
-          context,
-          linkUri,
-          mode: LaunchMode.externalApplication,
-        ),
-        child: content,
-      ),
+    return MiniAppGlassCard(
+      radius: radius,
+      padding: padding,
+      child: cardChild,
     );
   }
 }

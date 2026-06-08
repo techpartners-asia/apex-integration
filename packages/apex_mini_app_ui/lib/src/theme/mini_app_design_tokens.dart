@@ -157,7 +157,7 @@ final class DesignTokens {
           offset: Offset(0, 5),
         ),
         BoxShadow(
-          color: white.withValues(alpha: 0.9),
+          color: white.withValues(alpha: 0.35),
           blurRadius: 14,
           offset: const Offset(0, -3),
         ),
@@ -174,14 +174,14 @@ final class DesignTokens {
         end: Alignment.bottomRight,
         stops: const <double>[0.0, 0.06, 1.0],
         colors: <Color>[
-          white.withValues(alpha: 0.98),
-          white.withValues(alpha: 0.94),
-          white.withValues(alpha: 0.82),
+          white.withValues(alpha: 0.78),
+          white.withValues(alpha: 0.65),
+          white.withValues(alpha: 0.50),
         ],
       ),
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
-        color: white.withValues(alpha: 1.0),
+        color: white.withValues(alpha: 0.55),
       ),
       boxShadow: showShadow ? glassCardShadow : null,
     );
@@ -196,8 +196,8 @@ final class DesignTokens {
         end: Alignment.bottomCenter,
         stops: const <double>[0.0, 0.35, 1.0],
         colors: <Color>[
-          white,
-          white.withValues(alpha: 0.45),
+          white.withValues(alpha: 0.50),
+          white.withValues(alpha: 0.20),
           white.withValues(alpha: 0),
         ],
       ),
