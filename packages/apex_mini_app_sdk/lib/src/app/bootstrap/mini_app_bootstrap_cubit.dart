@@ -1,4 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/profile_incomplete_signup_exception.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/signup_bootstrap_exception.dart';
 import 'package:apex_mini_app_sdk/src/host/apex_mini_app_host_context.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +18,12 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
   /// Backend response code from the latest bootstrap failure, when available.
   int? failureResponseCode;
 
+  /// Whether the latest bootstrap failure came from user signup.
+  bool failureFromSignup = false;
+
+  /// Whether signup succeeded but required profile fields are missing.
+  bool failureIsProfileIncomplete = false;
+
   MiniAppBootstrapCubit({
     required this.bootstrapFlow,
     required this.l10n,
@@ -26,6 +34,8 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
   Future<void> load() async {
     emit(state.copyWith(status: LoadableStatus.loading, errorMessage: null));
     failureResponseCode = null;
+    failureFromSignup = false;
+    failureIsProfileIncomplete = false;
 
     try {
       final MiniAppBootstrapRes resolution = await bootstrapFlow.resolve();
@@ -37,21 +47,30 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
         ),
       );
     } catch (error, stackTrace) {
-      if (error is ApiUnauthorizedException) {
+      final Object resolvedError = error is SignupBootstrapException
+          ? error.cause
+          : error;
+
+      failureFromSignup = error is SignupBootstrapException;
+      failureIsProfileIncomplete =
+          resolvedError is ProfileIncompleteSignupException;
+
+      if (resolvedError is ApiUnauthorizedException) {
         ApexMiniAppHostContext.emitTokenExpired();
       }
-      if (!_wasHostNotifiedByApiExecutor(error)) {
-        ApexMiniAppHostContext.emitError(error, stackTrace);
+      if (!failureIsProfileIncomplete &&
+          !_wasHostNotifiedByApiExecutor(resolvedError)) {
+        ApexMiniAppHostContext.emitError(resolvedError, stackTrace);
       }
       logger.onError(
         'mini_app_bootstrap_failed',
-        error: error,
+        error: resolvedError,
         stackTrace: stackTrace,
       );
 
-      final String errorMessage = formatIpsError(error, l10n);
-      failureResponseCode = error is ApiBusinessException
-          ? error.responseCode
+      final String errorMessage = formatIpsError(resolvedError, l10n);
+      failureResponseCode = resolvedError is ApiBusinessException
+          ? resolvedError.responseCode
           : null;
 
       emit(

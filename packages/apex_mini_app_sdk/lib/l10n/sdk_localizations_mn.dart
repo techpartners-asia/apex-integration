@@ -380,6 +380,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsStartupBlockedTitle => 'Таны хувийн мэдээлэл дутуу байна';
 
   @override
+  String get ipsStartupBlockedProfileIncompleteMessage =>
+      'Таны хувийн мэдээлэл бүрэн баталгаажаагүй байна.\nҮргэлжлүүлэхийн тулд ДАН системээр хувийн мэдээллээ баталгаажуулаад дахин нэвтэрнэ үү.';
+
+  @override
   String get ipsQuestionnaireTitle => 'Асуумж';
 
   @override

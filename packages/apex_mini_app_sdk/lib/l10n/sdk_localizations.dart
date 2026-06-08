@@ -782,6 +782,12 @@ abstract class SdkLocalizations {
   /// **'Your profile information is incomplete'**
   String get ipsStartupBlockedTitle;
 
+  /// No description provided for @ipsStartupBlockedProfileIncompleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal information has not been fully verified.\nTo continue, please verify your personal information through the DAN system and sign in again.'**
+  String get ipsStartupBlockedProfileIncompleteMessage;
+
   /// No description provided for @ipsQuestionnaireTitle.
   ///
   /// In en, this message translates to:

@@ -146,6 +146,7 @@
   "ipsSplashTitle": "InvestX эхлэл",
   "ipsSplashSubtitle": "Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.",
   "ipsStartupBlockedTitle": "Таны хувийн мэдээлэл дутуу байна",
+  "ipsStartupBlockedProfileIncompleteMessage": "Таны хувийн мэдээлэл бүрэн баталгаажаагүй байна.\nҮргэлжлүүлэхийн тулд ДАН системээр хувийн мэдээллээ баталгаажуулаад дахин нэвтэрнэ үү.",
   "ipsQuestionnaireTitle": "Асуумж",
   "ipsQuestionnaireSubtitle": "Асуумжийн жагсаалт авах болон оноо тооцох.",
   "ipsQuestionnaireCalculateScore": "Оноо тооцоолох",

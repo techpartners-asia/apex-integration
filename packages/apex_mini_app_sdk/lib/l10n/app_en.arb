@@ -146,6 +146,7 @@
   "ipsSplashTitle": "InvestX Splash",
   "ipsSplashSubtitle": "Launch startup flow for the current user, login session, and IPS state.",
   "ipsStartupBlockedTitle": "Your profile information is incomplete",
+  "ipsStartupBlockedProfileIncompleteMessage": "Your personal information has not been fully verified.\nTo continue, please verify your personal information through the DAN system and sign in again.",
   "ipsQuestionnaireTitle": "Questionnaire",
   "ipsQuestionnaireSubtitle": "Question list retrieval and score calculation.",
   "ipsQuestionnaireCalculateScore": "Calculate score",

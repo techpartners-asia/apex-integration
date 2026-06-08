@@ -78,7 +78,10 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
   }
 
   /// Replaces splash with the startup blocked screen for signup gate failures.
-  Future<void> _redirectToStartupBlocked(String message) async {
+  Future<void> _redirectToStartupBlocked({
+    String? message,
+    int? responseCode,
+  }) async {
     if (startupBlockedHandled ||
         redirectToStartupBlockedInFlight ||
         !mounted) {
@@ -91,7 +94,10 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
       await replaceIpsRoute(
         context,
         route: MiniAppRoutes.startupBlocked,
-        arguments: StartupBlockedArguments(message: message),
+        arguments: StartupBlockedArguments(
+          message: message,
+          responseCode: responseCode,
+        ),
       );
       startupBlockedHandled = true;
     } finally {
@@ -174,11 +180,26 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
               context.read<MiniAppBootstrapCubit>();
           final SdkLocalizations l10n = context.l10n;
 
-          if (cubit.failureResponseCode ==
-              SignupBusinessCodes.profileNotVerified) {
+          if (cubit.failureFromSignup) {
+            final String? message;
+            final int? responseCode;
+
+            if (cubit.failureIsProfileIncomplete) {
+              message = l10n.ipsStartupBlockedProfileIncompleteMessage;
+              responseCode = SignupBusinessCodes.profileNotVerified;
+            } else if (cubit.failureResponseCode ==
+                SignupBusinessCodes.profileNotVerified) {
+              message = state.errorMessage ?? l10n.errorsUnexpected;
+              responseCode = SignupBusinessCodes.profileNotVerified;
+            } else {
+              message = state.errorMessage ?? l10n.errorsUnexpected;
+              responseCode = cubit.failureResponseCode;
+            }
+
             unawaited(
               _redirectToStartupBlocked(
-                state.errorMessage ?? l10n.errorsUnexpected,
+                message: message,
+                responseCode: responseCode,
               ),
             );
             return;

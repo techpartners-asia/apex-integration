@@ -377,6 +377,10 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsStartupBlockedTitle => 'Your profile information is incomplete';
 
   @override
+  String get ipsStartupBlockedProfileIncompleteMessage =>
+      'Your personal information has not been fully verified.\nTo continue, please verify your personal information through the DAN system and sign in again.';
+
+  @override
   String get ipsQuestionnaireTitle => 'Questionnaire';
 
   @override
