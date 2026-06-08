@@ -1,4 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/profile_incomplete_signup_exception.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/signup_bootstrap_exception.dart';
 
 /// Result of startup/bootstrap route resolution.
 class MiniAppBootstrapRes {
@@ -31,7 +33,7 @@ class MiniAppBootstrapFlow {
 
   /// Loads required startup data and returns the next route.
   Future<MiniAppBootstrapRes> resolve() async {
-    final UserEntityDto currentUser = await sessionController.ensureCurrentUser();
+    final UserEntityDto currentUser = await _ensureCurrentUser();
     await sessionController.ensureLoginSession();
     final AcntBootstrapState bootstrapState = await BootstrapStateResolver(
       service: bootstrapService,
@@ -44,6 +46,22 @@ class MiniAppBootstrapFlow {
         currentUser: currentUser,
       ),
     );
+  }
+
+  Future<UserEntityDto> _ensureCurrentUser() async {
+    try {
+      final UserEntityDto user = await sessionController.ensureCurrentUser();
+      if (!hasCompleteSignupProfile(user)) {
+        throw const SignupBootstrapException(
+          ProfileIncompleteSignupException(),
+        );
+      }
+      return user;
+    } on SignupBootstrapException {
+      rethrow;
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(SignupBootstrapException(error), stackTrace);
+    }
   }
 
   /// Converts backend bootstrap state into the next route in the onboarding flow.
@@ -64,6 +82,12 @@ class MiniAppBootstrapFlow {
     UserEntityDto? currentUser,
   }) {
     if (bootstrapState.hasOpenSecAcnt && bootstrapState.hasIpsAcnt) {
+      if (!hasCompleteSecAcntPersonalInfo(
+        bootstrapState,
+        user: currentUser,
+      )) {
+        return false;
+      }
       return true;
     }
 

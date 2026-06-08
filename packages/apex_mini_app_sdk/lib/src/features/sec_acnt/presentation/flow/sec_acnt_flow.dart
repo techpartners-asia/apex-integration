@@ -99,12 +99,13 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
       state,
       currentUser: currentUser,
     );
+    final bool hasProfilePaidContract = hasPaidSecAcntContract(currentUser);
 
     return <SecAcntFlowStep>[
       if (!hasCompletePersonalInfo) SecAcntFlowStep.consent,
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
       if (needsPayment) SecAcntFlowStep.payment,
-      if (!needsPayment && !hasPaidContract) SecAcntFlowStep.success,
+      if (!needsPayment && !hasProfilePaidContract) SecAcntFlowStep.success,
     ];
   }
 

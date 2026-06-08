@@ -31,6 +31,9 @@ final class DesignTokens {
   /// Secondary text color.
   static const Color muted = Color(0xFF717887);
 
+  /// Darker secondary text color.
+  static const Color mutedDark = Color(0xFF475467);
+
   /// Standard border color.
   static const Color border = Color(0xFFE8EBF2);
 
@@ -144,6 +147,25 @@ final class DesignTokens {
     ),
   ];
 
+  /// Elevation shadow used by [glassCardDecoration] and [MiniAppGlassCard].
+  static List<BoxShadow> get glassCardShadow => <BoxShadow>[
+        const BoxShadow(
+          color: Color(0x100F172A),
+          blurRadius: 30,
+          offset: Offset(0, 14),
+        ),
+        const BoxShadow(
+          color: Color(0x100F172A),
+          blurRadius: 10,
+          offset: Offset(0, 5),
+        ),
+        BoxShadow(
+          color: white.withValues(alpha: 0.35),
+          blurRadius: 14,
+          offset: const Offset(0, -3),
+        ),
+      ];
+
   /// Frosted glass card surface with a translucent gradient and soft border.
   static BoxDecoration glassCardDecoration({
     double radius = 16,
@@ -155,34 +177,16 @@ final class DesignTokens {
         end: Alignment.bottomRight,
         stops: const <double>[0.0, 0.06, 1.0],
         colors: <Color>[
-          white.withValues(alpha: 0.98),
-          white.withValues(alpha: 0.94),
-          white.withValues(alpha: 0.82),
+          white.withValues(alpha: 0.78),
+          white.withValues(alpha: 0.65),
+          white.withValues(alpha: 0.50),
         ],
       ),
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
-        color: white.withValues(alpha: 1.0),
+        color: white.withValues(alpha: 0.55),
       ),
-      boxShadow: showShadow
-          ? <BoxShadow>[
-              const BoxShadow(
-                color: Color(0x1A0F172A),
-                blurRadius: 26,
-                offset: Offset(0, 12),
-              ),
-              const BoxShadow(
-                color: Color(0x0C0F172A),
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-              BoxShadow(
-                color: white.withValues(alpha: 0.45),
-                blurRadius: 14,
-                offset: const Offset(0, -3),
-              ),
-            ]
-          : null,
+      boxShadow: showShadow ? glassCardShadow : null,
     );
   }
 
@@ -195,8 +199,8 @@ final class DesignTokens {
         end: Alignment.bottomCenter,
         stops: const <double>[0.0, 0.35, 1.0],
         colors: <Color>[
-          white,
-          white.withValues(alpha: 0.45),
+          white.withValues(alpha: 0.50),
+          white.withValues(alpha: 0.20),
           white.withValues(alpha: 0),
         ],
       ),

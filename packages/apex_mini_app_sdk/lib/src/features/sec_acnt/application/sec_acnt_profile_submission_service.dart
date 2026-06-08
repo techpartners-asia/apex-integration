@@ -19,7 +19,7 @@ class SecAcntProfileSubmissionService {
   final UserEntityDto? currentUser;
 
   /// Builds and submits the profile update request.
-  Future<void> submit(
+  Future<UserEntityDto> submit(
     String actinType,
     SecAcntPersonalInfoData personalInfo,
   ) async {
@@ -27,7 +27,7 @@ class SecAcntProfileSubmissionService {
       actinType,
       personalInfo,
     );
-    await appApi.updateProfile(request);
+    return appApi.updateProfile(request);
   }
 
   /// Builds the update request without submitting it.

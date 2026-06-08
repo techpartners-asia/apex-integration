@@ -183,7 +183,7 @@ class _OverviewTimelineRow extends StatelessWidget {
     }
 
     return Material(
-      color: DesignTokens.white,
+      color: Colors.transparent,
       child: InkWell(
         onTap: step.onTap,
         child: Row(

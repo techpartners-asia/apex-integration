@@ -82,9 +82,7 @@ class HelpScreen extends StatelessWidget {
                 ),
               ),
 
-              /// Feedback button
-              Padding(
-                padding: EdgeInsets.all(context.responsive.dp(20)),
+              BottomActionBar(
                 child: PrimaryButton(
                   label: l10n.ipsFeedbackCreateButton,
                   onPressed: () {

@@ -15,7 +15,12 @@ class StartupBlockedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final SdkLocalizations l10n = context.l10n;
     final responsive = context.responsive;
-    final String title = arguments.title ?? l10n.ipsStartupBlockedTitle;
+    final String title =
+        arguments.responseCode == SignupBusinessCodes.profileNotVerified
+        ? l10n.ipsStartupBlockedTitle
+        : l10n.errorsGenericTitle;
+    final String? message = arguments.message?.trim();
+    final bool showMessage = message != null && message.isNotEmpty;
 
     return CustomScaffold(
       hasAppBar: false,
@@ -33,8 +38,10 @@ class StartupBlockedScreen extends StatelessWidget {
             children: <Widget>[
               const Spacer(flex: 2),
               _StartupBlockedHero(title: title),
-              SizedBox(height: responsive.dp(32)),
-              _StartupBlockedMessageCard(message: arguments.message),
+              if (showMessage) ...<Widget>[
+                SizedBox(height: responsive.dp(32)),
+                _StartupBlockedMessageCard(message: message),
+              ],
               const Spacer(flex: 3),
             ],
           ),

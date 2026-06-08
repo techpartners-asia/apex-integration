@@ -1,4 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/profile_incomplete_signup_exception.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/signup_bootstrap_exception.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -55,6 +57,23 @@ void main() {
           cubit.failureResponseCode,
           SignupBusinessCodes.profileNotVerified,
         );
+        expect(cubit.failureFromSignup, isTrue);
+      },
+    );
+
+    blocTest<MiniAppBootstrapCubit, LoadableState<MiniAppBootstrapRes>>(
+      'marks profile incomplete signup failures',
+      build: () => MiniAppBootstrapCubit(
+        bootstrapFlow: _ProfileIncompleteBootstrapFlow(),
+        l10n: l10n,
+      ),
+      act: (cubit) async {
+        await cubit.load();
+      },
+      verify: (MiniAppBootstrapCubit cubit) {
+        expect(cubit.failureFromSignup, isTrue);
+        expect(cubit.failureIsProfileIncomplete, isTrue);
+        expect(cubit.failureResponseCode, isNull);
       },
     );
   });
@@ -108,9 +127,26 @@ class _ProfileNotVerifiedBootstrapFlow extends MiniAppBootstrapFlow {
 
   @override
   Future<MiniAppBootstrapRes> resolve() async {
-    throw const ApiBusinessException(
-      responseCode: SignupBusinessCodes.profileNotVerified,
-      message: 'Profile not verified.',
+    throw SignupBootstrapException(
+      const ApiBusinessException(
+        responseCode: SignupBusinessCodes.profileNotVerified,
+        message: 'Profile not verified.',
+      ),
+    );
+  }
+}
+
+class _ProfileIncompleteBootstrapFlow extends MiniAppBootstrapFlow {
+  _ProfileIncompleteBootstrapFlow()
+    : super(
+        sessionController: _NoopSessionController(),
+        bootstrapService: _NoopBootstrapService(),
+      );
+
+  @override
+  Future<MiniAppBootstrapRes> resolve() async {
+    throw const SignupBootstrapException(
+      ProfileIncompleteSignupException(),
     );
   }
 }

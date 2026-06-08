@@ -73,6 +73,23 @@ void main() {
       },
     );
 
+    test(
+      'keeps personal information when profile is incomplete regardless of account flags',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+            ),
+            currentUser: _completeUser(email: ''),
+          ),
+          contains(SecAcntFlowStep.personalInformation),
+        );
+      },
+    );
+
     test('skips personal information when profile fields are complete', () {
       expect(
         resolveSecAcntFlowSteps(
@@ -208,6 +225,22 @@ void main() {
         );
       },
     );
+
+    test('short flow skips success when profile is_paid_contract is true', () {
+      expect(
+        resolveSecAcntFlowSteps(
+          _bootstrapState(
+            hasAcnt: true,
+            hasIpsAcnt: false,
+            secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+          ),
+          currentUser: _completeUser(
+            account: const AccountDto(isPaidContract: true),
+          ),
+        ),
+        isNot(contains(SecAcntFlowStep.success)),
+      );
+    });
 
     test('paid contract skips short-flow success screen', () {
       expect(

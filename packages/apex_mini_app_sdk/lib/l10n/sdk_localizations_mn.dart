@@ -234,6 +234,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsOverviewActionTitle => 'Арилжаа';
 
   @override
+  String get ipsOverviewActionPendingOrderMessage =>
+      'Танд идэхтэй багцын захиалга байгаа тул төлбөрөө төлж баталгаажуулснаар дахин захиалга өгөх боломжтой.';
+
+  @override
   String get ipsOverviewProfileVerified => 'Баталгаажсан';
 
   @override
@@ -378,6 +382,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsStartupBlockedTitle => 'Таны хувийн мэдээлэл дутуу байна';
+
+  @override
+  String get ipsStartupBlockedProfileIncompleteMessage =>
+      'Таны хувийн мэдээлэл бүрэн баталгаажаагүй байна.\nҮргэлжлүүлэхийн тулд ДАН системээр хувийн мэдээллээ баталгаажуулаад дахин нэвтэрнэ үү.';
 
   @override
   String get ipsQuestionnaireTitle => 'Асуумж';

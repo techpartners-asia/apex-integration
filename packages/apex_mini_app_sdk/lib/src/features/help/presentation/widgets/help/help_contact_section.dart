@@ -26,8 +26,8 @@ class HelpContactSection extends StatelessWidget {
           launchUri: _mailtoUri(company.email!),
           trailing: CustomImage(
             path: Img.view,
-            width: responsive.dp(18),
-            height: responsive.dp(18),
+            width: responsive.dp(15),
+            height: responsive.dp(15),
           ),
         ),
       if (company.phone?.trim().isNotEmpty == true)
@@ -56,14 +56,11 @@ class HelpContactSection extends StatelessWidget {
         ...rows.map(
           (e) => Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-            child: AdaptiveCard(
-              color: Colors.transparent,
-              child: _ContactRow(
-                label: e.label,
-                value: e.value,
-                launchUri: e.launchUri,
-                trailing: e.trailing,
-              ),
+            child: _ContactRow(
+              label: e.label,
+              value: e.value,
+              launchUri: e.launchUri,
+              trailing: e.trailing,
             ),
           ),
         ),

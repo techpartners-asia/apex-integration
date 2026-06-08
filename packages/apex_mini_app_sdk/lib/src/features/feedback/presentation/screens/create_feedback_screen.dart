@@ -69,14 +69,13 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
       child: CustomScaffold(
         appBarTitle: l10n.ipsFeedbackTitle,
         showCloseButton: false,
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: responsive.spacing.financialCardSpacing,
-          ),
-          child: Column(
+        body: Column(
             children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: responsive.spacing.financialCardSpacing,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
@@ -114,7 +113,6 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
               ),
             ],
           ),
-        ),
       ),
     );
   }

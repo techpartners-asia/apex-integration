@@ -2,13 +2,13 @@
 class StartupBlockedArguments {
   /// Creates startup blocked route arguments.
   const StartupBlockedArguments({
-    required this.message,
-    this.title,
+    this.message,
+    this.responseCode,
   });
 
-  /// User-facing error message from the backend.
-  final String message;
+  /// Optional user-facing error message from the backend.
+  final String? message;
 
-  /// Optional page title override.
-  final String? title;
+  /// Signup/bootstrap business response code used to pick the page title.
+  final int? responseCode;
 }

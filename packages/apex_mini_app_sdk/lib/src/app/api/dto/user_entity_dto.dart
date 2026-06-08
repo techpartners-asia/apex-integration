@@ -155,7 +155,9 @@ class UserEntityDto {
       token: resolvedToken,
       firstName: ApiParser.asNullableString(source['first_name']),
       lastName: ApiParser.asNullableString(source['last_name']),
-      phone: ApiParser.asNullableString(source['phone']),
+      phone:
+          ApiParser.asNullableString(source['phone']) ??
+          ApiParser.asNullableString(source['phone_number']),
       phoneAddition: ApiParser.asNullableString(source['phone_addition']),
       email: ApiParser.asNullableString(source['email']),
       gender: ApiParser.asNullableString(source['gender']),

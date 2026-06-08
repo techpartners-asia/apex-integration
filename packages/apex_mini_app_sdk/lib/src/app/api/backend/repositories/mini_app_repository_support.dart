@@ -23,9 +23,13 @@ Future<UserEntityDto> _refreshProfileAfterMutation({
   required String operation,
 }) async {
   try {
-    final UserEntityDto user = await api.getProfileInfo();
-    session.cacheCurrentUser(user);
-    return user;
+    final UserEntityDto profileUser = await api.getProfileInfo();
+    final UserEntityDto mergedUser = _mergeProfileAfterMutation(
+      profileUser: profileUser,
+      fallbackUser: fallbackUser,
+    );
+    session.cacheCurrentUser(mergedUser);
+    return mergedUser;
   } catch (error, stackTrace) {
     logger.onError(
       '${operation}_profile_refresh_failed',
@@ -35,6 +39,62 @@ Future<UserEntityDto> _refreshProfileAfterMutation({
     session.cacheCurrentUser(fallbackUser);
     return fallbackUser;
   }
+}
+
+UserEntityDto _mergeProfileAfterMutation({
+  required UserEntityDto profileUser,
+  required UserEntityDto fallbackUser,
+}) {
+  final AccountDto? profileAccount = profileUser.account;
+  final AccountDto? fallbackAccount = fallbackUser.account;
+  if (fallbackAccount == null) {
+    return profileUser;
+  }
+  if (profileAccount == null) {
+    return profileUser.copyWith(account: fallbackAccount);
+  }
+
+  return profileUser.copyWith(
+    account: profileAccount.copyWith(
+      isInvest: _mergeNullableFlag(
+        profileAccount.isInvest,
+        fallbackAccount.isInvest,
+      ),
+      isInvestContract: _mergeNullableFlag(
+        profileAccount.isInvestContract,
+        fallbackAccount.isInvestContract,
+      ),
+      isPaidContract:
+          profileAccount.isPaidContract || fallbackAccount.isPaidContract,
+      signatureId: profileAccount.signatureId ?? fallbackAccount.signatureId,
+      signatureFile: profileAccount.signatureFile ?? fallbackAccount.signatureFile,
+      signatureFileReference: _firstNonEmptyText(
+        profileAccount.signatureFileReference,
+        fallbackAccount.signatureFileReference,
+      ),
+    ),
+  );
+}
+
+bool? _mergeNullableFlag(bool? primary, bool? fallback) {
+  if (primary == true || fallback == true) {
+    return true;
+  }
+  return primary ?? fallback;
+}
+
+String? _firstNonEmptyText(String? primary, String? fallback) {
+  final String? trimmedPrimary = _trimToNull(primary);
+  if (trimmedPrimary != null) {
+    return trimmedPrimary;
+  }
+
+  return _trimToNull(fallback);
+}
+
+String? _trimToNull(String? value) {
+  final String trimmed = value?.trim() ?? '';
+  return trimmed.isEmpty ? null : trimmed;
 }
 
 /// Builds the feedback cache scope so cached lists do not leak across users.

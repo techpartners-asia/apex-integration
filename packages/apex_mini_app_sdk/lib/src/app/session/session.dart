@@ -8,3 +8,4 @@ export 'mini_app_session_runtime.dart';
 export 'mini_app_session_state.dart';
 export 'mini_app_session_store.dart';
 export 'signup_business_codes.dart';
+export 'signup_profile_gate.dart';
