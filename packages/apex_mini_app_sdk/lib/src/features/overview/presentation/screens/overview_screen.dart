@@ -53,13 +53,11 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                       context,
                       selectedIndex: _selectedTabIndex,
                       onSelected: _handleTabSelected,
-                      onActionPressed: isTradingEnabled
-                          ? () => _showActionSheet(
-                              context,
-                              data,
-                              sessionState.currentUser,
-                            )
-                          : null,
+                      onActionPressed: () => _showActionSheet(
+                        context,
+                        data,
+                        sessionState.currentUser,
+                      ),
                       isActionEnabled: isTradingEnabled,
                     ),
             );

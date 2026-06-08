@@ -512,6 +512,12 @@ abstract class SdkLocalizations {
   /// **'Trading'**
   String get ipsOverviewActionTitle;
 
+  /// No description provided for @ipsOverviewActionPendingOrderMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have a pending pack order. Complete payment to confirm it before placing a new order.'**
+  String get ipsOverviewActionPendingOrderMessage;
+
   /// No description provided for @ipsOverviewProfileVerified.
   ///
   /// In en, this message translates to:

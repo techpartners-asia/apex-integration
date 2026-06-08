@@ -146,13 +146,25 @@ class OverviewBottomNavigationBar extends StatelessWidget {
                 ),
               ),
             ),
-            if (isActionEnabled) ...<Widget>[
-              const SizedBox(width: 12),
-              InvestXFloatingButton(onTap: onActionPressed),
-            ],
+            const SizedBox(width: 12),
+            InvestXFloatingButton(
+              onTap: () => _handleActionPressed(context),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  void _handleActionPressed(BuildContext context) {
+    if (isActionEnabled) {
+      onActionPressed?.call();
+      return;
+    }
+
+    MiniAppToast.showWarning(
+      context,
+      message: context.l10n.ipsOverviewActionPendingOrderMessage,
     );
   }
 }
