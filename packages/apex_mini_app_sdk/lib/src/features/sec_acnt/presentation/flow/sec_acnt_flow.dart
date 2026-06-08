@@ -67,7 +67,7 @@ bool hasPaidSecAcntOpeningFee(
 }
 
 /// Whether the current profile says the InvestX contract is already complete.
-bool hasCompletedSecAcntContract(UserEntityDto? user) => user?.account?.hasInvestContract ?? false;
+bool hasCompletedSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
 
 /// Whether the current profile already has a stored signature.
 bool hasSavedSecAcntSignature(UserEntityDto? user) => user?.account?.hasSavedSignature ?? false;
