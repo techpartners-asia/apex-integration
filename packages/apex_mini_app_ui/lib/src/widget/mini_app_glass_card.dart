@@ -40,36 +40,42 @@ class MiniAppGlassCard extends StatelessWidget {
         ? Padding(padding: padding!, child: child)
         : child;
 
-    return ClipRRect(
-      borderRadius: borderRadius,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: responsive.dp(blurSigma),
-          sigmaY: responsive.dp(blurSigma),
-        ),
-        child: Stack(
-          children: <Widget>[
-            DecoratedBox(
-              decoration: DesignTokens.glassCardDecoration(
-                radius: radius,
-                showShadow: showShadow,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: borderRadius,
+        boxShadow: showShadow ? DesignTokens.glassCardShadow : null,
+      ),
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: responsive.dp(blurSigma),
+            sigmaY: responsive.dp(blurSigma),
+          ),
+          child: Stack(
+            children: <Widget>[
+              DecoratedBox(
+                decoration: DesignTokens.glassCardDecoration(
+                  radius: radius,
+                  showShadow: false,
+                ),
+                child: cardChild,
               ),
-              child: cardChild,
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: IgnorePointer(
-                child: Container(
-                  height: responsive.dp(10),
-                  decoration: DesignTokens.glassCardShineDecoration(
-                    radius: radius,
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: IgnorePointer(
+                  child: Container(
+                    height: responsive.dp(10),
+                    decoration: DesignTokens.glassCardShineDecoration(
+                      radius: radius,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

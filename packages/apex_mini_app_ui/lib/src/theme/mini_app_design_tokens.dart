@@ -144,6 +144,25 @@ final class DesignTokens {
     ),
   ];
 
+  /// Elevation shadow used by [glassCardDecoration] and [MiniAppGlassCard].
+  static List<BoxShadow> get glassCardShadow => <BoxShadow>[
+        const BoxShadow(
+          color: Color(0x100F172A),
+          blurRadius: 30,
+          offset: Offset(0, 14),
+        ),
+        const BoxShadow(
+          color: Color(0x100F172A),
+          blurRadius: 10,
+          offset: Offset(0, 5),
+        ),
+        BoxShadow(
+          color: white.withValues(alpha: 0.9),
+          blurRadius: 14,
+          offset: const Offset(0, -3),
+        ),
+      ];
+
   /// Frosted glass card surface with a translucent gradient and soft border.
   static BoxDecoration glassCardDecoration({
     double radius = 16,
@@ -164,25 +183,7 @@ final class DesignTokens {
       border: Border.all(
         color: white.withValues(alpha: 1.0),
       ),
-      boxShadow: showShadow
-          ? <BoxShadow>[
-              const BoxShadow(
-                color: Color(0x1A0F172A),
-                blurRadius: 26,
-                offset: Offset(0, 12),
-              ),
-              const BoxShadow(
-                color: Color(0x0C0F172A),
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-              BoxShadow(
-                color: white.withValues(alpha: 0.45),
-                blurRadius: 14,
-                offset: const Offset(0, -3),
-              ),
-            ]
-          : null,
+      boxShadow: showShadow ? glassCardShadow : null,
     );
   }
 
