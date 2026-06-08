@@ -104,10 +104,6 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
               _DashboardQuickAction(
                 label: l10n.ipsOverviewDashboardQuickRecharge,
                 path: Img.add,
-                // icon: const Icon(
-                //   Icons.add_circle_outline_rounded,
-                //   color: DesignTokens.ink,
-                // ),
                 onTap: onRecharge,
               ),
               _DashboardQuickAction(
@@ -478,7 +474,10 @@ class _DashboardQuickAction extends StatelessWidget {
 /// Shared white surface card used by dashboard sections.
 class _DashboardSurfaceCard extends StatelessWidget {
   /// Creates a dashboard surface card.
-  const _DashboardSurfaceCard({required this.child, this.padding});
+  const _DashboardSurfaceCard({
+    required this.child,
+    this.padding,
+  });
 
   /// Card content.
   final Widget child;
@@ -490,12 +489,9 @@ class _DashboardSurfaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
 
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(16)),
-      ),
+    return MiniAppGlassCard(
+      radius: responsive.radius(16),
+      padding: padding ?? EdgeInsets.zero,
       child: child,
     );
   }

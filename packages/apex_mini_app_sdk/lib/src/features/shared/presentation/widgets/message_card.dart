@@ -35,42 +35,53 @@ class MessageCard extends StatelessWidget {
       variant,
     );
 
+    final Widget content = Padding(
+      padding: style.padding,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          leading ?? style.defaultLeading,
+          SizedBox(width: responsive.dp(style.leadingSpacing)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                CustomText(
+                  title,
+                  variant: style.titleVariant,
+                  color: style.titleColor,
+                ),
+                SizedBox(height: responsive.dp(style.messageSpacing)),
+                CustomText(
+                  message,
+                  variant: style.messageVariant,
+                  color: style.messageColor,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+
+    final BorderRadius borderRadius = BorderRadius.circular(style.borderRadius);
+
+    if (variant == MessageCardVariant.reminder) {
+      return MiniAppGlassCard(
+        radius: style.borderRadius,
+        child: content,
+      );
+    }
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: style.backgroundColor,
-        borderRadius: BorderRadius.circular(style.borderRadius),
+        borderRadius: borderRadius,
         border: style.borderColor == null
             ? null
             : Border.all(color: style.borderColor!),
       ),
-      child: Padding(
-        padding: style.padding,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            leading ?? style.defaultLeading,
-            SizedBox(width: responsive.dp(style.leadingSpacing)),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  CustomText(
-                    title,
-                    variant: style.titleVariant,
-                    color: style.titleColor,
-                  ),
-                  SizedBox(height: responsive.dp(style.messageSpacing)),
-                  CustomText(
-                    message,
-                    variant: style.messageVariant,
-                    color: style.messageColor,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: content,
     );
   }
 }

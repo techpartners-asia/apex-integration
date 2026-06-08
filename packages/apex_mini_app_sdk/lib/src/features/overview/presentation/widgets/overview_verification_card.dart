@@ -24,12 +24,9 @@ class OverviewVerificationCard extends StatelessWidget {
     final double progress =
         (viewModel.progressCurrent / viewModel.progressTotal).clamp(0.0, 1.0);
 
-    return Container(
+    return MiniAppGlassCard(
+      radius: responsive.radius(16),
       padding: EdgeInsets.all(AppSpacing.xl),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(16)),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[ 

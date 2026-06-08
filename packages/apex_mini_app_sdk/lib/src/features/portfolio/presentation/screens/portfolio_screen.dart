@@ -84,7 +84,6 @@ class PortfolioScreen extends StatelessWidget {
                   // if (shouldRenderPackageBlocks) ...<Widget>[
                   /// Allocation
                   AllocationSummaryCard(
-                    variant: AllocationSummaryCardVariant.dashboard,
                     data: _buildAllocationSummaryData(overview, l10n),
                   ),
                   SizedBox(height: context.responsive.spacing.cardGap),

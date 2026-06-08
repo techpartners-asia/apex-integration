@@ -157,7 +157,7 @@ class _StatementsBody extends StatelessWidget {
             )
           else
             // SectionCard(children: _buildStatementItems(statements)),
-            Column(children: _buildStatementItems(statements)),
+            Column(children: _buildStatementItems(context, statements)),
           SizedBox(height: responsive.spacing.sectionSpacing * 2),
         ],
       ),
@@ -165,29 +165,37 @@ class _StatementsBody extends StatelessWidget {
   }
 
   /// Builds one card per statement row.
-  List<Widget> _buildStatementItems(PortfolioStatementsData statements) {
+  List<Widget> _buildStatementItems(
+    BuildContext context,
+    PortfolioStatementsData statements,
+  ) {
+    final MiniAppResponsiveData responsive = context.responsive;
+
     return List<Widget>.generate(
       statements.stmtList.length,
       (int index) {
         final MgBkrCasaAcntStatementResDataDto stmt =
             statements.stmtList[index];
 
-        return MiniAppSurfaceCard(
-          padding: EdgeInsets.all(AppSpacing.md),
-          margin: EdgeInsets.symmetric(vertical: AppSpacing.xs),
-          child: StatementListItem(
-            title: stmt.description,
-            subtitle: _statementSubtitle(stmt),
-            trailing: _formatStatementAmount(
-              stmt.amount,
-              statements.currency,
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
+          child: MiniAppGlassCard(
+            radius: responsive.radius(AppRadius.lg),
+            padding: EdgeInsets.all(AppSpacing.md),
+            child: StatementListItem(
+              title: stmt.description,
+              subtitle: _statementSubtitle(stmt),
+              trailing: _formatStatementAmount(
+                stmt.amount,
+                statements.currency,
+                positive: stmt.isCredit,
+              ),
+              statusLabel: stmt.isCredit
+                  ? l10n.ipsStatementTypeIncome
+                  : l10n.ipsStatementTypeExpense,
               positive: stmt.isCredit,
+              showDivider: false,
             ),
-            statusLabel: stmt.isCredit
-                ? l10n.ipsStatementTypeIncome
-                : l10n.ipsStatementTypeExpense,
-            positive: stmt.isCredit,
-            showDivider: false,
           ),
         );
       },

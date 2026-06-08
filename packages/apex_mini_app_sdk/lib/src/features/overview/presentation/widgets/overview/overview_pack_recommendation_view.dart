@@ -146,20 +146,9 @@ class _PackRecommendationCard extends StatelessWidget {
     final l10n = context.l10n;
     final responsive = context.responsive;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(24)),
-        border: Border.all(color: const Color(0xFFF0F2F7)),
-        boxShadow: const <BoxShadow>[
-          BoxShadow(
-            color: Color(0x0F0F172A),
-            blurRadius: 26,
-            offset: Offset(0, 12),
-          ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
+    return MiniAppGlassCard(
+      radius: responsive.radius(24),
+      padding: EdgeInsets.zero,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[

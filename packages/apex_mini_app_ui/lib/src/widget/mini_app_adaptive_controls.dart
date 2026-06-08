@@ -1,3 +1,5 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -208,18 +210,55 @@ class MiniAppAdaptivePressable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = context.responsive;
+    final BorderRadius radius =
+        borderRadius ?? BorderRadius.circular(responsive.dp(16));
     final bool preferNativePlatformView =
         useNativePlatformView && PlatformInfo.isIOS26OrHigher();
+    final bool isInteractive = enabled && onPressed != null;
 
-    return AdaptiveButton.child(
+    final Widget pressable = AdaptiveButton.child(
       onPressed: onPressed,
-      enabled: enabled && onPressed != null,
-      style: AdaptiveButtonStyle.glass,
+      enabled: isInteractive,
+      style: preferNativePlatformView
+          ? AdaptiveButtonStyle.glass
+          : AdaptiveButtonStyle.plain,
+      color: Colors.transparent,
       padding: padding,
-      borderRadius: borderRadius ?? BorderRadius.circular(context.responsive.dp(16)),
+      borderRadius: radius,
       minSize: minSize,
       useNative: preferNativePlatformView,
       child: child,
+    );
+
+    if (preferNativePlatformView) {
+      return pressable;
+    }
+
+    return Opacity(
+      opacity: isInteractive ? 1 : 0.55,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: radius,
+          boxShadow: DesignTokens.glassButtonShadow,
+        ),
+        child: ClipRRect(
+          borderRadius: radius,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: responsive.dp(14),
+              sigmaY: responsive.dp(14),
+            ),
+            child: DecoratedBox(
+              decoration: DesignTokens.glassCardDecoration(
+                radius: radius.topLeft.x,
+                showShadow: false,
+              ),
+              child: pressable,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

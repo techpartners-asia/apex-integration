@@ -24,35 +24,41 @@ class PortfolioYieldSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
+    final EdgeInsets padding = EdgeInsets.all(responsive.dp(18));
+    final Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: responsive.dp(4)),
+          child: CustomText(
+            l10n.ipsYieldTitle,
+            variant: MiniAppTextVariant.subtitle2,
+          ),
+        ),
+        SizedBox(height: responsive.dp(16)),
+        PortfolioYieldChart(
+          data: chartData,
+          l10n: l10n,
+          currency: overview.currency,
+        ),
+        SizedBox(height: responsive.dp(18)),
+        PortfolioYieldMetricsGrid(
+          overview: overview,
+          chartData: chartData,
+          l10n: l10n,
+        ),
+      ],
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: responsive.spacing.cardGap),
-        SectionCard(
-          padding: EdgeInsets.all(responsive.dp(18)),
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: responsive.dp(4)),
-              child: CustomText(
-                l10n.ipsYieldTitle,
-                variant: MiniAppTextVariant.subtitle2,
-              ),
-            ),
-            SizedBox(height: responsive.dp(16)),
-            PortfolioYieldChart(
-              data: chartData,
-              l10n: l10n,
-              currency: overview.currency,
-            ),
-            SizedBox(height: responsive.dp(18)),
-            PortfolioYieldMetricsGrid(
-              overview: overview,
-              chartData: chartData,
-              l10n: l10n,
-            ),
-          ],
+        MiniAppGlassCard(
+          radius: responsive.radius(16),
+          padding: padding,
+          child: content,
         ),
       ],
     );
@@ -531,8 +537,8 @@ class PortfolioCompactMetricTile extends StatelessWidget {
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 3,
-                  offset: Offset(0, 0),
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
                 ),
               ],
             ),

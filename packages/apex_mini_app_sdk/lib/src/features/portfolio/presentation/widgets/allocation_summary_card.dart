@@ -3,15 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-/// Layout variants for allocation summary cards.
-enum AllocationSummaryCardVariant {
-  /// Compact dashboard usage.
-  dashboard,
-
-  /// Full portfolio section usage.
-  section,
-}
-
 /// Small pill/badge value shown in the yield section.
 final class AllocationBadgeData {
   /// Badge label.
@@ -80,9 +71,6 @@ class AllocationSummaryCard extends StatelessWidget {
   /// Data shown by the card.
   final AllocationSummaryData data;
 
-  /// Layout variant.
-  final AllocationSummaryCardVariant variant;
-
   /// Optional details action.
   final VoidCallback? onViewDetails;
 
@@ -93,7 +81,6 @@ class AllocationSummaryCard extends StatelessWidget {
   const AllocationSummaryCard({
     super.key,
     required this.data,
-    this.variant = AllocationSummaryCardVariant.section,
     this.onViewDetails,
     this.detailsLabel,
   });
@@ -112,13 +99,13 @@ class AllocationSummaryCard extends StatelessWidget {
           bondValue: data.bondValue,
           fallbackTotal: data.barFallbackTotal,
         ),
-        SizedBox(height: responsive.dp(_config.metricTopSpacing)),
+        SizedBox(height: responsive.dp(16)),
         AllocationMetricRow(
           color: DesignTokens.rose,
           label: data.stockLabel,
           value: data.stockValueLabel,
         ),
-        SizedBox(height: responsive.dp(_config.metricGap)),
+        SizedBox(height: responsive.dp(10)),
         AllocationMetricRow(
           color: DesignTokens.teal,
           label: data.bondLabel,
@@ -136,18 +123,14 @@ class AllocationSummaryCard extends StatelessWidget {
             CustomText(
               data.totalValueLabel,
               variant: MiniAppTextVariant.subtitle3,
-              color: _config.totalValueColor,
+              color: DesignTokens.rose,
             ),
           ],
         ),
-        if (_config.showTotalDivider) ...<Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: responsive.dp(12)),
-            child: Divider(color: DesignTokens.border, height: 1),
-          ),
-        ] else ...<Widget>[
-          SizedBox(height: responsive.dp(12)),
-        ],
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: responsive.dp(12)),
+          child: Divider(color: DesignTokens.border, height: 1),
+        ),
         if (data.yieldBadges.isNotEmpty) ...<Widget>[
           _buildYieldSection(context),
         ],
@@ -155,8 +138,9 @@ class AllocationSummaryCard extends StatelessWidget {
           SizedBox(height: responsive.dp(12)),
           Align(
             alignment: Alignment.center,
-            child: MiniAppAdaptivePressable(
-              onPressed: onViewDetails,
+            child: InkWell(
+              onTap: onViewDetails,
+              borderRadius: BorderRadius.circular(responsive.radius(8)),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: responsive.dp(8),
@@ -164,7 +148,8 @@ class AllocationSummaryCard extends StatelessWidget {
                 ),
                 child: CustomText(
                   detailsLabel!,
-                  variant: MiniAppTextVariant.caption1,
+                  variant: MiniAppTextVariant.buttonSmall,
+                  fontWeight: FontWeight.w600,
                   color: DesignTokens.ink,
                 ),
               ),
@@ -174,33 +159,12 @@ class AllocationSummaryCard extends StatelessWidget {
       ],
     );
 
-    return Container(
+    return MiniAppGlassCard(
+      radius: responsive.radius(16),
       padding: EdgeInsets.all(responsive.dp(18)),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(16)),
-      ),
       child: content,
     );
   }
-
-  _AllocationSummaryCardConfig get _config => switch (variant) {
-    AllocationSummaryCardVariant.dashboard =>
-      const _AllocationSummaryCardConfig(
-        metricTopSpacing: 16,
-        metricGap: 10,
-        showTotalDivider: true,
-        yieldTopSpacing: 18,
-        totalValueColor: DesignTokens.rose,
-      ),
-    AllocationSummaryCardVariant.section => const _AllocationSummaryCardConfig(
-      metricTopSpacing: 16,
-      metricGap: 10,
-      showTotalDivider: true,
-      yieldTopSpacing: 18,
-      totalValueColor: DesignTokens.rose,
-    ),
-  };
 
   Widget _buildYieldSection(BuildContext context) {
     return Row(
@@ -402,32 +366,4 @@ class AllocationPill extends StatelessWidget {
       ),
     );
   }
-}
-
-final class _AllocationSummaryCardConfig {
-  /// Vertical spacing before the metric grid.
-  final double metricTopSpacing;
-
-  /// Gap between metric items.
-  final double metricGap;
-
-  /// Whether the total row should draw its own divider.
-  final bool showTotalDivider;
-
-  /// Vertical spacing before the yield row.
-  final double yieldTopSpacing;
-
-  /// Color used for total values.
-  final Color totalValueColor;
-
-  const _AllocationSummaryCardConfig({
-    required this.metricTopSpacing,
-    required this.metricGap,
-    required this.showTotalDivider,
-    required this.yieldTopSpacing,
-    this.totalValueColor = DesignTokens.ink,
-  });
-
-  /// Whether yield layout should include the divider instead of total layout.
-  bool get showYieldDividerLayout => !showTotalDivider;
 }

@@ -109,99 +109,93 @@ class _PortfolioMyPackSectionState extends State<PortfolioMyPackSection> {
     final l10n = widget.l10n;
     final double stockPercent = widget.overview.stockPercent ?? 0;
     final double bondPercent = widget.overview.bondPercent ?? 0;
+    final EdgeInsets padding = EdgeInsets.all(responsive.dp(18));
+    final Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: responsive.dp(4)),
+          child: CustomText(
+            l10n.ipsPortfolioHoldings,
+            variant: MiniAppTextVariant.subtitle2,
+          ),
+        ),
+        SizedBox(height: responsive.dp(20)),
+        AllocationBar(
+          stockValue: stockPercent,
+          bondValue: bondPercent,
+        ),
+        SizedBox(height: responsive.dp(12)),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: AllocationMetricRow(
+                color: DesignTokens.rose,
+                label:
+                    '${l10n.ipsOverviewDashboardAllocationStocks} ${stockPercent.toStringAsFixed(0)}%',
+                value: '',
+              ),
+            ),
+            SizedBox(width: responsive.dp(16)),
+            Expanded(
+              child: AllocationMetricRow(
+                color: DesignTokens.teal,
+                label:
+                    '${l10n.ipsOverviewDashboardAllocationBonds} ${bondPercent.toStringAsFixed(0)}%',
+                value: '',
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: responsive.dp(14)),
+        PortfolioYieldMetricsGrid(overview: widget.overview, l10n: l10n),
+        SizedBox(height: responsive.spacing.cardGap),
+        PortfolioFilterTabs(
+          selectedFilter: _selectedFilter,
+          onChanged: (value) => setState(() => _selectedFilter = value),
+          l10n: l10n,
+        ),
+        if (widget.overview.security.isNotEmpty) ...<Widget>[
+          SizedBox(height: responsive.dp(20)),
+          _PortfolioPieChart(
+            sKey: ValueKey(
+              _filteredSecurities
+                  .map(
+                    (e) =>
+                        '${e.securityCode}_${e.securityType}_${e.portfolioPercent}',
+                  )
+                  .join('|'),
+            ),
+            securities: _filteredSecurities,
+          ),
+        ],
+        SizedBox(height: responsive.spacing.cardGap),
+        if (_filteredSecurities.isEmpty)
+          MiniAppEmptyState(
+            title: l10n.ipsPortfolioHoldings,
+            message: l10n.ipsPortfolioNoHoldings,
+          )
+        else
+          for (var i = 0; i < _filteredSecurities.length; i++)
+            PortfolioSecurityTile(
+              security: _filteredSecurities[i],
+              currency: widget.overview.currency,
+              l10n: l10n,
+              color: kPieChartPalette[i % kPieChartPalette.length],
+              gradient: kPieChartGradient[i % kPieChartGradient.length],
+            ),
+      ],
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: responsive.spacing.cardGap),
-        SectionCard(
-          padding: EdgeInsets.all(responsive.dp(18)),
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: responsive.dp(4)),
-              child: CustomText(
-                l10n.ipsPortfolioHoldings,
-                variant: MiniAppTextVariant.subtitle2,
-              ),
-            ),
-
-            SizedBox(height: responsive.dp(20)),
-
-            AllocationBar(
-              stockValue: stockPercent,
-              bondValue: bondPercent,
-            ),
-            SizedBox(height: responsive.dp(12)),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: AllocationMetricRow(
-                    color: DesignTokens.rose,
-                    label:
-                        '${l10n.ipsOverviewDashboardAllocationStocks} ${stockPercent.toStringAsFixed(0)}%',
-                    value: '',
-                  ),
-                ),
-                SizedBox(width: responsive.dp(16)),
-                Expanded(
-                  child: AllocationMetricRow(
-                    color: DesignTokens.teal,
-                    label:
-                        '${l10n.ipsOverviewDashboardAllocationBonds} ${bondPercent.toStringAsFixed(0)}%',
-                    value: '',
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: responsive.dp(14)),
-            PortfolioYieldMetricsGrid(overview: widget.overview, l10n: l10n),
-
-            SizedBox(height: responsive.spacing.cardGap),
-            PortfolioFilterTabs(
-              selectedFilter: _selectedFilter,
-              onChanged: (value) => setState(() => _selectedFilter = value),
-              l10n: l10n,
-            ),
-
-            /// PieChart
-            if (widget.overview.security.isNotEmpty) ...<Widget>[
-              SizedBox(height: responsive.dp(20)),
-              _PortfolioPieChart(
-                sKey: ValueKey(
-                  _filteredSecurities
-                      .map(
-                        (e) =>
-                            '${e.securityCode}_${e.securityType}_${e.portfolioPercent}',
-                      )
-                      .join('|'),
-                ),
-                securities: _filteredSecurities,
-              ),
-            ],
-            SizedBox(height: responsive.spacing.cardGap),
-            if (_filteredSecurities.isEmpty)
-              MiniAppEmptyState(
-                title: l10n.ipsPortfolioHoldings,
-                message: l10n.ipsPortfolioNoHoldings,
-              )
-            else
-              for (var i = 0; i < _filteredSecurities.length; i++)
-                PortfolioSecurityTile(
-                  security: _filteredSecurities[i],
-                  currency: widget.overview.currency,
-                  l10n: l10n,
-                  color: kPieChartPalette[i % kPieChartPalette.length],
-                  gradient: kPieChartGradient[i % kPieChartGradient.length],
-                ),
-            // ..._filteredSecurities.map(
-            //   (PortfolioSecurity security) => PortfolioSecurityTile(
-            //     security: security,
-            //     currency: widget.overview.currency,
-            //     l10n: l10n,
-            //   ),
-            // ),
-          ],
+        MiniAppGlassCard(
+          radius: responsive.radius(16),
+          padding: padding,
+          child: content,
         ),
       ],
     );

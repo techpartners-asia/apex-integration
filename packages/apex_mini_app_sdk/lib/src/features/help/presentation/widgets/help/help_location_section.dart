@@ -47,13 +47,9 @@ class HelpLocationSection extends StatelessWidget {
                     mapsUri,
                     mode: LaunchMode.externalApplication,
                   ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(responsive.radius(20)),
-                // border: Border.all(color: DesignTokens.border),
-              ),
-              clipBehavior: Clip.antiAlias,
+            child: MiniAppGlassCard(
+              radius: responsive.radius(20),
+              padding: EdgeInsets.zero,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
