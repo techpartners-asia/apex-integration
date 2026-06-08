@@ -31,6 +31,9 @@ final class DesignTokens {
   /// Secondary text color.
   static const Color muted = Color(0xFF717887);
 
+  /// Darker secondary text color.
+  static const Color mutedDark = Color(0xFF475467);
+
   /// Standard border color.
   static const Color border = Color(0xFFE8EBF2);
 

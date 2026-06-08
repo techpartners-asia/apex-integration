@@ -216,62 +216,65 @@ class _FeedbackListTile extends StatelessWidget {
     return SectionCard(
       padding: EdgeInsets.all(responsive.dp(16)),
       children: <Widget>[
-        Row(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(
-              Icons.chat_bubble_outline_rounded,
-              size: responsive.dp(18),
-              color: DesignTokens.muted,
-            ),
-            SizedBox(width: responsive.dp(10)),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: CustomText(
-                          item.title,
-                          variant: MiniAppTextVariant.subtitle2,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      SizedBox(width: responsive.dp(8)),
-                      _FeedbackStatusChip(status: item.status),
-                    ],
+            Row(
+              children: <Widget>[
+                Container(
+                  width: responsive.dp(32),
+                  height: responsive.dp(32),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEEF3FE),
+                    borderRadius: BorderRadius.circular(responsive.radius(15)),
                   ),
-                  SizedBox(height: responsive.dp(6)),
-                  CustomText(
-                    item.description,
-                    variant: MiniAppTextVariant.caption1,
-                    color: DesignTokens.muted,
-                    maxLines: 3,
+                  alignment: Alignment.center,
+                  child: CustomImage(
+                    path: Img.complain,
+                    width: responsive.dp(18),
+                    height: responsive.dp(18),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                SizedBox(width: responsive.dp(10)),
+                Expanded(
+                  child: CustomText(
+                    item.title,
+                    variant: MiniAppTextVariant.subtitle2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: responsive.dp(8)),
-                  Wrap(
-                    spacing: responsive.dp(8),
-                    runSpacing: responsive.dp(4),
-                    children: <Widget>[
-                      CustomText(
-                        _formatFeedbackTimestamp(item.createdAt),
-                        variant: MiniAppTextVariant.caption2,
-                        color: DesignTokens.muted,
-                      ),
-                      if (item.updatedAt.trim().isNotEmpty &&
-                          item.updatedAt != item.createdAt)
-                        CustomText(
-                          '• ${_formatFeedbackTimestamp(item.updatedAt)}',
-                          variant: MiniAppTextVariant.caption2,
-                          color: DesignTokens.muted,
-                        ),
-                    ],
+                ),
+                SizedBox(width: responsive.dp(8)),
+                _FeedbackStatusChip(status: item.status),
+              ],
+            ),
+            SizedBox(height: responsive.dp(6)),
+            CustomText(
+              item.description,
+              variant: MiniAppTextVariant.body3,
+              color: DesignTokens.mutedDark,
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: responsive.dp(8)),
+            Wrap(
+              spacing: responsive.dp(8),
+              runSpacing: responsive.dp(4),
+              children: <Widget>[
+                CustomText(
+                  _formatFeedbackTimestamp(item.createdAt),
+                  variant: MiniAppTextVariant.caption1,
+                  color: DesignTokens.muted,
+                ),
+                if (item.updatedAt.trim().isNotEmpty &&
+                    item.updatedAt != item.createdAt)
+                  CustomText(
+                    '• ${_formatFeedbackTimestamp(item.updatedAt)}',
+                    variant: MiniAppTextVariant.caption1,
+                    color: DesignTokens.muted,
                   ),
-                ],
-              ),
+              ],
             ),
           ],
         ),
@@ -336,10 +339,25 @@ class _FeedbackStatusChip extends StatelessWidget {
         color: bg,
         borderRadius: BorderRadius.circular(responsive.radius(12)),
       ),
-      child: CustomText(
-        label,
-        variant: MiniAppTextVariant.caption1,
-        color: fg,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            width: responsive.dp(5),
+            height: responsive.dp(5),
+            decoration: BoxDecoration(
+              color: fg,
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(width: responsive.dp(5)),
+          CustomText(
+            label,
+            color: fg,
+            fontWeight: FontWeight.w600,
+            style: const TextStyle(fontSize: 12),
+          ),
+        ],
       ),
     );
   }
