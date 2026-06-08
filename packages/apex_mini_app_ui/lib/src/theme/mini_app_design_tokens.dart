@@ -37,6 +37,9 @@ final class DesignTokens {
   /// App background surface color.
   static const Color softSurface = Color(0xFFF6F7FB);
 
+  /// Frosted glass card surface color.
+  static const Color glassSurface = Color(0x80FFFFFF);
+
   /// Bottom-sheet background surface color.
   static const Color sheetBackground = Color(0xFFF7F8FC);
 
@@ -126,6 +129,79 @@ final class DesignTokens {
   static const List<BoxShadow> buttonShadow = <BoxShadow>[
     BoxShadow(color: Color(0x33E94C86), blurRadius: 18, offset: Offset(0, 8)),
   ];
+
+  /// Soft elevation shadow for small glass pressable controls.
+  static const List<BoxShadow> glassButtonShadow = <BoxShadow>[
+    BoxShadow(
+      color: Color(0x0C0F172A),
+      blurRadius: 8,
+      offset: Offset(0, 2),
+    ),
+    BoxShadow(
+      color: Color(0x050F172A),
+      blurRadius: 3,
+      offset: Offset(0, 1),
+    ),
+  ];
+
+  /// Frosted glass card surface with a translucent gradient and soft border.
+  static BoxDecoration glassCardDecoration({
+    double radius = 16,
+    bool showShadow = true,
+  }) {
+    return BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        stops: const <double>[0.0, 0.06, 1.0],
+        colors: <Color>[
+          white.withValues(alpha: 0.98),
+          white.withValues(alpha: 0.94),
+          white.withValues(alpha: 0.82),
+        ],
+      ),
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(
+        color: white.withValues(alpha: 1.0),
+      ),
+      boxShadow: showShadow
+          ? <BoxShadow>[
+              const BoxShadow(
+                color: Color(0x1A0F172A),
+                blurRadius: 26,
+                offset: Offset(0, 12),
+              ),
+              const BoxShadow(
+                color: Color(0x0C0F172A),
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+              BoxShadow(
+                color: white.withValues(alpha: 0.45),
+                blurRadius: 14,
+                offset: const Offset(0, -3),
+              ),
+            ]
+          : null,
+    );
+  }
+
+  /// Top-edge shine highlight layered on [glassCardDecoration] surfaces.
+  static BoxDecoration glassCardShineDecoration({double radius = 16}) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(radius)),
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        stops: const <double>[0.0, 0.35, 1.0],
+        colors: <Color>[
+          white,
+          white.withValues(alpha: 0.45),
+          white.withValues(alpha: 0),
+        ],
+      ),
+    );
+  }
 
   /// Standard card corner radius.
   static const BorderRadius cardRadius = BorderRadius.all(Radius.circular(20));

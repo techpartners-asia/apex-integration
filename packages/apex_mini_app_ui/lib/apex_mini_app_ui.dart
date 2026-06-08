@@ -25,6 +25,7 @@ export 'src/widget/mini_app_platform_app.dart';
 export 'src/widget/mini_app_refresh_container.dart';
 export 'src/widget/mini_app_success_state.dart';
 export 'src/widget/mini_app_surface_card.dart';
+export 'src/widget/mini_app_glass_card.dart';
 export 'src/widget/mini_app_toast.dart';
 export 'src/widget/custom_text.dart';
 export 'src/widget/modal/mini_app_dialog.dart';

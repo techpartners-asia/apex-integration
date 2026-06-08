@@ -71,10 +71,12 @@ class SelectionPageTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
 
-    return MiniAppSurfaceCard(
-      padding: EdgeInsets.zero,
-      margin: hasMargin ? EdgeInsets.only(bottom: AppSpacing.xl) : null,
-      child: Column(
+    return Padding(
+      padding: hasMargin ? EdgeInsets.only(bottom: AppSpacing.xl) : EdgeInsets.zero,
+      child: MiniAppGlassCard(
+        radius: responsive.radius(20),
+        padding: EdgeInsets.zero,
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -95,6 +97,7 @@ class SelectionPageTemplate extends StatelessWidget {
             footer!,
           ],
         ],
+      ),
       ),
     );
   }

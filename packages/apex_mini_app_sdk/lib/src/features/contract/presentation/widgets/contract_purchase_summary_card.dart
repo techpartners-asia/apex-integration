@@ -52,8 +52,8 @@ class ContractPurchaseSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
 
-    return MiniAppSurfaceCard(
-      backgroundColor: Colors.white,
+    return MiniAppGlassCard(
+      radius: responsive.radius(20),
       padding: EdgeInsets.all(responsive.spacing.financialCardSpacing),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

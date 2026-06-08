@@ -141,13 +141,9 @@ class _PaymentInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
 
-    return Container(
-      width: double.infinity,
+    return MiniAppGlassCard(
+      radius: responsive.radius(20),
       padding: responsive.insetsAll(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(20)),
-      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

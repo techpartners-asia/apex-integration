@@ -134,12 +134,9 @@ class OverviewProfileHeaderCard extends StatelessWidget {
     final String displayName = user?.displayName.trim().isNotEmpty ?? false ? user!.displayName : l10n.ipsOverviewProfileGuestName;
     final String initials = displayName.split(RegExp(r'\s+')).where((String part) => part.trim().isNotEmpty).take(2).map((String part) => part.substring(0, 1).toUpperCase()).join();
 
-    return Container(
+    return MiniAppGlassCard(
+      radius: responsive.radius(16),
       padding: EdgeInsets.all(responsive.dp(14)),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(16)),
-      ),
       child: Row(
         children: <Widget>[
           Stack(
@@ -250,11 +247,9 @@ class OverviewProfileMenuCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(16)),
-      ),
+    return MiniAppGlassCard(
+      radius: responsive.radius(16),
+      padding: EdgeInsets.zero,
       child: Column(
         children: items.map((e) => OverviewProfileMenuRow(item: e)).toList(growable: false),
       ),

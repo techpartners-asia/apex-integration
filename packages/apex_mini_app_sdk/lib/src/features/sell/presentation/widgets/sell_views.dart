@@ -72,12 +72,9 @@ class _SellAmountSummaryCardState extends State<SellAmountSummaryCard> {
     final IpsSellState state = widget.state;
     final String currency = state.currency;
 
-    return Container(
+    return MiniAppGlassCard(
+      radius: responsive.radius(20),
       padding: EdgeInsets.all(responsive.spacing.financialCardSpacing),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: DesignTokens.cardRadius,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,

@@ -65,44 +65,46 @@ class OverviewDashboardHomeTab extends StatelessWidget {
     );
     final bool showFinancialData = hasValidIpsBalance;
 
-    final Widget scrollView = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    final Widget scrollView = Stack(
+      clipBehavior: Clip.none,
       children: <Widget>[
-        /// Dashboard summary card
-        OverviewDashboardSummaryCard(
-          metrics: metrics,
-          showFinancialSummary: showFinancialData,
-          onRecharge: onRecharge,
-          onStatements: onStatements,
-          onWithdraw: onWithdraw,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            /// Dashboard summary card
+            OverviewDashboardSummaryCard(
+              metrics: metrics,
+              showFinancialSummary: showFinancialData,
+              onRecharge: onRecharge,
+              onStatements: onStatements,
+              onWithdraw: onWithdraw,
+            ),
+            SizedBox(height: responsive.dp(14)),
+            if (showFinancialData) ...<Widget>[
+              /// Dashboard asset breakdown card
+              AllocationSummaryCard(
+                data: _buildAllocationSummaryData(context, metrics),
+                detailsLabel: context.l10n.ipsOverviewDashboardDetails,
+                onViewDetails: onViewDetails,
+              ),
+              SizedBox(height: responsive.dp(14)),
+
+              /// Dashboard reminder card
+              ReminderCard(
+                title: context.l10n.ipsOverviewDashboardReminderTitle,
+                message: context.l10n.ipsOverviewDashboardReminderBody,
+              ),
+              SizedBox(height: responsive.dp(14)),
+
+              /// Dashboard goal card
+              OverviewDashboardGoalCard(metrics: metrics),
+            ],
+          // SizedBox(height: responsive.dp(14)),
+          // /// Dashboard reward card
+          // OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
+            SizedBox(height: responsive.dp(100)),
+          ],
         ),
-        SizedBox(height: responsive.dp(14)),
-
-        if (showFinancialData) ...<Widget>[
-          /// Dashboard asset breakdown card
-          AllocationSummaryCard(
-            variant: AllocationSummaryCardVariant.dashboard,
-            data: _buildAllocationSummaryData(context, metrics),
-            detailsLabel: context.l10n.ipsOverviewDashboardDetails,
-            onViewDetails: onViewDetails,
-          ),
-          SizedBox(height: responsive.dp(14)),
-
-          /// Dashboard reminder card.
-          ReminderCard(
-            title: context.l10n.ipsOverviewDashboardReminderTitle,
-            message: context.l10n.ipsOverviewDashboardReminderBody,
-          ),
-          SizedBox(height: responsive.dp(14)),
-
-          /// Dashboard goal card
-          OverviewDashboardGoalCard(metrics: metrics),
-        ],
-        // SizedBox(height: responsive.dp(14)),
-        //
-        // /// Dashboard reward card
-        // OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
-        SizedBox(height: responsive.dp(100)),
       ],
     );
 

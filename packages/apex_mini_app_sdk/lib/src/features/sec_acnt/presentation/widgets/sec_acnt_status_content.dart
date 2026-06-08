@@ -86,14 +86,9 @@ class _SecAcntStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = context.responsive;
 
-    return Container(
-      width: double.infinity,
+    return MiniAppGlassCard(
+      radius: responsive.radius(20),
       padding: EdgeInsets.all(responsive.dp(20)),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(responsive.radius(20)),
-        boxShadow: DesignTokens.cardShadow,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
