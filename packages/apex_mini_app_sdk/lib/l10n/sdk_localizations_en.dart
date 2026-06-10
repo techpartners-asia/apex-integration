@@ -234,7 +234,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get ipsOverviewActionPendingOrderMessage =>
-      'You have a pending pack order. Complete payment to confirm it before placing a new order.';
+      'Trading is currently disabled. Please confirm your package to continue.';
 
   @override
   String get ipsOverviewProfileVerified => 'Verified';

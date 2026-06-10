@@ -235,7 +235,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsOverviewActionPendingOrderMessage =>
-      'Танд идэхтэй багцын захиалга байгаа тул төлбөрөө төлж баталгаажуулснаар дахин захиалга өгөх боломжтой.';
+      'Арилжаа түр идэвхгүй байна. Багцаа баталгаажуулсны дараа дахин оролдоно уу.';
 
   @override
   String get ipsOverviewProfileVerified => 'Баталгаажсан';
