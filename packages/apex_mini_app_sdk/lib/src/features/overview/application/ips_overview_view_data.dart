@@ -26,6 +26,9 @@ class IpsOverviewViewData {
   /// Whether dashboard enrichment failed while base overview still loaded.
   final bool dashboardLoadFailed;
 
+  /// Whether the user has an active pending order (status "N").
+  final bool hasPendingOrder;
+
   /// Creates the overview view model.
   const IpsOverviewViewData({
     required this.bootstrapState,
@@ -36,6 +39,7 @@ class IpsOverviewViewData {
     this.portfolioContext = const SdkPortfolioContext(),
     this.isDashboardDataReady = true,
     this.dashboardLoadFailed = false,
+    this.hasPendingOrder = false,
   });
 
   /// Whether `getIpsBalance` completed and returned a non-zero investment

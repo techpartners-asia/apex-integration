@@ -127,14 +127,22 @@ class IpsOrderDto {
   /// Maps raw backend status text into a UI order status.
   static IpsOrderStatus mapOrderStatus(String raw) {
     final String normalized = raw.trim().toLowerCase();
-    if (normalized.contains('cancel')) {
-      return IpsOrderStatus.cancelled;
+    switch (normalized) {
+      case 'c':
+        return IpsOrderStatus.cancelled;
+      case 'd':
+      case 's':
+        return IpsOrderStatus.completed;
+      case 'f':
+        return IpsOrderStatus.failed;
+      case 'n':
+        return IpsOrderStatus.pending;
     }
 
+    if (normalized.contains('cancel')) return IpsOrderStatus.cancelled;
     if (normalized.contains('fail') || normalized.contains('reject')) {
       return IpsOrderStatus.failed;
     }
-
     if (normalized.contains('done') ||
         normalized.contains('success') ||
         normalized.contains('complete')) {

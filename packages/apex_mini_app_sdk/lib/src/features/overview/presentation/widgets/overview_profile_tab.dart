@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Profile tab in the overview bottom navigation.
 class OverviewProfileTab extends StatelessWidget {
@@ -77,7 +80,16 @@ class OverviewProfileTab extends StatelessWidget {
               OverviewProfileMenuItemData(
                 image: Img.ticketBlue,
                 title: l10n.ipsPortfolioOrderList,
-                onTap: data.hasIpsAcnt ? () => launchIpsRoute(context, route: MiniAppRoutes.orders) : null,
+                onTap: data.hasIpsAcnt
+                    ? () async {
+                        await launchIpsRoute(context, route: MiniAppRoutes.orders);
+                        if (context.mounted) {
+                          unawaited(
+                            context.read<IpsOverviewCubit>().refreshPendingOrderStatus(),
+                          );
+                        }
+                      }
+                    : null,
               ),
 
               /// Achievements
