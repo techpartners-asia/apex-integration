@@ -15,7 +15,7 @@ class OrdersScreen extends StatelessWidget {
       title: l10n.ipsOrdersCancelOrder,
       message: l10n.ipsOrdersCancelOrderConfirm(order.id),
       confirmLabel: l10n.ipsOrdersCancelOrder,
-      cancelLabel: l10n.commonCancel,
+      cancelLabel: l10n.commonDismiss,
       destructive: true,
     );
     if (confirmed != true || !context.mounted) {

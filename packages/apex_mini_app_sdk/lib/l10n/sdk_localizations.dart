@@ -2791,6 +2791,12 @@ abstract class SdkLocalizations {
   /// In en, this message translates to:
   /// **'Date'**
   String get closedDate;
+
+  /// No description provided for @commonClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get commonClose;
 }
 
 class _SdkLocalizationsDelegate

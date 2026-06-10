@@ -24,7 +24,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get commonCancel => 'Cancel';
 
   @override
-  String get commonDismiss => 'Close';
+  String get commonDismiss => 'Dismiss';
 
   @override
   String get commonBack => 'Back';
@@ -1490,4 +1490,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get closedDate => 'Date';
+
+  @override
+  String get commonClose => 'Close';
 }
