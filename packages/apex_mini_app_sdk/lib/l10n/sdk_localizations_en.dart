@@ -24,7 +24,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get commonCancel => 'Cancel';
 
   @override
-  String get commonDismiss => 'Close';
+  String get commonDismiss => 'Dismiss';
 
   @override
   String get commonBack => 'Back';
@@ -234,7 +234,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get ipsOverviewActionPendingOrderMessage =>
-      'You have a pending pack order. Complete payment to confirm it before placing a new order.';
+      'You already have an active package order, so you can place a new order once it is confirmed.';
 
   @override
   String get ipsOverviewProfileVerified => 'Verified';
@@ -1490,4 +1490,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get closedDate => 'Date';
+
+  @override
+  String get commonClose => 'Close';
 }

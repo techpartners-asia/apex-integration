@@ -55,6 +55,9 @@ final class DesignTokens {
   /// Success accent color.
   static const Color success = Color(0xFF24C15F);
 
+  /// Deep success accent color.
+  static const Color successDeep = Color(0xFF039855);
+
   /// Strong success accent color.
   static const Color successStrong = Color(0xFF22C55E);
 

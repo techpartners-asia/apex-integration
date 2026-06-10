@@ -342,6 +342,9 @@ class _HDesignTextField extends StatelessWidget {
       color: valueColor,
       height: 1.2,
     );
+    final double floatingInputTop = isFloating
+        ? (isMultiline ? responsive.dp(24) : responsive.dp(10))
+        : 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -391,7 +394,7 @@ class _HDesignTextField extends StatelessWidget {
                   ),
                 ),
                 Positioned.fill(
-                  top: isFloating ? responsive.dp(10) : 0,
+                  top: floatingInputTop,
                   right: suffixIcon == null ? 0 : responsive.dp(40),
                   child: Align(
                     alignment: isMultiline

@@ -49,7 +49,7 @@ class StartupBlockedScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomActionBar(
         child: PrimaryButton(
-          label: l10n.commonDismiss,
+          label: l10n.commonClose,
           onPressed: () => unawaited(closeMiniAppSafely(context)),
         ),
       ),

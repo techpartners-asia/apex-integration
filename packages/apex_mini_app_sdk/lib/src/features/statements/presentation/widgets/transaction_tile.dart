@@ -1,5 +1,6 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 /// Compact transaction row used by statements and order history.
 class TransactionTile extends StatelessWidget {
@@ -44,12 +45,17 @@ class TransactionTile extends StatelessWidget {
               color: accent.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              positive
-                  ? Icons.arrow_downward_rounded
-                  : Icons.arrow_upward_rounded,
-              color: accent,
-              size: responsive.icon(AppComponentSize.iconSm),
+            child: Center(
+              child: Transform.rotate(
+                angle: 60 * math.pi / 180,
+                child: Icon(
+                  positive
+                      ? Icons.arrow_downward_rounded
+                      : Icons.arrow_upward_rounded,
+                  color: DesignTokens.successDeep,
+                  size: responsive.icon(AppComponentSize.iconSm),
+                ),
+              ),
             ),
           ),
           SizedBox(width: responsive.space(AppSpacing.md)),
@@ -82,7 +88,7 @@ class TransactionTile extends StatelessWidget {
               CustomText(
                 statusLabel,
                 variant: MiniAppTextVariant.caption1,
-                color: accent,
+                color: DesignTokens.successDeep,
               ),
             ],
           ),

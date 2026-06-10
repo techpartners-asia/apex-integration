@@ -148,7 +148,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
             await closeMiniAppSafely(context);
           },
           child: CustomText(
-            l10n.commonDismiss,
+            l10n.commonClose,
             variant: MiniAppTextVariant.buttonMedium,
             color: Theme.of(context).colorScheme.primary,
           ),

@@ -32,6 +32,9 @@ class IpsOrderDto {
   /// Package code attached to this order.
   final String? packCode;
 
+  /// Package name attached to this order.
+  final String? packName;
+
   /// Package quantity.
   final int? packQty;
 
@@ -53,6 +56,7 @@ class IpsOrderDto {
     required this.createdAt,
     required this.buySell,
     this.packCode,
+    this.packName,
     this.packQty,
     this.registerCode,
     this.expiresAt,
@@ -67,6 +71,7 @@ class IpsOrderDto {
     return IpsOrderDto(
       id: orderNo.toString(),
       title:
+          ApiParser.asNullableString(json['packName']) ??
           ApiParser.asNullableString(json['packCode']) ??
           IpsDefaults.orderTitleFallback,
       buySell:
@@ -77,6 +82,7 @@ class IpsOrderDto {
       createdAt:
           ApiParser.asNullableDateTime(json['orderDate']) ?? DateTime.now(),
       packCode: ApiParser.asNullableString(json['packCode']),
+      packName: ApiParser.asNullableString(json['packName']),
       packQty: ApiParser.asNullableInt(json['packQty']),
       registerCode: ApiParser.asNullableString(json['registerCode']),
       expiresAt: ApiParser.asNullableDateTime(json['expireDate']),
@@ -110,6 +116,7 @@ class IpsOrderDto {
       amount: amount,
       createdAt: createdAt,
       packCode: packCode,
+      packName: packName,
       packQty: packQty,
       registerCode: registerCode,
       expiresAt: expiresAt,
@@ -120,14 +127,22 @@ class IpsOrderDto {
   /// Maps raw backend status text into a UI order status.
   static IpsOrderStatus mapOrderStatus(String raw) {
     final String normalized = raw.trim().toLowerCase();
-    if (normalized.contains('cancel')) {
-      return IpsOrderStatus.cancelled;
+    switch (normalized) {
+      case 'c':
+        return IpsOrderStatus.cancelled;
+      case 'd':
+      case 's':
+        return IpsOrderStatus.completed;
+      case 'f':
+        return IpsOrderStatus.failed;
+      case 'n':
+        return IpsOrderStatus.pending;
     }
 
+    if (normalized.contains('cancel')) return IpsOrderStatus.cancelled;
     if (normalized.contains('fail') || normalized.contains('reject')) {
       return IpsOrderStatus.failed;
     }
-
     if (normalized.contains('done') ||
         normalized.contains('success') ||
         normalized.contains('complete')) {

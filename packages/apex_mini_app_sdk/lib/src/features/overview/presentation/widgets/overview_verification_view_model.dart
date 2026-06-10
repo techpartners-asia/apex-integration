@@ -168,6 +168,8 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
     final bool canContinueToQuestionnaire =
         state.canContinueToQuestionnaireFromOverview;
 
+    final bool isAwaitingActivation = hasPaidSecAcntContract;
+
     return OverviewVerificationViewModel(
       title: l10n.ipsOverviewVerificationTitle,
       subtitle: l10n.ipsOverviewVerificationSubtitle,
@@ -187,7 +189,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           status: canContinueToQuestionnaire
               ? StepStatus.completed
               : StepStatus.active,
-          onTap: canContinueToQuestionnaire
+          onTap: (canContinueToQuestionnaire || isAwaitingActivation)
               ? null
               : () => _launchSecAcntFlow(context, state),
         ),
@@ -212,7 +214,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           ? l10n.ipsHomeRecommendedPackCta
           : l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => _launchSecAcntOrQuestionnaire(context, state),
+      onPromoTap: isAwaitingActivation ? null : () => _launchSecAcntOrQuestionnaire(context, state),
     );
   }
 

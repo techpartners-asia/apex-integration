@@ -32,9 +32,10 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
           (BuildContext context, LoadableState<IpsOverviewViewData> state) {
             final IpsOverviewViewData? data = state.data;
             final bool isTradingEnabled = _hasTradingAccess(
-              viewData: data,
-              sessionState: sessionState,
-            );
+                  viewData: data,
+                  sessionState: sessionState,
+                ) &&
+                !(data?.hasPendingOrder ?? false);
 
             return CustomScaffold(
               showBackButton: false,
@@ -45,7 +46,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
               backgroundColor: DesignTokens.softSurface,
               appBarShowBottomBorder: false,
               appBarReserveLeadingSpace: false,
-              body: _buildBody(context, state, sessionState),
+              body: _buildBody(context, state, sessionState, isTradingEnabled),
               isTradingEnabled: isTradingEnabled,
               bottomNavigationBar: data == null || !state.isSuccess
                   ? null
@@ -83,6 +84,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     BuildContext context,
     LoadableState<IpsOverviewViewData> state,
     MiniAppSessionState sessionState,
+    bool isTradingEnabled,
   ) {
     final l10n = context.l10n;
     final responsive = context.responsive;
@@ -133,10 +135,18 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                           viewData?.stockYieldDetails ??
                           const <PortfolioHolding>[],
                       user: sessionState.currentUser,
-                      onRecharge: () => launchIpsRoute(
-                        context,
-                        route: MiniAppRoutes.recharge,
-                      ),
+                      onRecharge: () {
+                        if (!isTradingEnabled) {
+                          MiniAppToast.showWarning(
+                            context,
+                            message: context
+                                .l10n
+                                .ipsOverviewActionPendingOrderMessage,
+                          );
+                          return;
+                        }
+                        launchIpsRoute(context, route: MiniAppRoutes.recharge);
+                      },
                       onStatements: () => launchIpsRoute(
                         context,
                         route: MiniAppRoutes.statements,
@@ -194,13 +204,10 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     required MiniAppSessionState sessionState,
   }) {
     final PortfolioOverview? overview = viewData?.portfolioOverview;
-    if ((overview?.packQty ?? 0) > 0) {
-      return true;
-    }
 
     final account = sessionState.currentUser?.account;
     final String packageCode = account?.packageCode?.trim() ?? '';
-    return account?.isInvestContract == true && packageCode.isNotEmpty;
+    return account?.isInvestContract == true;
   }
 
   /// Shows the floating action sheet for recharge/sell or verification.
@@ -235,6 +242,11 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   context,
                   dependencies: context.read<IpsDependencies>(),
                   l10n: context.l10n,
+                );
+
+                if (!context.mounted) return;
+                unawaited(
+                  context.read<IpsOverviewCubit>().refreshPendingOrderStatus(),
                 );
               },
 
