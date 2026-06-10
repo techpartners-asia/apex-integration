@@ -187,21 +187,15 @@ class _SkeletonListLoaderState extends State<SkeletonListLoader>
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget? child) => child!,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: responsive.spacing.financialCardSpacing,
-          vertical: responsive.spacing.sectionSpacing,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: List<Widget>.generate(widget.itemCount, (int index) {
-            return Padding(
-              padding: EdgeInsets.only(bottom: responsive.spacing.cardGap),
-              child: _SkeletonListItem(animation: _controller),
-            );
-          }),
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: List<Widget>.generate(widget.itemCount, (int index) {
+          return Padding(
+            padding: EdgeInsets.only(bottom: responsive.spacing.cardGap),
+            child: _SkeletonListItem(animation: _controller),
+          );
+        }),
       ),
     );
   }
