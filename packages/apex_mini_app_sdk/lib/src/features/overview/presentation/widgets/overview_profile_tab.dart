@@ -44,11 +44,11 @@ class OverviewProfileTab extends StatelessWidget {
                 title: l10n.ipsOverviewProfileMenuPersonalInfo,
                 subtitle: data.hasIpsAcnt ? null : l10n.ipsOverviewProfilePersonalInfoMissing,
                 subtitleColor: DesignTokens.danger,
-                onTap: () => launchIpsRoute(
+                onTap: data.hasIpsAcnt ? () => launchIpsRoute(
                   context,
                   route: data.hasIpsAcnt ? MiniAppRoutes.personalInfo : MiniAppRoutes.secAcnt,
                   arguments: data,
-                ),
+                ) : null,
               ),
 
               /// Statement
