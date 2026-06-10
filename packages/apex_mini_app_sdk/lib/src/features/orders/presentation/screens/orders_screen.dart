@@ -61,7 +61,7 @@ class OrdersScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.refresh_rounded),
+                  const Icon(Icons.refresh_rounded, color: DesignTokens.ink),
                   SizedBox(width: context.responsive.spacing.inlineSpacing),
                   CustomText(
                     l10n.commonRefresh,
