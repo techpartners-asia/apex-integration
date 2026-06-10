@@ -90,7 +90,7 @@
   "ipsOverviewFinalStepLabel": "Сүүлийн алхам",
   "ipsOverviewFirstPackTitle": "Анхны багцаа худалдан авах",
   "ipsOverviewActionTitle": "Арилжаа",
-  "ipsOverviewActionPendingOrderMessage": "Арилжаа түр идэвхгүй байна. Багцаа баталгаажуулсны дараа дахин оролдоно уу.",
+  "ipsOverviewActionPendingOrderMessage": "Танд идэхтэй багцын захиалга байгаа тул төлбөрөө төлж баталгаажуулснаар дахин захиалга өгөх боломжтой.",
   "ipsOverviewProfileVerified": "Баталгаажсан",
   "ipsOverviewProfileGuestName": "InvestX хэрэглэгч",
   "ipsOverviewProfileMenuPersonalInfo": "Хувийн мэдээлэл",
