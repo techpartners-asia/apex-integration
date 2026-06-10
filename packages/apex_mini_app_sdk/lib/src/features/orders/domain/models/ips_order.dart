@@ -23,6 +23,9 @@ class IpsOrder {
   /// Package code associated with the order.
   final String? packCode;
 
+  /// Package name.
+  final String? packName;
+
   /// Package quantity.
   final int? packQty;
 
@@ -45,6 +48,7 @@ class IpsOrder {
     required this.createdAt,
     required this.buySell,
     this.packCode,
+    this.packName,
     this.packQty,
     this.registerCode,
     this.expiresAt,
