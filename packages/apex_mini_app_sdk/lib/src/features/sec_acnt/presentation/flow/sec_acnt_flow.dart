@@ -99,6 +99,12 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
     currentUser: currentUser,
   );
 
+  if (state?.hasIpsAcnt == true) {
+    return <SecAcntFlowStep>[
+      if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
+    ];
+  }
+
   if (isShortSecAcntFlow(state)) {
     final bool needsPayment = requiresSecAcntOpeningPayment(
       state,
@@ -118,7 +124,6 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
     if (!hasCompletedContract) SecAcntFlowStep.secAgreement,
     if (!hasSignature) SecAcntFlowStep.signature,
     if (!hasPaidContract) SecAcntFlowStep.payment,
-    SecAcntFlowStep.calculation,
   ];
 }
 

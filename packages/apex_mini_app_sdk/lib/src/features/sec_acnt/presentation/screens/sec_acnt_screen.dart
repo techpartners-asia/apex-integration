@@ -42,7 +42,7 @@ class SecAcntScreen extends StatelessWidget {
     );
 
     if (initialStep == null) {
-      return SecAcntCalculationScreen(bootstrapState: initialBootstrapState);
+      return _SecAcntFlowDoneRedirect(bootstrapState: initialBootstrapState);
     }
 
     return switch (initialStep) {
@@ -113,3 +113,32 @@ class SecAcntScreen extends StatelessWidget {
   }
 }
 
+/// Shown when all sec acnt flow steps are already complete.
+///
+/// Redirects to overview on the first frame so the user never sees a blank screen.
+class _SecAcntFlowDoneRedirect extends StatefulWidget {
+  final AcntBootstrapState? bootstrapState;
+
+  const _SecAcntFlowDoneRedirect({required this.bootstrapState});
+
+  @override
+  State<_SecAcntFlowDoneRedirect> createState() => _SecAcntFlowDoneRedirectState();
+}
+
+class _SecAcntFlowDoneRedirectState extends State<_SecAcntFlowDoneRedirect> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      routeAfterSecAcntFlow(
+        context,
+        bootstrapState: widget.bootstrapState,
+        currentUser: null,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.shrink();
+}
