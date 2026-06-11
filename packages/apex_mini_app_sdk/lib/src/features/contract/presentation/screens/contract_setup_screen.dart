@@ -32,17 +32,13 @@ class _ContractSetupScreenState extends State<ContractSetupScreen> {
     final IpsDependencies dependencies = context.read<IpsDependencies>();
     final SdkLocalizations l10n = context.l10n;
 
-    final IpsRechargeState? result = await showIpsRechargeBottomSheet(
+    await showIpsRechargeBottomSheet(
       context,
       dependencies: dependencies,
       l10n: l10n,
     );
 
-    if (!context.mounted || result == null) return;
-
-    final MiniAppPaymentStatus? status = result.paymentRes?.status;
-    final bool didSucceed = status == MiniAppPaymentStatus.success;
-    if (!didSucceed) return;
+    if (!context.mounted) return;
 
     await replaceIpsRoute(context, route: MiniAppRoutes.overview);
   }
