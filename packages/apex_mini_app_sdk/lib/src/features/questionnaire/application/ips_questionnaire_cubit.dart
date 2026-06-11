@@ -46,9 +46,11 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
       final List<QuestionnaireQuestion> questions = await service.getQuestions();
       final QuestionnaireRes? existingResult =
           completionStatus.toQuestionnaireRes();
-      final bool skipContractAndQuestions = completionStatus.completed;
-      final bool skipCalculation =
-          skipContractAndQuestions && completionStatus.hasPersistedScore;
+      // Skip questionnaire screens only when score is already persisted — if
+      // completed but no score, the user must re-answer so calculateScore has
+      // valid answers.
+      final bool skipContractAndQuestions = completionStatus.hasPersistedScore;
+      final bool skipCalculation = completionStatus.hasPersistedScore;
 
       emit(
         state.copyWith(
@@ -170,7 +172,7 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     }
   }
 
-  /// Submits the calculated score through the grape set-score endpoint.
+  /// Calculates the score from submitted or state answers, then persists it.
   Future<void> submit() async {
     if (state.isSubmitting) {
       return;
@@ -184,8 +186,29 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     emit(state.copyWith(isSubmitting: true, errorMessage: null));
 
     try {
-      final int totalScore = _resolveTotalScore();
-      final QuestionnaireRes res = await service.saveTotalScore(totalScore);
+      final List<GrapeQuestionAnswerSubmission>? submissions =
+          _buildQuestionnaireSubmissions();
+      final Set<String> goalIds = state.questions
+          .where((QuestionnaireQuestion q) => q.isGoal)
+          .map((QuestionnaireQuestion q) => q.id)
+          .toSet();
+      final List<QuestionnaireAnswer> answers = submissions != null
+          ? submissions
+                .where(
+                  (GrapeQuestionAnswerSubmission s) =>
+                      !goalIds.contains(s.questionId.toString()),
+                )
+                .map(
+                  (GrapeQuestionAnswerSubmission s) => QuestionnaireAnswer(
+                    questionId: s.questionId.toString(),
+                    optionId: s.answerId.toString(),
+                  ),
+                )
+                .toList(growable: false)
+          : _buildAnswers();
+
+      final QuestionnaireRes scoreRes = await service.calculateScore(answers);
+      final QuestionnaireRes res = await service.saveTotalScore(scoreRes.score);
 
       emit(state.copyWith(isSubmitting: false, res: res, errorMessage: null));
     } catch (error) {
@@ -196,6 +219,19 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
         ),
       );
     }
+  }
+
+  List<QuestionnaireAnswer> _buildAnswers() {
+    return state.questions
+        .where((QuestionnaireQuestion q) => !q.isGoal)
+        .map(
+          (QuestionnaireQuestion q) => QuestionnaireAnswer(
+            questionId: q.id,
+            optionId: state.answers[q.id] ?? '',
+          ),
+        )
+        .where((QuestionnaireAnswer a) => a.optionId.isNotEmpty)
+        .toList(growable: false);
   }
 
   List<GrapeQuestionAnswerSubmission>? _buildQuestionnaireSubmissions() {
@@ -236,22 +272,5 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
     return 0;
   }
 
-  int _resolveTotalScore() {
-    int totalScore = 0;
 
-    for (final QuestionnaireQuestion question in state.questions) {
-      if (question.isGoal) {
-        continue;
-      }
-
-      final String? selectedAnswerId = state.answers[question.id];
-      if (selectedAnswerId == null) {
-        continue;
-      }
-
-      totalScore += _resolveScoreValue(question, selectedAnswerId);
-    }
-
-    return totalScore;
-  }
 }

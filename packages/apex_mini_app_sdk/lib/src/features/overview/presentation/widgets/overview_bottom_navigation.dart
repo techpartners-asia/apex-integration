@@ -31,6 +31,9 @@ class OverviewBottomNavigationBar extends StatelessWidget {
   /// Whether the trailing action button is shown and tappable.
   final bool isActionEnabled;
 
+  /// Whether the trailing action button is disabled (no IPS account).
+  final bool isButtonDisabled;
+
   /// Creates the overview bottom navigation bar.
   const OverviewBottomNavigationBar({
     super.key,
@@ -39,6 +42,7 @@ class OverviewBottomNavigationBar extends StatelessWidget {
     required this.onSelected,
     this.onActionPressed,
     this.isActionEnabled = true,
+    this.isButtonDisabled = false,
   });
 
   static const double _barIconSize = AppComponentSize.icon2xl;
@@ -148,7 +152,8 @@ class OverviewBottomNavigationBar extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             InvestXFloatingButton(
-              onTap: () => _handleActionPressed(context),
+              disabled: isButtonDisabled,
+              onTap: isButtonDisabled ? null : () => _handleActionPressed(context),
             ),
           ],
         ),
@@ -176,6 +181,7 @@ OverviewBottomNavigationBar buildOverviewBottomNavigationBar(
   required ValueChanged<int> onSelected,
   VoidCallback? onActionPressed,
   bool isActionEnabled = true,
+  bool isButtonDisabled = false,
 }) {
   final l10n = context.l10n;
 
@@ -184,6 +190,7 @@ OverviewBottomNavigationBar buildOverviewBottomNavigationBar(
     onSelected: onSelected,
     onActionPressed: onActionPressed,
     isActionEnabled: isActionEnabled,
+    isButtonDisabled: isButtonDisabled,
     items: <OverviewBottomNavigationItem>[
       OverviewBottomNavigationItem(
         label: l10n.commonHome,
@@ -202,8 +209,12 @@ class InvestXFloatingButton extends StatelessWidget {
   /// Callback invoked when the action button is tapped.
   final VoidCallback? onTap;
 
+  /// When true, the button is rendered in a disabled (greyed-out) state and
+  /// does not respond to taps.
+  final bool disabled;
+
   /// Creates the InvestX floating action button.
-  const InvestXFloatingButton({super.key, this.onTap});
+  const InvestXFloatingButton({super.key, this.onTap, this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -211,22 +222,26 @@ class InvestXFloatingButton extends StatelessWidget {
 
     return Semantics(
       button: true,
+      enabled: !disabled,
       label: context.l10n.ipsOverviewActionTitle,
       child: GestureDetector(
-        onTap: onTap,
+        onTap: disabled ? null : onTap,
         behavior: HitTestBehavior.opaque,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
           curve: Curves.easeOut,
           width: responsive.dp(62),
           height: responsive.dp(62),
-          decoration: const BoxDecoration(
-            gradient: DesignTokens.primaryGradient,
+          decoration: BoxDecoration(
+            gradient: disabled ? null : DesignTokens.primaryGradient,
+            color: disabled ? DesignTokens.ink.withAlpha(40) : null,
             shape: BoxShape.circle,
           ),
           child: Icon(
             Icons.trending_up_rounded,
-            color: DesignTokens.white,
+            color: disabled
+                ? DesignTokens.ink.withAlpha(100)
+                : DesignTokens.white,
             size: 37,
           ),
         ),

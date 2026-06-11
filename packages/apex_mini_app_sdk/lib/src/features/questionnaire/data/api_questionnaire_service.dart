@@ -64,6 +64,15 @@ class ApiQuestionnaireService implements QuestionnaireService {
   }
 
   @override
+  Future<QuestionnaireRes> calculateScore(
+    List<QuestionnaireAnswer> answers,
+  ) async {
+    await session.ensureLoginSession();
+    final QuestionnaireResDto res = await api.calculateScore(answers);
+    return res.toDomain(true);
+  }
+
+  @override
   Future<QuestionnaireRes> saveTotalScore(int totalScore) async {
     await session.ensureLoginSession();
     final QuestionnaireRes res = await appApi.setGrapeQuestionnaireScore(

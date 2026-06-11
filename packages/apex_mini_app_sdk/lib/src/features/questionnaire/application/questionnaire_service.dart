@@ -15,6 +15,9 @@ abstract interface class QuestionnaireService {
     required List<GrapeQuestionAnswerSubmission> questions,
   });
 
-  /// Persists the calculated grape questionnaire score.
+  /// Sends selected answers to the backend to calculate the score.
+  Future<QuestionnaireRes> calculateScore(List<QuestionnaireAnswer> answers);
+
+  /// Persists the calculated score to the grape backend.
   Future<QuestionnaireRes> saveTotalScore(int totalScore);
 }

@@ -60,6 +60,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                         sessionState.currentUser,
                       ),
                       isActionEnabled: isTradingEnabled,
+                      isButtonDisabled: !data.bootstrapState.hasIpsAcnt,
                     ),
             );
           },
