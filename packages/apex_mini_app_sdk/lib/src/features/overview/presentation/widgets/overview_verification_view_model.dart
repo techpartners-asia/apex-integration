@@ -141,8 +141,8 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           subtitle: l10n.ipsAcntFlowBody,
           status: contractPaid ? StepStatus.active : StepStatus.upcoming,
           onTap: contractPaid
-              ? () => _launchSecAcntFlow(context, state)
-              : null,
+              ? null 
+              : () => _launchSecAcntFlow(context, state),
         ),
         OverviewVerificationStep(
           title: l10n.ipsOverviewFinalStepLabel,
