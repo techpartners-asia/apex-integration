@@ -6,6 +6,7 @@ class GrapeQuestionnaireCompletionStatus {
   const GrapeQuestionnaireCompletionStatus({
     this.completed = false,
     this.score,
+    this.questions = const <QuestionnaireAnswer>[],
   });
 
   /// Whether the backend considers the questionnaire complete.
@@ -14,8 +15,14 @@ class GrapeQuestionnaireCompletionStatus {
   /// Persisted score, when available.
   final int? score;
 
+  /// Previously submitted question-answer pairs from the backend.
+  final List<QuestionnaireAnswer> questions;
+
   /// Whether a persisted score should skip the calculate step.
   bool get hasPersistedScore => score != null && score! > 0;
+
+  /// Whether completed answers exist to auto-calculate score from.
+  bool get hasCompletedAnswers => completed && questions.isNotEmpty;
 
   /// Converts the persisted score into the pack-selection result model.
   QuestionnaireRes? toQuestionnaireRes() {

@@ -27,6 +27,10 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
   }) : super(IpsQuestionnaireState(bootstrapState: initialBootstrapState));
 
   /// Loads bootstrap state and questionnaire questions.
+  ///
+  /// When check-completed returns [completed: true] with stored answers,
+  /// auto-calculates and persists the score without showing questionnaire screens.
+  /// When [completed: false], loads questions for the user to answer from scratch.
   Future<void> load() async {
     emit(
       state.copyWith(
@@ -43,14 +47,46 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
           await BootstrapStateResolver(service: bootstrapService!).load();
       final GrapeQuestionnaireCompletionStatus completionStatus =
           await service.checkCompletionStatus();
+
+      if (completionStatus.completed) {
+        final List<QuestionnaireQuestion> ipsQuestions =
+            await service.getQuestions();
+        final Set<String> goalIds = ipsQuestions
+            .where((QuestionnaireQuestion q) => q.isGoal)
+            .map((QuestionnaireQuestion q) => q.id)
+            .toSet();
+        final Set<String> ipsQuestionIds =
+            ipsQuestions.map((QuestionnaireQuestion q) => q.id).toSet();
+
+        final List<QuestionnaireAnswer> filteredAnswers = completionStatus
+            .questions
+            .where(
+              (QuestionnaireAnswer a) =>
+                  ipsQuestionIds.contains(a.questionId) &&
+                  !goalIds.contains(a.questionId),
+            )
+            .toList(growable: false);
+
+        final QuestionnaireRes scoreRes =
+            await service.calculateScore(filteredAnswers);
+        final QuestionnaireRes res =
+            await service.saveTotalScore(scoreRes.score);
+
+        emit(
+          state.copyWith(
+            isLoading: false,
+            bootstrapState: bootstrapState,
+            questions: ipsQuestions,
+            res: res,
+            skipContractAndQuestions: true,
+            skipCalculation: true,
+            errorMessage: null,
+          ),
+        );
+        return;
+      }
+
       final List<QuestionnaireQuestion> questions = await service.getQuestions();
-      final QuestionnaireRes? existingResult =
-          completionStatus.toQuestionnaireRes();
-      // Skip questionnaire screens only when score is already persisted — if
-      // completed but no score, the user must re-answer so calculateScore has
-      // valid answers.
-      final bool skipContractAndQuestions = completionStatus.hasPersistedScore;
-      final bool skipCalculation = completionStatus.hasPersistedScore;
 
       emit(
         state.copyWith(
@@ -58,9 +94,9 @@ class IpsQuestionnaireCubit extends Cubit<IpsQuestionnaireState> {
           bootstrapState: bootstrapState,
           questions: questions,
           answers: const <String, String>{},
-          res: existingResult,
-          skipContractAndQuestions: skipContractAndQuestions,
-          skipCalculation: skipCalculation,
+          res: null,
+          skipContractAndQuestions: false,
+          skipCalculation: false,
           errorMessage: null,
         ),
       );
