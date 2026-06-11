@@ -294,6 +294,7 @@ class GrapeQuestionnaireCheckCompletedResDto {
   const GrapeQuestionnaireCheckCompletedResDto({
     required this.completed,
     this.score,
+    this.questions = const <QuestionnaireAnswer>[],
   });
 
   /// Whether the questionnaire is complete on the backend.
@@ -302,15 +303,29 @@ class GrapeQuestionnaireCheckCompletedResDto {
   /// Persisted score, when available.
   final int? score;
 
+  /// Previously submitted question-answer pairs.
+  final List<QuestionnaireAnswer> questions;
+
   /// Parses the grape check-completed response envelope.
   factory GrapeQuestionnaireCheckCompletedResDto.fromEnvelope(
     Map<String, Object?> json,
   ) {
     final Map<String, Object?> payload = _unwrapEnvelopeBody(json);
 
+    final List<QuestionnaireAnswer> questions = ApiParser.asObjectMapList(payload['questions'])
+        .map(
+          (Map<String, Object?> q) => QuestionnaireAnswer(
+            questionId: ApiParser.asNullableString(q['question_id']) ?? '',
+            optionId: ApiParser.asNullableString(q['answer_id']) ?? '',
+          ),
+        )
+        .where((QuestionnaireAnswer a) => a.questionId.isNotEmpty && a.optionId.isNotEmpty)
+        .toList(growable: false);
+
     return GrapeQuestionnaireCheckCompletedResDto(
       completed: ApiParser.asFlag(payload['completed']),
       score: ApiParser.asNullableInt(payload['score']),
+      questions: questions,
     );
   }
 
@@ -319,6 +334,7 @@ class GrapeQuestionnaireCheckCompletedResDto {
     return GrapeQuestionnaireCompletionStatus(
       completed: completed,
       score: score,
+      questions: questions,
     );
   }
 }

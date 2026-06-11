@@ -83,10 +83,15 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   AcntBootstrapState? state, {
   UserEntityDto? currentUser,
 }) {
-  final bool hasCompletePersonalInfo = hasCompleteSecAcntPersonalInfo(
-    state,
-    user: currentUser,
-  );
+  final BankDto? bank = currentUser?.bank;
+  final bool hasUserSavedBank =
+      _trimToNull(bank?.accountNumber) != null ||
+      _trimToNull(bank?.bankCode) != null;
+  final bool hasCompletePersonalInfo = hasUserSavedBank &&
+      hasCompleteSecAcntPersonalInfo(
+        state,
+        user: currentUser,
+      );
   final bool hasSignature = hasSavedSecAcntSignature(currentUser);
   final bool hasCompletedContract = hasCompletedSecAcntContract(currentUser);
   final bool hasPaidContract = hasPaidSecAcntOpeningFee(

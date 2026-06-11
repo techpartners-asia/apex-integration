@@ -62,6 +62,7 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
     AcntBootstrapState? bootstrapState,
+    required bool requiresOpeningPaymentFlow,
   }) async {
     if (state.isSubmitting) {
       return state.paymentRes;
@@ -72,15 +73,6 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     );
 
     try {
-      final SecAcntRequestResult? requestResult;
-      if (bootstrapState?.hasAcnt == true) {
-        requestResult = null;
-      } else {
-        requestResult = await service.addSecuritiesAcntReq(
-          personalInfo: personalInfo,
-        );
-      }
-
       final double invoiceAmount = state.totalPayableAmount(payableAmount);
       final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
         flow: MiniAppPaymentFlow.secAcntOpening,
@@ -90,6 +82,33 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
           isTransaction: false,
         ),
       );
+
+      BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
+        level: paymentRes.success ? 'info' : 'warn',
+        path: 'sec_acnt/submitOpeningPayment',
+        msg: 'sec_acnt_opening_payment_result',
+        info: <String, Object?>{
+          'status': paymentRes.status.name,
+          'success': paymentRes.success,
+          'transactionId': paymentRes.transactionId,
+          'message': paymentRes.message,
+          'failureCode': paymentRes.failure?.code,
+          'failureMessage': paymentRes.failure?.message,
+          'invoiceId': paymentRes.req.invoiceId,
+          'paymentRecordId': paymentRes.req.paymentRecordId,
+          'amount': paymentRes.req.amount,
+          'flow': paymentRes.req.flow.name,
+        },
+      );
+
+      SecAcntRequestResult? requestResult;
+      if (paymentRes.success) {
+        if (bootstrapState?.hasAcnt != true) {
+          requestResult = await service.addSecuritiesAcntReq(
+            personalInfo: personalInfo,
+          );
+        }
+      }
 
       emit(
         state.copyWith(
