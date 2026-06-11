@@ -214,7 +214,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           ? l10n.ipsHomeRecommendedPackCta
           : l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: isAwaitingActivation ? null : () => _launchSecAcntOrQuestionnaire(context, state),
+      onPromoTap: (isAwaitingActivation && !canContinueToQuestionnaire) ? null : () => _launchSecAcntOrQuestionnaire(context, state),
     );
   }
 
