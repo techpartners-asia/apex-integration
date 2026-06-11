@@ -61,6 +61,7 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
   Future<MiniAppPaymentRes?> submitOpeningPayment({
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
+    AcntBootstrapState? bootstrapState,
     required bool requiresOpeningPaymentFlow,
   }) async {
     if (state.isSubmitting) {
@@ -102,7 +103,7 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
 
       SecAcntRequestResult? requestResult;
       if (paymentRes.success) {
-        if (!requiresOpeningPaymentFlow) {
+        if (bootstrapState?.hasAcnt != true) {
           requestResult = await service.addSecuritiesAcntReq(
             personalInfo: personalInfo,
           );
