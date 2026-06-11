@@ -42,12 +42,6 @@ class SecAcntScreen extends StatelessWidget {
     );
 
     if (initialStep == null) {
-      if (shouldOpenQuestionnaireAfterSecAcntFlow(currentUser: currentUser)) {
-        return _SecAcntQuestionnaireHandoff(
-          bootstrapState: initialBootstrapState,
-          currentUser: currentUser,
-        );
-      }
       return SecAcntCalculationScreen(bootstrapState: initialBootstrapState);
     }
 
@@ -119,40 +113,3 @@ class SecAcntScreen extends StatelessWidget {
   }
 }
 
-/// Replaces the securities flow with questionnaire when only InvestX steps remain.
-class _SecAcntQuestionnaireHandoff extends StatefulWidget {
-  const _SecAcntQuestionnaireHandoff({
-    required this.bootstrapState,
-    required this.currentUser,
-  });
-
-  final AcntBootstrapState? bootstrapState;
-  final UserEntityDto? currentUser;
-
-  @override
-  State<_SecAcntQuestionnaireHandoff> createState() =>
-      _SecAcntQuestionnaireHandoffState();
-}
-
-class _SecAcntQuestionnaireHandoffState
-    extends State<_SecAcntQuestionnaireHandoff> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) {
-        return;
-      }
-      await routeAfterSecAcntFlow(
-        context,
-        bootstrapState: widget.bootstrapState,
-        currentUser: widget.currentUser,
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox.shrink();
-  }
-}

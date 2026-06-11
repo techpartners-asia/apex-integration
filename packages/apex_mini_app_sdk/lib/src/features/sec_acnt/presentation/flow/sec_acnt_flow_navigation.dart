@@ -15,21 +15,18 @@ bool shouldOpenQuestionnaireAfterSecAcntFlow({
   UserEntityDto? currentUser,
 }) => !hasCompletedSecAcntContract(currentUser);
 
-/// Routes to questionnaire when InvestX agreement is still required, otherwise overview.
+/// Routes to overview after the securities account flow completes.
+///
+/// Questionnaire is only reachable from the overview page, not automatically
+/// after the secAcnt flow.
 Future<void> routeAfterSecAcntFlow(
   BuildContext context, {
   required AcntBootstrapState? bootstrapState,
   UserEntityDto? currentUser,
 }) async {
-  final String nextRoute = shouldOpenQuestionnaireAfterSecAcntFlow(
-    currentUser: currentUser,
-  )
-      ? MiniAppRoutes.questionnaire
-      : MiniAppRoutes.overview;
-
   await replaceIpsRoute(
     context,
-    route: nextRoute,
+    route: MiniAppRoutes.overview,
     arguments: bootstrapState,
   );
 }
