@@ -63,7 +63,10 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
     final MiniAppPaymentRes? res = await cubit.submitOpeningPayment(
       payableAmount: amount,
       personalInfo: widget.draft.toPersonalInfoData(),
-      bootstrapState: _bootstrapState,
+      requiresOpeningPaymentFlow: requiresSecAcntOpeningPayment(
+        _bootstrapState,
+        currentUser: widget.currentUser,
+      ),
     );
     if (!mounted) {
       return;
