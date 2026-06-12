@@ -131,8 +131,14 @@ abstract class SdkLocalizations {
   /// No description provided for @commonDismiss.
   ///
   /// In en, this message translates to:
-  /// **'Close'**
+  /// **'Dismiss'**
   String get commonDismiss;
+
+  /// No description provided for @commonClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get commonClose;
 
   /// No description provided for @commonBack.
   ///
@@ -515,7 +521,7 @@ abstract class SdkLocalizations {
   /// No description provided for @ipsOverviewActionPendingOrderMessage.
   ///
   /// In en, this message translates to:
-  /// **'You have a pending pack order. Complete payment to confirm it before placing a new order.'**
+  /// **'You already have an active package order, so you can place a new order once it is confirmed.'**
   String get ipsOverviewActionPendingOrderMessage;
 
   /// No description provided for @ipsOverviewProfileVerified.
@@ -2792,11 +2798,17 @@ abstract class SdkLocalizations {
   /// **'Date'**
   String get closedDate;
 
-  /// No description provided for @commonClose.
+  /// No description provided for @ipsAcntServiceAgreement.
   ///
   /// In en, this message translates to:
-  /// **'Close'**
-  String get commonClose;
+  /// **'INVESTX Service Agreement'**
+  String get ipsAcntServiceAgreement;
+
+  /// No description provided for @ipsQuestionnaireProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Determine risk profile'**
+  String get ipsQuestionnaireProfileTitle;
 }
 
 class _SdkLocalizationsDelegate
