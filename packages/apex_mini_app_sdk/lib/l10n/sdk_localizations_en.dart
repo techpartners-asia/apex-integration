@@ -27,6 +27,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get commonDismiss => 'Dismiss';
 
   @override
+  String get commonClose => 'Close';
+
+  @override
   String get commonBack => 'Back';
 
   @override
@@ -1492,5 +1495,8 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get closedDate => 'Date';
 
   @override
-  String get commonClose => 'Close';
+  String get ipsAcntServiceAgreement => 'INVESTX Service Agreement';
+
+  @override
+  String get ipsQuestionnaireProfileTitle => 'Determine risk profile';
 }

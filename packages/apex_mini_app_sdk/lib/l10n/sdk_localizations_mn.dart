@@ -27,6 +27,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get commonDismiss => 'Болих';
 
   @override
+  String get commonClose => 'Хаах';
+
+  @override
   String get commonBack => 'Буцах';
 
   @override
@@ -1494,5 +1497,8 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get closedDate => 'Огноо';
 
   @override
-  String get commonClose => 'Хаах';
+  String get ipsAcntServiceAgreement => 'INVESTX үйлчилгээний гэрээ';
+
+  @override
+  String get ipsQuestionnaireProfileTitle => 'Зан төлөв тодорхойлох';
 }

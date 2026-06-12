@@ -590,5 +590,7 @@
   "ipsPortfolioFilterBonds": "Bonds",
   "ipsPortfolioFilterStocks": "Stocks",
   "closedPrice": "Closing price",
-  "closedDate": "Date"
+  "closedDate": "Date",
+  "ipsAcntServiceAgreement": "INVESTX Service Agreement",
+  "ipsQuestionnaireProfileTitle": "Determine risk profile"
 }

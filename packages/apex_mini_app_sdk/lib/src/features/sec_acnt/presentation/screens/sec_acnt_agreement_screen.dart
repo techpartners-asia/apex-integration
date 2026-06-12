@@ -86,14 +86,6 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
       onBack: () => Navigator.of(context).maybePop(),
       onDismiss: () => closeSecAcntFlow(context),
       hasSafeArea: false,
-      headerWidget: Padding(
-        padding: EdgeInsets.symmetric(horizontal: context.responsive.dp(16)),
-        child: SecAcntStepIndicator(
-          currentStep: widget.step,
-          bootstrapState: widget.bootstrapState,
-          currentUser: widget.currentUser,
-        ),
-      ),
       title: title,
       body: AgreementHtmlBody(agreementText: agreementText),
       consentLabel: context.l10n.secAcntAgreementConsent,

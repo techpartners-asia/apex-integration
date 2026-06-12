@@ -116,14 +116,6 @@ class _SecAcntSignatureScreenState extends State<SecAcntSignatureScreen> {
       onBack: () => Navigator.of(context).maybePop(),
       onDismiss: () => closeMiniAppSafely(context),
       hasSafeArea: false,
-      headerWidget: Padding(
-        padding: EdgeInsets.symmetric(horizontal: context.responsive.dp(16)),
-        child: SecAcntStepIndicator(
-          currentStep: SecAcntFlowStep.signature,
-          bootstrapState: widget.bootstrapState,
-          currentUser: widget.currentUser,
-        ),
-      ),
       title: context.l10n.commonDrawSignaturePrompt,
       points: _points,
       onPointAdd: (Offset point) => setState(() {
