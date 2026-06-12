@@ -47,8 +47,25 @@ class OverviewHomeTab extends StatelessWidget {
           ),
         );
 
+    final bool showUnpaidReminder =
+        data.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid;
+
+    final Widget verificationCard = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        OverviewVerificationCard(viewModel: viewModel),
+        if (showUnpaidReminder) ...<Widget>[
+          SizedBox(height: context.responsive.dp(14)),
+          ReminderCard(
+            title: context.l10n.ipsOverviewDashboardReminderTitle,
+            message: context.l10n.secAcntCalculationPendingMessage,
+          ),
+        ],
+      ],
+    );
+
     if (onRefresh == null) {
-      return OverviewVerificationCard(viewModel: viewModel);
+      return verificationCard;
     }
 
     return MiniAppRefreshContainer(
@@ -60,7 +77,7 @@ class OverviewHomeTab extends StatelessWidget {
         context.responsive.spacing.financialCardSpacing,
         context.responsive.dp(118),
       ),
-      child: OverviewVerificationCard(viewModel: viewModel),
+      child: verificationCard,
     );
   }
 }
