@@ -425,11 +425,6 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SecAcntStepIndicator(
-              currentStep: SecAcntFlowStep.personalInformation,
-              bootstrapState: widget.bootstrapState,
-              currentUser: widget.currentUser,
-            ),
             SecAcntPersonalInfoStep(
               mobileController: _mobileController,
               secondaryMobileController: _secondaryMobileController,
