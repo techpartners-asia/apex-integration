@@ -9,26 +9,10 @@ class StatementsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<
+    return BlocBuilder<
       IpsStatementsCubit,
       LoadableState<IpsStatementsViewData>
     >(
-      listenWhen:
-          (
-            LoadableState<IpsStatementsViewData> previous,
-            LoadableState<IpsStatementsViewData> current,
-          ) {
-            return current.isSuccess &&
-                (current.errorMessage?.trim().isNotEmpty ?? false);
-          },
-      listener:
-          (BuildContext context, LoadableState<IpsStatementsViewData> state) {
-            final String? message = state.errorMessage?.trim();
-            if (message == null || message.isEmpty) {
-              return;
-            }
-            MiniAppToast.showError(context, message: message);
-          },
       builder:
           (BuildContext context, LoadableState<IpsStatementsViewData> state) {
             final l10n = context.l10n;
