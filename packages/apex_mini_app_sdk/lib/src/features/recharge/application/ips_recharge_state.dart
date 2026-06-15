@@ -54,7 +54,7 @@ class IpsRechargeState {
 
   /// Total payable amount.
   double get totalPayable =>
-      packQty <= 0 ? 0 : (packQty * unitPrice) + serviceFee;
+      packQty <= 0 ? 0 : packQty * (unitPrice + serviceFee);
 
   /// Copies state while allowing explicit null assignment for nullable fields.
   IpsRechargeState copyWith({

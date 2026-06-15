@@ -60,7 +60,7 @@ class ContractState {
   double get currentPackBalance => overview?.packQty ?? 0;
 
   /// Total payable amount for the selected quantity and service fee.
-  double get totalPayable => purchaseQty <= 0 ? 0 : (purchaseQty * unitPrice) + serviceFee;
+  double get totalPayable => purchaseQty <= 0 ? 0 : purchaseQty * (unitPrice + serviceFee);
 
   /// Copies state while allowing explicit null assignment for nullable fields.
   ContractState copyWith({
