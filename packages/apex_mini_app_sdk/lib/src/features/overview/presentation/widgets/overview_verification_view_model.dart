@@ -7,7 +7,7 @@ class OverviewVerificationStep {
   final String title;
 
   /// Step subtitle.
-  final String subtitle;
+  final String? subtitle;
 
   /// Current visual status.
   final StepStatus status;
@@ -21,7 +21,7 @@ class OverviewVerificationStep {
   /// Creates a verification step.
   const OverviewVerificationStep({
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     required this.status,
     this.onTap,
     this.isLast = false,
@@ -111,38 +111,36 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
   BuildContext context,
   AcntBootstrapState state, {
   bool hasPaidSecAcntContract = false,
+  bool isQuestionnaireCompleted = false,
 }) {
   final l10n = context.l10n;
 
-  if (!state.hasAcnt) {
+  if (!state.hasAcnt || state.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid) {
     final bool contractPaid = hasPaidSecAcntContract;
 
     return OverviewVerificationViewModel(
       title: l10n.ipsOverviewVerificationTitle,
       subtitle: l10n.ipsOverviewVerificationSubtitle,
       progressCurrent: contractPaid ? 1 : 0,
-      progressTotal: 3,
+      progressTotal: 4,
       steps: <OverviewVerificationStep>[
         OverviewVerificationStep(
-          title: l10n.ipsOverviewProfileMenuPersonalInfo,
+          title: l10n.ipsAcntOpenAcnt,
           subtitle: contractPaid
               ? l10n.ipsOverviewProfileVerified
               : l10n.ipsOverviewProfilePersonalInfoMissing,
           status: contractPaid ? StepStatus.completed : StepStatus.active,
           onTap: contractPaid
               ? null
-              : () => launchIpsRoute(
-                  context,
-                  route: MiniAppRoutes.personalInfo,
-                ),
+              : () => _launchSecAcntFlow(context, state),
         ),
         OverviewVerificationStep(
-          title: l10n.ipsAcntOpenAcnt,
-          subtitle: l10n.ipsAcntFlowBody,
-          status: contractPaid ? StepStatus.active : StepStatus.upcoming,
-          onTap: contractPaid
-              ? null 
-              : () => _launchSecAcntFlow(context, state),
+          title: l10n.secAcntInvestxAgreementTitle,
+          status: StepStatus.upcoming,
+        ),
+        OverviewVerificationStep(
+        title: l10n.ipsQuestionnaireProfileTitle,
+        status: StepStatus.upcoming,
         ),
         OverviewVerificationStep(
           title: l10n.ipsOverviewFinalStepLabel,
@@ -160,110 +158,80 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
       promoButtonLabel: l10n.commonContinue,
       onPromoTap: () => contractPaid
           ? _launchSecAcntFlow(context, state)
-          : launchIpsRoute(context, route: MiniAppRoutes.personalInfo),
+          : null,
     );
   }
 
   if (!state.hasIpsAcnt) {
-    final bool canContinueToQuestionnaire =
-        state.canContinueToQuestionnaireFromOverview;
-
     final bool isAwaitingActivation = hasPaidSecAcntContract;
 
     return OverviewVerificationViewModel(
       title: l10n.ipsOverviewVerificationTitle,
       subtitle: l10n.ipsOverviewVerificationSubtitle,
-      progressCurrent: canContinueToQuestionnaire ? 2 : 1,
-      progressTotal: 3,
+      progressCurrent: isQuestionnaireCompleted ? 3 : QuestionnaireLocalPrefs.hasCompletedAgreementAndSignature ? 2 : 1,
+      progressTotal: 4,
       steps: <OverviewVerificationStep>[
         OverviewVerificationStep(
-          title: l10n.ipsOverviewProfileMenuPersonalInfo,
+          title: l10n.ipsAcntOpenAcnt,
           subtitle: l10n.ipsOverviewProfileVerified,
           status: StepStatus.completed,
         ),
         OverviewVerificationStep(
-          title: l10n.ipsAcntVerifyAcnt,
-          subtitle: canContinueToQuestionnaire
-              ? l10n.ipsAcntHasAcnt
-              : l10n.ipsAcntFlowBody,
-          status: canContinueToQuestionnaire
+          title: l10n.secAcntInvestxAgreementTitle,
+          status: QuestionnaireLocalPrefs.hasCompletedAgreementAndSignature
               ? StepStatus.completed
               : StepStatus.active,
-          onTap: (canContinueToQuestionnaire || isAwaitingActivation)
+          onTap: QuestionnaireLocalPrefs.hasCompletedAgreementAndSignature
               ? null
-              : () => _launchSecAcntFlow(context, state),
+              : () => _launchQuestionnaire(context, state: state),
         ),
         OverviewVerificationStep(
-          title: canContinueToQuestionnaire
-              ? l10n.ipsQuestionnaireTitle
-              : l10n.ipsAcntOpenAcnt,
-          subtitle: canContinueToQuestionnaire
-              ? l10n.ipsQuestionnaireSubtitle
-              : l10n.ipsAcntFlowBody,
-          status: canContinueToQuestionnaire
+          title: l10n.ipsQuestionnaireProfileTitle,
+          status: isQuestionnaireCompleted
+                  ? StepStatus.completed
+                  : StepStatus.active,
+          onTap: !isQuestionnaireCompleted
+              ? () => _launchQuestionnaire(context, state: state)
+              : null,
+        ),
+        OverviewVerificationStep(
+          title: l10n.ipsQuestionnaireTitle,
+          subtitle: l10n.ipsQuestionnaireSubtitle,
+          status: isQuestionnaireCompleted
               ? StepStatus.active
               : StepStatus.upcoming,
-          onTap: canContinueToQuestionnaire
+          onTap: isQuestionnaireCompleted
               ? () => _launchQuestionnaire(context, state: state)
               : null,
           isLast: true,
         ),
       ],
       promoEyebrow: l10n.ipsOverviewActionTitle,
-      promoTitle: canContinueToQuestionnaire
+      promoTitle: isQuestionnaireCompleted
           ? l10n.ipsHomeRecommendedPackCta
           : l10n.ipsAcntOpenAcnt,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: (isAwaitingActivation && !canContinueToQuestionnaire) ? null : () => _launchSecAcntOrQuestionnaire(context, state),
-    );
-  }
-
-  if (!state.hasOpenSecAcnt) {
-    return OverviewVerificationViewModel(
-      title: l10n.ipsOverviewVerificationTitle,
-      subtitle: l10n.ipsOverviewVerificationSubtitle,
-      progressCurrent: 1,
-      progressTotal: 3,
-      steps: <OverviewVerificationStep>[
-        OverviewVerificationStep(
-          title: l10n.ipsOverviewProfileMenuPersonalInfo,
-          subtitle: l10n.ipsOverviewProfileVerified,
-          status: StepStatus.completed,
-        ),
-        OverviewVerificationStep(
-          title: l10n.ipsAcntVerifyAcnt,
-          subtitle: l10n.ipsAcntFlowBody,
-          status: StepStatus.active,
-          onTap: () => _launchSecAcntFlow(context, state),
-        ),
-        OverviewVerificationStep(
-          title: l10n.ipsOverviewFinalStepLabel,
-          subtitle: l10n.ipsQuestionnaireViewPacks,
-          status: StepStatus.upcoming,
-          isLast: true,
-        ),
-      ],
-      promoEyebrow: l10n.ipsOverviewActionTitle,
-      promoTitle: l10n.ipsAcntOpenAcnt,
-      promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => _launchSecAcntFlow(context, state),
+      onPromoTap: (isAwaitingActivation && !isQuestionnaireCompleted) ? null : () => _launchSecAcntOrQuestionnaire(context, state),
     );
   }
 
   return OverviewVerificationViewModel(
     title: l10n.ipsOverviewVerificationTitle,
     subtitle: l10n.ipsOverviewVerificationSubtitle,
-    progressCurrent: 2,
-    progressTotal: 3,
+    progressCurrent: 3,
+    progressTotal: 4,
     steps: <OverviewVerificationStep>[
       OverviewVerificationStep(
-        title: l10n.ipsOverviewProfileMenuPersonalInfo,
-        subtitle: l10n.ipsOverviewProfileVerified,
+        title: l10n.ipsAcntOpenAcnt,
+        subtitle: l10n.ipsAcntHasAcnt,
         status: StepStatus.completed,
       ),
       OverviewVerificationStep(
-        title: l10n.ipsAcntVerifyAcnt,
-        subtitle: l10n.ipsAcntHasAcnt,
+        title: l10n.secAcntInvestxAgreementTitle,
+        status: StepStatus.completed,
+      ),
+       OverviewVerificationStep(
+        title: l10n.ipsQuestionnaireProfileTitle,
         status: StepStatus.completed,
       ),
       OverviewVerificationStep(

@@ -202,13 +202,15 @@ class _OverviewTimelineRow extends StatelessWidget {
                       variant: MiniAppTextVariant.subtitle3,
                       color: textColor,
                     ),
-                    SizedBox(height: responsive.dp(4)),
-                    CustomText(
-                      step.subtitle,
-                      variant: MiniAppTextVariant.caption1,
-                      color: DesignTokens.muted,
-                      maxLines: 2,
-                    ),
+                    if (step.subtitle != null) ...<Widget>[
+                      SizedBox(height: responsive.dp(4)),
+                      CustomText(
+                        step.subtitle!,
+                        variant: MiniAppTextVariant.caption1,
+                        color: DesignTokens.muted,
+                        maxLines: 2,
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -263,7 +265,7 @@ class _OverviewTimelineIconColumn extends StatelessWidget {
         if (showConnector)
           Container(
             width: responsive.dp(2),
-            height: responsive.dp(50),
+            height: responsive.dp(35),
             margin: EdgeInsets.symmetric(
               vertical: responsive.dp(4),
             ),
