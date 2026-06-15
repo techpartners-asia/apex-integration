@@ -35,6 +35,7 @@
   "errorsMissingContract": "Backend-ийн нарийн contract хараахан бэлэн болоогүй байна.",
   "errorsUnknownRoute": "Route бүртгэгдээгүй байна.",
   "validationRequired": "Энэ талбарыг заавал бөглөнө.",
+  "validationFillRequired": "Талбарыг заавал бөглөнө үү.",
   "validationSelectionRequired": "Утга сонгоно уу.",
   "validationInvalidEmail": "Имэйл хаягаа зөв оруулна уу.",
   "validationInvalidPhone": "Утасны дугаараа зөв оруулна уу.",

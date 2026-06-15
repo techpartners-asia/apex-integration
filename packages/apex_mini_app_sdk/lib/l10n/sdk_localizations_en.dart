@@ -119,6 +119,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get validationRequired => 'This field is required.';
 
   @override
+  String get validationFillRequired => 'Please fill in the required fields.';
+
+  @override
   String get validationSelectionRequired => 'Please select a value.';
 
   @override

@@ -80,6 +80,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   /// Whether profile save is running.
   bool _isSaving = false;
 
+  /// Whether the user has pressed save at least once; triggers required-field errors.
+  bool _hasAttemptedSave = false;
+
   /// Monotonic token used to ignore stale async lookup results.
   int _lookupToken = 0;
 
@@ -198,6 +201,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               isSaving: _isSaving,
               isResolvingAccountHolder: _isResolvingAccountHolder,
               lookupErrorMessage: _lookupErrorMessage,
+              showRequiredErrors: _hasAttemptedSave,
               onSelectBank: () => _openBankSelectionSheet(context),
             ),
           ),
@@ -205,7 +209,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         BottomActionBar(
           child: PrimaryButton(
             label: context.l10n.commonSave,
-            onPressed: _isSaving || !_canSave() ? null : _save,
+            onPressed: _isSaving ? null : _save,
           ),
         ),
       ],
@@ -214,6 +218,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
   /// Saves profile data after validating account lookup requirements.
   Future<void> _save() async {
+    if (!_hasAttemptedSave) {
+      setState(() => _hasAttemptedSave = true);
+    }
+
     if (!_canSave()) {
       _showSaveBlockedToast();
       return;
@@ -435,12 +443,17 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       return false;
     }
 
+    if (_lastNameController.text.trim().isEmpty ||
+        _firstNameController.text.trim().isEmpty ||
+        _emailController.text.trim().isEmpty ||
+        _phoneController.text.trim().isEmpty ||
+        _industryController.text.trim().isEmpty ||
+        _positionController.text.trim().isEmpty) {
+      return false;
+    }
+
     final String bankCode = _bankCode;
     final String accountNumber = _accountNumber;
-    final bool hasBankInput = bankCode.isNotEmpty || accountNumber.isNotEmpty;
-    if (!hasBankInput) {
-      return true;
-    }
 
     if (bankCode.isEmpty || !_isValidAccountNumber(accountNumber)) {
       return false;
@@ -480,7 +493,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     }
     MiniAppToast.showError(
       context,
-      message: _lookupErrorMessage ?? context.l10n.validationSelectionRequired,
+      message: _lookupErrorMessage ?? context.l10n.validationFillRequired,
     );
   }
 }

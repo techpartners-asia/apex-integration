@@ -119,6 +119,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get validationRequired => 'Энэ талбарыг заавал бөглөнө.';
 
   @override
+  String get validationFillRequired => 'Талбарыг заавал бөглөнө үү.';
+
+  @override
   String get validationSelectionRequired => 'Утга сонгоно уу.';
 
   @override

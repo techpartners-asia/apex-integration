@@ -308,6 +308,12 @@ abstract class SdkLocalizations {
   /// **'This field is required.'**
   String get validationRequired;
 
+  /// No description provided for @validationFillRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in the required fields.'**
+  String get validationFillRequired;
+
   /// No description provided for @validationSelectionRequired.
   ///
   /// In en, this message translates to:

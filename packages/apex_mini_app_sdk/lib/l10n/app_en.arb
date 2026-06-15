@@ -35,6 +35,7 @@
   "errorsMissingContract": "Exact backend contract is not available yet.",
   "errorsUnknownRoute": "The reqed flow route is not registered.",
   "validationRequired": "This field is required.",
+  "validationFillRequired": "Please fill in the required fields.",
   "validationSelectionRequired": "Please select a value.",
   "validationInvalidEmail": "Enter a valid email address.",
   "validationInvalidPhone": "Enter a valid phone number.",
