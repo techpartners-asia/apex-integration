@@ -93,7 +93,6 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
         user: currentUser,
       );
   final bool hasSignature = hasSavedSecAcntSignature(currentUser);
-  final bool hasCompletedContract = hasCompletedSecAcntContract(currentUser);
   final bool hasPaidContract = hasPaidSecAcntOpeningFee(
     state,
     currentUser: currentUser,
@@ -121,7 +120,7 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
   return <SecAcntFlowStep>[
     if (!hasCompletePersonalInfo) SecAcntFlowStep.consent,
     if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
-    if (!hasCompletedContract) SecAcntFlowStep.secAgreement,
+    if (!SecAcntLocalPrefs.hasAcceptedSecAgreement) SecAcntFlowStep.secAgreement,
     if (!hasSignature) SecAcntFlowStep.signature,
     if (!hasPaidContract) SecAcntFlowStep.payment,
   ];
