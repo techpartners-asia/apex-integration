@@ -46,13 +46,20 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
       await SecAcntLocalPrefs.markSecAgreementAccepted();
     }
 
-    final SecAcntFlowStep nextStep =
-        resolveNextSecAcntFlowStep(
-          SecAcntFlowStep.secAgreement,
-          widget.bootstrapState,
-          currentUser: widget.currentUser,
-        ) ??
-        SecAcntFlowStep.signature;
+    final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
+      SecAcntFlowStep.secAgreement,
+      widget.bootstrapState,
+      currentUser: widget.currentUser,
+    );
+
+    if (nextStep == null) {
+      await routeAfterSecAcntFlow(
+        context,
+        bootstrapState: widget.bootstrapState,
+        currentUser: widget.currentUser,
+      );
+      return;
+    }
 
     await pushSecAcntFlowStep(
       context,

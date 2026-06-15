@@ -169,11 +169,6 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      // SecAcntStepIndicator(
-                      //   currentStep: SecAcntFlowStep.payment,
-                      //   bootstrapState: _bootstrapState,
-                      //   currentUser: widget.currentUser,
-                      // ),
                       SecAcntPaymentStep(
                         errorMessage: state.errorMessage,
                         isSubmitting: state.isSubmitting,

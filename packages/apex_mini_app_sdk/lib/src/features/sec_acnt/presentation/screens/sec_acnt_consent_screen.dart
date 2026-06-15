@@ -103,10 +103,6 @@ class SecAcntConsentScreen extends StatelessWidget {
         padding: EdgeInsets.all(responsive.dp(AppSpacing.xl)),
         child: Column(
           children: <Widget>[
-            // SecAcntStepIndicator(
-            //   currentStep: SecAcntFlowStep.consent,
-            //   bootstrapState: bootstrapState,
-            // ),
             Expanded(
               child: Center(
                 child: ConstrainedBox(

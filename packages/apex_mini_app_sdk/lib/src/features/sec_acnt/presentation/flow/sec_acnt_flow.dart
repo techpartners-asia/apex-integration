@@ -138,20 +138,6 @@ SecAcntFlowStep? resolveInitialSecAcntFlowStep(
   return steps.isEmpty ? null : steps.first;
 }
 
-/// Steps used by the top progress indicator.
-///
-/// [SecAcntFlowStep.consent] is excluded because that intro screen does not
-/// show the indicator; the first visible bar should align with
-/// [SecAcntFlowStep.personalInformation].
-List<SecAcntFlowStep> resolveSecAcntFlowProgressSteps(
-  AcntBootstrapState? state, {
-  UserEntityDto? currentUser,
-}) {
-  return resolveSecAcntFlowSteps(state, currentUser: currentUser)
-      .where((SecAcntFlowStep step) => step != SecAcntFlowStep.consent)
-      .toList(growable: false);
-}
-
 /// Returns the next step after [currentStep], or null when the flow is done.
 SecAcntFlowStep? resolveNextSecAcntFlowStep(
   SecAcntFlowStep currentStep,
