@@ -20,6 +20,18 @@ class QuestionnaireScreen extends StatefulWidget {
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   bool _skipToPacksHandled = false;
   bool _redirectToPacksInFlight = false;
+  bool _prefsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    await QuestionnaireLocalPrefs.init();
+    if (mounted) setState(() => _prefsLoaded = true);
+  }
 
   Future<void> _redirectToPacks(QuestionnaireRes res) async {
     if (_skipToPacksHandled || _redirectToPacksInFlight || !mounted) {
@@ -42,6 +54,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   }
 
   bool _shouldShowBootstrapLoading(IpsQuestionnaireState state) {
+    if (!_prefsLoaded) {
+      return true;
+    }
+
     if (state.isLoading) {
       return true;
     }
@@ -87,9 +103,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
         return Navigator(
           onGenerateRoute: (_) => MaterialPageRoute<void>(
-            builder: (_) => QuestionnaireAgreementScreen(
-              signatureUploadService: widget.signatureUploadService,
-            ),
+            builder: (_) {
+              if (QuestionnaireLocalPrefs.hasCompletedAgreementAndSignature) {
+                return const QuestionnaireRecommendationScreen();
+              }
+              return QuestionnaireAgreementScreen(
+                signatureUploadService: widget.signatureUploadService,
+              );
+            },
           ),
         );
       },

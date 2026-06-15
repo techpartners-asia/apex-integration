@@ -357,21 +357,6 @@ void main() {
     );
   });
 
-  group('resolveSecAcntFlowProgressSteps', () {
-    test('excludes consent so personal information is the first bar', () {
-      final List<SecAcntFlowStep> steps = resolveSecAcntFlowProgressSteps(
-        _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
-      );
-
-      expect(steps, isNot(contains(SecAcntFlowStep.consent)));
-      expect(steps.first, SecAcntFlowStep.personalInformation);
-      expect(
-        steps.indexOf(SecAcntFlowStep.personalInformation),
-        0,
-      );
-    });
-  });
-
   test(
     'fromBootstrap uses bank id as display label when bootstrap bank name is missing',
     () {

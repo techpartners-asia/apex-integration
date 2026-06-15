@@ -166,6 +166,8 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                       user: sessionState.currentUser,
                       packs: viewData?.packs ?? const <IpsPack>[],
                       onRefresh: _handleRefresh,
+                      isQuestionnaireCompleted:
+                          viewData?.isQuestionnaireCompleted ?? false,
                     )
             : OverviewProfileTab(
                 data: data,
@@ -273,6 +275,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   bootstrapState,
                   currentUser: currentUser,
                 ),
+                isQuestionnaireCompleted: data.isQuestionnaireCompleted,
               ),
               compact: true,
             ),

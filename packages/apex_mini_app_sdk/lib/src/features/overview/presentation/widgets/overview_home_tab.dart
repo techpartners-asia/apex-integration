@@ -4,7 +4,7 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 part 'overview/overview_pack_recommendation_view.dart';
 
 /// Overview home tab that shows either onboarding progress or pack suggestions.
-class OverviewHomeTab extends StatelessWidget {
+class OverviewHomeTab extends StatefulWidget {
   /// Account/bootstrap data for current user.
   final AcntBootstrapState data;
 
@@ -17,6 +17,9 @@ class OverviewHomeTab extends StatelessWidget {
   /// Optional pull-to-refresh callback.
   final RefreshCallback? onRefresh;
 
+  /// Whether the grape questionnaire check-completed API returned completed=true.
+  final bool isQuestionnaireCompleted;
+
   /// Creates the overview home tab.
   const OverviewHomeTab({
     super.key,
@@ -24,31 +27,55 @@ class OverviewHomeTab extends StatelessWidget {
     this.user,
     this.packs = const <IpsPack>[],
     this.onRefresh,
+    this.isQuestionnaireCompleted = false,
   });
 
   @override
+  State<OverviewHomeTab> createState() => _OverviewHomeTabState();
+}
+
+class _OverviewHomeTabState extends State<OverviewHomeTab> {
+  bool _prefsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    await QuestionnaireLocalPrefs.init();
+    if (mounted) setState(() => _prefsLoaded = true);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (packs.isNotEmpty && data.hasOpenSecAcnt) {
+    if (!_prefsLoaded) {
+      return const SizedBox.shrink();
+    }
+
+    if (widget.packs.isNotEmpty && widget.data.hasOpenSecAcnt) {
       return OverviewPackRecommendationView(
-        data: data,
-        user: user,
-        packs: packs,
-        onRefresh: onRefresh,
+        data: widget.data,
+        user: widget.user,
+        packs: widget.packs,
+        onRefresh: widget.onRefresh,
       );
     }
 
     final OverviewVerificationViewModel viewModel =
         buildOverviewVerificationViewModel(
           context,
-          data,
+          widget.data,
           hasPaidSecAcntContract: hasPaidSecAcntOpeningFee(
-            data,
-            currentUser: user,
+            widget.data,
+            currentUser: widget.user,
           ),
+          isQuestionnaireCompleted: widget.isQuestionnaireCompleted,
         );
 
     final bool showUnpaidReminder =
-        data.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid;
+        widget.data.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid;
 
     final Widget verificationCard = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -64,12 +91,12 @@ class OverviewHomeTab extends StatelessWidget {
       ],
     );
 
-    if (onRefresh == null) {
+    if (widget.onRefresh == null) {
       return verificationCard;
     }
 
     return MiniAppRefreshContainer(
-      onRefresh: onRefresh,
+      onRefresh: widget.onRefresh,
       fillHeight: false,
       padding: EdgeInsets.fromLTRB(
         context.responsive.spacing.financialCardSpacing,

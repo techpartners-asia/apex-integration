@@ -15,6 +15,9 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
   /// Orders service used to check for pending orders.
   final OrdersService? ordersService;
 
+  /// Questionnaire service used to check grape completion status.
+  final QuestionnaireService? questionnaireService;
+
   /// Localizations used for error messages.
   final SdkLocalizations l10n;
 
@@ -27,6 +30,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     this.portfolioService,
     this.packService,
     this.ordersService,
+    this.questionnaireService,
     this.logger = const SilentMiniAppLogger(),
   }) : super(const LoadableState<IpsOverviewViewData>());
 
@@ -48,10 +52,15 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
         );
         await _loadPortfolioOverviewIfNeeded(initial);
       } else {
+        final bool isQuestionnaireCompleted =
+            await _checkQuestionnaireCompletedIfNeeded(initial);
         emit(
           LoadableState<IpsOverviewViewData>(
             status: LoadableStatus.success,
-            data: IpsOverviewViewData(bootstrapState: initial),
+            data: IpsOverviewViewData(
+              bootstrapState: initial,
+              isQuestionnaireCompleted: isQuestionnaireCompleted,
+            ),
           ),
         );
         _loadPacksIfNeeded(initial);
@@ -78,10 +87,15 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
         );
         await _loadPortfolioOverviewIfNeeded(data);
       } else {
+        final bool isQuestionnaireCompleted =
+            await _checkQuestionnaireCompletedIfNeeded(data);
         emit(
           LoadableState<IpsOverviewViewData>(
             status: LoadableStatus.success,
-            data: IpsOverviewViewData(bootstrapState: data),
+            data: IpsOverviewViewData(
+              bootstrapState: data,
+              isQuestionnaireCompleted: isQuestionnaireCompleted,
+            ),
           ),
         );
         _loadPacksIfNeeded(data, forceRefresh: forceRefresh);
@@ -181,6 +195,26 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     );
   }
 
+  Future<bool> _checkQuestionnaireCompletedIfNeeded(
+    AcntBootstrapState data,
+  ) async {
+    final QuestionnaireService? service = questionnaireService;
+    if (service == null) {
+      print('[overview] questionnaireService is null → skip check');
+      return false;
+    }
+    if (data.hasIpsAcnt) return false;
+    try {
+      final GrapeQuestionnaireCompletionStatus status =
+          await service.checkCompletionStatus();
+      print('[overview] checkCompletionStatus → completed=${status.completed}');
+      return status.completed;
+    } catch (e) {
+      print('[overview] checkCompletionStatus error → $e');
+      return false;
+    }
+  }
+
   bool _shouldLoadDashboardData(AcntBootstrapState data) {
     return data.hasIpsAcnt && portfolioService != null;
   }
@@ -209,6 +243,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
               portfolioContext: current.portfolioContext,
               isDashboardDataReady: current.isDashboardDataReady,
               dashboardLoadFailed: current.dashboardLoadFailed,
+              isQuestionnaireCompleted: current.isQuestionnaireCompleted,
             ),
           ),
         );

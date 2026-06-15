@@ -29,6 +29,9 @@ class IpsOverviewViewData {
   /// Whether the user has an active pending order (status "N").
   final bool hasPendingOrder;
 
+  /// Whether the grape questionnaire check-completed API returned completed=true.
+  final bool isQuestionnaireCompleted;
+
   /// Creates the overview view model.
   const IpsOverviewViewData({
     required this.bootstrapState,
@@ -40,6 +43,7 @@ class IpsOverviewViewData {
     this.isDashboardDataReady = true,
     this.dashboardLoadFailed = false,
     this.hasPendingOrder = false,
+    this.isQuestionnaireCompleted = false,
   });
 
   /// Whether `getIpsBalance` completed and returned a non-zero investment
