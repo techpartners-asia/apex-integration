@@ -23,4 +23,11 @@ class SecAcntLocalPrefs {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyHasAcceptedSecAgreement, true);
   }
+
+  /// Clears all persisted sec_acnt flags. Use for testing/debug only.
+  static Future<void> reset() async {
+    _hasAcceptedSecAgreement = false;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keyHasAcceptedSecAgreement);
+  }
 }
