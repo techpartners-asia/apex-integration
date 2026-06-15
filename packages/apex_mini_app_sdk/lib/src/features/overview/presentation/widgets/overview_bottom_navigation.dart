@@ -50,15 +50,15 @@ class OverviewBottomNavigationBar extends StatelessWidget {
   static const double _barBorderRadius = 32;
   static final Color _indicatorTint = DesignTokens.softPeach.withAlpha(30);
   static final LiquidGlassSettings _indicatorGlassSettings =
-      LiquidGlassSettings(
-        glassColor: _indicatorTint,
-        blur: 0,
-        thickness: 0,
-        saturation: 1,
-        lightIntensity: 0,
-        chromaticAberration: 0,
-        specularSharpness: GlassSpecularSharpness.medium,
-      );
+    LiquidGlassSettings(
+      glassColor: DesignTokens.softPeach,
+      blur: 1.5,
+      thickness: 0,
+      saturation: 1.0,
+      lightIntensity: 0,
+      chromaticAberration: 0,
+      specularSharpness: GlassSpecularSharpness.soft,
+    );
 
   Widget _iconWidget(Object icon, Color color) {
     if (icon is IconData) {
@@ -111,8 +111,11 @@ class OverviewBottomNavigationBar extends StatelessWidget {
                 child: SizedBox(
                   height: _barHeight,
                   child: GlassBottomBar(
-                    selectedIndex: selectedIndex,
-                    onTabSelected: onSelected,
+                  selectedIndex: selectedIndex,
+                    onTabSelected: (int index) {
+                      if (index == selectedIndex) return;
+                      onSelected(index);
+                    },
                     barHeight: _barHeight,
                     barBorderRadius: _barBorderRadius,
                     horizontalPadding: 0,
@@ -122,34 +125,51 @@ class OverviewBottomNavigationBar extends StatelessWidget {
                     iconLabelSpacing: 2,
                     iconSize: _barIconSize,
                     labelFontSize: 13,
+
                     indicatorExpansion: 8,
+                    maskingQuality: MaskingQuality.high,
+
+                    // Tap/press үед bar амьтай мэдрэмжтэй болно.
+                    interactionBehavior: GlassInteractionBehavior.full,
+                    pressScale: 1.03,
+                    interactionGlowColor: _indicatorTint,
+                    interactionGlowRadius: 1.8,
+
+                    // Icon glow-г арай хурдан, зөөлөн болгоно.
+                    glowDuration: const Duration(milliseconds: 260),
+                    glowBlurRadius: 28,
+                    glowSpreadRadius: 6,
+                    glowOpacity: 0.5,
+
                     selectedIconColor: DesignTokens.rose,
                     unselectedIconColor: DesignTokens.ink,
                     indicatorColor: _indicatorTint,
                     indicatorSettings: _indicatorGlassSettings,
-                    interactionGlowColor: _indicatorTint,
+
+                    // Танай package хувилбар дээр энэ нэрээр ажиллаж байгаа бол хэвээр нь үлдээ.
                     glassSettings: const LiquidGlassSettings(
                       glassColor: Color.fromARGB(160, 255, 255, 255),
-                      thickness: 14,
-                      blur: 8,
-                      saturation: 1.2,
-                      lightIntensity: 0.35,
+                      thickness: 18,
+                      blur: 10,
+                      saturation: 1.25,
+                      lightIntensity: 0.45,
                       specularSharpness: GlassSpecularSharpness.medium,
                     ),
+
                     tabs: items
                         .map(
-                          (OverviewBottomNavigationItem item) =>
-                              GlassBottomBarTab(
+                          (OverviewBottomNavigationItem item) => GlassBottomBarTab(
                             label: item.label,
                             icon: _iconWidget(item.icon, DesignTokens.ink),
                             activeIcon: _gradientIconWidget(item.icon),
+                            glowColor: DesignTokens.softPeach.withAlpha(90),
                           ),
                         )
                         .toList(),
-                  ),
-                ),
-              ),
-            ),
+                                ),
+                              ),
+                            ),
+                          ), 
             const SizedBox(width: 12),
             InvestXFloatingButton(
               disabled: isButtonDisabled,
