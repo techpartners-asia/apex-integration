@@ -446,6 +446,7 @@ class _DashboardQuickAction extends StatelessWidget {
             onPressed: onTap,
             enabled: !disabled,
             borderRadius: BorderRadius.circular(responsive.radius(14)),
+            useNativePlatformView: false,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: responsive.dp(4)),
               child: Center(

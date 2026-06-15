@@ -53,18 +53,18 @@ class PrimaryButton extends StatelessWidget {
 
     return SizedBox(
       height: height ?? responsive.spacing.buttonHeight + 4,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: enabled
-              ? (enabledGradient ?? DesignTokens.primaryGradient)
-              : (disabledGradient ?? DesignTokens.disabledGradient),
-          borderRadius: resolvedBorderRadius,
-          boxShadow: enabled
-              ? (enabledBoxShadow ?? DesignTokens.buttonShadow)
-              : const <BoxShadow>[],
-        ),
-        child: Material(
-          color: Colors.transparent,
+      child: Material(
+        type: MaterialType.transparency,
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: enabled
+                ? (enabledGradient ?? DesignTokens.primaryGradient)
+                : (disabledGradient ?? DesignTokens.disabledGradient),
+            borderRadius: resolvedBorderRadius,
+            boxShadow: enabled
+                ? (enabledBoxShadow ?? DesignTokens.buttonShadow)
+                : const <BoxShadow>[],
+          ),
           child: InkWell(
             onTap: onPressed,
             borderRadius: resolvedBorderRadius,
