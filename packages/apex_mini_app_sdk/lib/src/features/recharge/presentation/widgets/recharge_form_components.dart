@@ -64,8 +64,7 @@ class RechargeQuantityInput extends StatelessWidget {
                     focusedBorder: InputBorder.none,
                     contentPadding: EdgeInsets.zero,
                     isDense: true,
-                    filled: true,
-                    fillColor: DesignTokens.softSurface,
+                    filled: false,
                   ),
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
