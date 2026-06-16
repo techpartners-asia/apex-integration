@@ -135,6 +135,7 @@ AllocationSummaryData _buildAllocationSummaryData(
 ) {
   final double stockValue = overview.stockTotal ?? 0;
   final double bondValue = overview.bondTotal ?? 0;
+  final double cashValue = overview.cashTotal ?? 0;
   final List<AllocationBadgeData> yieldBadges = <AllocationBadgeData>[
     AllocationBadgeData(
       label:
@@ -152,14 +153,17 @@ AllocationSummaryData _buildAllocationSummaryData(
   return AllocationSummaryData(
     stockValue: stockValue,
     bondValue: bondValue,
-    barFallbackTotal: stockValue + bondValue,
+    cashValue: cashValue,
+    barFallbackTotal: stockValue + bondValue + cashValue,
     stockLabel: l10n.ipsOverviewDashboardAllocationStocks,
     stockValueLabel: formatIpsPaymentAmount(stockValue, overview.currency),
     bondLabel: l10n.ipsOverviewDashboardAllocationBonds,
     bondValueLabel: formatIpsPaymentAmount(bondValue, overview.currency),
+    cashLabel: l10n.ipsOverviewDashboardAllocationCash,
+    cashValueLabel: formatIpsPaymentAmount(cashValue, overview.currency),
     totalLabel: l10n.ipsOverviewDashboardAllocationTotal,
     totalValueLabel: formatIpsPaymentAmount(
-      stockValue + bondValue,
+      stockValue + bondValue + cashValue,
       overview.currency,
     ),
     yieldSectionLabel: l10n.ipsOverviewDashboardYieldLabel,

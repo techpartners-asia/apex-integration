@@ -23,6 +23,9 @@ final class AllocationSummaryData {
   /// Bond allocation amount.
   final double bondValue;
 
+  /// Cash allocation amount.
+  final double cashValue;
+
   /// Fallback total used when stock/bond totals are missing.
   final double barFallbackTotal;
 
@@ -37,6 +40,12 @@ final class AllocationSummaryData {
 
   /// Bond row formatted value.
   final String bondValueLabel;
+
+  /// Cash row label.
+  final String cashLabel;
+
+  /// Cash row formatted value.
+  final String cashValueLabel;
 
   /// Total row label.
   final String totalLabel;
@@ -54,11 +63,14 @@ final class AllocationSummaryData {
   const AllocationSummaryData({
     required this.stockValue,
     required this.bondValue,
+    this.cashValue = 0,
     required this.barFallbackTotal,
     required this.stockLabel,
     required this.stockValueLabel,
     required this.bondLabel,
     required this.bondValueLabel,
+    this.cashLabel = '',
+    this.cashValueLabel = '',
     required this.totalLabel,
     required this.totalValueLabel,
     this.yieldSectionLabel,
@@ -97,6 +109,7 @@ class AllocationSummaryCard extends StatelessWidget {
         AllocationBar(
           stockValue: data.stockValue,
           bondValue: data.bondValue,
+          cashValue: data.cashValue,
           fallbackTotal: data.barFallbackTotal,
         ),
         SizedBox(height: responsive.dp(16)),
@@ -111,6 +124,14 @@ class AllocationSummaryCard extends StatelessWidget {
           label: data.bondLabel,
           value: data.bondValueLabel,
         ),
+        if (data.cashValue > 0) ...<Widget>[
+          SizedBox(height: responsive.dp(10)),
+          AllocationMetricRow(
+            color: DesignTokens.mint,
+            label: data.cashLabel,
+            value: data.cashValueLabel,
+          ),
+        ],
         SizedBox(height: responsive.dp(12)),
         Row(
           children: <Widget>[
@@ -205,7 +226,7 @@ class AllocationSummaryCard extends StatelessWidget {
   }
 }
 
-/// Horizontal stacked bar for stock and bond allocation.
+/// Horizontal stacked bar for stock, bond, and cash allocation.
 class AllocationBar extends StatelessWidget {
   /// Stock allocation amount.
   final double stockValue;
@@ -213,7 +234,10 @@ class AllocationBar extends StatelessWidget {
   /// Bond allocation amount.
   final double bondValue;
 
-  /// Fallback total used when stock/bond totals are zero.
+  /// Cash allocation amount.
+  final double cashValue;
+
+  /// Fallback total used when stock/bond/cash totals are zero.
   final double fallbackTotal;
 
   /// Creates an allocation bar.
@@ -221,13 +245,14 @@ class AllocationBar extends StatelessWidget {
     super.key,
     required this.stockValue,
     required this.bondValue,
+    this.cashValue = 0,
     this.fallbackTotal = 0,
   });
 
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
-    final double total = stockValue + bondValue;
+    final double total = stockValue + bondValue + cashValue;
     final double effectiveTotal = total > 0
         ? total
         : math.max(fallbackTotal, 1);
@@ -236,6 +261,7 @@ class AllocationBar extends StatelessWidget {
       1,
     );
     final double bondFlex = math.max(bondValue, 0);
+    final double cashFlex = math.max(cashValue, 0);
 
     return Container(
       height: responsive.dp(14),
@@ -269,6 +295,21 @@ class AllocationBar extends StatelessWidget {
                     colors: <Color>[
                       DesignTokens.primaryTeal,
                       DesignTokens.darkTeal,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          if (cashFlex > 0) SizedBox(width: responsive.dp(4)),
+          if (cashFlex > 0)
+            Flexible(
+              flex: (cashFlex / effectiveTotal * 1000).round().clamp(1, 1000),
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      DesignTokens.mint,
+                      Color(0xFF1A8A63),
                     ],
                   ),
                 ),

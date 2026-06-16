@@ -147,13 +147,16 @@ AllocationSummaryData _buildAllocationSummaryData(
   return AllocationSummaryData(
     stockValue: metrics.stockTotal,
     bondValue: metrics.bondTotal,
+    cashValue: metrics.cashTotal,
     barFallbackTotal: metrics.totalInvestment,
     stockLabel: l10n.ipsOverviewDashboardAllocationStocks,
     stockValueLabel: metrics.stockTotalLabel,
     bondLabel: l10n.ipsOverviewDashboardAllocationBonds,
     bondValueLabel: metrics.bondTotalLabel,
+    cashLabel: l10n.ipsOverviewDashboardAllocationCash,
+    cashValueLabel: metrics.cashTotalLabel,
     totalLabel: l10n.ipsOverviewDashboardAllocationTotal,
-    totalValueLabel: metrics.totalInvestmentLabel,
+    totalValueLabel: metrics.allocationTotalLabel,
     yieldSectionLabel: l10n.ipsOverviewDashboardYieldLabel,
     yieldBadges: <AllocationBadgeData>[
       AllocationBadgeData(

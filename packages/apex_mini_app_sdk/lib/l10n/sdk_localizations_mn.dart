@@ -294,6 +294,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsOverviewDashboardAllocationBonds => 'Бонд';
 
   @override
+  String get ipsOverviewDashboardAllocationCash => 'Бэлэн мөнгө';
+
+  @override
   String get ipsOverviewDashboardAllocationTotal => 'Нийт хөрөнгө оруулалт';
 
   @override

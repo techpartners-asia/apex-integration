@@ -19,6 +19,9 @@ final class DesignTokens {
   /// Teal accent color.
   static const Color teal = Color(0xFF1AA6A4);
 
+  /// Mint green accent color.
+  static const Color mint = Color(0xFF27B587);
+
   /// Primary teal brand color.
   static const Color primaryTeal = Color(0xFF009685);
 

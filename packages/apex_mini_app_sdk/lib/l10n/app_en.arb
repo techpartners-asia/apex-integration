@@ -113,6 +113,7 @@
   "ipsOverviewDashboardQuickWithdraw": "Withdraw money",
   "ipsOverviewDashboardAllocationStocks": "Stocks",
   "ipsOverviewDashboardAllocationBonds": "Bonds",
+  "ipsOverviewDashboardAllocationCash": "Cash",
   "ipsOverviewDashboardAllocationTotal": "Total investment",
   "ipsOverviewDashboardYieldLabel": "Your return",
   "ipsOverviewDashboardDetails": "View details",

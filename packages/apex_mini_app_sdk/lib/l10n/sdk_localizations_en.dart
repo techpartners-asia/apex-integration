@@ -293,6 +293,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsOverviewDashboardAllocationBonds => 'Bonds';
 
   @override
+  String get ipsOverviewDashboardAllocationCash => 'Cash';
+
+  @override
   String get ipsOverviewDashboardAllocationTotal => 'Total investment';
 
   @override

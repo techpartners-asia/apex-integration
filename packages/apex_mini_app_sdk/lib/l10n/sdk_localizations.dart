@@ -626,6 +626,12 @@ abstract class SdkLocalizations {
   /// **'Bonds'**
   String get ipsOverviewDashboardAllocationBonds;
 
+  /// No description provided for @ipsOverviewDashboardAllocationCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get ipsOverviewDashboardAllocationCash;
+
   /// No description provided for @ipsOverviewDashboardAllocationTotal.
   ///
   /// In en, this message translates to:
