@@ -136,6 +136,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                           viewData?.stockYieldDetails ??
                           const <PortfolioHolding>[],
                       user: sessionState.currentUser,
+                      pendingOrder: viewData?.pendingOrder,
                       onRecharge: () {
                         if (!isTradingEnabled) {
                           MiniAppToast.showWarning(

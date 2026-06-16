@@ -36,6 +36,9 @@ class OverviewDashboardHomeTab extends StatelessWidget {
   /// Pull-to-refresh callback.
   final RefreshCallback? onRefresh;
 
+  /// Pending order (status "N") to show in the dashboard, if any.
+  final IpsOrder? pendingOrder;
+
   /// Creates the overview dashboard tab.
   const OverviewDashboardHomeTab({
     super.key,
@@ -50,6 +53,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
     this.onWithdraw,
     this.onViewDetails,
     this.onRefresh,
+    this.pendingOrder,
   });
 
   @override
@@ -79,6 +83,14 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               onStatements: onStatements,
               onWithdraw: onWithdraw,
             ),
+            if (pendingOrder != null) ...<Widget>[
+              SizedBox(height: responsive.dp(14)),
+              OverviewPendingOrderCard(
+                order: pendingOrder!,
+                packAmount: portfolioOverview?.packAmount,
+                currency: portfolioOverview?.currency ?? '',
+              ),
+            ],
             SizedBox(height: responsive.dp(14)),
             if (showFinancialData) ...<Widget>[
               /// Dashboard asset breakdown card

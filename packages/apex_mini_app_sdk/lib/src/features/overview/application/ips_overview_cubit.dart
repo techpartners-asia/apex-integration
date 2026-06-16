@@ -122,10 +122,10 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     try {
       final SdkPortfolioContext context = const PortfolioContextResolver()
           .resolve(bootstrapState: data);
-      final (PortfolioDashboardData dashboardData, bool hasPendingOrder) =
+      final (PortfolioDashboardData dashboardData, IpsOrder? pendingOrder) =
           await (
             service.getDashboardData(context: context),
-            _fetchHasPendingOrder(forceRefresh: forceRefresh),
+            _fetchPendingOrder(forceRefresh: forceRefresh),
           ).wait;
 
       emit(
@@ -138,7 +138,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
             stockYieldDetails: dashboardData.stockYieldDetails,
             portfolioContext: dashboardData.portfolioContext,
             isDashboardDataReady: true,
-            hasPendingOrder: hasPendingOrder,
+            pendingOrder: pendingOrder,
           ),
         ),
       );
@@ -161,28 +161,28 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     }
   }
 
-  Future<bool> _fetchHasPendingOrder({bool forceRefresh = false}) async {
+  Future<IpsOrder?> _fetchPendingOrder({bool forceRefresh = false}) async {
     final OrdersService? service = ordersService;
-    if (service == null) return false;
+    if (service == null) return null;
     try {
       final List<IpsOrder> orders = await service.getOrders();
       final DateTime now = DateTime.now();
-      return orders.any((IpsOrder o) {
+      return orders.where((IpsOrder o) {
         if (o.status != IpsOrderStatus.pending) return false;
         final DateTime? expiresAt = o.expiresAt;
         if (expiresAt != null && expiresAt.isBefore(now)) return false;
         return true;
-      });
+      }).firstOrNull;
     } catch (_) {
-      return false;
+      return null;
     }
   }
 
-  /// Refetches only [hasPendingOrder] without reloading the full overview.
+  /// Refetches only [pendingOrder] without reloading the full overview.
   Future<void> refreshPendingOrderStatus() async {
     final IpsOverviewViewData? current = state.data;
     if (current == null || isClosed) return;
-    final bool hasPendingOrder = await _fetchHasPendingOrder();
+    final IpsOrder? pendingOrder = await _fetchPendingOrder();
     if (isClosed) return;
     emit(
       state.copyWith(
@@ -195,7 +195,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
           portfolioContext: current.portfolioContext,
           isDashboardDataReady: current.isDashboardDataReady,
           dashboardLoadFailed: current.dashboardLoadFailed,
-          hasPendingOrder: hasPendingOrder,
+          pendingOrder: pendingOrder,
         ),
       ),
     );

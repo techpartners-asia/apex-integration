@@ -110,6 +110,7 @@
     }
   },
   "ipsOverviewDashboardQuickRecharge": "Багц цэнэглэх",
+  "ipsOverviewDashboardPendingOrderTitle": "Захиалга хүлээгдэж байна.",
   "ipsOverviewDashboardQuickWithdraw": "Мөнгө татах",
   "ipsOverviewDashboardAllocationStocks": "Хувьцаа",
   "ipsOverviewDashboardAllocationBonds": "Бонд",

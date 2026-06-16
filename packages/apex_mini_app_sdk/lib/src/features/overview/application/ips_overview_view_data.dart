@@ -26,11 +26,14 @@ class IpsOverviewViewData {
   /// Whether dashboard enrichment failed while base overview still loaded.
   final bool dashboardLoadFailed;
 
-  /// Whether the user has an active pending order (status "N").
-  final bool hasPendingOrder;
+  /// Pending order with status "N", if one exists.
+  final IpsOrder? pendingOrder;
 
   /// Whether the grape questionnaire check-completed API returned completed=true.
   final bool isQuestionnaireCompleted;
+
+  /// Whether the user has an active pending order.
+  bool get hasPendingOrder => pendingOrder != null;
 
   /// Creates the overview view model.
   const IpsOverviewViewData({
@@ -42,7 +45,7 @@ class IpsOverviewViewData {
     this.portfolioContext = const SdkPortfolioContext(),
     this.isDashboardDataReady = true,
     this.dashboardLoadFailed = false,
-    this.hasPendingOrder = false,
+    this.pendingOrder,
     this.isQuestionnaireCompleted = false,
   });
 

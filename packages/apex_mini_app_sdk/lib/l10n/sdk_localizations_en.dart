@@ -281,6 +281,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   }
 
   @override
+  String get ipsOverviewDashboardPendingOrderTitle => 'Order pending.';
+
+  @override
   String get ipsOverviewDashboardQuickRecharge => 'Recharge pack';
 
   @override

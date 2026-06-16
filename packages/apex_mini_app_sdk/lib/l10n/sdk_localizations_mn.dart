@@ -282,6 +282,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   }
 
   @override
+  String get ipsOverviewDashboardPendingOrderTitle => 'Захиалга хүлээгдэж байна.';
+
+  @override
   String get ipsOverviewDashboardQuickRecharge => 'Багц цэнэглэх';
 
   @override

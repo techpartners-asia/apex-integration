@@ -110,6 +110,7 @@
     }
   },
   "ipsOverviewDashboardQuickRecharge": "Recharge pack",
+  "ipsOverviewDashboardPendingOrderTitle": "Order pending.",
   "ipsOverviewDashboardQuickWithdraw": "Withdraw money",
   "ipsOverviewDashboardAllocationStocks": "Stocks",
   "ipsOverviewDashboardAllocationBonds": "Bonds",

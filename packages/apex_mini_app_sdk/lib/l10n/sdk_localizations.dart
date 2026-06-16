@@ -608,6 +608,12 @@ abstract class SdkLocalizations {
   /// **'Recharge pack'**
   String get ipsOverviewDashboardQuickRecharge;
 
+  /// No description provided for @ipsOverviewDashboardPendingOrderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order pending.'**
+  String get ipsOverviewDashboardPendingOrderTitle;
+
   /// No description provided for @ipsOverviewDashboardQuickWithdraw.
   ///
   /// In en, this message translates to:
@@ -2679,6 +2685,9 @@ abstract class SdkLocalizations {
   String ipsRewardStreakMonths(int current, int total);
 
   /// No description provided for @ipsRewardStreakNextRewardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next reward:'**
   String get ipsRewardStreakNextRewardLabel;
 
   /// No description provided for @ipsRewardStreakNextReward.
@@ -2700,9 +2709,15 @@ abstract class SdkLocalizations {
   String get ipsRewardNextGoalBody;
 
   /// No description provided for @ipsRewardBonusCupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon'**
   String get ipsRewardBonusCupon;
 
   /// No description provided for @ipsRewardBonusInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest'**
   String get ipsRewardBonusInterest;
 
   /// No description provided for @ipsRewardMilestoneMonths.
