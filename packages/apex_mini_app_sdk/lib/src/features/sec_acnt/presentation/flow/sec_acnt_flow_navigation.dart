@@ -10,11 +10,6 @@ Future<void> closeSecAcntFlow(BuildContext context) async {
   await closeMiniAppSafely(context);
 }
 
-/// Whether onboarding should continue in the questionnaire flow.
-bool shouldOpenQuestionnaireAfterSecAcntFlow({
-  UserEntityDto? currentUser,
-}) => !hasCompletedSecAcntContract(currentUser);
-
 /// Routes to overview after the securities account flow completes.
 ///
 /// Questionnaire is only reachable from the overview page, not automatically

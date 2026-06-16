@@ -54,10 +54,6 @@ class AcntBootstrapState {
     return _trimToNull(_securitiesAccount?.brokerId) ?? _trimToNull(_detail.brokerCode);
   }
 
-  // String? get portfolioSecurityCode {
-  //   return _trimToNull(_securitiesAccount?.instrumentCode) ?? _trimToNull(_securitiesAccount?.scAcntCode) ?? _trimToNull(_securitiesAccount?.acntCode);
-  // }
-
   /// CASA account id used by portfolio statement API requests.
   int? get portfolioCasaAcntId => _ipsCasaAccount?.acntId;
 
@@ -192,22 +188,6 @@ class AcntBootstrapState {
   /// Whether the securities account is paid but still waiting for activation.
   bool get hasPendingSecAcntActivation =>
       hasAcnt && secAcntStatusCode == secAcntStatusPending;
-
-  /// Whether opening-fee payment is still required from backend account state.
-  bool get requiresSecAcntOpeningFeePayment {
-    if (hasOpenSecAcnt) {
-      return false;
-    }
-
-    if (!hasAcnt) {
-      return true;
-    }
-
-    return !hasPaidSecAcntOpeningFeeFromApi;
-  }
-
-  /// Whether the flow should continue through pending account/payment state.
-  bool get requiresSecAcntPayment => requiresSecAcntOpeningFeePayment;
 
   /// Returns a copy with fee/balance fields merged from [balanceState].
   AcntBootstrapState copyWithBalanceState(

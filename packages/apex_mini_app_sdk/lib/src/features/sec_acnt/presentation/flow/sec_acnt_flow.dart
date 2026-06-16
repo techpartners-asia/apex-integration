@@ -33,14 +33,6 @@ enum SecAcntFlowStep {
 /// Whether bootstrap confirms an actual securities account exists.
 bool hasSecAcnt(AcntBootstrapState? state) => state?.hasAcnt ?? false;
 
-/// Whether account-opening payment is still required for onboarding.
-bool requiresSecAcntOpeningPayment(
-  AcntBootstrapState? state, {
-  UserEntityDto? currentUser,
-}) =>
-    (state?.requiresSecAcntOpeningFeePayment ?? true) &&
-    !hasPaidSecAcntOpeningFee(state, currentUser: currentUser);
-
 /// Whether the backend says account-opening request is already pending.
 bool hasPendingSecAcntOpeningRequest(AcntBootstrapState? state) =>
     state?.hasPendingSecAcntActivation ?? false;
@@ -93,27 +85,20 @@ List<SecAcntFlowStep> resolveSecAcntFlowSteps(
         user: currentUser,
       );
   final bool hasSignature = hasSavedSecAcntSignature(currentUser);
-  final bool hasPaidContract = hasPaidSecAcntOpeningFee(
-    state,
-    currentUser: currentUser,
-  );
+  final bool hasPaidContract = hasPaidSecAcntContract(currentUser);
 
-  if (state?.hasIpsAcnt == true) {
+  if (state?.hasIpsAcnt == true) {    
     return <SecAcntFlowStep>[
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
+      if (!hasPaidContract) SecAcntFlowStep.payment,
     ];
   }
 
   if (isShortSecAcntFlow(state)) {
-    final bool needsPayment = requiresSecAcntOpeningPayment(
-      state,
-      currentUser: currentUser,
-    );
-
     return <SecAcntFlowStep>[
       if (!hasCompletePersonalInfo) SecAcntFlowStep.consent,
       if (!hasCompletePersonalInfo) SecAcntFlowStep.personalInformation,
-      if (needsPayment) SecAcntFlowStep.payment,
+      if (!hasPaidContract) SecAcntFlowStep.payment,
     ];
   }
 
