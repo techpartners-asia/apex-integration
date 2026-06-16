@@ -1658,11 +1658,23 @@ abstract class SdkLocalizations {
   /// **'Active'**
   String get ipsStatusActive;
 
+  /// No description provided for @ipsStatusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get ipsStatusConfirmed;
+
   /// No description provided for @ipsStatusCompleted.
   ///
   /// In en, this message translates to:
   /// **'Completed'**
   String get ipsStatusCompleted;
+
+  /// No description provided for @ipsStatusAllocated.
+  ///
+  /// In en, this message translates to:
+  /// **'Allocated'**
+  String get ipsStatusAllocated;
 
   /// No description provided for @ipsStatusCancelled.
   ///

@@ -865,7 +865,13 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsStatusActive => 'Идэвхтэй';
 
   @override
+  String get ipsStatusConfirmed => 'Захиалга баталгаажсан';
+
+  @override
   String get ipsStatusCompleted => 'Амжилттай';
+
+  @override
+  String get ipsStatusAllocated => 'Хуваарилагдсан';
 
   @override
   String get ipsStatusCancelled => 'Цуцлагдсан';

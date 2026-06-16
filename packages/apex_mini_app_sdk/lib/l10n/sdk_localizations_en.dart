@@ -861,7 +861,13 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsStatusActive => 'Active';
 
   @override
+  String get ipsStatusConfirmed => 'Confirmed';
+
+  @override
   String get ipsStatusCompleted => 'Completed';
+
+  @override
+  String get ipsStatusAllocated => 'Allocated';
 
   @override
   String get ipsStatusCancelled => 'Cancelled';
