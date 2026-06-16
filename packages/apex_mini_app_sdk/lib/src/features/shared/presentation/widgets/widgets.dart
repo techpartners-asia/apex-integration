@@ -35,4 +35,5 @@ export 'skeleton_loader.dart';
 export 'step_item.dart';
 export 'step_progress_card.dart';
 export 'step_status.dart';
+export 'reward_progress_bar.dart';
 export 'financial/financial.dart';

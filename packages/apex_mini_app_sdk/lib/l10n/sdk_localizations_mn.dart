@@ -1427,6 +1427,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   }
 
   @override
+  String get ipsRewardStreakNextRewardLabel => 'Дараагийн урамшуулал:';
+
+  @override
   String ipsRewardStreakNextReward(Object reward) {
     return 'Дараагийн урамшуулал: +$reward';
   }
@@ -1437,6 +1440,12 @@ class SdkLocalizationsMn extends SdkLocalizations {
   @override
   String get ipsRewardNextGoalBody =>
       '6 сар хүрэхэд таны хүү 2% нэмэгдэж, VIP боломжууд нээгдэнэ';
+
+  @override
+  String get ipsRewardBonusCupon => 'Купон';
+
+  @override
+  String get ipsRewardBonusInterest => 'Хүү';
 
   @override
   String ipsRewardMilestoneMonths(int count) {

@@ -1425,6 +1425,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   }
 
   @override
+  String get ipsRewardStreakNextRewardLabel => 'Next reward:';
+
+  @override
   String ipsRewardStreakNextReward(Object reward) {
     return 'Next reward: +$reward';
   }
@@ -1435,6 +1438,12 @@ class SdkLocalizationsEn extends SdkLocalizations {
   @override
   String get ipsRewardNextGoalBody =>
       'After 6 months, your interest rate increases by 2%, plus VIP benefits.';
+
+  @override
+  String get ipsRewardBonusCupon => 'Coupon';
+
+  @override
+  String get ipsRewardBonusInterest => 'Interest';
 
   @override
   String ipsRewardMilestoneMonths(int count) {

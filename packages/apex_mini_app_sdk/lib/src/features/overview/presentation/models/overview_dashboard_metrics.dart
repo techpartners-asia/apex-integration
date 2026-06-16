@@ -175,7 +175,7 @@ class OverviewDashboardMetrics {
       goalCurrentLabel: formatIpsPaymentAmount(goalCurrent, currency),
       goalTarget: goalTarget,
       goalTargetLabel: formatIpsPaymentAmount(goalTarget, currency),
-      streakMonths: 12,
+      streakMonths: int.tryParse(user?.account?.streak ?? '') ?? 0,
     );
   }
 

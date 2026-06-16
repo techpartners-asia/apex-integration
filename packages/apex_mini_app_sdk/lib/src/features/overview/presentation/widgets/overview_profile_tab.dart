@@ -92,15 +92,13 @@ class OverviewProfileTab extends StatelessWidget {
                     : null,
               ),
 
-              /// Achievements
-              /// todo admin deer bolsni daraa oruulah
               OverviewProfileMenuItemData(
                 image: Img.medalBlue,
                 title: l10n.ipsOverviewProfileMenuAchievements,
-                // onTap: () => launchIpsRoute(
-                //   context,
-                //   route: MiniAppRoutes.reward,
-                // ),
+                onTap: () => launchIpsRoute(
+                  context,
+                  route: MiniAppRoutes.reward,
+                ),
               ),
 
               /// Term condition

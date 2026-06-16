@@ -555,6 +555,7 @@
       "total": { "type": "int" }
     }
   },
+  "ipsRewardStreakNextRewardLabel": "Next reward:",
   "ipsRewardStreakNextReward": "Next reward: +{reward}",
   "@ipsRewardStreakNextReward": {
     "placeholders": {
@@ -563,6 +564,8 @@
   },
   "ipsRewardNextGoalTitle": "Next goal",
   "ipsRewardNextGoalBody": "After 6 months, your interest rate increases by 2%, plus VIP benefits.",
+  "ipsRewardBonusCupon": "Coupon",
+  "ipsRewardBonusInterest": "Interest",
   "ipsRewardMilestoneMonths": "{count} Months",
   "@ipsRewardMilestoneMonths": {
     "placeholders": {

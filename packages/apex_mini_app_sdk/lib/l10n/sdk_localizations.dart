@@ -2672,6 +2672,9 @@ abstract class SdkLocalizations {
   /// **'{current} / {total} months'**
   String ipsRewardStreakMonths(int current, int total);
 
+  /// No description provided for @ipsRewardStreakNextRewardLabel.
+  String get ipsRewardStreakNextRewardLabel;
+
   /// No description provided for @ipsRewardStreakNextReward.
   ///
   /// In en, this message translates to:
@@ -2689,6 +2692,12 @@ abstract class SdkLocalizations {
   /// In en, this message translates to:
   /// **'After 6 months, your interest rate increases by 2%, plus VIP benefits.'**
   String get ipsRewardNextGoalBody;
+
+  /// No description provided for @ipsRewardBonusCupon.
+  String get ipsRewardBonusCupon;
+
+  /// No description provided for @ipsRewardBonusInterest.
+  String get ipsRewardBonusInterest;
 
   /// No description provided for @ipsRewardMilestoneMonths.
   ///

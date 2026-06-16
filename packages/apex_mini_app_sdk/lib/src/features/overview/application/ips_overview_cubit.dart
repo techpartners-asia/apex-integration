@@ -166,7 +166,13 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     if (service == null) return false;
     try {
       final List<IpsOrder> orders = await service.getOrders();
-      return orders.any((IpsOrder o) => o.status == IpsOrderStatus.pending);
+      final DateTime now = DateTime.now();
+      return orders.any((IpsOrder o) {
+        if (o.status != IpsOrderStatus.pending) return false;
+        final DateTime? expiresAt = o.expiresAt;
+        if (expiresAt != null && expiresAt.isBefore(now)) return false;
+        return true;
+      });
     } catch (_) {
       return false;
     }

@@ -99,9 +99,9 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               /// Dashboard goal card
               OverviewDashboardGoalCard(metrics: metrics),
             ],
-          // SizedBox(height: responsive.dp(14)),
+          SizedBox(height: responsive.dp(16)),
           // /// Dashboard reward card
-          // OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
+          OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
             SizedBox(height: responsive.dp(100)),
           ],
         ),

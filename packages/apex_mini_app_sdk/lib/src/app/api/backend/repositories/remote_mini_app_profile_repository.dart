@@ -156,6 +156,12 @@ class RemoteMiniAppProfileRepository implements MiniAppProfileRepository {
   }
 
   @override
+  Future<List<LoyaltyItemDto>> getLoyalty() async {
+    await _ensureAdminAuthToken(session);
+    return api.getLoyalty();
+  }
+
+  @override
   Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) async {
     try {
       final UserEntityDto currentUser = await _ensureAdminAuthToken(session);

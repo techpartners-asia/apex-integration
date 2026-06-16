@@ -556,6 +556,7 @@
       "total": { "type": "int" }
     }
   },
+  "ipsRewardStreakNextRewardLabel": "Дараагийн урамшуулал:",
   "ipsRewardStreakNextReward": "Дараагийн урамшуулал: +{reward}",
   "@ipsRewardStreakNextReward": {
     "placeholders": {
@@ -564,6 +565,8 @@
   },
   "ipsRewardNextGoalTitle": "Дараагийн зорилго",
   "ipsRewardNextGoalBody": "6 сар хүрэхэд таны хүү 2% нэмэгдэж, VIP боломжууд нээгдэнэ",
+  "ipsRewardBonusCupon": "Купон",
+  "ipsRewardBonusInterest": "Хүү",
   "ipsRewardMilestoneMonths": "{count} Сар",
   "@ipsRewardMilestoneMonths": {
     "placeholders": {
