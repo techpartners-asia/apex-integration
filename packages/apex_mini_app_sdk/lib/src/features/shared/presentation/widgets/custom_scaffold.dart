@@ -98,6 +98,9 @@ class CustomScaffold extends StatelessWidget {
   /// Feature flag used by screens that need trading-specific UI state.
   final bool isTradingEnabled;
 
+  /// Whether the body extends behind the bottom navigation bar.
+  final bool extendBody;
+
   /// Creates the shared Apex mini-app scaffold.
   const CustomScaffold({
     super.key,
@@ -130,6 +133,7 @@ class CustomScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.onRefresh,
     this.isTradingEnabled = false,
+    this.extendBody = false,
   });
 
   @override
@@ -213,6 +217,7 @@ class CustomScaffold extends StatelessWidget {
             backgroundColor: backgroundColor,
             appBar: effectiveAppBar,
             body: effectiveBody,
+            extendBody: extendBody,
             bottomNavigationBar: resolvedBottomNavigationBar,
           );
         },

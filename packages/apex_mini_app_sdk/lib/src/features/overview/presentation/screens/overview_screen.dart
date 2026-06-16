@@ -48,6 +48,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
               appBarReserveLeadingSpace: false,
               body: _buildBody(context, state, sessionState, isTradingEnabled),
               isTradingEnabled: isTradingEnabled,
+              extendBody: true,
               bottomNavigationBar: data == null || !state.isSuccess
                   ? null
                   : buildOverviewBottomNavigationBar(
