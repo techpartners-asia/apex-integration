@@ -62,7 +62,6 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
     AcntBootstrapState? bootstrapState,
-    required bool requiresOpeningPaymentFlow,
   }) async {
     if (state.isSubmitting) {
       return state.paymentRes;

@@ -64,10 +64,6 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
       payableAmount: amount,
       personalInfo: widget.draft.toPersonalInfoData(),
       bootstrapState: _bootstrapState,
-      requiresOpeningPaymentFlow: requiresSecAcntOpeningPayment(
-        _bootstrapState,
-        currentUser: widget.currentUser,
-      ),
     );
     if (!mounted) {
       return;
