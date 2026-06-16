@@ -119,6 +119,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get validationRequired => 'This field is required.';
 
   @override
+  String get validationFillRequired => 'Please fill in the required fields.';
+
+  @override
   String get validationSelectionRequired => 'Please select a value.';
 
   @override
@@ -278,6 +281,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   }
 
   @override
+  String get ipsOverviewDashboardPendingOrderTitle => 'Order pending.';
+
+  @override
   String get ipsOverviewDashboardQuickRecharge => 'Recharge pack';
 
   @override
@@ -288,6 +294,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get ipsOverviewDashboardAllocationBonds => 'Bonds';
+
+  @override
+  String get ipsOverviewDashboardAllocationCash => 'Cash';
 
   @override
   String get ipsOverviewDashboardAllocationTotal => 'Total investment';
@@ -858,7 +867,13 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsStatusActive => 'Active';
 
   @override
+  String get ipsStatusConfirmed => 'Confirmed';
+
+  @override
   String get ipsStatusCompleted => 'Completed';
+
+  @override
+  String get ipsStatusAllocated => 'Allocated';
 
   @override
   String get ipsStatusCancelled => 'Cancelled';
@@ -1416,6 +1431,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   }
 
   @override
+  String get ipsRewardStreakNextRewardLabel => 'Next reward:';
+
+  @override
   String ipsRewardStreakNextReward(Object reward) {
     return 'Next reward: +$reward';
   }
@@ -1426,6 +1444,12 @@ class SdkLocalizationsEn extends SdkLocalizations {
   @override
   String get ipsRewardNextGoalBody =>
       'After 6 months, your interest rate increases by 2%, plus VIP benefits.';
+
+  @override
+  String get ipsRewardBonusCupon => 'Coupon';
+
+  @override
+  String get ipsRewardBonusInterest => 'Interest';
 
   @override
   String ipsRewardMilestoneMonths(int count) {

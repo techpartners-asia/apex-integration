@@ -174,6 +174,17 @@ class MiniAppApiBackend {
     );
   }
 
+  /// Loads the current user's loyalty milestone list.
+  Future<List<LoyaltyItemDto>> getLoyalty() async {
+    final ApiExecutor executor = _requireAuthorizedExecutor('getLoyalty');
+    final Map<String, Object?> json = await executor.getJson(
+      ApiEndpoints.loyalty,
+      context: const ReqContext(operName: 'getLoyalty'),
+    );
+
+    return LoyaltyItemDto.listFromJson(json);
+  }
+
   /// Creates a support feedback ticket.
   Future<CreateFeedbackResponseDto> createFeedback(
     CreateFeedbackApiReq req,

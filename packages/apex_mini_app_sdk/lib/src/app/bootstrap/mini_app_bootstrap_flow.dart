@@ -69,50 +69,6 @@ class MiniAppBootstrapFlow {
     AcntBootstrapState bootstrapState, {
     UserEntityDto? currentUser,
   }) {
-    if (_shouldRouteToOverview(bootstrapState, currentUser: currentUser)) {
-      return MiniAppRoutes.overview;
-    }
-
     return MiniAppRoutes.secAcnt;
-  }
-
-  /// Whether startup should land on overview instead of sec-account onboarding.
-  static bool _shouldRouteToOverview(
-    AcntBootstrapState bootstrapState, {
-    UserEntityDto? currentUser,
-  }) {
-    if (bootstrapState.hasOpenSecAcnt && bootstrapState.hasIpsAcnt) {
-      if (!hasCompleteSecAcntPersonalInfo(
-        bootstrapState,
-        user: currentUser,
-      )) {
-        return false;
-      }
-      return true;
-    }
-
-    if (bootstrapState.secAcntStatusCode ==
-            AcntBootstrapState.secAcntStatusUnpaid &&
-        !hasPaidSecAcntOpeningFee(
-          bootstrapState,
-          currentUser: currentUser,
-        )) {
-      return false;
-    }
-
-    if (bootstrapState.hasAcnt && !bootstrapState.hasIpsAcnt) {
-      if (hasCompleteSecAcntPersonalInfo(bootstrapState, user: currentUser) &&
-          (bootstrapState.hasOpenSecAcnt ||
-              bootstrapState.hasPendingSecAcntActivation)) {
-        return true;
-      }
-    }
-
-    final SecAcntFlowStep? initialStep = resolveInitialSecAcntFlowStep(
-      bootstrapState,
-      currentUser: currentUser,
-    );
-
-    return initialStep == null || initialStep == SecAcntFlowStep.calculation;
   }
 }

@@ -105,6 +105,9 @@ class ApiEndpoints {
   /// Account-name lookup endpoint for account codes.
   static const String getAcntNameByAcntCode = '/api/v1.0/getAcntNameByAcntCode';
 
+  /// User loyalty/milestone list endpoint.
+  static const String loyalty = '/api/v1/user/profile/loyalty';
+
   /// Remote client API diagnostic logger endpoint.
   static const String loggerCreate = '/api/v1/logger/create';
 }

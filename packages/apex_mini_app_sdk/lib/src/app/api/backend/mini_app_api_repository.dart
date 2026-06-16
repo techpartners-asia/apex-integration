@@ -44,6 +44,9 @@ abstract interface class MiniAppProfileRepository {
 
   /// Updates personal and bank profile fields.
   Future<UserEntityDto> updateProfile(UpdateProfileApiReq req);
+
+  /// Loads the user's loyalty milestone list.
+  Future<List<LoyaltyItemDto>> getLoyalty();
 }
 
 /// Feedback repository operations used by feedback screens.
@@ -170,6 +173,9 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
 
   @override
   Future<UserEntityDto> updateProfile(UpdateProfileApiReq req) => profileRepository.updateProfile(req);
+
+  @override
+  Future<List<LoyaltyItemDto>> getLoyalty() => profileRepository.getLoyalty();
 
   @override
   Future<FeedbackEntity> createFeedback(CreateFeedbackApiReq req) => feedbackRepository.createFeedback(req);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
@@ -26,6 +28,7 @@ class _QuestionnaireAgreementScreenState
 
   /// Opens the signature step after agreement consent.
   void _openNextStep() {
+    unawaited(QuestionnaireLocalPrefs.markAgreementAccepted());
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => QuestionnaireSignatureScreen(

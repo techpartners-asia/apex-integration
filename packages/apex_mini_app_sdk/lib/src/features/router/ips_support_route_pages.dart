@@ -37,6 +37,35 @@ Widget buildIpsFeedbackPage(
 }
 
 /// Builds the reward route.
-Widget buildIpsRewardPage(BuildContext context, {required String route}) {
-  return const RewardScreen();
+Widget buildIpsRewardPage(
+  BuildContext context, {
+  required String route,
+  required IpsDependencies dependencies,
+  required SdkLocalizations l10n,
+}) {
+  return buildGuarded(
+    context,
+    route: route,
+    service: dependencies.bootstrapService,
+    missingMessage: l10n.ipsAcntMissingService,
+    builder: (service) => MultiBlocProvider(
+      providers: [
+        BlocProvider<LoyaltyCubit>(
+          create: (_) => LoyaltyCubit(api: dependencies.appApi)..load(),
+        ),
+        BlocProvider<IpsOverviewCubit>(
+          create: (_) => IpsOverviewCubit(
+            bootstrapService: service,
+            portfolioService: dependencies.portfolioService,
+            packService: dependencies.packService,
+            ordersService: dependencies.ordersService,
+            questionnaireService: dependencies.questionnaireService,
+            l10n: l10n,
+            logger: dependencies.logger,
+          )..load(),
+        ),
+      ],
+      child: const RewardScreen(),
+    ),
+  );
 }

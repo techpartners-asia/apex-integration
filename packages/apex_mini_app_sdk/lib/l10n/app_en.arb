@@ -35,6 +35,7 @@
   "errorsMissingContract": "Exact backend contract is not available yet.",
   "errorsUnknownRoute": "The reqed flow route is not registered.",
   "validationRequired": "This field is required.",
+  "validationFillRequired": "Please fill in the required fields.",
   "validationSelectionRequired": "Please select a value.",
   "validationInvalidEmail": "Enter a valid email address.",
   "validationInvalidPhone": "Enter a valid phone number.",
@@ -109,9 +110,11 @@
     }
   },
   "ipsOverviewDashboardQuickRecharge": "Recharge pack",
+  "ipsOverviewDashboardPendingOrderTitle": "Order pending.",
   "ipsOverviewDashboardQuickWithdraw": "Withdraw money",
   "ipsOverviewDashboardAllocationStocks": "Stocks",
   "ipsOverviewDashboardAllocationBonds": "Bonds",
+  "ipsOverviewDashboardAllocationCash": "Cash",
   "ipsOverviewDashboardAllocationTotal": "Total investment",
   "ipsOverviewDashboardYieldLabel": "Your return",
   "ipsOverviewDashboardDetails": "View details",
@@ -348,7 +351,9 @@
   "ipsSuccessQrCreated": "QR created successfully.",
   "ipsStatusPending": "Pending",
   "ipsStatusActive": "Active",
+  "ipsStatusConfirmed": "Confirmed",
   "ipsStatusCompleted": "Completed",
+  "ipsStatusAllocated": "Allocated",
   "ipsStatusCancelled": "Cancelled",
   "ipsStatusFailed": "Failed",
   "ipsUnknownRouteTitle": "Route unavailable",
@@ -552,6 +557,7 @@
       "total": { "type": "int" }
     }
   },
+  "ipsRewardStreakNextRewardLabel": "Next reward:",
   "ipsRewardStreakNextReward": "Next reward: +{reward}",
   "@ipsRewardStreakNextReward": {
     "placeholders": {
@@ -560,6 +566,8 @@
   },
   "ipsRewardNextGoalTitle": "Next goal",
   "ipsRewardNextGoalBody": "After 6 months, your interest rate increases by 2%, plus VIP benefits.",
+  "ipsRewardBonusCupon": "Coupon",
+  "ipsRewardBonusInterest": "Interest",
   "ipsRewardMilestoneMonths": "{count} Months",
   "@ipsRewardMilestoneMonths": {
     "placeholders": {

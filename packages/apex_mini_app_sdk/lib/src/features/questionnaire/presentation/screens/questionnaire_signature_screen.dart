@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
@@ -60,6 +62,7 @@ class _QuestionnaireSignatureScreenState
       return;
     }
 
+    unawaited(QuestionnaireLocalPrefs.markSignatureUploaded());
     setState(() => _isUploading = false);
     Navigator.of(context).push(
       MaterialPageRoute<void>(

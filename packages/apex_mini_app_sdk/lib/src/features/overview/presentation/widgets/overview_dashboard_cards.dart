@@ -228,7 +228,7 @@ class OverviewDashboardRewardCard extends StatelessWidget {
         borderRadius: cardRadius,
       ),
       child: Padding(
-        padding: EdgeInsets.all(responsive.dp(1.6)),
+        padding: EdgeInsets.all(responsive.dp(1)),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: Color.alphaBlend(
@@ -240,9 +240,9 @@ class OverviewDashboardRewardCard extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               responsive.dp(16),
-              responsive.dp(10),
+              responsive.dp(12),
               responsive.dp(16),
-              responsive.dp(10),
+              responsive.dp(12),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -252,17 +252,20 @@ class OverviewDashboardRewardCard extends StatelessWidget {
                   width: responsive.dp(38),
                   height: responsive.dp(48),
                 ),
-                SizedBox(height: responsive.dp(18)),
+                SizedBox(height: responsive.dp(10)),
                 CustomText(
                   l10n.ipsOverviewDashboardRewardTitle(clampedStreakMonths),
-                  variant: MiniAppTextVariant.body1,
+                  variant: MiniAppTextVariant.title1,
                   textAlign: TextAlign.center,
                   color: Colors.black,
+                   style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
                 SizedBox(height: responsive.dp(18)),
                 _RewardBodyText(text: l10n.ipsOverviewDashboardRewardBody),
-                SizedBox(height: responsive.dp(28)),
-                _RewardProgressBar(months: clampedStreakMonths),
+                SizedBox(height: responsive.dp(10)),
+                RewardProgressBar(months: clampedStreakMonths),
               ],
             ),
           ),
@@ -332,83 +335,6 @@ class _RewardBodyText extends StatelessWidget {
 }
 
 /// Segmented 12-month reward progress bar.
-class _RewardProgressBar extends StatelessWidget {
-  /// Completed month count.
-  final int months;
-
-  /// Creates the reward progress bar.
-  const _RewardProgressBar({required this.months});
-
-  /// Number of months represented by the bar.
-  static const int _monthCount = 12;
-
-  @override
-  Widget build(BuildContext context) {
-    final responsive = context.responsive;
-    final double barHeight = responsive.dp(16);
-    final double markerSize = responsive.dp(25);
-    final double progress = months / _monthCount;
-
-    return SizedBox(
-      height: markerSize,
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final double maxWidth = constraints.maxWidth;
-          final double markerLeft = (maxWidth * progress - markerSize / 2)
-              .clamp(0.0, maxWidth - markerSize)
-              .toDouble();
-
-          return Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: SizedBox(
-                  height: barHeight,
-                  child: Row(
-                    children: List<Widget>.generate(
-                      _monthCount * 2 - 1,
-                      (int index) {
-                        if (index.isOdd) {
-                          return Container(
-                            width: responsive.dp(2),
-                            color: Colors.white,
-                          );
-                        }
-
-                        final int segmentIndex = index ~/ 2;
-                        final bool completed = segmentIndex < months;
-
-                        return Expanded(
-                          child: ColoredBox(
-                            color: completed
-                                ? DesignTokens.rose
-                                : DesignTokens.softPeach.withValues(
-                                    alpha: 0.55,
-                                  ),
-                            child: SizedBox(height: barHeight),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: markerLeft,
-                child: CustomImage(
-                  path: Img.fireFull,
-                  height: markerSize,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-}
 
 /// Dashboard quick action icon and label.
 class _DashboardQuickAction extends StatelessWidget {
@@ -446,6 +372,7 @@ class _DashboardQuickAction extends StatelessWidget {
             onPressed: onTap,
             enabled: !disabled,
             borderRadius: BorderRadius.circular(responsive.radius(14)),
+            useNativePlatformView: false,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: responsive.dp(4)),
               child: Center(

@@ -64,10 +64,6 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
       payableAmount: amount,
       personalInfo: widget.draft.toPersonalInfoData(),
       bootstrapState: _bootstrapState,
-      requiresOpeningPaymentFlow: requiresSecAcntOpeningPayment(
-        _bootstrapState,
-        currentUser: widget.currentUser,
-      ),
     );
     if (!mounted) {
       return;
@@ -169,11 +165,6 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      // SecAcntStepIndicator(
-                      //   currentStep: SecAcntFlowStep.payment,
-                      //   bootstrapState: _bootstrapState,
-                      //   currentUser: widget.currentUser,
-                      // ),
                       SecAcntPaymentStep(
                         errorMessage: state.errorMessage,
                         isSubmitting: state.isSubmitting,

@@ -308,6 +308,12 @@ abstract class SdkLocalizations {
   /// **'This field is required.'**
   String get validationRequired;
 
+  /// No description provided for @validationFillRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in the required fields.'**
+  String get validationFillRequired;
+
   /// No description provided for @validationSelectionRequired.
   ///
   /// In en, this message translates to:
@@ -602,6 +608,12 @@ abstract class SdkLocalizations {
   /// **'Recharge pack'**
   String get ipsOverviewDashboardQuickRecharge;
 
+  /// No description provided for @ipsOverviewDashboardPendingOrderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order pending.'**
+  String get ipsOverviewDashboardPendingOrderTitle;
+
   /// No description provided for @ipsOverviewDashboardQuickWithdraw.
   ///
   /// In en, this message translates to:
@@ -619,6 +631,12 @@ abstract class SdkLocalizations {
   /// In en, this message translates to:
   /// **'Bonds'**
   String get ipsOverviewDashboardAllocationBonds;
+
+  /// No description provided for @ipsOverviewDashboardAllocationCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get ipsOverviewDashboardAllocationCash;
 
   /// No description provided for @ipsOverviewDashboardAllocationTotal.
   ///
@@ -1652,11 +1670,23 @@ abstract class SdkLocalizations {
   /// **'Active'**
   String get ipsStatusActive;
 
+  /// No description provided for @ipsStatusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get ipsStatusConfirmed;
+
   /// No description provided for @ipsStatusCompleted.
   ///
   /// In en, this message translates to:
   /// **'Completed'**
   String get ipsStatusCompleted;
+
+  /// No description provided for @ipsStatusAllocated.
+  ///
+  /// In en, this message translates to:
+  /// **'Allocated'**
+  String get ipsStatusAllocated;
 
   /// No description provided for @ipsStatusCancelled.
   ///
@@ -2654,6 +2684,12 @@ abstract class SdkLocalizations {
   /// **'{current} / {total} months'**
   String ipsRewardStreakMonths(int current, int total);
 
+  /// No description provided for @ipsRewardStreakNextRewardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next reward:'**
+  String get ipsRewardStreakNextRewardLabel;
+
   /// No description provided for @ipsRewardStreakNextReward.
   ///
   /// In en, this message translates to:
@@ -2671,6 +2707,18 @@ abstract class SdkLocalizations {
   /// In en, this message translates to:
   /// **'After 6 months, your interest rate increases by 2%, plus VIP benefits.'**
   String get ipsRewardNextGoalBody;
+
+  /// No description provided for @ipsRewardBonusCupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon'**
+  String get ipsRewardBonusCupon;
+
+  /// No description provided for @ipsRewardBonusInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest'**
+  String get ipsRewardBonusInterest;
 
   /// No description provided for @ipsRewardMilestoneMonths.
   ///

@@ -58,4 +58,5 @@ class Img {
   static const String filter = 'assets/icons/filter.png';
   static const String download = 'assets/icons/download.png';
   static const String close = 'assets/icons/close.png';
+  static const String sandClock = 'assets/icons/sand-clock.png';
 }

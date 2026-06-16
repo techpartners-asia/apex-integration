@@ -58,6 +58,7 @@ class ActionButton extends StatelessWidget {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       boxShadow: boxShadow,
+      useNativePlatformView: false,
     );
   }
 }

@@ -133,10 +133,14 @@ class IpsOrderDto {
       case 'd':
       case 's':
         return IpsOrderStatus.completed;
+      case 'di':
+        return IpsOrderStatus.allocated;
       case 'f':
         return IpsOrderStatus.failed;
       case 'n':
         return IpsOrderStatus.pending;
+      case 'p':
+        return IpsOrderStatus.confirmed;
     }
 
     if (normalized.contains('cancel')) return IpsOrderStatus.cancelled;

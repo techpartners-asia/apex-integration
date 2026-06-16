@@ -15,6 +15,9 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
   /// Orders service used to check for pending orders.
   final OrdersService? ordersService;
 
+  /// Questionnaire service used to check grape completion status.
+  final QuestionnaireService? questionnaireService;
+
   /// Localizations used for error messages.
   final SdkLocalizations l10n;
 
@@ -27,6 +30,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     this.portfolioService,
     this.packService,
     this.ordersService,
+    this.questionnaireService,
     this.logger = const SilentMiniAppLogger(),
   }) : super(const LoadableState<IpsOverviewViewData>());
 
@@ -48,10 +52,15 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
         );
         await _loadPortfolioOverviewIfNeeded(initial);
       } else {
+        final bool isQuestionnaireCompleted =
+            await _checkQuestionnaireCompletedIfNeeded(initial);
         emit(
           LoadableState<IpsOverviewViewData>(
             status: LoadableStatus.success,
-            data: IpsOverviewViewData(bootstrapState: initial),
+            data: IpsOverviewViewData(
+              bootstrapState: initial,
+              isQuestionnaireCompleted: isQuestionnaireCompleted,
+            ),
           ),
         );
         _loadPacksIfNeeded(initial);
@@ -78,10 +87,15 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
         );
         await _loadPortfolioOverviewIfNeeded(data);
       } else {
+        final bool isQuestionnaireCompleted =
+            await _checkQuestionnaireCompletedIfNeeded(data);
         emit(
           LoadableState<IpsOverviewViewData>(
             status: LoadableStatus.success,
-            data: IpsOverviewViewData(bootstrapState: data),
+            data: IpsOverviewViewData(
+              bootstrapState: data,
+              isQuestionnaireCompleted: isQuestionnaireCompleted,
+            ),
           ),
         );
         _loadPacksIfNeeded(data, forceRefresh: forceRefresh);
@@ -108,10 +122,10 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     try {
       final SdkPortfolioContext context = const PortfolioContextResolver()
           .resolve(bootstrapState: data);
-      final (PortfolioDashboardData dashboardData, bool hasPendingOrder) =
+      final (PortfolioDashboardData dashboardData, IpsOrder? pendingOrder) =
           await (
             service.getDashboardData(context: context),
-            _fetchHasPendingOrder(forceRefresh: forceRefresh),
+            _fetchPendingOrder(forceRefresh: forceRefresh),
           ).wait;
 
       emit(
@@ -124,7 +138,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
             stockYieldDetails: dashboardData.stockYieldDetails,
             portfolioContext: dashboardData.portfolioContext,
             isDashboardDataReady: true,
-            hasPendingOrder: hasPendingOrder,
+            pendingOrder: pendingOrder,
           ),
         ),
       );
@@ -147,22 +161,28 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     }
   }
 
-  Future<bool> _fetchHasPendingOrder({bool forceRefresh = false}) async {
+  Future<IpsOrder?> _fetchPendingOrder({bool forceRefresh = false}) async {
     final OrdersService? service = ordersService;
-    if (service == null) return false;
+    if (service == null) return null;
     try {
       final List<IpsOrder> orders = await service.getOrders();
-      return orders.any((IpsOrder o) => o.status == IpsOrderStatus.pending);
+      final DateTime now = DateTime.now();
+      return orders.where((IpsOrder o) {
+        if (o.status != IpsOrderStatus.pending) return false;
+        final DateTime? expiresAt = o.expiresAt;
+        if (expiresAt != null && expiresAt.isBefore(now)) return false;
+        return true;
+      }).firstOrNull;
     } catch (_) {
-      return false;
+      return null;
     }
   }
 
-  /// Refetches only [hasPendingOrder] without reloading the full overview.
+  /// Refetches only [pendingOrder] without reloading the full overview.
   Future<void> refreshPendingOrderStatus() async {
     final IpsOverviewViewData? current = state.data;
     if (current == null || isClosed) return;
-    final bool hasPendingOrder = await _fetchHasPendingOrder();
+    final IpsOrder? pendingOrder = await _fetchPendingOrder();
     if (isClosed) return;
     emit(
       state.copyWith(
@@ -175,10 +195,30 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
           portfolioContext: current.portfolioContext,
           isDashboardDataReady: current.isDashboardDataReady,
           dashboardLoadFailed: current.dashboardLoadFailed,
-          hasPendingOrder: hasPendingOrder,
+          pendingOrder: pendingOrder,
         ),
       ),
     );
+  }
+
+  Future<bool> _checkQuestionnaireCompletedIfNeeded(
+    AcntBootstrapState data,
+  ) async {
+    final QuestionnaireService? service = questionnaireService;
+    if (service == null) {
+      print('[overview] questionnaireService is null → skip check');
+      return false;
+    }
+    if (data.hasIpsAcnt) return false;
+    try {
+      final GrapeQuestionnaireCompletionStatus status =
+          await service.checkCompletionStatus();
+      print('[overview] checkCompletionStatus → completed=${status.completed}');
+      return status.completed;
+    } catch (e) {
+      print('[overview] checkCompletionStatus error → $e');
+      return false;
+    }
   }
 
   bool _shouldLoadDashboardData(AcntBootstrapState data) {
@@ -209,6 +249,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
               portfolioContext: current.portfolioContext,
               isDashboardDataReady: current.isDashboardDataReady,
               dashboardLoadFailed: current.dashboardLoadFailed,
+              isQuestionnaireCompleted: current.isQuestionnaireCompleted,
             ),
           ),
         );

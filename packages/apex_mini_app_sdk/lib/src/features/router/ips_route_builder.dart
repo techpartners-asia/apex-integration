@@ -116,7 +116,7 @@ Widget buildIpsPageForRoute(
         l10n: l10n,
       );
     case MiniAppRoutes.reward:
-      return buildIpsRewardPage(context, route: route);
+      return buildIpsRewardPage(context, route: route, dependencies: dependencies, l10n: l10n);
     case MiniAppRoutes.personalInfo:
       return buildIpsPersonalInfoPage(
         context,

@@ -35,6 +35,7 @@
   "errorsMissingContract": "Backend-ийн нарийн contract хараахан бэлэн болоогүй байна.",
   "errorsUnknownRoute": "Route бүртгэгдээгүй байна.",
   "validationRequired": "Энэ талбарыг заавал бөглөнө.",
+  "validationFillRequired": "Талбарыг заавал бөглөнө үү.",
   "validationSelectionRequired": "Утга сонгоно уу.",
   "validationInvalidEmail": "Имэйл хаягаа зөв оруулна уу.",
   "validationInvalidPhone": "Утасны дугаараа зөв оруулна уу.",
@@ -109,9 +110,11 @@
     }
   },
   "ipsOverviewDashboardQuickRecharge": "Багц цэнэглэх",
+  "ipsOverviewDashboardPendingOrderTitle": "Захиалга хүлээгдэж байна.",
   "ipsOverviewDashboardQuickWithdraw": "Мөнгө татах",
   "ipsOverviewDashboardAllocationStocks": "Хувьцаа",
   "ipsOverviewDashboardAllocationBonds": "Бонд",
+  "ipsOverviewDashboardAllocationCash": "Бэлэн мөнгө",
   "ipsOverviewDashboardAllocationTotal": "Нийт хөрөнгө оруулалт",
   "ipsOverviewDashboardYieldLabel": "Таны өгөөж",
   "ipsOverviewDashboardDetails": "Дэлгэрэнгүй харах",
@@ -349,7 +352,9 @@
   "ipsStatusPending": "Хүлээгдэж буй",
   "ipsStatusNew": "Хүлээгдэж буй",
   "ipsStatusActive": "Идэвхтэй",
+  "ipsStatusConfirmed": "Захиалга баталгаажсан",
   "ipsStatusCompleted": "Амжилттай",
+  "ipsStatusAllocated": "Хуваарилагдсан",
   "ipsStatusCancelled": "Цуцлагдсан",
   "ipsStatusFailed": "Амжилтгүй",
   "ipsUnknownRouteTitle": "Маршрут олдсонгүй",
@@ -553,6 +558,7 @@
       "total": { "type": "int" }
     }
   },
+  "ipsRewardStreakNextRewardLabel": "Дараагийн урамшуулал:",
   "ipsRewardStreakNextReward": "Дараагийн урамшуулал: +{reward}",
   "@ipsRewardStreakNextReward": {
     "placeholders": {
@@ -561,6 +567,8 @@
   },
   "ipsRewardNextGoalTitle": "Дараагийн зорилго",
   "ipsRewardNextGoalBody": "6 сар хүрэхэд таны хүү 2% нэмэгдэж, VIP боломжууд нээгдэнэ",
+  "ipsRewardBonusCupon": "Купон",
+  "ipsRewardBonusInterest": "Хүү",
   "ipsRewardMilestoneMonths": "{count} Сар",
   "@ipsRewardMilestoneMonths": {
     "placeholders": {

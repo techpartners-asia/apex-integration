@@ -36,6 +36,9 @@ class OverviewDashboardHomeTab extends StatelessWidget {
   /// Pull-to-refresh callback.
   final RefreshCallback? onRefresh;
 
+  /// Pending order (status "N") to show in the dashboard, if any.
+  final IpsOrder? pendingOrder;
+
   /// Creates the overview dashboard tab.
   const OverviewDashboardHomeTab({
     super.key,
@@ -50,6 +53,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
     this.onWithdraw,
     this.onViewDetails,
     this.onRefresh,
+    this.pendingOrder,
   });
 
   @override
@@ -79,6 +83,14 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               onStatements: onStatements,
               onWithdraw: onWithdraw,
             ),
+            if (pendingOrder != null) ...<Widget>[
+              SizedBox(height: responsive.dp(14)),
+              OverviewPendingOrderCard(
+                order: pendingOrder!,
+                packAmount: portfolioOverview?.packAmount,
+                currency: portfolioOverview?.currency ?? '',
+              ),
+            ],
             SizedBox(height: responsive.dp(14)),
             if (showFinancialData) ...<Widget>[
               /// Dashboard asset breakdown card
@@ -99,9 +111,9 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               /// Dashboard goal card
               OverviewDashboardGoalCard(metrics: metrics),
             ],
-          // SizedBox(height: responsive.dp(14)),
+          SizedBox(height: responsive.dp(16)),
           // /// Dashboard reward card
-          // OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
+          OverviewDashboardRewardCard(streakMonths: metrics.streakMonths),
             SizedBox(height: responsive.dp(100)),
           ],
         ),
@@ -147,13 +159,16 @@ AllocationSummaryData _buildAllocationSummaryData(
   return AllocationSummaryData(
     stockValue: metrics.stockTotal,
     bondValue: metrics.bondTotal,
+    cashValue: metrics.cashTotal,
     barFallbackTotal: metrics.totalInvestment,
     stockLabel: l10n.ipsOverviewDashboardAllocationStocks,
     stockValueLabel: metrics.stockTotalLabel,
     bondLabel: l10n.ipsOverviewDashboardAllocationBonds,
     bondValueLabel: metrics.bondTotalLabel,
+    cashLabel: l10n.ipsOverviewDashboardAllocationCash,
+    cashValueLabel: metrics.cashTotalLabel,
     totalLabel: l10n.ipsOverviewDashboardAllocationTotal,
-    totalValueLabel: metrics.totalInvestmentLabel,
+    totalValueLabel: metrics.allocationTotalLabel,
     yieldSectionLabel: l10n.ipsOverviewDashboardYieldLabel,
     yieldBadges: <AllocationBadgeData>[
       AllocationBadgeData(

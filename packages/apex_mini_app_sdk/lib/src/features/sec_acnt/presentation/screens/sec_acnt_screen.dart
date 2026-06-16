@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// Entry screen for the securities account onboarding nested navigator.
-class SecAcntScreen extends StatelessWidget {
+class SecAcntScreen extends StatefulWidget {
   /// Bootstrap data fetched before opening the flow.
   final AcntBootstrapState? initialBootstrapState;
 
@@ -29,73 +29,91 @@ class SecAcntScreen extends StatelessWidget {
     required this.currentUser,
   });
 
+  @override
+  State<SecAcntScreen> createState() => _SecAcntScreenState();
+}
+
+class _SecAcntScreenState extends State<SecAcntScreen> {
+  bool _prefsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    await SecAcntLocalPrefs.init();
+    if (mounted) setState(() => _prefsLoaded = true);
+  }
+
   /// Chooses the first screen based on bootstrap and profile skip logic.
   Widget _buildInitialScreen() {
     final SecAcntFlowDraft initialDraft = SecAcntFlowDraft.fromBootstrap(
-      initialBootstrapState,
-      user: currentUser,
+      widget.initialBootstrapState,
+      user: widget.currentUser,
     );
 
     final SecAcntFlowStep? initialStep = resolveInitialSecAcntFlowStep(
-      initialBootstrapState,
-      currentUser: currentUser,
+      widget.initialBootstrapState,
+      currentUser: widget.currentUser,
     );
 
     if (initialStep == null) {
-      return _SecAcntFlowDoneRedirect(bootstrapState: initialBootstrapState);
+      return _SecAcntFlowDoneRedirect(bootstrapState: widget.initialBootstrapState);
     }
 
     return switch (initialStep) {
       SecAcntFlowStep.payment => SecAcntPaymentScreen(
-        bootstrapState: initialBootstrapState,
+        bootstrapState: widget.initialBootstrapState,
         draft: initialDraft,
-        currentUser: currentUser,
+        currentUser: widget.currentUser,
         isInitialStep: true,
       ),
       SecAcntFlowStep.calculation => SecAcntCalculationScreen(
-        bootstrapState: initialBootstrapState,
+        bootstrapState: widget.initialBootstrapState,
       ),
       SecAcntFlowStep.consent => SecAcntConsentScreen(
-        bootstrapState: initialBootstrapState,
-        bankOptionsRepository: bankOptionsRepository,
-        bankAccountLookupRepository: bankAccountLookupRepository,
-        appApi: appApi,
-        currentUser: currentUser,
+        bootstrapState: widget.initialBootstrapState,
+        bankOptionsRepository: widget.bankOptionsRepository,
+        bankAccountLookupRepository: widget.bankAccountLookupRepository,
+        appApi: widget.appApi,
+        currentUser: widget.currentUser,
         initialDraft: initialDraft,
       ),
       SecAcntFlowStep.personalInformation => SecAcntPersonalInfoScreen(
-        bootstrapState: initialBootstrapState,
-        bankOptionsRepository: bankOptionsRepository,
-        bankAccountLookupRepository: bankAccountLookupRepository,
-        appApi: appApi,
-        currentUser: currentUser,
+        bootstrapState: widget.initialBootstrapState,
+        bankOptionsRepository: widget.bankOptionsRepository,
+        bankAccountLookupRepository: widget.bankAccountLookupRepository,
+        appApi: widget.appApi,
+        currentUser: widget.currentUser,
         initialDraft: initialDraft,
       ),
       SecAcntFlowStep.secAgreement ||
       SecAcntFlowStep.serviceAgreement => SecAcntAgreementScreen(
         step: initialStep,
-        bootstrapState: initialBootstrapState,
+        bootstrapState: widget.initialBootstrapState,
         draft: initialDraft,
-        appApi: appApi,
-        currentUser: currentUser,
+        appApi: widget.appApi,
+        currentUser: widget.currentUser,
       ),
       SecAcntFlowStep.signature => SecAcntSignatureScreen(
-        bootstrapState: initialBootstrapState,
+        bootstrapState: widget.initialBootstrapState,
         draft: initialDraft,
-        appApi: appApi,
-        currentUser: currentUser,
+        appApi: widget.appApi,
+        currentUser: widget.currentUser,
       ),
       SecAcntFlowStep.success => SecAcntSuccessScreen(
-        bootstrapState: initialBootstrapState,
+        bootstrapState: widget.initialBootstrapState,
         draft: initialDraft,
-        currentUser: currentUser,
+        currentUser: widget.currentUser,
       ),
       _ => SecAcntConsentScreen(
-        bootstrapState: initialBootstrapState,
-        bankOptionsRepository: bankOptionsRepository,
-        bankAccountLookupRepository: bankAccountLookupRepository,
-        appApi: appApi,
-        currentUser: currentUser,
+        bootstrapState: widget.initialBootstrapState,
+        bankOptionsRepository: widget.bankOptionsRepository,
+        bankAccountLookupRepository: widget.bankAccountLookupRepository,
+        appApi: widget.appApi,
+        currentUser: widget.currentUser,
         initialDraft: initialDraft,
       ),
     };
@@ -103,6 +121,8 @@ class SecAcntScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!_prefsLoaded) return const SizedBox.shrink();
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Navigator(

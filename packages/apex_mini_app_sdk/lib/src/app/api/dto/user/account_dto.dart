@@ -51,6 +51,9 @@ class AccountDto {
   /// Signature file identifier used by older profile responses.
   final int? signatureId;
 
+  /// Next goal description returned by backend gamification/account state.
+  final String? goal;
+
   /// Streak value returned by backend gamification/account state.
   final String? streak;
 
@@ -87,6 +90,7 @@ class AccountDto {
     this.profitAmount,
     this.profitPercent,
     this.scAcntCode,
+    this.goal,
     this.signatureId,
     this.streak,
     this.targetGoal,
@@ -125,6 +129,7 @@ class AccountDto {
       profitPercent: ApiParser.asNullableDouble(json['profit_percent']),
       scAcntCode: ApiParser.asNullableString(json['sc_acnt_code']),
       signatureId: ApiParser.asNullableInt(json['signature_id']),
+      goal: ApiParser.asNullableString(json['goal']),
       streak: ApiParser.asNullableString(json['streak']),
       targetGoal: ApiParser.asNullableDouble(json['target_goal']),
       totalAmount: ApiParser.asNullableDouble(json['total_amount']),
@@ -155,6 +160,7 @@ class AccountDto {
     num? profitAmount,
     num? profitPercent,
     String? scAcntCode,
+    String? goal,
     int? signatureId,
     String? streak,
     num? targetGoal,
@@ -178,6 +184,7 @@ class AccountDto {
       profitAmount: profitAmount ?? this.profitAmount,
       profitPercent: profitPercent ?? this.profitPercent,
       scAcntCode: scAcntCode ?? this.scAcntCode,
+      goal: goal ?? this.goal,
       signatureId: signatureId ?? this.signatureId,
       streak: streak ?? this.streak,
       targetGoal: targetGoal ?? this.targetGoal,

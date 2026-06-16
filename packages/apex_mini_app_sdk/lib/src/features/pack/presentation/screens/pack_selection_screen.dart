@@ -17,46 +17,56 @@ class PackSelectionScreen extends StatelessWidget {
         final l10n = context.l10n;
         final List<IpsPack> packs = state.data ?? const <IpsPack>[];
 
+        Widget body;
+        if ((state.isInitial || state.isLoading) && packs.isEmpty) {
+          body = Center(
+            child: MiniAppLoadingState(
+              title: l10n.commonLoading,
+              message: l10n.ipsPackLoading,
+            ),
+          );
+        } else if (state.isFailure) {
+          body = Center(
+            child: MiniAppErrorState(
+              title: l10n.errorsGenericTitle,
+              message: state.errorMessage ?? l10n.errorsActionFailed,
+              retryLabel: l10n.commonRetry,
+              onRetry: context.read<IpsPackSelectionCubit>().load,
+            ),
+          );
+        } else if (packs.isEmpty) {
+          body = Center(
+            child: MiniAppEmptyState(
+              title: l10n.ipsPackTitle,
+              message: l10n.ipsPackNoPacks,
+            ),
+          );
+        } else {
+          body = Stack(
+            children: <Widget>[
+              SingleChildScrollView(
+                padding: EdgeInsets.all(AppSpacing.xl),
+                child: PackSelectionContent(
+                  packs: questionnaireRes!.showRecomended
+                      ? packs.where((el) => el.isRecommended == 1).toList()
+                      : packs,
+                  questionnaireRes: questionnaireRes,
+                ),
+              ),
+              if (state.isLoading)
+                Center(
+                  child: MiniAppLoadingState(
+                    title: l10n.commonLoading,
+                    message: l10n.ipsPackLoading,
+                  ),
+                ),
+            ],
+          );
+        }
+
         return CustomScaffold(
           appBarTitle: l10n.ipsOverviewProfileMenuPackInfo,
-          body: SingleChildScrollView(
-            padding: EdgeInsets.all(AppSpacing.xl),
-            child: Column(
-              children: <Widget>[
-                if (state.isLoading && packs.isNotEmpty) ...<Widget>[
-                  MiniAppLoadingState(
-                    title: l10n.commonLoading,
-                    message: l10n.ipsPackLoading,
-                  ),
-                  SizedBox(height: context.responsive.spacing.sectionSpacing),
-                ],
-                if ((state.isInitial || state.isLoading) && packs.isEmpty)
-                  MiniAppLoadingState(
-                    title: l10n.commonLoading,
-                    message: l10n.ipsPackLoading,
-                  )
-                else if (state.isFailure)
-                  MiniAppErrorState(
-                    title: l10n.errorsGenericTitle,
-                    message: state.errorMessage ?? l10n.errorsActionFailed,
-                    retryLabel: l10n.commonRetry,
-                    onRetry: context.read<IpsPackSelectionCubit>().load,
-                  )
-                else if (packs.isEmpty)
-                  MiniAppEmptyState(
-                    title: l10n.ipsPackTitle,
-                    message: l10n.ipsPackNoPacks,
-                  )
-                else
-                  PackSelectionContent(
-                    packs: questionnaireRes!.showRecomended
-                        ? packs.where((el) => el.isRecommended == 1).toList()
-                        : packs,
-                    questionnaireRes: questionnaireRes,
-                  ),
-              ],
-            ),
-          ),
+          body: body,
         );
       },
     );

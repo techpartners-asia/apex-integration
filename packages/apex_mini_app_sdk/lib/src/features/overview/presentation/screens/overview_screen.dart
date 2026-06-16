@@ -48,6 +48,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
               appBarReserveLeadingSpace: false,
               body: _buildBody(context, state, sessionState, isTradingEnabled),
               isTradingEnabled: isTradingEnabled,
+              extendBody: true,
               bottomNavigationBar: data == null || !state.isSuccess
                   ? null
                   : buildOverviewBottomNavigationBar(
@@ -136,6 +137,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                           viewData?.stockYieldDetails ??
                           const <PortfolioHolding>[],
                       user: sessionState.currentUser,
+                      pendingOrder: viewData?.pendingOrder,
                       onRecharge: () {
                         if (!isTradingEnabled) {
                           MiniAppToast.showWarning(
@@ -166,6 +168,8 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                       user: sessionState.currentUser,
                       packs: viewData?.packs ?? const <IpsPack>[],
                       onRefresh: _handleRefresh,
+                      isQuestionnaireCompleted:
+                          viewData?.isQuestionnaireCompleted ?? false,
                     )
             : OverviewProfileTab(
                 data: data,
@@ -273,6 +277,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                   bootstrapState,
                   currentUser: currentUser,
                 ),
+                isQuestionnaireCompleted: data.isQuestionnaireCompleted,
               ),
               compact: true,
             ),

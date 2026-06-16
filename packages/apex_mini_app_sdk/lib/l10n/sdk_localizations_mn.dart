@@ -119,6 +119,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get validationRequired => 'Энэ талбарыг заавал бөглөнө.';
 
   @override
+  String get validationFillRequired => 'Талбарыг заавал бөглөнө үү.';
+
+  @override
   String get validationSelectionRequired => 'Утга сонгоно уу.';
 
   @override
@@ -279,6 +282,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   }
 
   @override
+  String get ipsOverviewDashboardPendingOrderTitle => 'Захиалга хүлээгдэж байна.';
+
+  @override
   String get ipsOverviewDashboardQuickRecharge => 'Багц цэнэглэх';
 
   @override
@@ -289,6 +295,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsOverviewDashboardAllocationBonds => 'Бонд';
+
+  @override
+  String get ipsOverviewDashboardAllocationCash => 'Бэлэн мөнгө';
 
   @override
   String get ipsOverviewDashboardAllocationTotal => 'Нийт хөрөнгө оруулалт';
@@ -862,7 +871,13 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsStatusActive => 'Идэвхтэй';
 
   @override
+  String get ipsStatusConfirmed => 'Захиалга баталгаажсан';
+
+  @override
   String get ipsStatusCompleted => 'Амжилттай';
+
+  @override
+  String get ipsStatusAllocated => 'Хуваарилагдсан';
 
   @override
   String get ipsStatusCancelled => 'Цуцлагдсан';
@@ -1418,6 +1433,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   }
 
   @override
+  String get ipsRewardStreakNextRewardLabel => 'Дараагийн урамшуулал:';
+
+  @override
   String ipsRewardStreakNextReward(Object reward) {
     return 'Дараагийн урамшуулал: +$reward';
   }
@@ -1428,6 +1446,12 @@ class SdkLocalizationsMn extends SdkLocalizations {
   @override
   String get ipsRewardNextGoalBody =>
       '6 сар хүрэхэд таны хүү 2% нэмэгдэж, VIP боломжууд нээгдэнэ';
+
+  @override
+  String get ipsRewardBonusCupon => 'Купон';
+
+  @override
+  String get ipsRewardBonusInterest => 'Хүү';
 
   @override
   String ipsRewardMilestoneMonths(int count) {

@@ -24,6 +24,15 @@ class OverviewDashboardMetrics {
   /// Formatted bond allocation label.
   final String bondTotalLabel;
 
+  /// Total cash allocation value.
+  final double cashTotal;
+
+  /// Formatted cash allocation label.
+  final String cashTotalLabel;
+
+  /// Formatted label for stock + bond + cash combined total shown in the allocation card.
+  final String allocationTotalLabel;
+
   /// Profit/loss amount.
   final double profit;
 
@@ -63,6 +72,9 @@ class OverviewDashboardMetrics {
     required this.stockTotalLabel,
     required this.bondTotal,
     required this.bondTotalLabel,
+    this.cashTotal = 0,
+    this.cashTotalLabel = '',
+    this.allocationTotalLabel = '',
     required this.profit,
     required this.profitLabel,
     required this.profitPercentLabel,
@@ -114,6 +126,7 @@ class OverviewDashboardMetrics {
         ) ??
         0;
     final double bondTotal = _firstMeaningful(overview?.bondTotal) ?? 0;
+    final double cashTotal = _firstMeaningful(overview?.cashTotal) ?? 0;
     final double holdingsProfit = yieldProfitHoldings.isNotEmpty
         ? yieldProfitHoldings.fold<double>(
             0,
@@ -166,6 +179,9 @@ class OverviewDashboardMetrics {
       stockTotalLabel: formatIpsPaymentAmount(stockTotal, currency),
       bondTotal: bondTotal,
       bondTotalLabel: formatIpsPaymentAmount(bondTotal, currency),
+      cashTotal: cashTotal,
+      cashTotalLabel: formatIpsPaymentAmount(cashTotal, currency),
+      allocationTotalLabel: formatIpsPaymentAmount(stockTotal + bondTotal + cashTotal, currency),
       profit: profit,
       profitLabel: _formatSignedAmount(profit, currency),
       profitPercentLabel: _formatPercent(profitRatio),
@@ -175,7 +191,7 @@ class OverviewDashboardMetrics {
       goalCurrentLabel: formatIpsPaymentAmount(goalCurrent, currency),
       goalTarget: goalTarget,
       goalTargetLabel: formatIpsPaymentAmount(goalTarget, currency),
-      streakMonths: 12,
+      streakMonths: int.tryParse(user?.account?.streak ?? '') ?? 0,
     );
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
@@ -59,6 +61,10 @@ class LauncherHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               HostEventsCard(hostEvents: hostEvents),
+              if (kDebugMode) ...<Widget>[
+                const SizedBox(height: 16),
+                const DebugResetCard(),
+              ],
             ],
           ),
         ),
@@ -242,6 +248,102 @@ class DetailsCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class DebugResetCard extends StatefulWidget {
+  const DebugResetCard({super.key});
+
+  @override
+  State<DebugResetCard> createState() => _DebugResetCardState();
+}
+
+class _DebugResetCardState extends State<DebugResetCard> {
+  bool _isResetting = false;
+  bool _resetDone = false;
+
+  Future<void> _resetAll() async {
+    if (_isResetting) return;
+    setState(() {
+      _isResetting = true;
+      _resetDone = false;
+    });
+    await Future.wait(<Future<void>>[
+      SecAcntLocalPrefs.reset(),
+      QuestionnaireLocalPrefs.reset(),
+    ]);
+    if (!mounted) return;
+    setState(() {
+      _isResetting = false;
+      _resetDone = true;
+    });
+    unawaited(
+      Future<void>.delayed(const Duration(seconds: 2)).then((_) {
+        if (mounted) setState(() => _resetDone = false);
+      }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: BorderSide(color: theme.colorScheme.error.withValues(alpha: 0.3)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.bug_report_outlined,
+                  size: 18,
+                  color: theme.colorScheme.error,
+                ),
+                const SizedBox(width: 8),
+                CustomText('Debug', variant: MiniAppTextVariant.subtitle2),
+              ],
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _isResetting ? null : _resetAll,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: theme.colorScheme.error,
+                  side: BorderSide(
+                    color: theme.colorScheme.error.withValues(alpha: 0.5),
+                  ),
+                ),
+                icon: _isResetting
+                    ? SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.colorScheme.error,
+                        ),
+                      )
+                    : Icon(
+                        _resetDone ? Icons.check_rounded : Icons.refresh_rounded,
+                      ),
+                label: Text(
+                  _resetDone
+                      ? 'Reset complete'
+                      : 'Reset local prefs (sec_acnt + questionnaire)',
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

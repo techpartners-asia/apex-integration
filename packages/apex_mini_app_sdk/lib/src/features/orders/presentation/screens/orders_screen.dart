@@ -183,7 +183,9 @@ String _resolveOrderStatusLabel(
 ) {
   return switch (status) {
     IpsOrderStatus.pending => l10n.ipsStatusPending,
+    IpsOrderStatus.confirmed => l10n.ipsStatusConfirmed,
     IpsOrderStatus.completed => l10n.ipsStatusCompleted,
+    IpsOrderStatus.allocated => l10n.ipsStatusAllocated,
     IpsOrderStatus.cancelled => l10n.ipsStatusCancelled,
     IpsOrderStatus.failed => l10n.ipsStatusFailed,
   };

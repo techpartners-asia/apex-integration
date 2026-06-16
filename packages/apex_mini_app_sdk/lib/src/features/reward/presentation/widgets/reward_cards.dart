@@ -1,83 +1,17 @@
 part of '../reward_screen.dart';
 
-/// Reward goal progress card.
-class _GoalCard extends StatelessWidget {
-  /// Creates the goal progress card.
-  const _GoalCard({required this.l10n});
-
-  /// Localized reward labels.
-  final SdkLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    final responsive = context.responsive;
-
-    return SectionCard(
-      padding: EdgeInsets.all(responsive.dp(18)),
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Container(
-              width: responsive.dp(40),
-              height: responsive.dp(40),
-              decoration: BoxDecoration(
-                color: DesignTokens.softSurface,
-                borderRadius: BorderRadius.circular(responsive.radius(12)),
-              ),
-              child: Icon(
-                Icons.flag_outlined,
-                size: responsive.dp(22),
-                color: DesignTokens.ink,
-              ),
-            ),
-            SizedBox(width: responsive.dp(12)),
-            Expanded(
-              child: CustomText(
-                l10n.ipsRewardGoalTitle,
-                variant: MiniAppTextVariant.subtitle3,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: responsive.dp(14)),
-        Row(
-          children: <Widget>[
-            CustomText(
-              l10n.ipsRewardGoalProgress,
-              variant: MiniAppTextVariant.caption1,
-              color: DesignTokens.muted,
-            ),
-            const Spacer(),
-            CustomText(
-              '500,000₮ / 1,000,000₮',
-              variant: MiniAppTextVariant.subtitle3,
-            ),
-          ],
-        ),
-        SizedBox(height: responsive.dp(8)),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(responsive.radius(6)),
-          child: LinearProgressIndicator(
-            value: 0.5,
-            minHeight: responsive.dp(6),
-            backgroundColor: DesignTokens.border,
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              DesignTokens.success,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 /// Reward streak progress card.
 class _StreakCard extends StatelessWidget {
   /// Creates the streak card.
-  const _StreakCard({required this.l10n});
+  const _StreakCard({required this.l10n, required this.streakCount});
 
   /// Localized streak labels.
   final SdkLocalizations l10n;
+
+  /// Current streak month count from user account.
+  final int streakCount;
+
+  static const int _totalMonths = 12;
 
   @override
   Widget build(BuildContext context) {
@@ -85,98 +19,55 @@ class _StreakCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: <Color>[Color(0xFFFFF0EC), Color(0xFFFFF6F0)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Color(0xFFF2EAEA),
+        border: Border.all(color: DesignTokens.coral),
         borderRadius: BorderRadius.circular(responsive.radius(20)),
-        border: Border.all(color: DesignTokens.border),
         boxShadow: DesignTokens.cardShadow,
       ),
       padding: EdgeInsets.all(responsive.dp(18)),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          CustomText(
-            l10n.ipsRewardStreakTitle,
-            variant: MiniAppTextVariant.subtitle3,
-          ),
-          SizedBox(height: responsive.dp(12)),
-          Row(
-            children: <Widget>[
-              CustomText(
-                l10n.ipsRewardStreakMonths(6, 12),
-                variant: MiniAppTextVariant.title1,
-              ),
-              SizedBox(width: responsive.dp(10)),
-              _StreakDots(responsive: responsive, streakCount: 6, total: 12),
-              SizedBox(width: responsive.dp(6)),
-              CustomText(
-                '🔥',
-                variant: MiniAppTextVariant.subtitle2,
-              ),
-            ],
-          ),
-          SizedBox(height: responsive.dp(8)),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(responsive.radius(6)),
-            child: LinearProgressIndicator(
-              value: 0.5,
-              minHeight: responsive.dp(6),
-              backgroundColor: DesignTokens.border,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                DesignTokens.rose,
-              ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CustomText(
+              l10n.ipsRewardStreakTitle,
+              variant: MiniAppTextVariant.title1,
+              color: DesignTokens.ink,
             ),
-          ),
-          SizedBox(height: responsive.dp(10)),
-          CustomText(
-            l10n.ipsRewardStreakNextReward('+2% хүү'),
-            variant: MiniAppTextVariant.caption1,
-            color: DesignTokens.muted,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Row of dots summarizing completed streak months.
-class _StreakDots extends StatelessWidget {
-  /// Creates the streak-dot row.
-  const _StreakDots({
-    required this.responsive,
-    required this.streakCount,
-    required this.total,
-  });
-
-  /// Responsive data used to size dots consistently with the parent card.
-  final MiniAppResponsiveData responsive;
-
-  /// Number of completed streak units.
-  final int streakCount;
-
-  /// Total streak units to represent.
-  final int total;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: List<Widget>.generate(
-        total > 8 ? 8 : total,
-        (int index) => Container(
-          width: responsive.dp(8),
-          height: responsive.dp(8),
-          margin: EdgeInsets.only(right: responsive.dp(3)),
-          decoration: BoxDecoration(
-            color: index < streakCount
-                ? DesignTokens.rose
-                : DesignTokens.border,
-            shape: BoxShape.circle,
-          ),
+            SizedBox(height: responsive.dp(26)),
+            CustomText(
+                  l10n.ipsRewardStreakMonths(streakCount, _totalMonths),
+                  variant: MiniAppTextVariant.title1,
+                  color: DesignTokens.ink,
+                ),
+            SizedBox(height: responsive.dp(8)),
+            RewardProgressBar(
+              months: streakCount,
+              total: _totalMonths,
+            ),
+            SizedBox(height: responsive.dp(10)),
+            Row(
+              children: <Widget>[
+                CustomText(
+                  l10n.ipsRewardStreakNextRewardLabel,
+                  variant: MiniAppTextVariant.body3,
+                  color: const Color(0xFF4A5565),
+                ),
+                SizedBox(width: responsive.dp(4)),
+                ShaderMask(
+                  shaderCallback: (Rect bounds) => const LinearGradient(
+                    colors: <Color>[Color(0xFFDD4F80), Color(0xFFFB9D6C)],
+                  ).createShader(bounds),
+                  blendMode: BlendMode.srcIn,
+                  child: CustomText(
+                    '+2% хүү',
+                    variant: MiniAppTextVariant.body3,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-      ),
     );
   }
 }
@@ -184,39 +75,64 @@ class _StreakDots extends StatelessWidget {
 /// Card that explains the next reward goal.
 class _NextGoalCard extends StatelessWidget {
   /// Creates the next-goal card.
-  const _NextGoalCard({required this.l10n});
+  const _NextGoalCard({required this.l10n, this.goal});
 
   /// Localized next-goal labels.
   final SdkLocalizations l10n;
 
+  /// Next goal description from the user account.
+  final String? goal;
+
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
+    final String body = goal?.isNotEmpty == true ? goal! : l10n.ipsRewardNextGoalBody;
 
     return Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: <Color>[Color(0xFFE8F8F5), Color(0xFFF0FBF8)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: DesignTokens.primaryGradient,
         borderRadius: BorderRadius.circular(responsive.radius(20)),
-        border: Border.all(color: DesignTokens.border),
+        border: Border.all(color: DesignTokens.white, width: 2),
       ),
       padding: EdgeInsets.all(responsive.dp(18)),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          CustomText(
-            l10n.ipsRewardNextGoalTitle,
-            variant: MiniAppTextVariant.subtitle3,
-            color: DesignTokens.primaryTeal,
+          Container(
+            width: responsive.dp(40),
+            height: responsive.dp(40),
+            decoration: BoxDecoration(
+              color: DesignTokens.white.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Image.asset(
+                Img.fireWhite,
+                package: packageName,
+                width: responsive.dp(18),
+                height: responsive.dp(18),
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
-          SizedBox(height: responsive.dp(6)),
-          CustomText(
-            l10n.ipsRewardNextGoalBody,
-            variant: MiniAppTextVariant.caption1,
-            color: DesignTokens.muted,
+          SizedBox(width: responsive.dp(16)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                CustomText(
+                  l10n.ipsRewardNextGoalTitle,
+                  variant: MiniAppTextVariant.body1,
+                  color: DesignTokens.white,
+                ),
+                SizedBox(height: responsive.dp(4)),
+                CustomText(
+                  body,
+                  variant: MiniAppTextVariant.body3,
+                  color: DesignTokens.white,
+                ),
+              ],
+            ),
           ),
         ],
       ),

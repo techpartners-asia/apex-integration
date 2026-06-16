@@ -48,6 +48,9 @@ class ProfilePersonalInfoForm extends StatelessWidget {
   /// Optional lookup error displayed under the account holder field.
   final String? lookupErrorMessage;
 
+  /// Whether to show required-field errors (true after first save attempt).
+  final bool showRequiredErrors;
+
   /// Callback fired when the bank dropdown is tapped.
   final VoidCallback? onSelectBank;
 
@@ -69,6 +72,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
     required this.isSaving,
     required this.isResolvingAccountHolder,
     this.lookupErrorMessage,
+    this.showRequiredErrors = false,
     this.onSelectBank,
   });
 
@@ -77,28 +81,38 @@ class ProfilePersonalInfoForm extends StatelessWidget {
     final responsive = context.responsive;
     final l10n = context.l10n;
 
+    final bool showErr = showRequiredErrors;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _buildTextField(
+        _buildRequiredTextField(
+          context: context,
           label: 'Овог',
           controller: lastNameController,
+          showError: showErr,
         ),
         SizedBox(height: responsive.dp(14)),
-        _buildTextField(
+        _buildRequiredTextField(
+          context: context,
           label: 'Нэр',
           controller: firstNameController,
+          showError: showErr,
         ),
         SizedBox(height: responsive.dp(14)),
-        _buildTextField(
+        _buildRequiredTextField(
+          context: context,
           label: 'Цахим шуудан',
           controller: emailController,
+          showError: showErr,
           keyboardType: TextInputType.emailAddress,
         ),
         SizedBox(height: responsive.dp(14)),
-        _buildTextField(
+        _buildRequiredTextField(
+          context: context,
           label: 'Утасны дугаар',
           controller: phoneController,
+          showError: showErr,
           keyboardType: TextInputType.phone,
         ),
         SizedBox(height: responsive.spacing.sectionSpacing),
@@ -107,11 +121,13 @@ class ProfilePersonalInfoForm extends StatelessWidget {
         ProfileDropdownField(
           label: 'Иргэншил',
           value: citizenship,
+          errorText: showErr && citizenship.trim().isEmpty ? context.l10n.validationRequired : null,
         ),
         SizedBox(height: responsive.dp(14)),
         ProfileDropdownField(
           label: 'Оршин суугаа улс',
           value: country,
+          errorText: showErr && country.trim().isEmpty ? context.l10n.validationRequired : null,
         ),
         SizedBox(height: responsive.dp(14)),
         _buildTextField(
@@ -121,28 +137,35 @@ class ProfilePersonalInfoForm extends StatelessWidget {
         SizedBox(height: responsive.spacing.sectionSpacing),
         const ProfileSectionTitle(title: 'Ажил эрхлэлт'),
         SizedBox(height: responsive.dp(14)),
-        _buildTextField(
+        _buildRequiredTextField(
+          context: context,
           label: 'Ажиллаж буй салбар',
           controller: industryController,
+          showError: showErr,
         ),
         SizedBox(height: responsive.dp(14)),
-        _buildTextField(
+        _buildRequiredTextField(
+          context: context,
           label: 'Эрхэлж буй ажил',
           controller: positionController,
+          showError: showErr,
         ),
         SizedBox(height: responsive.spacing.sectionSpacing),
         const ProfileSectionTitle(title: 'Банкны мэдээлэл'),
         SizedBox(height: responsive.dp(14)),
         ProfileDropdownField(
-          label: l10n.commonBank,
+          label: '${l10n.commonBank}',
           value: selectedBank?.label ?? l10n.secAcntBankNotSelected,
           icon: Icons.account_balance,
           onTap: isSaving ? null : onSelectBank,
+          errorText: showErr && selectedBank == null ? context.l10n.validationSelectionRequired : null,
         ),
         SizedBox(height: responsive.dp(14)),
-        _buildTextField(
-          label: l10n.commonIban,
+        _buildRequiredTextField(
+          context: context,
+          label: '${l10n.commonIban}',
           controller: ibanController,
+          showError: showErr,
           keyboardType: TextInputType.number,
         ),
         SizedBox(height: responsive.dp(14)),
@@ -198,6 +221,24 @@ class ProfilePersonalInfoForm extends StatelessWidget {
       enabled: enabled,
     );
   }
+
+  /// Builds a required field that shows a red border when [showError] is true and the field is empty.
+  Widget _buildRequiredTextField({
+    required BuildContext context,
+    required String label,
+    required TextEditingController controller,
+    required bool showError,
+    TextInputType? keyboardType,
+  }) {
+    return CustomTextField(
+      label: label,
+      controller: controller,
+      keyboardType: keyboardType,
+      autovalidateMode: showError ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+      validator: (String? value) =>
+          (value == null || value.trim().isEmpty) ? context.l10n.validationRequired : null,
+    );
+  }
 }
 
 /// Small section heading used within the profile form.
@@ -231,6 +272,9 @@ class ProfileDropdownField extends StatelessWidget {
   /// Optional leading icon for the selected value.
   final IconData? icon;
 
+  /// Optional validation error shown below the field.
+  final String? errorText;
+
   /// Creates a dropdown-like profile field.
   const ProfileDropdownField({
     super.key,
@@ -238,6 +282,7 @@ class ProfileDropdownField extends StatelessWidget {
     required this.value,
     this.onTap,
     this.icon,
+    this.errorText,
   });
 
   @override
@@ -249,6 +294,7 @@ class ProfileDropdownField extends StatelessWidget {
       label: label,
       hasValue: hasValue,
       onTap: onTap,
+      errorText: errorText,
       trailing: Icon(
         Icons.keyboard_arrow_down_rounded,
         size: responsive.dp(22),
