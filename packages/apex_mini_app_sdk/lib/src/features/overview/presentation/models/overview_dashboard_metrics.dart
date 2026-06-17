@@ -63,6 +63,9 @@ class OverviewDashboardMetrics {
   /// Streak/month count displayed by the dashboard.
   final int streakMonths;
 
+  /// Active loyalty milestone from the user profile.
+  final LoyaltyItemDto? activeLoyalty;
+
   /// Creates dashboard metrics.
   const OverviewDashboardMetrics({
     required this.shortDisplayName,
@@ -85,6 +88,7 @@ class OverviewDashboardMetrics {
     required this.goalTarget,
     required this.goalTargetLabel,
     required this.streakMonths,
+    this.activeLoyalty,
   });
 
   /// Whether package info, performance, and related blocks should render.
@@ -192,6 +196,7 @@ class OverviewDashboardMetrics {
       goalTarget: goalTarget,
       goalTargetLabel: formatIpsPaymentAmount(goalTarget, currency),
       streakMonths: int.tryParse(user?.account?.streak ?? '') ?? 0,
+      activeLoyalty: user?.activeLoyalty,
     );
   }
 

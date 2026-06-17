@@ -203,14 +203,24 @@ class OverviewDashboardRewardCard extends StatelessWidget {
   /// Number of completed streak months.
   final int streakMonths;
 
+  /// Active loyalty milestone used to render the bonus highlight.
+  final LoyaltyItemDto? activeLoyalty;
+
   /// Creates the reward card.
-  const OverviewDashboardRewardCard({super.key, required this.streakMonths});
+  const OverviewDashboardRewardCard({
+    super.key,
+    required this.streakMonths,
+    this.activeLoyalty,
+  });
 
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final l10n = context.l10n;
     final int clampedStreakMonths = streakMonths.clamp(0, 12).toInt();
+    final String? bonusHighlight = activeLoyalty != null
+        ? _formatLoyaltyBonus(activeLoyalty!.bonus, activeLoyalty!.bonusType, l10n)
+        : null;
     final BorderRadius cardRadius = BorderRadius.circular(
       responsive.radius(16),
     );
@@ -263,7 +273,10 @@ class OverviewDashboardRewardCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: responsive.dp(18)),
-                _RewardBodyText(text: l10n.ipsOverviewDashboardRewardBody),
+                _RewardBodyText(
+                  text: l10n.ipsOverviewDashboardRewardBody,
+                  highlight: bonusHighlight,
+                ),
                 SizedBox(height: responsive.dp(10)),
                 RewardProgressBar(months: clampedStreakMonths),
               ],
@@ -278,44 +291,34 @@ class OverviewDashboardRewardCard extends StatelessWidget {
 /// Reward card body text with optional highlighted coupon wording.
 class _RewardBodyText extends StatelessWidget {
   /// Creates reward body text.
-  const _RewardBodyText({required this.text});
+  const _RewardBodyText({required this.text, this.highlight});
 
-  /// Text fragments that should be highlighted if present in localized copy.
-  static const List<String> _highlightCandidates = <String>[
-    '5000 Tino Coupon',
-    '5000 Tino Coin',
-  ];
+  static const String _placeholder = '5000 Tino Coin';
 
   /// Full body text.
   final String text;
 
+  /// Dynamic bonus string that replaces [_placeholder] inside [text].
+  final String? highlight;
+
   @override
   Widget build(BuildContext context) {
-    String? highlight;
-    for (final String candidate in _highlightCandidates) {
-      if (text.contains(candidate)) {
-        highlight = candidate;
-        break;
-      }
-    }
-
-    if (highlight == null) {
-      return CustomText(
-        text,
-        variant: MiniAppTextVariant.subtitle3,
-        textAlign: TextAlign.center,
-        color: Colors.black,
-        softWrap: true,
-        overflow: TextOverflow.visible,
-      );
-    }
-
-    final int start = text.indexOf(highlight);
-    final String before = text.substring(0, start);
-    final String after = text.substring(start + highlight.length);
     final TextStyle bodyStyle = MiniAppTypography.subtitle3.copyWith(
       color: Colors.black,
     );
+
+    final int placeholderIndex =
+        highlight != null ? text.indexOf(_placeholder) : -1;
+
+    if (placeholderIndex == -1) {
+      return RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(style: bodyStyle, text: text),
+      );
+    }
+
+    final String before = text.substring(0, placeholderIndex);
+    final String after = text.substring(placeholderIndex + _placeholder.length);
 
     return RichText(
       textAlign: TextAlign.center,
@@ -325,12 +328,25 @@ class _RewardBodyText extends StatelessWidget {
           TextSpan(text: before),
           TextSpan(
             text: highlight,
-            style: bodyStyle.copyWith(color: DesignTokens.softPeach),
+            style: const TextStyle(color: DesignTokens.softPeach),
           ),
           TextSpan(text: after),
         ],
       ),
     );
+  }
+}
+
+String _formatLoyaltyBonus(int bonus, String bonusType, SdkLocalizations l10n) {
+  switch (bonusType.toUpperCase()) {
+    case 'CUPON':
+      return '$bonus₮ ${l10n.ipsRewardBonusCupon}';
+    case 'PERCENT':
+      return '+$bonus%';
+    case 'INTEREST':
+      return '${l10n.ipsRewardBonusInterest} +$bonus';
+    default:
+      return '$bonus $bonusType';
   }
 }
 

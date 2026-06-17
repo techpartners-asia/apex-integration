@@ -151,6 +151,7 @@ class RemoteSignupBootstrapRepository implements CurrentUserRepository {
       platform: profileUser.platform != PlatformType.unknown
           ? profileUser.platform
           : bootstrapUser.platform,
+      activeLoyalty: profileUser.activeLoyalty ?? bootstrapUser.activeLoyalty,
       region: profileUser.region ?? bootstrapUser.region,
       regionId: profileUser.regionId ?? bootstrapUser.regionId,
       residenceAddress: _firstText(

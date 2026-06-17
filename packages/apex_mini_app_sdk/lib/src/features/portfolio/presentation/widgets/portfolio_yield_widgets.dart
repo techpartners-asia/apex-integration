@@ -383,8 +383,8 @@ class PortfolioYieldMetricsGrid extends StatelessWidget {
     final double resolvedInvestedBalance =
         overview.investedBalance ?? chartData.primaryTotal ?? 0;
     final double resolvedTotalAllocation =
-        ((overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)) > 0
-        ? (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0)
+        ((overview.stockTotal ?? 0) + (overview.bondTotal ?? 0) + (overview.cashTotal ?? 0)) > 0
+        ? (overview.stockTotal ?? 0) + (overview.bondTotal ?? 0) + (overview.cashTotal ?? 0)
         : (chartData.primaryTotal ?? 0);
     final double resolvedProfitLoss =
         overview.profitOrLoss ??
