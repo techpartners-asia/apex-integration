@@ -281,10 +281,10 @@ class SdkLocalizationsEn extends SdkLocalizations {
   }
 
   @override
-  String get ipsOverviewDashboardPendingOrderTitle => 'Order pending.';
+  String get ipsOverviewDashboardQuickRecharge => 'Recharge pack';
 
   @override
-  String get ipsOverviewDashboardQuickRecharge => 'Recharge pack';
+  String get ipsOverviewDashboardPendingOrderTitle => 'Order pending.';
 
   @override
   String get ipsOverviewDashboardQuickWithdraw => 'Withdraw money';
