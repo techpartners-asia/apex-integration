@@ -88,6 +88,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               OverviewPendingOrderCard(
                 order: pendingOrder!,
                 packAmount: portfolioOverview?.packAmount,
+                packFee: portfolioOverview?.packFee,
                 currency: portfolioOverview?.currency ?? '',
               ),
             ],
