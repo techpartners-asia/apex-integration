@@ -313,7 +313,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsOverviewDashboardReminderBody =>
-      'Та дансаа сар бүр тогтмол цэнэглэснээр таны сонгосон багц тогтмол цэнэглэгдэж байх болно. ҮЦ данс хооронд шилжсэн дүн 2-4 ажлын өдрийн дотор автоматаар арилжаалагдана.';
+      'Үнэт цаасны арилжаа долоо хоног бүрийн Даваа, Пүрэв гарагт автоматаар хийгдэнэ. Та дансаа цэнэглэж, захиалгаа өгөхөд хангалттай.';
 
   @override
   String get ipsOverviewDashboardGoalTitle => 'Зорилтот зорилго';

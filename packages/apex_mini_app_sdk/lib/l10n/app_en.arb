@@ -119,7 +119,7 @@
   "ipsOverviewDashboardYieldLabel": "Your return",
   "ipsOverviewDashboardDetails": "View details",
   "ipsOverviewDashboardReminderTitle": "Reminder",
-  "ipsOverviewDashboardReminderBody": "If you keep recharging your account every month, your selected pack will continue funding automatically. Securities-account transfers may take 2 to 4 business days before trading is executed.",
+  "ipsOverviewDashboardReminderBody": "Securities trading is executed automatically every Monday and Thursday. Simply recharge your account and place your order.",
   "ipsOverviewDashboardGoalTitle": "Target goal",
   "ipsOverviewDashboardGoalProgress": "Progress",
   "ipsOverviewDashboardRewardTitle": "Month {count} in a row!",

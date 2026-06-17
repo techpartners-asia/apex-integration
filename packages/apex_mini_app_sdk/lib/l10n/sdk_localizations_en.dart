@@ -312,7 +312,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get ipsOverviewDashboardReminderBody =>
-      'If you keep recharging your account every month, your selected pack will continue funding automatically. Securities-account transfers may take 2 to 4 business days before trading is executed.';
+      'Securities trading is executed automatically every Monday and Thursday. Simply recharge your account and place your order.';
 
   @override
   String get ipsOverviewDashboardGoalTitle => 'Target goal';
