@@ -5,6 +5,23 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 part 'widgets/reward_cards.dart';
 part 'widgets/reward_milestones.dart';
 
+/// Returns the first inactive milestone that comes after the active one.
+/// Falls back to the first inactive item when none are active.
+LoyaltyItemDto? _nextMilestone(List<LoyaltyItemDto> items) {
+  final int activeIdx = items.indexWhere((LoyaltyItemDto i) => i.status == LoyaltyStatus.active);
+  if (activeIdx != -1) {
+    for (int i = activeIdx + 1; i < items.length; i++) {
+      if (items[i].status == LoyaltyStatus.inactive) return items[i];
+    }
+    return null;
+  }
+  try {
+    return items.firstWhere((LoyaltyItemDto i) => i.status == LoyaltyStatus.inactive);
+  } catch (_) {
+    return null;
+  }
+}
+
 /// Reward/achievement screen showing loyalty milestones.
 class RewardScreen extends StatelessWidget {
   /// Creates the reward screen.
@@ -18,6 +35,7 @@ class RewardScreen extends StatelessWidget {
     return BlocBuilder<LoyaltyCubit, LoadableState<List<LoyaltyItemDto>>>(
       builder: (BuildContext context, LoadableState<List<LoyaltyItemDto>> state) {
         final List<LoyaltyItemDto> items = state.data ?? const <LoyaltyItemDto>[];
+        final LoyaltyItemDto? nextMilestone = _nextMilestone(items);
 
         return CustomScaffold(
           appBarTitle: l10n.ipsRewardTitle,
@@ -53,6 +71,9 @@ class RewardScreen extends StatelessWidget {
                         streakCount: int.tryParse(
                           context.read<MiniAppSessionStore>().currentUser?.account?.streak ?? '',
                         ) ?? 0,
+                        nextReward: nextMilestone != null
+                            ? _formatBonus(nextMilestone.bonus, nextMilestone.bonusType, l10n)
+                            : null,
                       ),
                       SizedBox(height: responsive.spacing.cardGap),
                       _NextGoalCard(
