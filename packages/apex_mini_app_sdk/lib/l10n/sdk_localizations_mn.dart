@@ -51,7 +51,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get commonOpen => 'Нээх';
 
   @override
-  String get commonViewDetails => 'Дэлгэрэнгүй харах';
+  String get commonViewDetails => 'Дэлгэрэнгүй';
 
   @override
   String get commonAmount => 'Дүн';
@@ -282,10 +282,11 @@ class SdkLocalizationsMn extends SdkLocalizations {
   }
 
   @override
-  String get ipsOverviewDashboardPendingOrderTitle => 'Захиалга хүлээгдэж байна.';
+  String get ipsOverviewDashboardQuickRecharge => 'Багц цэнэглэх';
 
   @override
-  String get ipsOverviewDashboardQuickRecharge => 'Багц цэнэглэх';
+  String get ipsOverviewDashboardPendingOrderTitle =>
+      'Захиалга хүлээгдэж байна.';
 
   @override
   String get ipsOverviewDashboardQuickWithdraw => 'Мөнгө татах';
@@ -313,7 +314,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsOverviewDashboardReminderBody =>
-      'Та дансаа сар бүр тогтмол цэнэглэснээр таны сонгосон багц тогтмол цэнэглэгдэж байх болно. ҮЦ данс хооронд шилжсэн дүн 2-4 ажлын өдрийн дотор автоматаар арилжаалагдана.';
+      'Үнэт цаасны арилжаа долоо хоног бүрийн Даваа, Пүрэв гарагт автоматаар хийгдэнэ. Та дансаа цэнэглэж, захиалгаа өгөхөд хангалттай.';
 
   @override
   String get ipsOverviewDashboardGoalTitle => 'Зорилтот зорилго';

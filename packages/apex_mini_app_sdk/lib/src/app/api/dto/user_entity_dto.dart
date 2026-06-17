@@ -68,6 +68,9 @@ class UserEntityDto {
   /// Source platform normalized to [PlatformType].
   final String platform;
 
+  /// Active loyalty milestone from profile API.
+  final LoyaltyItemDto? activeLoyalty;
+
   /// Region object returned by profile APIs.
   final RegionDto? region;
 
@@ -110,6 +113,7 @@ class UserEntityDto {
     this.image,
     this.imageId,
     this.platform = PlatformType.unknown,
+    this.activeLoyalty,
     this.region,
     this.regionId,
     this.residenceAddress,
@@ -143,6 +147,9 @@ class UserEntityDto {
     final Map<String, Object?> region = ApiParser.asObjectMap(source['region']);
     final Map<String, Object?> account = _accountJsonFrom(source);
     final Map<String, Object?> bank = _bankJsonFrom(source);
+    final Map<String, Object?> activeLoyaltyJson = ApiParser.asObjectMap(
+      source['active_loyalty'],
+    );
     final String? resolvedToken =
         ApiParser.asNullableString(payload['token']) ??
         ApiParser.asNullableString(json['token']);
@@ -169,6 +176,9 @@ class UserEntityDto {
       image: image.isEmpty ? null : FileEntity.fromJson(image),
       imageId: ApiParser.asNullableInt(source['image_id']),
       platform: _parsePlatform(source['platform']),
+      activeLoyalty: activeLoyaltyJson.isEmpty
+          ? null
+          : LoyaltyItemDto.fromJson(activeLoyaltyJson),
       region: region.isEmpty ? null : RegionDto.fromJson(region),
       regionId: ApiParser.asNullableInt(source['region_id']),
       residenceAddress: ApiParser.asNullableString(source['residence_address']),
@@ -273,6 +283,7 @@ class UserEntityDto {
     FileEntity? image,
     int? imageId,
     String? platformType,
+    LoyaltyItemDto? activeLoyalty,
     RegionDto? region,
     int? regionId,
     String? residenceAddress,
@@ -300,6 +311,7 @@ class UserEntityDto {
       image: image ?? this.image,
       imageId: imageId ?? this.imageId,
       platform: platformType ?? this.platform,
+      activeLoyalty: activeLoyalty ?? this.activeLoyalty,
       region: region ?? this.region,
       regionId: regionId ?? this.regionId,
       residenceAddress: residenceAddress ?? this.residenceAddress,

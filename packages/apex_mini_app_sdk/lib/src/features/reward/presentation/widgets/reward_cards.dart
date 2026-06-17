@@ -3,13 +3,20 @@ part of '../reward_screen.dart';
 /// Reward streak progress card.
 class _StreakCard extends StatelessWidget {
   /// Creates the streak card.
-  const _StreakCard({required this.l10n, required this.streakCount});
+  const _StreakCard({
+    required this.l10n,
+    required this.streakCount,
+    this.nextReward,
+  });
 
   /// Localized streak labels.
   final SdkLocalizations l10n;
 
   /// Current streak month count from user account.
   final int streakCount;
+
+  /// Formatted bonus label for the next milestone (e.g. "+2%", "10000₮ Купон").
+  final String? nextReward;
 
   static const int _totalMonths = 12;
 
@@ -53,17 +60,18 @@ class _StreakCard extends StatelessWidget {
                   color: const Color(0xFF4A5565),
                 ),
                 SizedBox(width: responsive.dp(4)),
-                ShaderMask(
-                  shaderCallback: (Rect bounds) => const LinearGradient(
-                    colors: <Color>[Color(0xFFDD4F80), Color(0xFFFB9D6C)],
-                  ).createShader(bounds),
-                  blendMode: BlendMode.srcIn,
-                  child: CustomText(
-                    '+2% хүү',
-                    variant: MiniAppTextVariant.body3,
-                    color: Colors.white,
+                if (nextReward != null)
+                  ShaderMask(
+                    shaderCallback: (Rect bounds) => const LinearGradient(
+                      colors: <Color>[Color(0xFFDD4F80), Color(0xFFFB9D6C)],
+                    ).createShader(bounds),
+                    blendMode: BlendMode.srcIn,
+                    child: CustomText(
+                      nextReward!,
+                      variant: MiniAppTextVariant.body3,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
               ],
             ),
           ],

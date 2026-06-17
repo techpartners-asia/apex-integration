@@ -22,8 +22,8 @@ class Img {
   static const String fireYellow = 'assets/icons/fire_yellow.png';
   static const String glassEffect = 'assets/icons/glass_effect.png';
   static const String home = 'assets/icons/home.png';
-  static const String house = 'assets/icons/house.png';
-  static const String userCircle = 'assets/icons/user_circle.png';
+  static const String house = 'assets/icons/House.svg';
+  static const String userCircle = 'assets/icons/UserCircle.svg';
   static const String recharge = 'assets/icons/recharge.png';
   static const String ig = 'assets/icons/ig.png';
   static const String linkedin = 'assets/icons/in.png';

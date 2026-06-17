@@ -9,6 +9,9 @@ class OverviewPendingOrderCard extends StatelessWidget {
   /// Amount per pack from the portfolio overview, used to compute total.
   final double? packAmount;
 
+  /// Service fee per pack from the portfolio overview.
+  final double? packFee;
+
   /// Currency code used for formatting the amount.
   final String currency;
 
@@ -17,6 +20,7 @@ class OverviewPendingOrderCard extends StatelessWidget {
     super.key,
     required this.order,
     this.packAmount,
+    this.packFee,
     this.currency = '',
   });
 
@@ -27,7 +31,7 @@ class OverviewPendingOrderCard extends StatelessWidget {
     final String dateLabel = _formatDate(order.createdAt);
     final int qty = order.packQty ?? 0;
     final String buySellLabel = _buySellLabel(order.buySell);
-    final double total = qty * (packAmount ?? 0);
+    final double total = qty * ((packAmount ?? 0) + (packFee ?? 0));
     final String amountLabel = formatIpsPaymentAmount(total, currency);
 
     return Container(

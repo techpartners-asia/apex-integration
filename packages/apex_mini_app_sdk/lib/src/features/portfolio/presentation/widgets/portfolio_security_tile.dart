@@ -51,9 +51,7 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: responsive.dp(8)),
-      child: AdaptiveCard(
-        color: Colors.transparent,
-        // hasShadow: true,
+      child: MiniAppGlassCard(
         padding: EdgeInsets.all(responsive.dp(16)),
         child: Column(
           children: <Widget>[
@@ -131,13 +129,10 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
                   : const SizedBox.shrink(),
             ),
             SizedBox(height: responsive.dp(15)),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: _DetailsToggle(
-                isExpanded: _expanded,
-                label: widget.l10n.commonViewDetails,
-                onPressed: () => setState(() => _expanded = !_expanded),
-              ),
+            _DetailsToggle(
+              isExpanded: _expanded,
+              label: widget.l10n.commonViewDetails,
+              onPressed: () => setState(() => _expanded = !_expanded),
             ),
           ],
         ),
@@ -315,32 +310,32 @@ class _DetailsToggle extends StatelessWidget {
       onPressed: onPressed,
       borderRadius: BorderRadius.circular(999),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: responsive.dp(2),
-          vertical: responsive.dp(4),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            CustomText(
-              label,
-              variant: MiniAppTextVariant.caption1,
-              color: DesignTokens.muted,
-            ),
-            SizedBox(width: responsive.dp(4)),
-            AnimatedRotation(
-              turns: isExpanded ? 0.5 : 0,
-              duration: const Duration(milliseconds: 220),
-              curve: Curves.easeInOut,
-              child: Icon(
-                Icons.keyboard_arrow_down_rounded,
-                size: responsive.dp(16),
-                color: DesignTokens.muted,
+          padding: EdgeInsets.symmetric(
+            horizontal: responsive.dp(12),
+            vertical: responsive.dp(8),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CustomText(
+                label,
+                variant: MiniAppTextVariant.buttonSmall,
+                color: DesignTokens.ink,
               ),
-            ),
-          ],
+              SizedBox(width: responsive.dp(4)),
+              AnimatedRotation(
+                turns: isExpanded ? 0.5 : 0,
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeInOut,
+                child: Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: responsive.dp(16),
+                  color: DesignTokens.muted,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
     );
   }
 }

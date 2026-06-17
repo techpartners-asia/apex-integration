@@ -108,6 +108,9 @@ class ApiEndpoints {
   /// User loyalty/milestone list endpoint.
   static const String loyalty = '/api/v1/user/profile/loyalty';
 
+  /// User loyalty info endpoint (streak + active loyalty).
+  static const String loyaltyInfo = '/api/v1/user/profile/loyalty-info';
+
   /// Remote client API diagnostic logger endpoint.
   static const String loggerCreate = '/api/v1/logger/create';
 }

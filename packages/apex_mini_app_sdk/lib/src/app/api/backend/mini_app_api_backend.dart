@@ -185,6 +185,17 @@ class MiniAppApiBackend {
     return LoyaltyItemDto.listFromJson(json);
   }
 
+  /// Loads the current user's loyalty info (streak + active loyalty).
+  Future<LoyaltyInfoDto> getLoyaltyInfo() async {
+    final ApiExecutor executor = _requireAuthorizedExecutor('getLoyaltyInfo');
+    final Map<String, Object?> json = await executor.getJson(
+      ApiEndpoints.loyaltyInfo,
+      context: const ReqContext(operName: 'getLoyaltyInfo'),
+    );
+
+    return LoyaltyInfoDto.fromJson(json);
+  }
+
   /// Creates a support feedback ticket.
   Future<CreateFeedbackResponseDto> createFeedback(
     CreateFeedbackApiReq req,

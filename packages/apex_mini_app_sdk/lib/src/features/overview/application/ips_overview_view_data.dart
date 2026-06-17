@@ -32,6 +32,9 @@ class IpsOverviewViewData {
   /// Whether the grape questionnaire check-completed API returned completed=true.
   final bool isQuestionnaireCompleted;
 
+  /// Loyalty info (streak + active loyalty) from the loyalty-info endpoint.
+  final LoyaltyInfoDto? loyaltyInfo;
+
   /// Whether the user has an active pending order.
   bool get hasPendingOrder => pendingOrder != null;
 
@@ -47,6 +50,7 @@ class IpsOverviewViewData {
     this.dashboardLoadFailed = false,
     this.pendingOrder,
     this.isQuestionnaireCompleted = false,
+    this.loyaltyInfo,
   });
 
   /// Whether `getIpsBalance` completed and returned a non-zero investment

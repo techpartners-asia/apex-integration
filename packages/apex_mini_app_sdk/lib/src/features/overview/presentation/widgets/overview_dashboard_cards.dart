@@ -200,17 +200,26 @@ class OverviewDashboardGoalCard extends StatelessWidget {
 
 /// Reward/streak card displayed on the overview dashboard.
 class OverviewDashboardRewardCard extends StatelessWidget {
-  /// Number of completed streak months.
-  final int streakMonths;
+  /// Loyalty info from the backend, providing title, content, streak, and bonus data.
+  final LoyaltyInfoDto? loyaltyInfo;
 
   /// Creates the reward card.
-  const OverviewDashboardRewardCard({super.key, required this.streakMonths});
+  const OverviewDashboardRewardCard({
+    super.key,
+    this.loyaltyInfo,
+  });
 
   @override
   Widget build(BuildContext context) {
     final responsive = context.responsive;
     final l10n = context.l10n;
-    final int clampedStreakMonths = streakMonths.clamp(0, 12).toInt();
+    final int clampedStreakMonths = (loyaltyInfo?.streak ?? 0).clamp(0, 12).toInt();
+    final String title = loyaltyInfo?.title?.isNotEmpty == true
+        ? loyaltyInfo!.title!
+        : l10n.ipsOverviewDashboardRewardTitle(clampedStreakMonths);
+    final String bodyText = loyaltyInfo?.content?.isNotEmpty == true
+        ? loyaltyInfo!.content!
+        : l10n.ipsOverviewDashboardRewardBody;
     final BorderRadius cardRadius = BorderRadius.circular(
       responsive.radius(16),
     );
@@ -254,7 +263,7 @@ class OverviewDashboardRewardCard extends StatelessWidget {
                 ),
                 SizedBox(height: responsive.dp(10)),
                 CustomText(
-                  l10n.ipsOverviewDashboardRewardTitle(clampedStreakMonths),
+                  title,
                   variant: MiniAppTextVariant.title1,
                   textAlign: TextAlign.center,
                   color: Colors.black,
@@ -263,72 +272,19 @@ class OverviewDashboardRewardCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: responsive.dp(18)),
-                _RewardBodyText(text: l10n.ipsOverviewDashboardRewardBody),
+                Text.rich(
+                  TextSpan(
+                    style: MiniAppTypography.subtitle3.copyWith(color: Colors.black),
+                    text: bodyText,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: responsive.dp(10)),
                 RewardProgressBar(months: clampedStreakMonths),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// Reward card body text with optional highlighted coupon wording.
-class _RewardBodyText extends StatelessWidget {
-  /// Creates reward body text.
-  const _RewardBodyText({required this.text});
-
-  /// Text fragments that should be highlighted if present in localized copy.
-  static const List<String> _highlightCandidates = <String>[
-    '5000 Tino Coupon',
-    '5000 Tino Coin',
-  ];
-
-  /// Full body text.
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    String? highlight;
-    for (final String candidate in _highlightCandidates) {
-      if (text.contains(candidate)) {
-        highlight = candidate;
-        break;
-      }
-    }
-
-    if (highlight == null) {
-      return CustomText(
-        text,
-        variant: MiniAppTextVariant.subtitle3,
-        textAlign: TextAlign.center,
-        color: Colors.black,
-        softWrap: true,
-        overflow: TextOverflow.visible,
-      );
-    }
-
-    final int start = text.indexOf(highlight);
-    final String before = text.substring(0, start);
-    final String after = text.substring(start + highlight.length);
-    final TextStyle bodyStyle = MiniAppTypography.subtitle3.copyWith(
-      color: Colors.black,
-    );
-
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: bodyStyle,
-        children: <InlineSpan>[
-          TextSpan(text: before),
-          TextSpan(
-            text: highlight,
-            style: bodyStyle.copyWith(color: DesignTokens.softPeach),
-          ),
-          TextSpan(text: after),
-        ],
       ),
     );
   }
