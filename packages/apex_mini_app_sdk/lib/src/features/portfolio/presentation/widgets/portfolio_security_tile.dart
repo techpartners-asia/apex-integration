@@ -309,24 +309,7 @@ class _DetailsToggle extends StatelessWidget {
     return MiniAppAdaptivePressable(
       onPressed: onPressed,
       borderRadius: BorderRadius.circular(999),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(999),
-          boxShadow: DesignTokens.glassButtonShadow,
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[
-              Colors.white.withValues(alpha: 0.70),
-              Colors.white.withValues(alpha: 0.45),
-            ],
-          ),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.55),
-            width: 0.8,
-          ),
-        ),
-        child: Padding(
+      child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: responsive.dp(12),
             vertical: responsive.dp(8),
@@ -336,7 +319,7 @@ class _DetailsToggle extends StatelessWidget {
             children: <Widget>[
               CustomText(
                 label,
-                variant: MiniAppTextVariant.caption1,
+                variant: MiniAppTextVariant.buttonSmall,
                 color: DesignTokens.ink,
               ),
               SizedBox(width: responsive.dp(4)),
@@ -353,7 +336,6 @@ class _DetailsToggle extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }
