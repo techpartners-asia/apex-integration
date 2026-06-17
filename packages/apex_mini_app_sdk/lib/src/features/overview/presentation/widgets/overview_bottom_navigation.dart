@@ -105,10 +105,7 @@ class OverviewBottomNavigationBar extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(_barBorderRadius),
-                clipBehavior: Clip.antiAlias,
-                child: SizedBox(
+              child: SizedBox(
                   height: _barHeight,
                   child: GlassBottomBar(
                   selectedIndex: selectedIndex,
@@ -166,10 +163,9 @@ class OverviewBottomNavigationBar extends StatelessWidget {
                           ),
                         )
                         .toList(),
-                                ),
-                              ),
-                            ),
-                          ), 
+                  ),
+                ),
+            ),
             const SizedBox(width: 12),
             InvestXFloatingButton(
               disabled: isButtonDisabled,
