@@ -51,7 +51,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get commonOpen => 'Нээх';
 
   @override
-  String get commonViewDetails => 'Дэлгэрэнгүй харах';
+  String get commonViewDetails => 'Дэлгэрэнгүй';
 
   @override
   String get commonAmount => 'Дүн';

@@ -51,7 +51,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get commonOpen => 'Open';
 
   @override
-  String get commonViewDetails => 'View details';
+  String get commonViewDetails => 'Details';
 
   @override
   String get commonAmount => 'Amount';
