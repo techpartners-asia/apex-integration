@@ -39,6 +39,9 @@ class OverviewDashboardHomeTab extends StatelessWidget {
   /// Pending order (status "N") to show in the dashboard, if any.
   final IpsOrder? pendingOrder;
 
+  /// Loyalty info fetched from the loyalty-info endpoint.
+  final LoyaltyInfoDto? loyaltyInfo;
+
   /// Creates the overview dashboard tab.
   const OverviewDashboardHomeTab({
     super.key,
@@ -54,6 +57,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
     this.onViewDetails,
     this.onRefresh,
     this.pendingOrder,
+    this.loyaltyInfo,
   });
 
   @override
@@ -66,6 +70,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
       yieldProfitHoldings: yieldProfitHoldings,
       stockYieldDetails: stockYieldDetails,
       user: user,
+      loyaltyInfo: loyaltyInfo,
     );
     final bool showFinancialData = hasValidIpsBalance;
 
@@ -112,13 +117,9 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               /// Dashboard goal card
               OverviewDashboardGoalCard(metrics: metrics),
             ],
-          if (metrics.streakMonths > 0 || metrics.activeLoyalty != null) ...<Widget>[
+          
             SizedBox(height: responsive.dp(16)),
-            OverviewDashboardRewardCard(
-              streakMonths: metrics.streakMonths,
-              activeLoyalty: metrics.activeLoyalty,
-            ),
-          ],
+            OverviewDashboardRewardCard(loyaltyInfo: metrics.loyaltyInfo),
             SizedBox(height: responsive.dp(100)),
           ],
         ),

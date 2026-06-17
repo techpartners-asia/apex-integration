@@ -24,6 +24,9 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
   /// Diagnostic logger.
   final MiniAppLogger logger;
 
+  /// Profile repository used to fetch loyalty info.
+  final MiniAppProfileRepository? profileRepository;
+
   IpsOverviewCubit({
     required this.bootstrapService,
     required this.l10n,
@@ -31,6 +34,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     this.packService,
     this.ordersService,
     this.questionnaireService,
+    this.profileRepository,
     this.logger = const SilentMiniAppLogger(),
   }) : super(const LoadableState<IpsOverviewViewData>());
 
@@ -122,11 +126,15 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     try {
       final SdkPortfolioContext context = const PortfolioContextResolver()
           .resolve(bootstrapState: data);
-      final (PortfolioDashboardData dashboardData, IpsOrder? pendingOrder) =
-          await (
-            service.getDashboardData(context: context),
-            _fetchPendingOrder(forceRefresh: forceRefresh),
-          ).wait;
+      final (
+        PortfolioDashboardData dashboardData,
+        IpsOrder? pendingOrder,
+        LoyaltyInfoDto? loyaltyInfo,
+      ) = await (
+        service.getDashboardData(context: context),
+        _fetchPendingOrder(forceRefresh: forceRefresh),
+        _fetchLoyaltyInfo(),
+      ).wait;
 
       emit(
         LoadableState<IpsOverviewViewData>(
@@ -139,6 +147,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
             portfolioContext: dashboardData.portfolioContext,
             isDashboardDataReady: true,
             pendingOrder: pendingOrder,
+            loyaltyInfo: loyaltyInfo,
           ),
         ),
       );
@@ -178,6 +187,16 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     }
   }
 
+  Future<LoyaltyInfoDto?> _fetchLoyaltyInfo() async {
+    final MiniAppProfileRepository? repo = profileRepository;
+    if (repo == null) return null;
+    try {
+      return await repo.getLoyaltyInfo();
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Refetches only [pendingOrder] without reloading the full overview.
   Future<void> refreshPendingOrderStatus() async {
     final IpsOverviewViewData? current = state.data;
@@ -196,6 +215,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
           isDashboardDataReady: current.isDashboardDataReady,
           dashboardLoadFailed: current.dashboardLoadFailed,
           pendingOrder: pendingOrder,
+          loyaltyInfo: current.loyaltyInfo,
         ),
       ),
     );
@@ -250,6 +270,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
               isDashboardDataReady: current.isDashboardDataReady,
               dashboardLoadFailed: current.dashboardLoadFailed,
               isQuestionnaireCompleted: current.isQuestionnaireCompleted,
+              loyaltyInfo: current.loyaltyInfo,
             ),
           ),
         );

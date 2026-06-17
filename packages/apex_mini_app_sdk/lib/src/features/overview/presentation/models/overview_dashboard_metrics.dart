@@ -60,11 +60,8 @@ class OverviewDashboardMetrics {
   /// Formatted target goal label.
   final String goalTargetLabel;
 
-  /// Streak/month count displayed by the dashboard.
-  final int streakMonths;
-
-  /// Active loyalty milestone from the user profile.
-  final LoyaltyItemDto? activeLoyalty;
+  /// Full loyalty info (title, content, streak, loyalty) from the backend.
+  final LoyaltyInfoDto? loyaltyInfo;
 
   /// Creates dashboard metrics.
   const OverviewDashboardMetrics({
@@ -87,8 +84,7 @@ class OverviewDashboardMetrics {
     required this.goalCurrentLabel,
     required this.goalTarget,
     required this.goalTargetLabel,
-    required this.streakMonths,
-    this.activeLoyalty,
+    this.loyaltyInfo,
   });
 
   /// Whether package info, performance, and related blocks should render.
@@ -103,6 +99,7 @@ class OverviewDashboardMetrics {
     List<PortfolioHolding> yieldProfitHoldings = const <PortfolioHolding>[],
     List<PortfolioHolding> stockYieldDetails = const <PortfolioHolding>[],
     required UserEntityDto? user,
+    LoyaltyInfoDto? loyaltyInfo,
   }) {
     final String currency = _resolveCurrency(bootstrapState, overview);
     final double? stockTotalFromYieldDetails = _sumHoldingsCurrentValue(
@@ -195,8 +192,7 @@ class OverviewDashboardMetrics {
       goalCurrentLabel: formatIpsPaymentAmount(goalCurrent, currency),
       goalTarget: goalTarget,
       goalTargetLabel: formatIpsPaymentAmount(goalTarget, currency),
-      streakMonths: int.tryParse(user?.account?.streak ?? '') ?? 0,
-      activeLoyalty: user?.activeLoyalty,
+      loyaltyInfo: loyaltyInfo,
     );
   }
 

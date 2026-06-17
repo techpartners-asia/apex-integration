@@ -47,6 +47,9 @@ abstract interface class MiniAppProfileRepository {
 
   /// Loads the user's loyalty milestone list.
   Future<List<LoyaltyItemDto>> getLoyalty();
+
+  /// Loads the user's loyalty info (streak + active loyalty).
+  Future<LoyaltyInfoDto> getLoyaltyInfo();
 }
 
 /// Feedback repository operations used by feedback screens.
@@ -176,6 +179,9 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
 
   @override
   Future<List<LoyaltyItemDto>> getLoyalty() => profileRepository.getLoyalty();
+
+  @override
+  Future<LoyaltyInfoDto> getLoyaltyInfo() => profileRepository.getLoyaltyInfo();
 
   @override
   Future<FeedbackEntity> createFeedback(CreateFeedbackApiReq req) => feedbackRepository.createFeedback(req);

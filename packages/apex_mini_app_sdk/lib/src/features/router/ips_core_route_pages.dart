@@ -60,6 +60,7 @@ Widget buildIpsOverviewPage(
           packService: dependencies.packService,
           ordersService: dependencies.ordersService,
           questionnaireService: dependencies.questionnaireService,
+          profileRepository: dependencies.appApi,
           l10n: l10n,
           logger: dependencies.logger,
         )..load(initial: arguments is AcntBootstrapState ? arguments : null),
