@@ -33,8 +33,8 @@ class MiniAppPaymentExecutor {
   /// Host wallet/payment callback.
   final MiniAppWalletPaymentHandler walletPaymentHandler;
 
-  /// Max duration allowed for [walletPaymentHandler].
-  final Duration paymentTimeout;
+  /// Max duration allowed for [walletPaymentHandler]. null = no timeout.
+  final Duration? paymentTimeout;
 
   /// Logger for payment diagnostics.
   final MiniAppLogger logger;
@@ -46,7 +46,7 @@ class MiniAppPaymentExecutor {
   MiniAppPaymentExecutor({
     required this.appApi,
     required this.walletPaymentHandler,
-    this.paymentTimeout = MiniAppSdkConfig.defaultPaymentTimeout,
+    this.paymentTimeout,
     this.logger = const SilentMiniAppLogger(),
   });
 
@@ -117,10 +117,13 @@ class MiniAppPaymentExecutor {
 
     final MiniAppPaymentRes hostResult;
     try {
-      hostResult = await walletPaymentHandler(request).timeout(
-        paymentTimeout,
-        onTimeout: () => MiniAppPaymentRes.failed(req: request),
-      );
+      final Future<MiniAppPaymentRes> walletFuture = walletPaymentHandler(request);
+      hostResult = await (paymentTimeout != null
+          ? walletFuture.timeout(
+              paymentTimeout!,
+              onTimeout: () => MiniAppPaymentRes.failed(req: request),
+            )
+          : walletFuture);
     } catch (error, stackTrace) {
       ApexMiniAppHostContext.emitError(error, stackTrace);
       logger.onError(

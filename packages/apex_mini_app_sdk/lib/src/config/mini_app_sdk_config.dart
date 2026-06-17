@@ -19,7 +19,8 @@ enum MiniAppUserDataSourceMode {
 /// feature dependencies all read a single configuration source.
 class MiniAppSdkConfig {
   /// Default time allowed for the host wallet/payment callback to complete.
-  static const Duration defaultPaymentTimeout = Duration(seconds: 45);
+  /// null means no timeout — the SDK waits indefinitely for the wallet to respond.
+  static const Duration? defaultPaymentTimeout = null;
 
   /// Host token used to initialize the mini app.
   final String? userToken;
@@ -27,8 +28,8 @@ class MiniAppSdkConfig {
   /// Host-provided function that executes wallet/payment requests.
   final MiniAppWalletPaymentHandler walletPaymentHandler;
 
-  /// Timeout applied around host payment handling.
-  final Duration paymentTimeout;
+  /// Timeout applied around host payment handling. null = no timeout.
+  final Duration? paymentTimeout;
 
   /// Logger used by runtime and navigation diagnostics.
   final MiniAppLogger logger;
@@ -125,7 +126,7 @@ class MiniAppSdkConfig {
     this.hostSession,
     this.callbacks = ApexMiniAppHostCallbacks.empty,
   }) : assert(
-         paymentTimeout > Duration.zero,
+         paymentTimeout == null || paymentTimeout > Duration.zero,
          'paymentTimeout must be greater than zero.',
        );
 
@@ -188,7 +189,7 @@ class MiniAppSdkConfig {
   factory MiniAppSdkConfig.fromHostConfig({
     required ApexMiniAppHostConfig hostConfig,
     required MiniAppWalletPaymentHandler walletPaymentHandler,
-    Duration paymentTimeout = defaultPaymentTimeout,
+    Duration? paymentTimeout = defaultPaymentTimeout,
     MiniAppLogger logger = const DebugMiniAppLogger(),
     MiniAppUserDataSourceMode userDataSourceMode =
         MiniAppUserDataSourceMode.realUser,

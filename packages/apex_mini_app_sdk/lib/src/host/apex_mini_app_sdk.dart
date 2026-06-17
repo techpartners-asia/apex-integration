@@ -111,7 +111,7 @@ class ApexMiniAppSdk extends StatefulWidget {
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
 
   /// Max duration allowed for host payment handling.
-  final Duration paymentTimeout;
+  final Duration? paymentTimeout;
 
   /// Runtime logger used by navigation and SDK internals.
   final MiniAppLogger logger;
