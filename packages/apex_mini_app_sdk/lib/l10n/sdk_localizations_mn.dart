@@ -728,6 +728,19 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsPaymentInvoiceId => 'Нэхэмжлэлийн дугаар';
 
   @override
+  String get ipsPaymentViewOrders => 'Захиалга харах';
+
+  @override
+  String get ipsRechargeSuccessGoHome => 'Нүүр хуудасруу очих';
+
+  @override
+  String get ipsRechargeSuccessCardTitle => 'Таны захиалга амжилттай үүслээ';
+
+  @override
+  String get ipsRechargeSuccessCardMessage =>
+      'Та дансаа сар бүр тогтмол цэнэглэснээр таны сонгосон багц идэвхитэй байхыг анхаарна уу. ҮЦХ гүйлгээ долоо хоног бүрийн 2 дох 4 дахь өдөр автоматаар арилжаа хийнэ';
+
+  @override
   String get ipsPaymentStatusTimedOut => 'Хугацаа хэтэрсэн';
 
   @override

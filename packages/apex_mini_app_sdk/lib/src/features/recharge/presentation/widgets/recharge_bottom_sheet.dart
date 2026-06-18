@@ -144,15 +144,14 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
     // final bool hasKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
-      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) => (prev.paymentRes != curr.paymentRes && curr.paymentRes != null) || (prev.errorMessage != curr.errorMessage && (curr.errorMessage?.trim().isNotEmpty ?? false)),
+      listenWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
+          (prev.paymentRes != curr.paymentRes &&
+              curr.paymentRes != null &&
+              curr.paymentRes!.status != MiniAppPaymentStatus.success) ||
+          (prev.errorMessage != curr.errorMessage &&
+              (curr.errorMessage?.trim().isNotEmpty ?? false)),
       listener: (BuildContext context, IpsRechargeState state) {
         if (state.paymentRes != null) {
-          if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
-            MiniAppToast.showSuccess(
-              context,
-              message: context.l10n.commonSuccess,
-            );
-          }
           Navigator.of(context).pop(state);
           return;
         }
@@ -167,6 +166,10 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
           data: DesignTokens.theme(Theme.of(context)),
           child: Builder(
             builder: (BuildContext context) {
+              if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
+                return _RechargeSuccessContent(paymentState: state);
+              }
+
               return ActionSheet(
                 title: l10n.ipsPaymentRechargeTitle,
                 showDivider: false,
@@ -185,6 +188,76 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
           ),
         );
       },
+    );
+  }
+}
+
+/// Full-screen success view shown after a successful recharge payment.
+class _RechargeSuccessContent extends StatelessWidget {
+  const _RechargeSuccessContent({required this.paymentState});
+
+  final IpsRechargeState paymentState;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final responsive = context.responsive;
+
+    return CustomScaffold(
+      hasAppBar: false,
+      backgroundColor: DesignTokens.softSurface,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            responsive.space(AppSpacing.xl),
+            responsive.space(AppSpacing.xl),
+            responsive.space(AppSpacing.xl),
+            responsive.space(AppSpacing.lg),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const Spacer(),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: responsive.dp(53),
+                  height: responsive.dp(53),
+                  decoration: const BoxDecoration(
+                    color: DesignTokens.successStrong,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check_rounded,
+                    size: responsive.dp(30),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: responsive.spacing.sectionSpacing),
+              CustomText(
+                l10n.secAcntCalculationTitle,
+                variant: MiniAppTextVariant.h8,
+                textAlign: TextAlign.center,
+                color: DesignTokens.ink,
+              ),
+              SizedBox(height: responsive.spacing.sectionSpacing * 1.5),
+              ReminderCard(
+                title: l10n.ipsOverviewDashboardReminderTitle,
+                message: l10n.ipsRechargeSuccessCardMessage,
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomActionBar(
+        child: PrimaryButton(
+          label: l10n.commonGoHome,
+          onPressed: () =>
+              replaceIpsRoute(context, route: MiniAppRoutes.overview),
+        ),
+      ),
     );
   }
 }

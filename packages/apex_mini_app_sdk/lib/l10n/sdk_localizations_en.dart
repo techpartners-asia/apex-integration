@@ -724,6 +724,19 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsPaymentInvoiceId => 'Invoice ID';
 
   @override
+  String get ipsPaymentViewOrders => 'View orders';
+
+  @override
+  String get ipsRechargeSuccessGoHome => 'Go to home';
+
+  @override
+  String get ipsRechargeSuccessCardTitle => 'Your order was created successfully';
+
+  @override
+  String get ipsRechargeSuccessCardMessage =>
+      'Your order is visible in the orders list.';
+
+  @override
   String get ipsPaymentStatusTimedOut => 'Timed out';
 
   @override
