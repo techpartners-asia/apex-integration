@@ -141,16 +141,42 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    // final bool hasKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return BlocConsumer<IpsRechargeCubit, IpsRechargeState>(
       listenWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
-          (prev.paymentRes != curr.paymentRes &&
-              curr.paymentRes != null &&
-              curr.paymentRes!.status != MiniAppPaymentStatus.success) ||
+          (prev.paymentRes != curr.paymentRes && curr.paymentRes != null) ||
           (prev.errorMessage != curr.errorMessage &&
               (curr.errorMessage?.trim().isNotEmpty ?? false)),
+      buildWhen: (IpsRechargeState prev, IpsRechargeState curr) =>
+          curr.paymentRes?.status != MiniAppPaymentStatus.success,
       listener: (BuildContext context, IpsRechargeState state) {
+        if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
+          final SdkLocalizations capturedL10n = context.l10n;
+          final MiniAppResponsiveData capturedResponsive = context.responsive;
+          final NavigatorState rootNav =
+              Navigator.of(context, rootNavigator: true);
+          final NavigatorState sheetNav = Navigator.of(context);
+
+          rootNav.push(
+            MaterialPageRoute<void>(
+              fullscreenDialog: true,
+              builder: (_) => _RechargeSuccessContent(
+                l10n: capturedL10n,
+                responsive: capturedResponsive,
+                onGoHome: () {
+                  rootNav.pop();
+                  replaceIpsRoute(
+                    sheetNav.context,
+                    route: MiniAppRoutes.overview,
+                  );
+                  sheetNav.pop(state);
+                },
+              ),
+            ),
+          );
+          return;
+        }
+
         if (state.paymentRes != null) {
           Navigator.of(context).pop(state);
           return;
@@ -166,16 +192,11 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
           data: DesignTokens.theme(Theme.of(context)),
           child: Builder(
             builder: (BuildContext context) {
-              if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
-                return _RechargeSuccessContent(paymentState: state);
-              }
-
               return ActionSheet(
                 title: l10n.ipsPaymentRechargeTitle,
                 showDivider: false,
                 backgroundColor: DesignTokens.softSurface,
                 btmPad: 0,
-                // MediaQuery.of(context).viewInsets.bottom,
                 child: _RechargeSheetBody(
                   controller: _controller,
                   focusNode: _focusNode,
@@ -192,17 +213,22 @@ class _RechargeBottomSheetState extends State<_RechargeBottomSheet> {
   }
 }
 
-/// Full-screen success view shown after a successful recharge payment.
+/// Full-screen success view pushed on the root navigator after a successful
+/// recharge payment. Dependencies are passed explicitly because this widget
+/// lives outside the mini-app's provider subtree.
 class _RechargeSuccessContent extends StatelessWidget {
-  const _RechargeSuccessContent({required this.paymentState});
+  const _RechargeSuccessContent({
+    required this.l10n,
+    required this.responsive,
+    required this.onGoHome,
+  });
 
-  final IpsRechargeState paymentState;
+  final SdkLocalizations l10n;
+  final MiniAppResponsiveData responsive;
+  final VoidCallback onGoHome;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final responsive = context.responsive;
-
     return CustomScaffold(
       hasAppBar: false,
       backgroundColor: DesignTokens.softSurface,
@@ -254,8 +280,7 @@ class _RechargeSuccessContent extends StatelessWidget {
       bottomNavigationBar: BottomActionBar(
         child: PrimaryButton(
           label: l10n.commonGoHome,
-          onPressed: () =>
-              replaceIpsRoute(context, route: MiniAppRoutes.overview),
+          onPressed: onGoHome,
         ),
       ),
     );
