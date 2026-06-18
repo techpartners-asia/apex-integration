@@ -2,6 +2,22 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Builds the service terms/contract HTML viewer route.
+Widget buildIpsTermsOfServicePage(
+  BuildContext context, {
+  required IpsDependencies dependencies,
+  required SdkLocalizations l10n,
+}) {
+  return BlocProvider<TermsOfServiceCubit>(
+    create: (BuildContext context) => TermsOfServiceCubit(
+      appApi: dependencies.appApi,
+      l10n: l10n,
+      logger: dependencies.logger,
+    )..load(),
+    child: const TermsOfServiceScreen(),
+  );
+}
+
 /// Builds the Help/support route.
 Widget buildIpsHelpPage(
   BuildContext context, {

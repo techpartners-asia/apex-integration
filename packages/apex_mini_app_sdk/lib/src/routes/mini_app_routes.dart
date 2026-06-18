@@ -48,6 +48,9 @@ final class MiniAppRoutes {
   /// Profile personal-information route.
   static const String personalInfo = '/personal-info';
 
+  /// Service terms/contract HTML viewer route.
+  static const String termsOfService = '/terms-of-service';
+
   /// Public alias used by hosts that launch the InvestX experience.
   static const String investX = splash;
 
@@ -69,5 +72,6 @@ final class MiniAppRoutes {
     feedback,
     reward,
     personalInfo,
+    termsOfService,
   ];
 }

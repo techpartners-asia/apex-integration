@@ -105,6 +105,10 @@ class OverviewProfileTab extends StatelessWidget {
               OverviewProfileMenuItemData(
                 image: Img.noteBlue,
                 title: l10n.ipsOverviewProfileMenuTerms,
+                onTap: () => launchIpsRoute(
+                  context,
+                  route: MiniAppRoutes.termsOfService,
+                ),
               ),
 
               /// Help
