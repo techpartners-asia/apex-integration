@@ -27,6 +27,21 @@ class RemoteMiniAppSupportRepository implements MiniAppSupportRepository {
            TimedMemoryCache<BranchInfoEntity>(ttl: _companyInfoCacheTtl);
 
   @override
+  Future<String> getUserContract() async {
+    try {
+      await _ensureAdminAuthToken(session);
+      return await api.getUserContract();
+    } catch (error, stackTrace) {
+      logger.onError(
+        'get_user_contract_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  @override
   Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) async {
     try {
       return _companyInfoCache.getOrLoad(

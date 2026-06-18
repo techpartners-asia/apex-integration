@@ -35,6 +35,19 @@ class ApiExecutor {
     );
   }
 
+  /// Sends a GET and returns the raw response body as a string.
+  Future<String> getString(
+    String path, {
+    ReqContext context = const ReqContext(),
+  }) async {
+    return _runGuarded(
+      path,
+      context: context,
+      action: () async =>
+          (await get(path, context: context)).data?.toString() ?? '',
+    );
+  }
+
   /// Sends a GET and parses a JSON object response.
   Future<Map<String, Object?>> getJson(
     String path, {

@@ -48,17 +48,7 @@ class OverviewBottomNavigationBar extends StatelessWidget {
   static const double _barIconSize = AppComponentSize.icon2xl;
   static const double _barHeight = 72;
   static const double _barBorderRadius = 32;
-  static final Color _indicatorTint = DesignTokens.softPeach.withAlpha(30);
-  static final LiquidGlassSettings _indicatorGlassSettings =
-    LiquidGlassSettings(
-      glassColor: DesignTokens.softPeach,
-      blur: 1.5,
-      thickness: 0,
-      saturation: 1.0,
-      lightIntensity: 0,
-      chromaticAberration: 0,
-      specularSharpness: GlassSpecularSharpness.soft,
-    );
+  static final Color _indicatorTint = DesignTokens.softPeach.withAlpha(90);
 
   Widget _iconWidget(Object icon, Color color) {
     if (icon is IconData) {
@@ -141,7 +131,6 @@ class OverviewBottomNavigationBar extends StatelessWidget {
                     selectedIconColor: DesignTokens.rose,
                     unselectedIconColor: DesignTokens.ink,
                     indicatorColor: _indicatorTint,
-                    indicatorSettings: _indicatorGlassSettings,
 
                     // Танай package хувилбар дээр энэ нэрээр ажиллаж байгаа бол хэвээр нь үлдээ.
                     glassSettings: const LiquidGlassSettings(

@@ -123,6 +123,12 @@ Widget buildIpsPageForRoute(
         route: route,
         dependencies: dependencies,
       );
+    case MiniAppRoutes.termsOfService:
+      return buildIpsTermsOfServicePage(
+        context,
+        dependencies: dependencies,
+        l10n: l10n,
+      );
     default:
       return UnavailableScreen(route: route);
   }

@@ -1412,6 +1412,30 @@ abstract class SdkLocalizations {
   /// **'Invoice ID'**
   String get ipsPaymentInvoiceId;
 
+  /// No description provided for @ipsPaymentViewOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'View orders'**
+  String get ipsPaymentViewOrders;
+
+  /// No description provided for @ipsRechargeSuccessGoHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to home'**
+  String get ipsRechargeSuccessGoHome;
+
+  /// No description provided for @ipsRechargeSuccessCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your order was created successfully'**
+  String get ipsRechargeSuccessCardTitle;
+
+  /// No description provided for @ipsRechargeSuccessCardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your order is visible in the orders list.'**
+  String get ipsRechargeSuccessCardMessage;
+
   /// No description provided for @ipsPaymentStatusTimedOut.
   ///
   /// In en, this message translates to:

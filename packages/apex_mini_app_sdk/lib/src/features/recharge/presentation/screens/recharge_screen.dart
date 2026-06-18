@@ -44,12 +44,6 @@ class _RechargeScreenState extends State<RechargeScreen> {
               (current.errorMessage?.trim().isNotEmpty ?? false)),
       listener: (BuildContext context, IpsRechargeState state) {
         if (state.paymentRes != null) {
-          if (state.paymentRes?.status == MiniAppPaymentStatus.success) {
-            MiniAppToast.showSuccess(
-              context,
-              message: context.l10n.commonSuccess,
-            );
-          }
           return;
         }
 
@@ -207,7 +201,7 @@ class _BottomActionArea extends StatelessWidget {
   }
 }
 
-/// Displays the payment result after recharge submission.
+/// Displays the success result after a recharge payment.
 class _RechargeResultView extends StatelessWidget {
   /// Creates the recharge result view.
   const _RechargeResultView({required this.state});
@@ -218,10 +212,70 @@ class _RechargeResultView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final responsive = context.responsive;
+
+    if (state.paymentRes?.status != MiniAppPaymentStatus.success) {
+      return CustomScaffold(
+        appBarTitle: l10n.ipsPaymentRechargeTitle,
+        children: <Widget>[PaymentResState(res: state.paymentRes!)],
+      );
+    }
 
     return CustomScaffold(
-      appBarTitle: l10n.ipsPaymentRechargeTitle,
-      children: <Widget>[PaymentResState(res: state.paymentRes!)],
+      hasAppBar: false,
+      backgroundColor: DesignTokens.softSurface,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            responsive.space(AppSpacing.xl),
+            responsive.space(AppSpacing.xl),
+            responsive.space(AppSpacing.xl),
+            responsive.space(AppSpacing.lg),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const Spacer(),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: responsive.dp(53),
+                  height: responsive.dp(53),
+                  decoration: const BoxDecoration(
+                    color: DesignTokens.successStrong,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check_rounded,
+                    size: responsive.dp(30),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: responsive.spacing.sectionSpacing),
+              CustomText(
+                l10n.secAcntCalculationTitle,
+                variant: MiniAppTextVariant.h8,
+                textAlign: TextAlign.center,
+                color: DesignTokens.ink,
+              ),
+              SizedBox(height: responsive.spacing.sectionSpacing * 1.5),
+              ReminderCard(
+                title: l10n.ipsOverviewDashboardReminderTitle,
+                message: l10n.ipsRechargeSuccessCardMessage,
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomActionBar(
+        child: PrimaryButton(
+          label: l10n.commonGoHome,
+          onPressed: () =>
+              replaceIpsRoute(context, route: MiniAppRoutes.overview),
+        ),
+      ),
     );
   }
 }

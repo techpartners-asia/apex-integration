@@ -69,6 +69,9 @@ abstract interface class MiniAppFeedbackRepository {
 abstract interface class MiniAppSupportRepository {
   /// Loads company support/contact data.
   Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false});
+
+  /// Loads service terms/contract HTML.
+  Future<String> getUserContract();
 }
 
 /// Payment repository operations used by contract/payment flows.
@@ -199,6 +202,9 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
 
   @override
   Future<BranchInfoEntity> getCompanyInfo({bool forceRefresh = false}) => supportRepository.getCompanyInfo(forceRefresh: forceRefresh);
+
+  @override
+  Future<String> getUserContract() => supportRepository.getUserContract();
 
   @override
   Future<double> getAccountFeesAmount() =>

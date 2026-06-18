@@ -113,4 +113,7 @@ class ApiEndpoints {
 
   /// Remote client API diagnostic logger endpoint.
   static const String loggerCreate = '/api/v1/logger/create';
+
+  /// User service terms/contract HTML endpoint.
+  static const String userContract = '/api/v1/user/profile/contract';
 }

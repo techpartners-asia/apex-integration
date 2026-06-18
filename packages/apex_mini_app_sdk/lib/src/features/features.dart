@@ -15,3 +15,4 @@ export 'sell/sell.dart';
 export 'shared/shared.dart';
 export 'startup/startup.dart';
 export 'statements/statements.dart';
+export 'terms_of_service/terms_of_service.dart';

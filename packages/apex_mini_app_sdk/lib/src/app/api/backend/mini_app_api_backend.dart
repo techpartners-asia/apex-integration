@@ -235,6 +235,15 @@ class MiniAppApiBackend {
     return CompanyInfoResponseDto.fromJson(json);
   }
 
+  /// Fetches the service terms/contract HTML.
+  Future<String> getUserContract() async {
+    final ApiExecutor executor = _requirePublicExecutor('getUserContract');
+    return executor.getString(
+      ApiEndpoints.userContract,
+      context: const ReqContext(operName: 'getUserContract'),
+    );
+  }
+
   /// Checks payment callback state by invoice id.
   Future<PaymentCallbackResponseDto> getPaymentCallback(
     PaymentCallbackQuery query,
