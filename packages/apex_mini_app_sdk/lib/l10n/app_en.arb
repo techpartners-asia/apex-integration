@@ -293,7 +293,7 @@
   "ipsPaymentViewOrders": "View orders",
   "ipsRechargeSuccessGoHome": "Go to home",
   "ipsRechargeSuccessCardTitle": "Your order was created successfully",
-  "ipsRechargeSuccessCardMessage": "Your order is visible in the orders list.",
+  "ipsRechargeSuccessCardMessage": "Securities trading is automatically executed every Tuesday and Thursday. Your payment has been received — please check your portfolio balance after the next trading day.",
   "ipsPaymentStatusTimedOut": "Timed out",
   "ipsPaymentStatusUnsupported": "Unsupported",
   "ipsPaymentInvoiceCreateFailed": "The SDK could not create a payment invoice.",

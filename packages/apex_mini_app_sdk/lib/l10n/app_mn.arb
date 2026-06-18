@@ -293,7 +293,7 @@
   "ipsPaymentViewOrders": "Захиалга харах",
   "ipsRechargeSuccessGoHome": "Нүүр хуудасруу очих",
   "ipsRechargeSuccessCardTitle": "Таны захиалга амжилттай үүслээ",
-  "ipsRechargeSuccessCardMessage": "Та дансаа сар бүр тогтмол цэнэглэснээр таны сонгосон багц идэвхитэй байхыг анхаарна уу. ҮЦХ гүйлгээ долоо хоног бүрийн 2 дох 4 дахь өдөр автоматаар арилжаа хийнэ",
+  "ipsRechargeSuccessCardMessage": "Үнэт цаасны арилжаа долоо хоног бүрийн Мягмар, Пүрэв гарагт автоматаар хийгдэнэ. Таны төлбөр төлөгдсөн тул таны арилжаа дээрх өдрийн дараа багцын үлдэгдэлээ шалгаарай.",
   "ipsPaymentStatusTimedOut": "Хугацаа хэтэрсэн",
   "ipsPaymentStatusUnsupported": "Дэмжигдээгүй",
   "ipsPaymentInvoiceCreateFailed": "SDK төлбөрийн нэхэмжлэл үүсгэж чадсангүй.",

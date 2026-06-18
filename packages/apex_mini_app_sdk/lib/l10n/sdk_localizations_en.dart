@@ -734,7 +734,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get ipsRechargeSuccessCardMessage =>
-      'Your order is visible in the orders list.';
+      'Securities trading is automatically executed every Tuesday and Thursday. Your payment has been received — please check your portfolio balance after the next trading day.';
 
   @override
   String get ipsPaymentStatusTimedOut => 'Timed out';
