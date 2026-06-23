@@ -147,6 +147,11 @@ class AgreementHtmlBody extends StatelessWidget {
       child: SelectionArea(
         child: Html(
           data: sanitizeAgreementHtml(agreementText),
+          style: <String, Style>{
+            'body': Style(textAlign: TextAlign.justify),
+            'p': Style(textAlign: TextAlign.justify),
+            'div': Style(textAlign: TextAlign.justify),
+          },
         ),
       ),
     );
