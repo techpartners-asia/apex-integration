@@ -175,6 +175,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get validationMissingAcntReference => 'Acnt reference is required.';
 
   @override
+  String get validationAccountHolderNotFound => 'Please verify your account number and re-enter it to save.';
+
+  @override
   String get ipsHomeTitle => 'IPS Overview';
 
   @override
@@ -1318,6 +1321,10 @@ class SdkLocalizationsEn extends SdkLocalizations {
   @override
   String get secAcntCalculationPendingMessage =>
       'Your registration request is being reviewed. We will notify you once it is confirmed.';
+
+  @override
+  String get secAcntPendingActivationMessage =>
+      'Your securities account registration request has been received.\nWe will notify you once it has been reviewed and confirmed.';
 
   @override
   String get secAcntBankNotSelected => 'No bank selected';

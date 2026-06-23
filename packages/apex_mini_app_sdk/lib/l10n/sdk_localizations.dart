@@ -404,6 +404,12 @@ abstract class SdkLocalizations {
   /// **'Acnt reference is required.'**
   String get validationMissingAcntReference;
 
+  /// No description provided for @validationAccountHolderNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Account holder not found. Please verify your account number.'**
+  String get validationAccountHolderNotFound;
+
   /// No description provided for @ipsHomeTitle.
   ///
   /// In en, this message translates to:
@@ -2473,6 +2479,12 @@ abstract class SdkLocalizations {
   /// In en, this message translates to:
   /// **'Your registration request is being reviewed. We will notify you once it is confirmed.'**
   String get secAcntCalculationPendingMessage;
+
+  /// No description provided for @secAcntPendingActivationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your securities account registration request has been received.\nWe will notify you once it has been reviewed and confirmed.'**
+  String get secAcntPendingActivationMessage;
 
   /// No description provided for @secAcntBankNotSelected.
   ///

@@ -31,11 +31,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
       builder:
           (BuildContext context, LoadableState<IpsOverviewViewData> state) {
             final IpsOverviewViewData? data = state.data;
-            final bool isTradingEnabled = _hasTradingAccess(
-                  viewData: data,
-                  sessionState: sessionState,
-                ) &&
-                !(data?.hasPendingOrder ?? false);
+            final bool isTradingEnabled = !(data?.hasPendingOrder ?? false);
 
             return CustomScaffold(
               showBackButton: false,
@@ -55,13 +51,25 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                       context,
                       selectedIndex: _selectedTabIndex,
                       onSelected: _handleTabSelected,
-                      onActionPressed: () => _showActionSheet(
-                        context,
-                        data,
-                        sessionState.currentUser,
-                      ),
-                      isActionEnabled: isTradingEnabled,
-                      isButtonDisabled: !data.bootstrapState.hasIpsAcnt,
+                      onActionPressed: () {
+                        if (data.bootstrapState.hasPendingSecAcntActivation) {
+                          MiniAppToast.showInfo(
+                            context,
+                            message: context.l10n.secAcntPendingActivationMessage,
+                          );
+                          return;
+                        }
+                        if (!isTradingEnabled) {
+                          MiniAppToast.showWarning(
+                            context,
+                            message: context.l10n.ipsOverviewActionPendingOrderMessage,
+                          );
+                          return;
+                        }
+                        _showActionSheet(context, data, sessionState.currentUser);
+                      },
+                      isActionEnabled: isTradingEnabled || data.bootstrapState.hasPendingSecAcntActivation,
+                      isButtonDisabled: !data.bootstrapState.hasIpsAcnt && !data.bootstrapState.hasPendingSecAcntActivation,
                     ),
             );
           },
@@ -140,6 +148,13 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                       pendingOrder: viewData?.pendingOrder,
                       loyaltyInfo: viewData?.loyaltyInfo,
                       onRecharge: () {
+                        if (data.hasPendingSecAcntActivation) {
+                          MiniAppToast.showInfo(
+                            context,
+                            message: context.l10n.secAcntPendingActivationMessage,
+                          );
+                          return;
+                        }
                         if (!isTradingEnabled) {
                           MiniAppToast.showWarning(
                             context,
@@ -204,19 +219,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
     );
   }
 
-  /// Determines whether trade actions should be exposed to the current user.
-  bool _hasTradingAccess({
-    required IpsOverviewViewData? viewData,
-    required MiniAppSessionState sessionState,
-  }) {
-    final PortfolioOverview? overview = viewData?.portfolioOverview;
-
-    final account = sessionState.currentUser?.account;
-    final String packageCode = account?.packageCode?.trim() ?? '';
-    return account?.isInvestContract == true;
-  }
-
-  /// Shows the floating action sheet for recharge/sell or verification.
+/// Shows the floating action sheet for recharge/sell or verification.
   Future<void> _showActionSheet(
     BuildContext context,
     IpsOverviewViewData data,

@@ -176,6 +176,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get validationMissingAcntReference => 'Дансны лавлагаа шаардлагатай.';
 
   @override
+  String get validationAccountHolderNotFound => 'Та дансны дугаараа шалгаад шинээр оруулж хадгална уу';
+
+  @override
   String get ipsHomeTitle => 'IPS тойм';
 
   @override
@@ -1322,6 +1325,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
   @override
   String get secAcntCalculationPendingMessage =>
       'Таны бүртгэлийн хүсэлт шалгагдаж байна. Баталгаажмагц танд мэдэгдэх болно.';
+
+  @override
+  String get secAcntPendingActivationMessage =>
+      'Таны үнэт цаасны бүртгэлийн хүсэлтийг хүлээн авлаа.\nХүсэлтийг хянаж баталгаажуулсны дараа танд мэдэгдэх болно.';
 
   @override
   String get secAcntBankNotSelected => 'Банк сонгоогүй';
