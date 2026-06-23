@@ -175,7 +175,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get validationMissingAcntReference => 'Acnt reference is required.';
 
   @override
-  String get validationAccountHolderNotFound => 'Account holder not found. Please verify your account number.';
+  String get validationAccountHolderNotFound => 'Please verify your account number and re-enter it to save.';
 
   @override
   String get ipsHomeTitle => 'IPS Overview';

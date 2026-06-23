@@ -65,7 +65,7 @@
   "validationMissingSrcFiCode": "A valid srcFiCode is required before retrieving recommended packs.",
   "validationMissingOrderId": "Order identifier is required.",
   "validationMissingAcntReference": "Acnt reference is required.",
-  "validationAccountHolderNotFound": "Account holder not found. Please verify your account number.",
+  "validationAccountHolderNotFound": "Please verify your account number and re-enter it to save.",
   "ipsHomeTitle": "IPS Overview",
   "ipsHomeSubtitle": "Sec acnt bootstrap and IPS eligibility flow.",
   "ipsHomeOverviewCardTitle": "Current state",
