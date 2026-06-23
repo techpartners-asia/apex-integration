@@ -176,6 +176,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get validationMissingAcntReference => 'Дансны лавлагаа шаардлагатай.';
 
   @override
+  String get validationAccountHolderNotFound => 'Дансны эзэмшигч олдсонгүй. Дансны дугаараа шалгана уу.';
+
+  @override
   String get ipsHomeTitle => 'IPS тойм';
 
   @override

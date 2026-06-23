@@ -65,6 +65,7 @@
   "validationMissingSrcFiCode": "Санал болгосон багцыг авахын өмнө хүчинтэй srcFiCode шаардлагатай.",
   "validationMissingOrderId": "Захиалгын дугаар шаардлагатай.",
   "validationMissingAcntReference": "Дансны лавлагаа шаардлагатай.",
+  "validationAccountHolderNotFound": "Дансны эзэмшигч олдсонгүй. Дансны дугаараа шалгана уу.",
   "ipsHomeTitle": "IPS тойм",
   "ipsHomeSubtitle": "ҮЦ данс баталгаажуулалт",
   "ipsHomeOverviewCardTitle": "Одоогийн төлөв",

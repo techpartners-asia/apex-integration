@@ -404,6 +404,12 @@ abstract class SdkLocalizations {
   /// **'Acnt reference is required.'**
   String get validationMissingAcntReference;
 
+  /// No description provided for @validationAccountHolderNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Account holder not found. Please verify your account number.'**
+  String get validationAccountHolderNotFound;
+
   /// No description provided for @ipsHomeTitle.
   ///
   /// In en, this message translates to:

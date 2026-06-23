@@ -126,6 +126,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     _country = user?.residenceCountry ?? _country;
     _resolvedAccountHolderName = _trimToNull(user?.bank?.accountName);
 
+    for (final TextEditingController c in <TextEditingController>[
+      _lastNameController,
+      _firstNameController,
+      _emailController,
+      _phoneController,
+      _industryController,
+      _positionController,
+    ]) {
+      c.addListener(_onRequiredFieldChanged);
+    }
     _ibanController.addListener(_onAccountInputChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -136,13 +146,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
   @override
   void dispose() {
-    _lastNameController.dispose();
-    _firstNameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
+    for (final TextEditingController c in <TextEditingController>[
+      _lastNameController,
+      _firstNameController,
+      _emailController,
+      _phoneController,
+      _industryController,
+      _positionController,
+    ]) {
+      c.removeListener(_onRequiredFieldChanged);
+      c.dispose();
+    }
     _addressController.dispose();
-    _industryController.dispose();
-    _positionController.dispose();
     _ibanController.dispose();
     _accountHolderController.dispose();
     _lookupDebounce?.cancel();
@@ -209,7 +224,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         BottomActionBar(
           child: PrimaryButton(
             label: context.l10n.commonSave,
-            onPressed: _isSaving ? null : _save,
+            onPressed: _isSaving || !_canSave() ? null : _save,
           ),
         ),
       ],
@@ -341,6 +356,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     _scheduleLookup();
   }
 
+  /// Triggers rebuild so the save button reflects current required-field state.
+  void _onRequiredFieldChanged() {
+    if (mounted) setState(() {});
+  }
+
   /// Handles bank account number edits.
   void _onAccountInputChanged() {
     if (!mounted) {
@@ -414,7 +434,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           _resolvedLookupKey = null;
           _resolvedAccountHolderName = null;
           _accountHolderController.text = maskedName ?? '';
-          _lookupErrorMessage = result.responseDesc ?? context.l10n.errorsActionFailed;
+          _lookupErrorMessage = context.l10n.validationAccountHolderNotFound;
         });
       }
     } catch (error) {
