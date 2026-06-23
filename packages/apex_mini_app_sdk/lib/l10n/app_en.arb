@@ -516,6 +516,7 @@
   "secAcntCalculationTitle": "Your payment was completed successfully",
   "secAcntCalculationMessageTitle": "Your registration request was created successfully",
   "secAcntCalculationPendingMessage": "Your registration request is being reviewed. We will notify you once it is confirmed.",
+  "secAcntPendingActivationMessage": "Your securities account registration request has been received.\nWe will notify you once it has been reviewed and confirmed.",
   "secAcntBankNotSelected": "No bank selected",
   "secAcntProfileUpdating": "Saving your personal information.",
   "secAcntInvestxAgreementTitle": "INVESTX service agreement",

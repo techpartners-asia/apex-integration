@@ -2474,6 +2474,12 @@ abstract class SdkLocalizations {
   /// **'Your registration request is being reviewed. We will notify you once it is confirmed.'**
   String get secAcntCalculationPendingMessage;
 
+  /// No description provided for @secAcntPendingActivationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your securities account registration request has been received.\nWe will notify you once it has been reviewed and confirmed.'**
+  String get secAcntPendingActivationMessage;
+
   /// No description provided for @secAcntBankNotSelected.
   ///
   /// In en, this message translates to:

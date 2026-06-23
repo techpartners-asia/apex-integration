@@ -1324,6 +1324,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Таны бүртгэлийн хүсэлт шалгагдаж байна. Баталгаажмагц танд мэдэгдэх болно.';
 
   @override
+  String get secAcntPendingActivationMessage =>
+      'Таны үнэт цаасны бүртгэлийн хүсэлтийг хүлээн авлаа.\nХүсэлтийг хянаж баталгаажуулсны дараа танд мэдэгдэх болно.';
+
+  @override
   String get secAcntBankNotSelected => 'Банк сонгоогүй';
 
   @override

@@ -1320,6 +1320,10 @@ class SdkLocalizationsEn extends SdkLocalizations {
       'Your registration request is being reviewed. We will notify you once it is confirmed.';
 
   @override
+  String get secAcntPendingActivationMessage =>
+      'Your securities account registration request has been received.\nWe will notify you once it has been reviewed and confirmed.';
+
+  @override
   String get secAcntBankNotSelected => 'No bank selected';
 
   @override
