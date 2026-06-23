@@ -48,7 +48,7 @@ class OverviewBottomNavigationBar extends StatelessWidget {
   static const double _barIconSize = AppComponentSize.icon2xl;
   static const double _barHeight = 72;
   static const double _barBorderRadius = 32;
-  static final Color _indicatorTint = DesignTokens.softPeach.withAlpha(90);
+  static final Color _indicatorTint = DesignTokens.softPeach.withAlpha(30);
 
   Widget _iconWidget(Object icon, Color color) {
     if (icon is IconData) {
