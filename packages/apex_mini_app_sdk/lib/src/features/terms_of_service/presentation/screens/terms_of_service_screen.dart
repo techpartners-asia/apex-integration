@@ -37,9 +37,9 @@ class TermsOfServiceScreen extends StatelessWidget {
 
           final responsive = context.responsive;
           return SingleChildScrollView(
-            padding: EdgeInsets.all(responsive.space(AppSpacing.lg)),
+            padding: EdgeInsets.all(responsive.space(AppSpacing.xl)),
             child: MiniAppGlassCard(
-              padding: EdgeInsets.all(responsive.space(AppSpacing.lg)),
+              padding: EdgeInsets.all(responsive.space(AppSpacing.xl)),
               child: SelectionArea(
                 child: Html(
                   data: sanitizeAgreementHtml(state.data ?? ''),
