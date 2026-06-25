@@ -40,7 +40,7 @@
   "validationInvalidEmail": "Enter a valid email address.",
   "validationInvalidPhone": "Enter a valid phone number.",
   "validationInvalidRegisterNo": "Enter a valid register number.",
-  "validationInvalidIban": "Enter a valid IBAN/account number.",
+  "validationInvalidIban": "Enter a valid account number.",
   "validationMinLength": "Enter at least {count} characters.",
   "@validationMinLength": {
     "placeholders": {

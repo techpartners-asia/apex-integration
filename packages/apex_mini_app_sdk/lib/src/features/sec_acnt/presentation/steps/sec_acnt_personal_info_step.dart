@@ -111,11 +111,11 @@ class SecAcntPersonalInfoStep extends StatelessWidget {
       ),
       SizedBox(height: responsive.dp(16)),
       CustomTextField(
-        label: l10n.commonIban,
+        label: l10n.commonAccountNumber,
         controller: ibanController,
         keyboardType: TextInputType.number,
         maxLength: 18,
-        prefixText: 'MN ',
+        prefixText: '',
         onChanged: (String value) {
           if (value.length >= 18) {
             FocusManager.instance.primaryFocus?.unfocus();
