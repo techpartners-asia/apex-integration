@@ -2,7 +2,7 @@ PODS:
   - adaptive_platform_ui (0.1.0):
     - Flutter
   - Flutter (1.0.0)
-  - path_provider_foundation (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - sqflite_darwin (0.0.4):
@@ -14,7 +14,7 @@ PODS:
 DEPENDENCIES:
   - adaptive_platform_ui (from `.symlinks/plugins/adaptive_platform_ui/ios`)
   - Flutter (from `Flutter`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
@@ -23,20 +23,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/adaptive_platform_ui/ios"
   Flutter:
     :path: Flutter
-  path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  adaptive_platform_ui: dcd588cb59eb4c5bd1a430158b00b98b0493b3f0
+  adaptive_platform_ui: f54f620666d1797636f9ef06f49137ef2cc13611
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
-  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
-  url_launcher_ios: bb13df5870e8c4234ca12609d04010a21be43dfa
+  shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
+  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
 
-PODFILE CHECKSUM: 29c10b6841d61ae2ab7b29826c1bc56e7ce10050
+PODFILE CHECKSUM: b5fef8992a090ea829f3290fa5c25262afa612e4
 
 COCOAPODS: 1.16.2
