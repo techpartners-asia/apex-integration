@@ -145,7 +145,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
                           viewData?.stockYieldDetails ??
                           const <PortfolioHolding>[],
                       user: sessionState.currentUser,
-                      pendingOrder: viewData?.pendingOrder,
+                      pendingOrders: viewData?.pendingOrders ?? const <IpsOrder>[],
                       loyaltyInfo: viewData?.loyaltyInfo,
                       onRecharge: () {
                         if (data.hasPendingSecAcntActivation) {
