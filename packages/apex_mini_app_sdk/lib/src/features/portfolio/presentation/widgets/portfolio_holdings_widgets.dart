@@ -11,46 +11,14 @@ part 'portfolio_security_tile.dart';
 
 /// Fallback categorical colors for portfolio pie-chart slices.
 const List<Color> kPieChartPalette = <Color>[
-  DesignTokens.rose,
-  DesignTokens.deepPink,
-  DesignTokens.softPeach,
-  DesignTokens.coral,
-  DesignTokens.teal,
-  DesignTokens.primaryTeal,
-  DesignTokens.darkTeal,
-  DesignTokens.ink,
-  DesignTokens.muted,
-  DesignTokens.success,
-  DesignTokens.successStrong,
-  DesignTokens.danger,
-  Color(0xFFFF6B8A),
-  Color(0xFF2AC5B8),
-  Color(0xFFFF9B3A),
-  Color(0xFF8B6FE8),
-  Color(0xFF4A9FE8),
-  Color(0xFF52C478),
-  Color(0xFFF7C948),
-  Color(0xFFE87B6F),
+  Color(0xFFDD4F80),
+  Color(0xFFFB9D6C),
+  Color(0xFFD3DDDD),
+  Color(0xFF3A7B91),
+  Color(0xFF085055),
+  Color(0xFF294753),
 ];
 
-/// Gradient palette derived from [kPieChartPalette] for pie-chart slices.
-List<LinearGradient> kPieChartGradient = <LinearGradient>[
-  LinearGradient(colors: [DesignTokens.rose, DesignTokens.softPeach]),
-  LinearGradient(colors: [DesignTokens.softPeach, DesignTokens.coral]),
-  LinearGradient(colors: [DesignTokens.primaryTeal, DesignTokens.darkTeal]),
-  LinearGradient(colors: [DesignTokens.ink, DesignTokens.muted]),
-  LinearGradient(colors: [DesignTokens.success, DesignTokens.successStrong]),
-  LinearGradient(
-    colors: [DesignTokens.selectionBlue, DesignTokens.selectionBlueBorder],
-  ),
-  LinearGradient(colors: [DesignTokens.roseGlow, DesignTokens.roseTint]),
-  LinearGradient(colors: [DesignTokens.muted, DesignTokens.border]),
-
-  LinearGradient(colors: [Color(0xFFFF6B8A), Color(0xFFE87B6F)]),
-  LinearGradient(colors: [Color(0xFF2AC5B8), Color(0xFF52C478)]),
-  LinearGradient(colors: [Color(0xFFFF9B3A), Color(0xFFF7C948)]),
-  LinearGradient(colors: [Color(0xFF8B6FE8), Color(0xFF4A9FE8)]),
-];
 
 String _portfolioSecurityTypeLabel(
   String? securityType, {
@@ -182,7 +150,6 @@ class _PortfolioMyPackSectionState extends State<PortfolioMyPackSection> {
               currency: widget.overview.currency,
               l10n: l10n,
               color: kPieChartPalette[i % kPieChartPalette.length],
-              gradient: kPieChartGradient[i % kPieChartGradient.length],
             ),
       ],
     );

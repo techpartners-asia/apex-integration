@@ -14,9 +14,6 @@ class PortfolioSecurityTile extends StatefulWidget {
   /// Optional solid color for the leading swatch.
   final Color? color;
 
-  /// Optional gradient for the leading swatch.
-  final LinearGradient? gradient;
-
   /// Creates a portfolio security tile.
   const PortfolioSecurityTile({
     super.key,
@@ -24,7 +21,6 @@ class PortfolioSecurityTile extends StatefulWidget {
     required this.currency,
     required this.l10n,
     this.color,
-    this.gradient,
   });
 
   @override
@@ -62,7 +58,6 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
                   height: responsive.dp(24),
                   decoration: BoxDecoration(
                     color: widget.color,
-                    gradient: widget.gradient,
                     borderRadius: BorderRadius.circular(responsive.radius(5)),
                   ),
                   // child: Center(
