@@ -26,8 +26,8 @@ class IpsOverviewViewData {
   /// Whether dashboard enrichment failed while base overview still loaded.
   final bool dashboardLoadFailed;
 
-  /// Pending order with status "N", if one exists.
-  final IpsOrder? pendingOrder;
+  /// Pending orders with status P, DI, or N.
+  final List<IpsOrder> pendingOrders;
 
   /// Whether the grape questionnaire check-completed API returned completed=true.
   final bool isQuestionnaireCompleted;
@@ -35,8 +35,8 @@ class IpsOverviewViewData {
   /// Loyalty info (streak + active loyalty) from the loyalty-info endpoint.
   final LoyaltyInfoDto? loyaltyInfo;
 
-  /// Whether the user has an active pending order.
-  bool get hasPendingOrder => pendingOrder != null;
+  /// Whether the user has any active pending orders.
+  bool get hasPendingOrder => pendingOrders.isNotEmpty;
 
   /// Creates the overview view model.
   const IpsOverviewViewData({
@@ -48,7 +48,7 @@ class IpsOverviewViewData {
     this.portfolioContext = const SdkPortfolioContext(),
     this.isDashboardDataReady = true,
     this.dashboardLoadFailed = false,
-    this.pendingOrder,
+    this.pendingOrders = const <IpsOrder>[],
     this.isQuestionnaireCompleted = false,
     this.loyaltyInfo,
   });

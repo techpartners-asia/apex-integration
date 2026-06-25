@@ -38,6 +38,7 @@ dependencies:
   fl_chart: ^0.69.0
 
   # System Utilities
+  shared_preferences: ^2.3.2
   path_provider: ^2.1.5
   url_launcher: ^6.3.2
   email_validator: ^3.0.0
@@ -55,3 +56,4 @@ flutter:
   assets:
     - assets/
     - assets/icons/
+    - assets/icons/sand-clock.png

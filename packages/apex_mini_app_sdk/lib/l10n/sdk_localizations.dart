@@ -2342,6 +2342,12 @@ abstract class SdkLocalizations {
   /// **'IBAN number'**
   String get commonIban;
 
+  /// No description provided for @commonAccountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Account number'**
+  String get commonAccountNumber;
+
   /// No description provided for @commonPackUnit.
   ///
   /// In en, this message translates to:

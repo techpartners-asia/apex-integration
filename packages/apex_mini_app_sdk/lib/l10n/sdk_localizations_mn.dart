@@ -135,7 +135,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Регистрийн дугаараа зөв оруулна уу.';
 
   @override
-  String get validationInvalidIban => 'IBAN / дансны дугаараа зөв оруулна уу.';
+  String get validationInvalidIban => 'Дансны дугаараа зөв оруулна уу.';
 
   @override
   String validationMinLength(int count) {
@@ -1245,6 +1245,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get commonIban => 'IBAN дугаар';
+
+  @override
+  String get commonAccountNumber => 'Дансны дугаар';
 
   @override
   String get commonPackUnit => 'PACK';

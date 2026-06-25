@@ -36,8 +36,8 @@ class OverviewDashboardHomeTab extends StatelessWidget {
   /// Pull-to-refresh callback.
   final RefreshCallback? onRefresh;
 
-  /// Pending order (status "N") to show in the dashboard, if any.
-  final IpsOrder? pendingOrder;
+  /// Pending orders (status P, DI, N) to show in the dashboard.
+  final List<IpsOrder> pendingOrders;
 
   /// Loyalty info fetched from the loyalty-info endpoint.
   final LoyaltyInfoDto? loyaltyInfo;
@@ -56,7 +56,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
     this.onWithdraw,
     this.onViewDetails,
     this.onRefresh,
-    this.pendingOrder,
+    this.pendingOrders = const <IpsOrder>[],
     this.loyaltyInfo,
   });
 
@@ -88,10 +88,10 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               onStatements: onStatements,
               onWithdraw: onWithdraw,
             ),
-            if (pendingOrder != null) ...<Widget>[
+            if (pendingOrders.isNotEmpty) ...<Widget>[
               SizedBox(height: responsive.dp(14)),
-              OverviewPendingOrderCard(
-                order: pendingOrder!,
+              OverviewPendingOrdersCarousel(
+                orders: pendingOrders,
                 packAmount: portfolioOverview?.packAmount,
                 packFee: portfolioOverview?.packFee,
                 currency: portfolioOverview?.currency ?? '',

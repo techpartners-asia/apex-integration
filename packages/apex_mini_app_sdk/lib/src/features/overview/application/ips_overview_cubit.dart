@@ -128,11 +128,11 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
           .resolve(bootstrapState: data);
       final (
         PortfolioDashboardData dashboardData,
-        IpsOrder? pendingOrder,
+        List<IpsOrder> pendingOrders,
         LoyaltyInfoDto? loyaltyInfo,
       ) = await (
         service.getDashboardData(context: context),
-        _fetchPendingOrder(forceRefresh: forceRefresh),
+        _fetchPendingOrders(forceRefresh: forceRefresh),
         _fetchLoyaltyInfo(),
       ).wait;
 
@@ -146,7 +146,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
             stockYieldDetails: dashboardData.stockYieldDetails,
             portfolioContext: dashboardData.portfolioContext,
             isDashboardDataReady: true,
-            pendingOrder: pendingOrder,
+            pendingOrders: pendingOrders,
             loyaltyInfo: loyaltyInfo,
           ),
         ),
@@ -170,14 +170,20 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     }
   }
 
-  Future<IpsOrder?> _fetchPendingOrder({bool forceRefresh = false}) async {
+  static const Set<IpsOrderStatus> _pendingStatuses = <IpsOrderStatus>{
+    IpsOrderStatus.pending,
+    IpsOrderStatus.confirmed,
+    IpsOrderStatus.allocated,
+  };
+
+  Future<List<IpsOrder>> _fetchPendingOrders({bool forceRefresh = false}) async {
     final OrdersService? service = ordersService;
-    if (service == null) return null;
+    if (service == null) return const <IpsOrder>[];
     try {
       final List<IpsOrder> orders = await service.getOrders();
-      return orders.where((IpsOrder o) => o.status == IpsOrderStatus.pending).firstOrNull;
+      return orders.where((IpsOrder o) => _pendingStatuses.contains(o.status)).toList();
     } catch (_) {
-      return null;
+      return const <IpsOrder>[];
     }
   }
 
@@ -191,11 +197,11 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     }
   }
 
-  /// Refetches only [pendingOrder] without reloading the full overview.
+  /// Refetches only pending orders without reloading the full overview.
   Future<void> refreshPendingOrderStatus() async {
     final IpsOverviewViewData? current = state.data;
     if (current == null || isClosed) return;
-    final IpsOrder? pendingOrder = await _fetchPendingOrder();
+    final List<IpsOrder> pendingOrders = await _fetchPendingOrders();
     if (isClosed) return;
     emit(
       state.copyWith(
@@ -208,7 +214,7 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
           portfolioContext: current.portfolioContext,
           isDashboardDataReady: current.isDashboardDataReady,
           dashboardLoadFailed: current.dashboardLoadFailed,
-          pendingOrder: pendingOrder,
+          pendingOrders: pendingOrders,
           loyaltyInfo: current.loyaltyInfo,
         ),
       ),

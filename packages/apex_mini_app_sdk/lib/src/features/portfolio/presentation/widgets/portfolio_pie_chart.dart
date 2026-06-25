@@ -39,8 +39,11 @@ class _PortfolioPieChart extends StatelessWidget {
           : 1;
       final double percent = rawPercent / total * 100;
       final Color color = kPieChartPalette[index % kPieChartPalette.length];
-      final LinearGradient gradient =
-          kPieChartGradient[index % kPieChartGradient.length];
+      final Color nextColor =
+          kPieChartPalette[(index + 1) % kPieChartPalette.length];
+      final LinearGradient gradient = LinearGradient(
+        colors: <Color>[color, nextColor],
+      );
       final String typeLabel = _portfolioSecurityTypeLabel(
         security.securityType,
         upper: false,

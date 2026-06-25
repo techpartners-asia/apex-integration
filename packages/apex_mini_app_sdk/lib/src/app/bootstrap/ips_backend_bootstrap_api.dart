@@ -53,13 +53,13 @@ extension IpsBackendBootstrapApi on IpsBackendApi {
   }
 
   /// Resolves account holder name for an account code.
-  Future<AcntNameLookupDto> getAcntNameByAcntCode(
-    GetAcntNameByAcntCodeApiReq req,
+  Future<AcntNameLookupDto> checkAcntNameByAcntCode(
+    CheckAcntNameByAcntCodeApiReq req,
   ) async {
     final Map<String, Object?> json = await protectedExecutor.postJson(
-      ApiEndpoints.getAcntNameByAcntCode,
+      ApiEndpoints.checkAcntNameByAcntCode,
       body: req.toJson(),
-      context: const ReqContext(operName: 'getAcntNameByAcntCode'),
+      context: const ReqContext(operName: 'checkAcntNameByAcntCode'),
     );
 
     return AcntNameLookupDto.fromJson(json);

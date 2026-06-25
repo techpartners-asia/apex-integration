@@ -40,7 +40,7 @@
   "validationInvalidEmail": "Имэйл хаягаа зөв оруулна уу.",
   "validationInvalidPhone": "Утасны дугаараа зөв оруулна уу.",
   "validationInvalidRegisterNo": "Регистрийн дугаараа зөв оруулна уу.",
-  "validationInvalidIban": "IBAN / дансны дугаараа зөв оруулна уу.",
+  "validationInvalidIban": "Дансны дугаараа зөв оруулна уу.",
   "validationMinLength": "Хамгийн багадаа {count} тэмдэгт оруулна уу.",
   "@validationMinLength": {
     "placeholders": {
@@ -484,6 +484,7 @@
   "commonProfile": "Миний",
   "commonBank": "Банк",
   "commonIban": "IBAN дугаар",
+  "commonAccountNumber": "Дансны дугаар",
   "commonPackUnit": "PACK",
   "commonBrandInvestx": "investX",
   "commonDrawSignaturePrompt": "Та гарын үсгээ зурж баталгаажуулна уу",

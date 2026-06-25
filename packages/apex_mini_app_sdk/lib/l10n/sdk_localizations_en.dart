@@ -134,7 +134,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get validationInvalidRegisterNo => 'Enter a valid register number.';
 
   @override
-  String get validationInvalidIban => 'Enter a valid IBAN/account number.';
+  String get validationInvalidIban => 'Enter a valid account number.';
 
   @override
   String validationMinLength(int count) {
@@ -1240,6 +1240,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
 
   @override
   String get commonIban => 'IBAN number';
+
+  @override
+  String get commonAccountNumber => 'Account number';
 
   @override
   String get commonPackUnit => 'PACK';

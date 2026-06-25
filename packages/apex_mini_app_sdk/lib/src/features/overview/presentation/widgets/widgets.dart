@@ -4,6 +4,7 @@ export 'overview_bottom_navigation_item.dart';
 export 'overview_dashboard_home_tab.dart';
 export 'overview_home_tab.dart';
 export 'overview_pending_order_card.dart';
+export 'overview_pending_orders_carousel.dart';
 export 'overview_profile_tab.dart';
 export 'overview_verification_card.dart';
 export 'overview_verification_view_model.dart';

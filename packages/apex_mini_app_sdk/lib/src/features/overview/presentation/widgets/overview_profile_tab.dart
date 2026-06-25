@@ -95,10 +95,12 @@ class OverviewProfileTab extends StatelessWidget {
               OverviewProfileMenuItemData(
                 image: Img.medalBlue,
                 title: l10n.ipsOverviewProfileMenuAchievements,
-                onTap: () => launchIpsRoute(
-                  context,
-                  route: MiniAppRoutes.reward,
-                ),
+                onTap: data.hasIpsAcnt
+                ? () => launchIpsRoute(
+                    context,
+                    route: MiniAppRoutes.reward,
+                  )
+                  : null,
               ),
 
               /// Term condition

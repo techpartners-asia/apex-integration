@@ -316,22 +316,46 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     UserEntityDto? updatedUser,
   }) async {
     final UserEntityDto? currentUser = updatedUser ?? widget.currentUser;
-    final SecAcntFlowStep? nextStep = resolveInitialSecAcntFlowStep(
-      widget.bootstrapState,
-      currentUser: currentUser,
-    );
 
-    if (nextStep == SecAcntFlowStep.success && _isShortFlow) {
-      await Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (_) => SecAcntSuccessScreen(
-            bootstrapState: widget.bootstrapState,
-            draft: draft,
-            currentUser: currentUser,
+    if (widget.bootstrapState?.hasIpsAcnt == true) {
+      final bool hasPaidContract = hasPaidSecAcntContract(currentUser);
+      if (!hasPaidContract) {
+        await Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => buildSecAcntFlowStepScreen(
+              step: SecAcntFlowStep.payment,
+              bootstrapState: widget.bootstrapState,
+              draft: draft,
+              appApi: widget.appApi,
+              currentUser: currentUser,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        await routeAfterSecAcntFlow(
+          context,
+          bootstrapState: widget.bootstrapState,
+          currentUser: currentUser,
+        );
+      }
       return;
+    }
+
+    // Personal info was just successfully submitted — skip re-checking
+    // hasCompletePersonalInfo and resolve only the post-personal-info steps.
+    final SecAcntFlowStep? nextStep;
+    if (_isShortFlow) {
+      nextStep = hasPaidSecAcntContract(currentUser) ? null : SecAcntFlowStep.payment;
+    } else {
+      if (!SecAcntLocalPrefs.hasAcceptedSecAgreement) {
+        nextStep = SecAcntFlowStep.secAgreement;
+      } else if (!hasSavedSecAcntSignature(currentUser)) {
+        nextStep = SecAcntFlowStep.signature;
+      } else if (!hasPaidSecAcntContract(currentUser)) {
+        nextStep = SecAcntFlowStep.payment;
+      } else {
+        nextStep = null;
+      }
     }
 
     if (nextStep == null) {
@@ -346,7 +370,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => buildSecAcntFlowStepScreen(
-          step: nextStep,
+          step: nextStep!,
           bootstrapState: widget.bootstrapState,
           draft: draft,
           appApi: widget.appApi,

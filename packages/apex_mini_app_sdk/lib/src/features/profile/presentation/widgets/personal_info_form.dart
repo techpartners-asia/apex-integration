@@ -91,6 +91,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
           label: 'Овог',
           controller: lastNameController,
           showError: showErr,
+          enabled: false,
         ),
         SizedBox(height: responsive.dp(14)),
         _buildRequiredTextField(
@@ -98,6 +99,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
           label: 'Нэр',
           controller: firstNameController,
           showError: showErr,
+          enabled: false,
         ),
         SizedBox(height: responsive.dp(14)),
         _buildRequiredTextField(
@@ -106,6 +108,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
           controller: emailController,
           showError: showErr,
           keyboardType: TextInputType.emailAddress,
+          enabled: false,
         ),
         SizedBox(height: responsive.dp(14)),
         _buildRequiredTextField(
@@ -114,6 +117,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
           controller: phoneController,
           showError: showErr,
           keyboardType: TextInputType.phone,
+          enabled: false,
         ),
         SizedBox(height: responsive.spacing.sectionSpacing),
         const ProfileSectionTitle(title: 'Оршин суугаа хаяг'),
@@ -163,7 +167,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
         SizedBox(height: responsive.dp(14)),
         _buildRequiredTextField(
           context: context,
-          label: '${l10n.commonIban}',
+          label: '${l10n.commonAccountNumber}',
           controller: ibanController,
           showError: showErr,
           keyboardType: TextInputType.number,
@@ -229,11 +233,13 @@ class ProfilePersonalInfoForm extends StatelessWidget {
     required TextEditingController controller,
     required bool showError,
     TextInputType? keyboardType,
+    bool enabled = true,
   }) {
     return CustomTextField(
       label: label,
       controller: controller,
       keyboardType: keyboardType,
+      enabled: enabled,
       autovalidateMode: showError ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
       validator: (String? value) =>
           (value == null || value.trim().isEmpty) ? context.l10n.validationRequired : null,
