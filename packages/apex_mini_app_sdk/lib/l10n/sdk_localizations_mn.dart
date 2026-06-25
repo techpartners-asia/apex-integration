@@ -1247,6 +1247,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get commonIban => 'IBAN дугаар';
 
   @override
+  String get commonAccountNumber => 'Дансны дугаар';
+
+  @override
   String get commonPackUnit => 'PACK';
 
   @override

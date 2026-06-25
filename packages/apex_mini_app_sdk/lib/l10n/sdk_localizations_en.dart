@@ -1242,6 +1242,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get commonIban => 'IBAN number';
 
   @override
+  String get commonAccountNumber => 'Account number';
+
+  @override
   String get commonPackUnit => 'PACK';
 
   @override

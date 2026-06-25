@@ -483,6 +483,7 @@
   "commonProfile": "Profile",
   "commonBank": "Bank",
   "commonIban": "IBAN number",
+  "commonAccountNumber": "Account number",
   "commonPackUnit": "PACK",
   "commonBrandInvestx": "investX",
   "commonDrawSignaturePrompt": "Please draw your signature to confirm",

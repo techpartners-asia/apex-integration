@@ -484,6 +484,7 @@
   "commonProfile": "Миний",
   "commonBank": "Банк",
   "commonIban": "IBAN дугаар",
+  "commonAccountNumber": "Дансны дугаар",
   "commonPackUnit": "PACK",
   "commonBrandInvestx": "investX",
   "commonDrawSignaturePrompt": "Та гарын үсгээ зурж баталгаажуулна уу",

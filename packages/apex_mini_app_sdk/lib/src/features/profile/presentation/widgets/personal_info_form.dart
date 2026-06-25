@@ -167,7 +167,7 @@ class ProfilePersonalInfoForm extends StatelessWidget {
         SizedBox(height: responsive.dp(14)),
         _buildRequiredTextField(
           context: context,
-          label: '${l10n.commonIban}',
+          label: '${l10n.commonAccountNumber}',
           controller: ibanController,
           showError: showErr,
           keyboardType: TextInputType.number,
