@@ -128,12 +128,6 @@ class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
                     )
                   : const SizedBox.shrink(),
             ),
-            SizedBox(height: responsive.dp(15)),
-            _DetailsToggle(
-              isExpanded: _expanded,
-              label: widget.l10n.commonViewDetails,
-              onPressed: () => setState(() => _expanded = !_expanded),
-            ),
           ],
         ),
       ),
