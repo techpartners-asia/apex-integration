@@ -104,7 +104,7 @@ final class Validators {
   static StringValidator iban(
     SdkLocalizations l10n, {
     bool required = true,
-    int exactLength = 18,
+    List<int> validLengths = const [9, 10, 11, 12],
   }) {
     return (String? value) {
       final String normalized = value?.trim() ?? '';
@@ -114,7 +114,7 @@ final class Validators {
       if (!RegExp(r'^\d+$').hasMatch(normalized)) {
         return l10n.validationInvalidIban;
       }
-      return normalized.length == exactLength
+      return validLengths.contains(normalized.length)
           ? null
           : l10n.validationInvalidIban;
     };

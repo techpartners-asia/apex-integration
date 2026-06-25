@@ -103,7 +103,7 @@ class ApiEndpoints {
   static const String getAcntYieldProfit = '/api/v1.0/getAcntYieldProfit';
 
   /// Account-name lookup endpoint for account codes.
-  static const String getAcntNameByAcntCode = '/api/v1.0/getAcntNameByAcntCode';
+  static const String checkAcntNameByAcntCode = '/api/v1.0/checkAcntNameByAcntCode';
 
   /// User loyalty/milestone list endpoint.
   static const String loyalty = '/api/v1/user/profile/loyalty';

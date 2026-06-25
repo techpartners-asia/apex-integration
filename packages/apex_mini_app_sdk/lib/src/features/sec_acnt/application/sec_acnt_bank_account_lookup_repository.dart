@@ -72,8 +72,8 @@ class ApiSecAcntBankAccountLookupRepository
       return const SecAcntBankAccountLookupResult();
     }
 
-    final AcntNameLookupDto response = await api.getAcntNameByAcntCode(
-      GetAcntNameByAcntCodeApiReq(
+    final AcntNameLookupDto response = await api.checkAcntNameByAcntCode(
+      CheckAcntNameByAcntCodeApiReq(
         srcAcntId: 0,
         dstFiCode: normalizedBankCode,
         dstAcntCode: normalizedAccountNumber,
