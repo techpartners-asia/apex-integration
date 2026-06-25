@@ -33,7 +33,7 @@ class _OverviewPendingOrdersCarouselState
   @override
   void initState() {
     super.initState();
-    _controller = PageController();
+    _controller = PageController(viewportFraction: 1);
   }
 
   @override
@@ -65,11 +65,14 @@ class _OverviewPendingOrdersCarouselState
             itemCount: orders.length,
             onPageChanged: (int index) => setState(() => _current = index),
             itemBuilder: (BuildContext ctx, int index) {
-              return OverviewPendingOrderCard(
-                order: orders[index],
-                packAmount: widget.packAmount,
-                packFee: widget.packFee,
-                currency: widget.currency,
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: OverviewPendingOrderCard(
+                  order: orders[index],
+                  packAmount: widget.packAmount,
+                  packFee: widget.packFee,
+                  currency: widget.currency,
+                ),
               );
             },
           ),
