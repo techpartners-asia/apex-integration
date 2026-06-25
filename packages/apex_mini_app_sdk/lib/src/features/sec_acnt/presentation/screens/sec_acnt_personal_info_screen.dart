@@ -316,7 +316,8 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
     UserEntityDto? updatedUser,
   }) async {
     final UserEntityDto? currentUser = updatedUser ?? widget.currentUser;
-    final SecAcntFlowStep? nextStep = resolveInitialSecAcntFlowStep(
+    final SecAcntFlowStep? nextStep = resolveNextSecAcntFlowStep(
+      SecAcntFlowStep.personalInformation,
       widget.bootstrapState,
       currentUser: currentUser,
     );
