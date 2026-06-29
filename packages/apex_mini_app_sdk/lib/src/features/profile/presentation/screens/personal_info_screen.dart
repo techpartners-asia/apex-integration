@@ -92,6 +92,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   /// Bank/account key for the last successful lookup.
   String? _resolvedLookupKey;
 
+  /// Whether the IBAN-length warning toast has been shown for the current input.
+  bool _hasShownIbanWarning = false;
+
   /// Delay before running account holder lookup after input changes.
   static const Duration _lookupDebounceDuration = Duration(milliseconds: 450);
 
@@ -224,7 +227,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         BottomActionBar(
           child: PrimaryButton(
             label: context.l10n.commonSave,
-            onPressed: _isSaving || !_canSave() ? null : _save,
+            onPressed: _isSaving ? null : _save,
           ),
         ),
       ],
@@ -509,6 +512,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   /// Explains why save is blocked when the user presses a disabled path.
   void _showSaveBlockedToast() {
     if (!mounted) {
+      return;
+    }
+    if (_accountNumber.length > 12) {
+      MiniAppToast.showError(
+        context,
+        message: context.l10n.validationIbanNotAllowed,
+      );
       return;
     }
     MiniAppToast.showError(

@@ -178,6 +178,9 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get validationAccountHolderNotFound => 'Please verify your account number and re-enter it to save.';
 
   @override
+  String get validationIbanNotAllowed => 'Please enter your account number, not your IBAN.';
+
+  @override
   String get ipsHomeTitle => 'IPS Overview';
 
   @override

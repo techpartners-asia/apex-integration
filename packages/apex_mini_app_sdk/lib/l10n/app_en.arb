@@ -66,6 +66,7 @@
   "validationMissingOrderId": "Order identifier is required.",
   "validationMissingAcntReference": "Acnt reference is required.",
   "validationAccountHolderNotFound": "Please verify your account number and re-enter it to save.",
+  "validationIbanNotAllowed": "Please enter your account number, not your IBAN.",
   "ipsHomeTitle": "IPS Overview",
   "ipsHomeSubtitle": "Sec acnt bootstrap and IPS eligibility flow.",
   "ipsHomeOverviewCardTitle": "Current state",
