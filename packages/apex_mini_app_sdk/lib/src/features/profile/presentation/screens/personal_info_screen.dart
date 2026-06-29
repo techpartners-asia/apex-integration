@@ -514,7 +514,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     if (!mounted) {
       return;
     }
-    if (_accountNumber.length > 12) {
+    if (_accountNumber.length > 14) {
       MiniAppToast.showError(
         context,
         message: context.l10n.validationIbanNotAllowed,

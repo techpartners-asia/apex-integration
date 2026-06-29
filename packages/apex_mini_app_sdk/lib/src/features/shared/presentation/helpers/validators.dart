@@ -104,7 +104,7 @@ final class Validators {
   static StringValidator iban(
     SdkLocalizations l10n, {
     bool required = true,
-    List<int> validLengths = const [9, 10, 11, 12],
+    List<int> validLengths = const [9, 10, 11, 12, 13, 14],
   }) {
     return (String? value) {
       final String normalized = value?.trim() ?? '';
