@@ -410,6 +410,12 @@ abstract class SdkLocalizations {
   /// **'Account holder not found. Please verify your account number.'**
   String get validationAccountHolderNotFound;
 
+  /// No description provided for @validationIbanNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your account number, not your IBAN.'**
+  String get validationIbanNotAllowed;
+
   /// No description provided for @ipsHomeTitle.
   ///
   /// In en, this message translates to:

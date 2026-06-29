@@ -179,6 +179,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get validationAccountHolderNotFound => 'Та дансны дугаараа шалгаад шинээр оруулж хадгална уу';
 
   @override
+  String get validationIbanNotAllowed => 'IBAN дугаар биш, зөвхөн дансны дугаараа оруулна уу';
+
+  @override
   String get ipsHomeTitle => 'IPS тойм';
 
   @override

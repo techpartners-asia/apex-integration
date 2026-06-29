@@ -66,6 +66,7 @@
   "validationMissingOrderId": "Захиалгын дугаар шаардлагатай.",
   "validationMissingAcntReference": "Дансны лавлагаа шаардлагатай.",
   "validationAccountHolderNotFound": "Та дансны дугаараа шалгаад шинээр оруулж хадгална уу",
+  "validationIbanNotAllowed": "IBAN дугаар биш, зөвхөн дансны дугаараа оруулна уу",
   "ipsHomeTitle": "IPS тойм",
   "ipsHomeSubtitle": "ҮЦ данс баталгаажуулалт",
   "ipsHomeOverviewCardTitle": "Одоогийн төлөв",

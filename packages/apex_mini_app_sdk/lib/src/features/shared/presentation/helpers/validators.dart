@@ -100,11 +100,11 @@ final class Validators {
     };
   }
 
-  /// Validates the local IBAN/account-number digits entered after the MN prefix.
+  /// Validates the local account-number digits entered after the MN prefix.
   static StringValidator iban(
     SdkLocalizations l10n, {
     bool required = true,
-    List<int> validLengths = const [9, 10, 11, 12],
+    List<int> validLengths = const [9, 10, 11, 12, 13, 14],
   }) {
     return (String? value) {
       final String normalized = value?.trim() ?? '';
