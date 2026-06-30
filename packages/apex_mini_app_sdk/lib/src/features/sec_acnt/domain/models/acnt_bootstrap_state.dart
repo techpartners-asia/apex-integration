@@ -120,20 +120,9 @@ class AcntBootstrapState {
   }
 
   /// Account holder name used to prefill securities-account personal info.
-  String? get bootstrapAcntName {
-    final String? detailAcntName = _trimToNull(_detail.toAcntName);
-    if (detailAcntName != null) {
-      return detailAcntName;
-    }
-
-    for (final GetSecAcntSettlementAccountDto account in _response.stlAcnts) {
-      if (account.isDefault) {
-        return _trimToNull(account.bkrAcntName);
-      }
-    }
-
-    return null;
-  }
+  /// Only uses [toAcntName] from the detail — settlement account [bkrAcntName]
+  /// is intentionally excluded because it holds the broker name, not the account holder.
+  String? get bootstrapAcntName => _trimToNull(_detail.toAcntName);
 
   /// IBAN/account number used to prefill securities-account personal info.
   String? get bootstrapIban {
