@@ -175,10 +175,12 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get validationMissingAcntReference => 'Acnt reference is required.';
 
   @override
-  String get validationAccountHolderNotFound => 'Please verify your account number and re-enter it to save.';
+  String get validationAccountHolderNotFound =>
+      'Please verify your account number and re-enter it to save.';
 
   @override
-  String get validationIbanNotAllowed => 'Please enter your account number, not your IBAN.';
+  String get validationIbanNotAllowed =>
+      'Please enter your account number, not your IBAN.';
 
   @override
   String get ipsHomeTitle => 'IPS Overview';
@@ -736,7 +738,8 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsRechargeSuccessGoHome => 'Go to home';
 
   @override
-  String get ipsRechargeSuccessCardTitle => 'Your order was created successfully';
+  String get ipsRechargeSuccessCardTitle =>
+      'Your order was created successfully';
 
   @override
   String get ipsRechargeSuccessCardMessage =>

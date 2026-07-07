@@ -30,7 +30,7 @@ class PortfolioSecurityTile extends StatefulWidget {
 /// Tracks whether the holding detail rows are expanded.
 class _PortfolioSecurityTileState extends State<PortfolioSecurityTile> {
   /// Whether close-price details are visible.
-  bool _expanded = false;
+  final bool _expanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -269,62 +269,6 @@ class _SecurityClosedPriceWidget extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-/// Expand/collapse control for security detail rows.
-class _DetailsToggle extends StatelessWidget {
-  /// Whether the tile is currently expanded.
-  final bool isExpanded;
-
-  /// Control label.
-  final String label;
-
-  /// Toggle callback.
-  final VoidCallback onPressed;
-
-  /// Creates a details toggle.
-  const _DetailsToggle({
-    required this.isExpanded,
-    required this.label,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final responsive = context.responsive;
-
-    return MiniAppAdaptivePressable(
-      onPressed: onPressed,
-      borderRadius: BorderRadius.circular(999),
-      child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: responsive.dp(12),
-            vertical: responsive.dp(8),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CustomText(
-                label,
-                variant: MiniAppTextVariant.buttonSmall,
-                color: DesignTokens.ink,
-              ),
-              SizedBox(width: responsive.dp(4)),
-              AnimatedRotation(
-                turns: isExpanded ? 0.5 : 0,
-                duration: const Duration(milliseconds: 220),
-                curve: Curves.easeInOut,
-                child: Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  size: responsive.dp(16),
-                  color: DesignTokens.muted,
-                ),
-              ),
-            ],
-          ),
-        ),
     );
   }
 }

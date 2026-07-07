@@ -1,4 +1,3 @@
-import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
@@ -18,7 +17,6 @@ const List<Color> kPieChartPalette = <Color>[
   Color(0xFF085055),
   Color(0xFF294753),
 ];
-
 
 String _portfolioSecurityTypeLabel(
   String? securityType, {

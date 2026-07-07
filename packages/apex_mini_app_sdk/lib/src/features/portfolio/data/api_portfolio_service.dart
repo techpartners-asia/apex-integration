@@ -142,7 +142,7 @@ class ApiPortfolioService implements PortfolioService {
         acntId: portfolio.casaAcntId!,
         startDate: portfolio.normalizedStmtStartDate!,
         endDate: portfolio.normalizedStmtEndDate!,
-        pack: true,
+        pack: false,
         mode: '',
         isLastX: 0,
         scrType: '',

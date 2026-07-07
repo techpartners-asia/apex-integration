@@ -92,9 +92,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   /// Bank/account key for the last successful lookup.
   String? _resolvedLookupKey;
 
-  /// Whether the IBAN-length warning toast has been shown for the current input.
-  bool _hasShownIbanWarning = false;
-
   /// Delay before running account holder lookup after input changes.
   static const Duration _lookupDebounceDuration = Duration(milliseconds: 450);
 
@@ -119,11 +116,21 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     _emailController = TextEditingController(text: user?.email ?? '');
     _phoneController = TextEditingController(text: user?.phone ?? '');
 
-    _addressController = TextEditingController(text: user?.residenceAddress ?? '');
-    _industryController = TextEditingController(text: user?.currentDepartment ?? '');
-    _positionController = TextEditingController(text: user?.currentPosition ?? '');
-    _ibanController = TextEditingController(text: user?.bank?.accountNumber ?? '');
-    _accountHolderController = TextEditingController(text: user?.bank?.accountName ?? '');
+    _addressController = TextEditingController(
+      text: user?.residenceAddress ?? '',
+    );
+    _industryController = TextEditingController(
+      text: user?.currentDepartment ?? '',
+    );
+    _positionController = TextEditingController(
+      text: user?.currentPosition ?? '',
+    );
+    _ibanController = TextEditingController(
+      text: user?.bank?.accountNumber ?? '',
+    );
+    _accountHolderController = TextEditingController(
+      text: user?.bank?.accountName ?? '',
+    );
     _selectedBank = _resolveInitialBank(user);
     _citizenship = user?.region?.name ?? _citizenship;
     _country = user?.residenceCountry ?? _country;
@@ -295,7 +302,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     final String accountNumber = _accountNumber;
     final String? accountName = _trimToNull(_resolvedAccountHolderName);
     final bool hasBankPayload = accountNumber.isNotEmpty || bankCode.isNotEmpty;
-    final bool canSendBankPayload = hasBankPayload && bankCode.isNotEmpty && _isValidAccountNumber(accountNumber) && accountName != null;
+    final bool canSendBankPayload =
+        hasBankPayload &&
+        bankCode.isNotEmpty &&
+        _isValidAccountNumber(accountNumber) &&
+        accountName != null;
 
     if (!canSendBankPayload) {
       return null;
@@ -330,19 +341,20 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
   /// Opens bank selection and invalidates lookup if the bank changes.
   Future<void> _openBankSelectionSheet(BuildContext context) async {
-    final SecAcntBankOption? selected = await showModalBottomSheet<SecAcntBankOption>(
-      context: context,
-      useSafeArea: false,
-      backgroundColor: MiniAppStateColors.bottomSheetBackground,
-      isScrollControlled: true,
-      showDragHandle: false,
-      builder: (BuildContext context) {
-        return SecAcntBankSelectionSheet(
-          selectedBank: _selectedBank,
-          bankOptionsRepository: widget.bankOptionsRepository,
+    final SecAcntBankOption? selected =
+        await showModalBottomSheet<SecAcntBankOption>(
+          context: context,
+          useSafeArea: false,
+          backgroundColor: MiniAppStateColors.bottomSheetBackground,
+          isScrollControlled: true,
+          showDragHandle: false,
+          builder: (BuildContext context) {
+            return SecAcntBankSelectionSheet(
+              selectedBank: _selectedBank,
+              bankOptionsRepository: widget.bankOptionsRepository,
+            );
+          },
         );
-      },
-    );
 
     if (!mounted || selected == null) {
       return;
@@ -409,10 +421,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     }
 
     try {
-      final SecAcntBankAccountLookupResult result = await widget.bankAccountLookupRepository.lookupAccountHolder(
-        bankCode: bankCode,
-        accountNumber: accountNumber,
-      );
+      final SecAcntBankAccountLookupResult result = await widget
+          .bankAccountLookupRepository
+          .lookupAccountHolder(
+            bankCode: bankCode,
+            accountNumber: accountNumber,
+          );
 
       if (!mounted || token != _lookupToken) {
         return;
@@ -458,7 +472,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   }
 
   /// Returns whether the account number satisfies the shared IBAN validator.
-  bool _isValidAccountNumber(String value) => Validators.iban(context.l10n)(value) == null;
+  bool _isValidAccountNumber(String value) =>
+      Validators.iban(context.l10n)(value) == null;
 
   /// Returns whether the profile can be saved in its current state.
   bool _canSave() {
@@ -482,7 +497,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       return false;
     }
 
-    return _resolvedLookupKey == _currentLookupKey && _trimToNull(_resolvedAccountHolderName) != null;
+    return _resolvedLookupKey == _currentLookupKey &&
+        _trimToNull(_resolvedAccountHolderName) != null;
   }
 
   /// Clears account holder lookup state when bank/account inputs change.

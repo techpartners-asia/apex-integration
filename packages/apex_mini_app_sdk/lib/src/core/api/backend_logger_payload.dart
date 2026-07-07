@@ -48,8 +48,8 @@ abstract final class BackendLoggerPayload {
     return <String, Object?>{
       'request': sanitizeRequest(options),
       'response': <String, Object?>{
-        if (statusCode != null) 'statusCode': statusCode,
-        if (errorType != null) 'errorType': errorType,
+        'statusCode': ?statusCode,
+        'errorType': ?errorType,
         if (errorMessage != null && errorMessage.trim().isNotEmpty)
           'message': errorMessage.trim(),
         'body': _sanitizeValue(responseData),

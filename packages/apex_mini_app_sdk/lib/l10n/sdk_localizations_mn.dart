@@ -176,10 +176,12 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get validationMissingAcntReference => 'Дансны лавлагаа шаардлагатай.';
 
   @override
-  String get validationAccountHolderNotFound => 'Та дансны дугаараа шалгаад шинээр оруулж хадгална уу';
+  String get validationAccountHolderNotFound =>
+      'Та дансны дугаараа шалгаад шинээр оруулж хадгална уу';
 
   @override
-  String get validationIbanNotAllowed => 'IBAN дугаар биш, зөвхөн дансны дугаараа оруулна уу';
+  String get validationIbanNotAllowed =>
+      'IBAN дугаар биш, зөвхөн дансны дугаараа оруулна уу';
 
   @override
   String get ipsHomeTitle => 'IPS тойм';
@@ -744,7 +746,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
 
   @override
   String get ipsRechargeSuccessCardMessage =>
-      'Үнэт цаасны арилжаа долоо хоног бүрийн Мягмар, Пүрэв гарагт автоматаар хийгдэнэ. Таны төлбөр төлөгдсөн тул таны арилжаа дээрх өдрийн дараа багцын үлдэгдэлээ шалгаарай.';
+      'Үнэт цаасны арилжаа долоо хоног бүрийн Даваа, Пүрэв гарагт автоматаар хийгдэнэ. Таны төлбөр төлөгдсөн тул таны арилжаа дээрх өдрийн дараа багцын үлдэгдэлээ шалгаарай.';
 
   @override
   String get ipsPaymentStatusTimedOut => 'Хугацаа хэтэрсэн';

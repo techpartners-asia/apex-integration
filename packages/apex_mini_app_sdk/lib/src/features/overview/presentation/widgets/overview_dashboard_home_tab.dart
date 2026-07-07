@@ -186,6 +186,7 @@ AllocationSummaryData _buildAllocationSummaryData(
         tone: metrics.profitTone,
       ),
     ],
+    packDetail: metrics.packDetail,
   );
 }
 

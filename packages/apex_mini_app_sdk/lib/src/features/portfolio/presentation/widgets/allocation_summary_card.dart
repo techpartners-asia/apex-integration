@@ -59,6 +59,9 @@ final class AllocationSummaryData {
   /// Optional yield badges.
   final List<AllocationBadgeData> yieldBadges;
 
+  /// Pack
+  final PortfolioPackDetail? packDetail;
+
   /// Creates allocation summary data.
   const AllocationSummaryData({
     required this.stockValue,
@@ -75,6 +78,7 @@ final class AllocationSummaryData {
     required this.totalValueLabel,
     this.yieldSectionLabel,
     this.yieldBadges = const <AllocationBadgeData>[],
+    required this.packDetail,
   });
 }
 
@@ -106,24 +110,35 @@ class AllocationSummaryCard extends StatelessWidget {
     final Widget content = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        /// Pack info
+        CustomText(data.packDetail?.name ?? ''),
+
+        SizedBox(height: responsive.dp(15)),
+
+        /// Linear Chart
         AllocationBar(
           stockValue: data.stockValue,
           bondValue: data.bondValue,
           cashValue: data.cashValue,
           fallbackTotal: data.barFallbackTotal,
         ),
-        SizedBox(height: responsive.dp(16)),
+        SizedBox(height: responsive.dp(15)),
+        /// Security amount
         AllocationMetricRow(
           color: DesignTokens.rose,
           label: data.stockLabel,
           value: data.stockValueLabel,
         ),
         SizedBox(height: responsive.dp(10)),
+
+        /// Bond amount
         AllocationMetricRow(
           color: DesignTokens.teal,
           label: data.bondLabel,
           value: data.bondValueLabel,
         ),
+
+        /// Cash amount
         if (data.cashValue > 0) ...<Widget>[
           SizedBox(height: responsive.dp(10)),
           AllocationMetricRow(

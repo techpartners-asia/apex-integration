@@ -2,7 +2,6 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:dio/dio.dart';
 
 import '../../host/apex_mini_app_host_context.dart';
-import 'backend_logger_request_extra.dart';
 
 /// Guarded HTTP request executor used by repositories and backend API clients.
 class ApiExecutor {

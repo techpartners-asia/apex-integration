@@ -63,19 +63,17 @@ class _OverviewHomeTabState extends State<OverviewHomeTab> {
       );
     }
 
-    final OverviewVerificationViewModel viewModel =
-        buildOverviewVerificationViewModel(
-          context,
-          widget.data,
-          hasPaidSecAcntContract: hasPaidSecAcntOpeningFee(
-            widget.data,
-            currentUser: widget.user,
-          ),
-          isQuestionnaireCompleted: widget.isQuestionnaireCompleted,
-        );
+    final OverviewVerificationViewModel viewModel = buildOverviewVerificationViewModel(
+      context,
+      widget.data,
+      hasPaidSecAcntContract: hasPaidSecAcntOpeningFee(
+        widget.data,
+        currentUser: widget.user,
+      ),
+      isQuestionnaireCompleted: widget.isQuestionnaireCompleted,
+    );
 
-    final bool showUnpaidReminder =
-        widget.data.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid;
+    final bool showUnpaidReminder = widget.data.secAcntStatusCode == AcntBootstrapState.secAcntStatusUnpaid;
 
     final Widget verificationCard = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

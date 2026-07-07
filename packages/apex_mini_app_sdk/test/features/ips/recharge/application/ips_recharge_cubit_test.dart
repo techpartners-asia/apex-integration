@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
-
 void main() {
   test('loadPricing uses the focused IPS balance path', () async {
     final _FakePortfolioService portfolioService = _FakePortfolioService(
@@ -266,6 +265,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<String> getUserContract() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<FeedbackListResponse> getFeedbackList({
     required int limit,
     required int page,
@@ -288,7 +292,18 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+  Future<List<LoyaltyItemDto>> getLoyalty() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoyaltyInfoDto> getLoyaltyInfo() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus>
+  checkGrapeQuestionnaireCompleted() {
     throw UnimplementedError();
   }
 

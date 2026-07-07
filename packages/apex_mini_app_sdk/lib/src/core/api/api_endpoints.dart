@@ -12,16 +12,13 @@ class ApiEndpoints {
   static const String getAllGoals = '/api/v1/user/question/get-all';
 
   /// Grape questionnaire completion check endpoint.
-  static const String checkGrapeQuestionnaireCompleted =
-      '/api/v1/user/question/grape/check-completed';
+  static const String checkGrapeQuestionnaireCompleted = '/api/v1/user/question/grape/check-completed';
 
   /// Grape questionnaire bulk save endpoint.
-  static const String completeGrapeQuestionnaire =
-      '/api/v1/user/question/grape/complete';
+  static const String completeGrapeQuestionnaire = '/api/v1/user/question/grape/complete';
 
   /// Grape questionnaire score persistence endpoint.
-  static const String setGrapeQuestionnaireScore =
-      '/api/v1/user/question/grape/set-score';
+  static const String setGrapeQuestionnaireScore = '/api/v1/user/question/grape/set-score';
 
   /// User profile update endpoint.
   static const String updateProfile = '/api/v1/user/profile/update';
@@ -45,8 +42,7 @@ class ApiEndpoints {
   static const String createInvoice = '/api/v1/user/invoice/create';
 
   /// Securities account opening fee amount added to the payment total.
-  static const String accountFeesAmount =
-      '/api/v1/user/payment/account-fees-amount';
+  static const String accountFeesAmount = '/api/v1/user/payment/account-fees-amount';
 
   /// Backend payment callback endpoint called after wallet success.
   static const String paymentCallback = '/api/v1/webhooks/payment/callback';

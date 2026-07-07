@@ -125,13 +125,17 @@ class ProfilePersonalInfoForm extends StatelessWidget {
         ProfileDropdownField(
           label: 'Иргэншил',
           value: citizenship,
-          errorText: showErr && citizenship.trim().isEmpty ? context.l10n.validationRequired : null,
+          errorText: showErr && citizenship.trim().isEmpty
+              ? context.l10n.validationRequired
+              : null,
         ),
         SizedBox(height: responsive.dp(14)),
         ProfileDropdownField(
           label: 'Оршин суугаа улс',
           value: country,
-          errorText: showErr && country.trim().isEmpty ? context.l10n.validationRequired : null,
+          errorText: showErr && country.trim().isEmpty
+              ? context.l10n.validationRequired
+              : null,
         ),
         SizedBox(height: responsive.dp(14)),
         _buildTextField(
@@ -158,16 +162,18 @@ class ProfilePersonalInfoForm extends StatelessWidget {
         const ProfileSectionTitle(title: 'Банкны мэдээлэл'),
         SizedBox(height: responsive.dp(14)),
         ProfileDropdownField(
-          label: '${l10n.commonBank}',
+          label: l10n.commonBank,
           value: selectedBank?.label ?? l10n.secAcntBankNotSelected,
           icon: Icons.account_balance,
           onTap: isSaving ? null : onSelectBank,
-          errorText: showErr && selectedBank == null ? context.l10n.validationSelectionRequired : null,
+          errorText: showErr && selectedBank == null
+              ? context.l10n.validationSelectionRequired
+              : null,
         ),
         SizedBox(height: responsive.dp(14)),
         _buildRequiredTextField(
           context: context,
-          label: '${l10n.commonAccountNumber}',
+          label: l10n.commonAccountNumber,
           controller: ibanController,
           showError: showErr,
           keyboardType: TextInputType.number,
@@ -240,9 +246,12 @@ class ProfilePersonalInfoForm extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       enabled: enabled,
-      autovalidateMode: showError ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
-      validator: (String? value) =>
-          (value == null || value.trim().isEmpty) ? context.l10n.validationRequired : null,
+      autovalidateMode: showError
+          ? AutovalidateMode.always
+          : AutovalidateMode.onUserInteraction,
+      validator: (String? value) => (value == null || value.trim().isEmpty)
+          ? context.l10n.validationRequired
+          : null,
     );
   }
 }

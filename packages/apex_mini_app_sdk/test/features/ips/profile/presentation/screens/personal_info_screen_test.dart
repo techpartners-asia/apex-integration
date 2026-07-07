@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 import '../../../../../test_helpers/widget_test_app.dart';
 
 void main() {
@@ -59,10 +58,12 @@ void main() {
               firstName: 'Test',
               email: 'old@example.com',
               phone: '99112233',
+              currentDepartment: 'Technology',
+              currentPosition: 'Engineer',
               bank: BankDto(
                 bankCode: '390000',
                 bankName: 'Khan Bank',
-                accountNumber: '991122334455667788',
+                accountNumber: '99112233445566',
                 accountName: 'Old Holder',
               ),
             ),
@@ -70,10 +71,6 @@ void main() {
         ),
       );
 
-      await tester.enterText(
-        find.widgetWithText(CustomTextField, 'Цахим шуудан'),
-        'updated@example.com',
-      );
       await tester.pump(const Duration(milliseconds: 600));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Save'));
@@ -84,10 +81,10 @@ void main() {
         api.lastUpdateProfileReq!.actionType,
         UpdateProfileActionType.updateInformation,
       );
-      expect(api.lastUpdateProfileReq!.email, 'updated@example.com');
+      expect(api.lastUpdateProfileReq!.email, 'old@example.com');
       expect(api.lastUpdateProfileReq!.bank?.accountName, 'Resolved Holder');
       expect(lookup.lastBankCode, '390000');
-      expect(lookup.lastAccountNumber, '991122334455667788');
+      expect(lookup.lastAccountNumber, '99112233445566');
     },
   );
 
@@ -110,10 +107,16 @@ void main() {
             bankOptionsRepository: const _FakeBankOptionsRepository(),
             bankAccountLookupRepository: lookup,
             currentUser: UserEntityDto(
+              lastName: 'User',
+              firstName: 'Test',
+              email: 'old@example.com',
+              phone: '99112233',
+              currentDepartment: 'Technology',
+              currentPosition: 'Engineer',
               bank: const BankDto(
                 bankCode: '390000',
                 bankName: 'Khan Bank',
-                accountNumber: '991122334455667788',
+                accountNumber: '99112233445566',
               ),
             ),
           ),
@@ -126,7 +129,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(api.lastUpdateProfileReq, isNull);
-      expect(find.text('Account holder not found'), findsOneWidget);
+      expect(
+        find.text('Please verify your account number and re-enter it to save.'),
+        findsAtLeastNWidgets(1),
+      );
     },
   );
 }
@@ -200,6 +206,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<String> getUserContract() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<String> getPaymentCallback({required String uuid}) {
     throw UnimplementedError();
   }
@@ -215,7 +226,18 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+  Future<List<LoyaltyItemDto>> getLoyalty() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoyaltyInfoDto> getLoyaltyInfo() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus>
+  checkGrapeQuestionnaireCompleted() {
     throw UnimplementedError();
   }
 

@@ -28,7 +28,7 @@ void main() {
               mobile: '99112233',
               secondaryMobile: '88112233',
               email: 'cached@example.com',
-              iban: '991122334455667788',
+              iban: '99112233445566',
               acntName: 'Resolved Account Holder',
               selectedBank: SecAcntBankOption('FI001', 'Khan Bank', 'Khan', ''),
             ),
@@ -45,11 +45,13 @@ void main() {
       await tester.tap(find.text('Khan Bank'));
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byType(EditableText).last, '991122334455667788');
+      await tester.enterText(
+        find.byType(EditableText).last,
+        '99112233445566',
+      );
       await tester.pump();
 
       await tester.tap(find.text('Continue'));
-      await tester.pumpAndSettle();
 
       expect(api.lastUpdateProfileReq, isNotNull);
       expect(api.lastUpdateProfileReq!.bank?.bankCode, 'FI001');
@@ -81,14 +83,14 @@ void main() {
               bank: const BankDto(
                 bankCode: ' 040000 ',
                 bankName: 'ХХБанк',
-                accountNumber: '670004000453182074',
+                accountNumber: '67000400045318',
               ),
             ),
             initialDraft: const SecAcntFlowDraft(
               mobile: '99112233',
               secondaryMobile: '88112233',
               email: 'cached@example.com',
-              iban: '670004000453182074',
+              iban: '67000400045318',
               acntName: 'АПЕКС КАПИТАЛ ҮЦК',
               selectedBank: SecAcntBankOption(
                 '390000',
@@ -109,11 +111,13 @@ void main() {
       await tester.tap(find.text('ХХБанк'));
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byType(EditableText).last, '670004000453182074');
+      await tester.enterText(
+        find.byType(EditableText).last,
+        '67000400045318',
+      );
       await tester.pump();
 
       await tester.tap(find.text('Continue'));
-      await tester.pumpAndSettle();
 
       expect(api.lastUpdateProfileReq, isNotNull);
       expect(api.lastUpdateProfileReq!.bank?.bankCode, '040000');
@@ -134,7 +138,7 @@ void main() {
         mobile: '99112233',
         secondaryMobile: '88112233',
         email: 'cached@example.com',
-        iban: '670004000453182074',
+        iban: '67000400045318',
         acntName: 'АПЕКС КАПИТАЛ ҮЦК',
       );
 
@@ -196,8 +200,13 @@ void main() {
       expect(find.text('Хаан банк'), findsOneWidget);
       expect(find.text('Голомт банк'), findsNothing);
 
+      await tester.enterText(
+        find.byType(EditableText).last,
+        '67000400045318',
+      );
+      await tester.pump();
+
       await tester.tap(find.text('Continue'));
-      await tester.pumpAndSettle();
 
       expect(api.lastUpdateProfileReq, isNotNull);
       expect(api.lastUpdateProfileReq!.bank?.bankCode, '390000');
@@ -278,6 +287,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<String> getUserContract() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<FeedbackListResponse> getFeedbackList({
     required int limit,
     required int page,
@@ -310,7 +324,18 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+  Future<List<LoyaltyItemDto>> getLoyalty() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoyaltyInfoDto> getLoyaltyInfo() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus>
+  checkGrapeQuestionnaireCompleted() {
     throw UnimplementedError();
   }
 

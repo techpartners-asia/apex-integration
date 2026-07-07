@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 void main() {
   test(
     'buildRequest prefers looked up account holder over cached profile data',
@@ -110,6 +109,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<String> getUserContract() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<FeedbackListResponse> getFeedbackList({
     required int limit,
     required int page,
@@ -144,7 +148,18 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
-  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+  Future<List<LoyaltyItemDto>> getLoyalty() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoyaltyInfoDto> getLoyaltyInfo() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus>
+  checkGrapeQuestionnaireCompleted() {
     throw UnimplementedError();
   }
 

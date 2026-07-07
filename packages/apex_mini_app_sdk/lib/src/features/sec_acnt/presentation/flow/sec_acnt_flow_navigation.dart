@@ -2,8 +2,7 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 
 /// Message shown when the securities account opening request is already sent.
-const String secAcntPendingOpeningRequestMessage =
-    'Таны үнэт цаасны данс нээх хүсэлт илгээгдсэн байгаа тул та түр хүлээнэ үү';
+const String secAcntPendingOpeningRequestMessage = 'Таны үнэт цаасны данс нээх хүсэлт илгээгдсэн байгаа тул та түр хүлээнэ үү';
 
 /// Closes the securities account flow through the SDK safe-close path.
 Future<void> closeSecAcntFlow(BuildContext context) async {
@@ -27,9 +26,7 @@ Future<void> routeAfterSecAcntFlow(
 }
 
 /// Shows the pending-request dialog and closes the mini app from the OK action.
-Future<void> showPendingSecAcntOpeningRequestDialog(
-  BuildContext context,
-) async {
+Future<void> showPendingSecAcntOpeningRequestDialog(BuildContext context) async {
   if (!context.mounted) {
     return;
   }
@@ -100,9 +97,7 @@ Widget buildSecAcntFlowStepScreen({
     SecAcntFlowStep.calculation => SecAcntCalculationScreen(
       bootstrapState: bootstrapState,
     ),
-    SecAcntFlowStep.consent ||
-    SecAcntFlowStep.personalInformation ||
-    SecAcntFlowStep.terms => throw ArgumentError.value(
+    SecAcntFlowStep.consent || SecAcntFlowStep.personalInformation || SecAcntFlowStep.terms => throw ArgumentError.value(
       step,
       'step',
       'Only post-consent/post-personal-information steps can be built here.',

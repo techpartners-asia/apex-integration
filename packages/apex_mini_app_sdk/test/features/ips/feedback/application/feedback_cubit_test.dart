@@ -199,6 +199,11 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<String> getUserContract() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<FeedbackListResponse> getFeedbackList({
     required int limit,
     required int page,
@@ -212,7 +217,9 @@ class _SuccessApi implements MiniAppApiRepository {
     ];
     final int start = (page - 1) * limit;
     final int end = (start + limit).clamp(0, allItems.length);
-    final List<FeedbackEntity> pageItems = start >= allItems.length ? const <FeedbackEntity>[] : allItems.sublist(start, end);
+    final List<FeedbackEntity> pageItems = start >= allItems.length
+        ? const <FeedbackEntity>[]
+        : allItems.sublist(start, end);
     return FeedbackListResponse(
       items: pageItems,
       total: allItems.length,
@@ -243,7 +250,18 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
-  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+  Future<List<LoyaltyItemDto>> getLoyalty() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoyaltyInfoDto> getLoyaltyInfo() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus>
+  checkGrapeQuestionnaireCompleted() {
     throw UnimplementedError();
   }
 
@@ -304,6 +322,11 @@ class _FailingApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<String> getUserContract() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<FeedbackListResponse> getFeedbackList({
     required int limit,
     required int page,
@@ -339,7 +362,18 @@ class _FailingApi implements MiniAppApiRepository {
   }
 
   @override
-  Future<GrapeQuestionnaireCompletionStatus> checkGrapeQuestionnaireCompleted() {
+  Future<List<LoyaltyItemDto>> getLoyalty() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LoyaltyInfoDto> getLoyaltyInfo() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GrapeQuestionnaireCompletionStatus>
+  checkGrapeQuestionnaireCompleted() {
     throw UnimplementedError();
   }
 

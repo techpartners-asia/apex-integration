@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
@@ -50,6 +52,9 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
 
     if (widget.step == SecAcntFlowStep.secAgreement) {
       await SecAcntLocalPrefs.markSecAgreementAccepted();
+      if (!mounted) {
+        return;
+      }
     }
 
     if (nextStep == null) {
@@ -103,7 +108,7 @@ class _SecAcntAgreementScreenState extends State<SecAcntAgreementScreen> {
       accepted: _accepted,
       onAcceptedChanged: (bool value) => setState(() => _accepted = value),
       continueLabel: context.l10n.commonContinue,
-      onContinue: _openNextStep,
+      onContinue: () => unawaited(_openNextStep()),
     );
   }
 }

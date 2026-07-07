@@ -51,9 +51,7 @@ class BackendLoggerInterceptor extends Interceptor {
     }
 
     final int? statusCode = err.response?.statusCode;
-    final String level = statusCode == null
-        ? 'error'
-        : _levelForStatusCode(statusCode);
+    final String level = statusCode == null ? 'error' : _levelForStatusCode(statusCode);
     _logger.log(
       level: level,
       path: options.uri.toString(),
@@ -77,8 +75,7 @@ class BackendLoggerInterceptor extends Interceptor {
       return true;
     }
     final String path = options.uri.path;
-    return path.endsWith(ApiEndpoints.loggerCreate) ||
-        path.contains('/logger/create');
+    return path.endsWith(ApiEndpoints.loggerCreate) || path.contains('/logger/create');
   }
 
   String? _operName(RequestOptions options) {

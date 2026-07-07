@@ -176,12 +176,16 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     IpsOrderStatus.allocated,
   };
 
-  Future<List<IpsOrder>> _fetchPendingOrders({bool forceRefresh = false}) async {
+  Future<List<IpsOrder>> _fetchPendingOrders({
+    bool forceRefresh = false,
+  }) async {
     final OrdersService? service = ordersService;
     if (service == null) return const <IpsOrder>[];
     try {
       final List<IpsOrder> orders = await service.getOrders();
-      return orders.where((IpsOrder o) => _pendingStatuses.contains(o.status)).toList();
+      return orders
+          .where((IpsOrder o) => _pendingStatuses.contains(o.status))
+          .toList();
     } catch (_) {
       return const <IpsOrder>[];
     }
@@ -226,17 +230,24 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
   ) async {
     final QuestionnaireService? service = questionnaireService;
     if (service == null) {
-      print('[overview] questionnaireService is null → skip check');
+      logger.onInfo('overview_questionnaire_service_missing');
       return false;
     }
     if (data.hasIpsAcnt) return false;
     try {
-      final GrapeQuestionnaireCompletionStatus status =
-          await service.checkCompletionStatus();
-      print('[overview] checkCompletionStatus → completed=${status.completed}');
+      final GrapeQuestionnaireCompletionStatus status = await service
+          .checkCompletionStatus();
+      logger.onInfo(
+        'overview_questionnaire_completion_checked',
+        data: <String, Object?>{'completed': status.completed},
+      );
       return status.completed;
-    } catch (e) {
-      print('[overview] checkCompletionStatus error → $e');
+    } catch (error, stackTrace) {
+      logger.onError(
+        'overview_questionnaire_completion_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
       return false;
     }
   }

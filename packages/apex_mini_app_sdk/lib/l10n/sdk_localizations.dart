@@ -185,7 +185,7 @@ abstract class SdkLocalizations {
   /// No description provided for @commonViewDetails.
   ///
   /// In en, this message translates to:
-  /// **'View details'**
+  /// **'Details'**
   String get commonViewDetails;
 
   /// No description provided for @commonAmount.
@@ -341,7 +341,7 @@ abstract class SdkLocalizations {
   /// No description provided for @validationInvalidIban.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid IBAN/account number.'**
+  /// **'Enter a valid account number.'**
   String get validationInvalidIban;
 
   /// No description provided for @validationMinLength.
@@ -407,7 +407,7 @@ abstract class SdkLocalizations {
   /// No description provided for @validationAccountHolderNotFound.
   ///
   /// In en, this message translates to:
-  /// **'Account holder not found. Please verify your account number.'**
+  /// **'Please verify your account number and re-enter it to save.'**
   String get validationAccountHolderNotFound;
 
   /// No description provided for @validationIbanNotAllowed.
@@ -1445,7 +1445,7 @@ abstract class SdkLocalizations {
   /// No description provided for @ipsRechargeSuccessCardMessage.
   ///
   /// In en, this message translates to:
-  /// **'Your order is visible in the orders list.'**
+  /// **'Securities trading is automatically executed every Tuesday and Thursday. Your payment has been received — please check your portfolio balance after the next trading day.'**
   String get ipsRechargeSuccessCardMessage;
 
   /// No description provided for @ipsPaymentStatusTimedOut.
