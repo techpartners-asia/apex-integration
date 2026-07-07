@@ -4,7 +4,6 @@ import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 void main() {
   final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('en'));
 
@@ -26,6 +25,49 @@ void main() {
 
     expect(cubit.state.packQty, 97);
     expect(cubit.state.canSubmit, isTrue);
+  });
+
+  test('loadPricing selects the owned pack by portfolio pack code', () async {
+    final IpsSellCubit cubit = IpsSellCubit(
+      service: _FakeOrdersService(),
+      l10n: l10n,
+      portfolioService: _FakePortfolioService(
+        overview: const PortfolioOverview(
+          currency: 'MNT',
+          packQty: 12,
+          packAmount: 100000,
+          packDetail: PortfolioPackDetail(
+            packCode: 'OWNED',
+            name: 'Owned from overview',
+          ),
+        ),
+      ),
+      packService: _FakePackService(
+        packs: const <IpsPack>[
+          IpsPack(
+            packCode: 'REC',
+            name: 'Recommended pack',
+            isRecommended: 1,
+            bondPercent: 80,
+            stockPercent: 20,
+            assetPercent: 0,
+          ),
+          IpsPack(
+            packCode: 'owned',
+            name: 'Owned pack',
+            isRecommended: 0,
+            bondPercent: 55,
+            stockPercent: 45,
+            assetPercent: 0,
+          ),
+        ],
+      ),
+    );
+
+    await cubit.loadPricing();
+
+    expect(cubit.state.pack?.packCode, 'owned');
+    expect(cubit.state.pack?.name, 'Owned pack');
   });
 
   test(
@@ -234,11 +276,12 @@ class _FakePortfolioService implements PortfolioService {
 
 class _FakePackService implements PackService {
   _FakePackService({
+    List<IpsPack>? packs,
     this.error,
     this.completer,
-  });
+  }) : packs = packs ?? _testPacks;
 
-  final List<IpsPack> packs = _testPacks;
+  final List<IpsPack> packs;
   final Object? error;
   final Completer<List<IpsPack>>? completer;
   int getPacksCallCount = 0;

@@ -23,22 +23,21 @@ class IpsSellCubit extends Cubit<IpsSellState> {
     this.packService,
   }) : super(const IpsSellState());
 
-  /// Loads overview pricing and selected pack details in parallel.
+  /// Loads overview pricing and selected/current pack details.
   Future<void> loadPricing() async {
-    await Future.wait(<Future<void>>[
-      _loadOverview(),
-      _loadSelectedPack(),
-    ]);
+    final PortfolioOverview? overview = await _loadOverview();
+    await _loadSelectedPack(overview: overview);
   }
 
-  Future<void> _loadOverview() async {
+  Future<PortfolioOverview?> _loadOverview() async {
     final PortfolioService? ps = portfolioService;
-    if (ps == null || state.hasPricing) return;
+    if (ps == null || state.hasPricing) return null;
 
     try {
       final PortfolioOverview overview = await ps.getOverview();
       emit(
         state.copyWith(
+          pack: _packFromOverview(overview),
           packQty: _resolveOwnedPackQty(overview, state.packQty),
           unitPrice: overview.packAmount ?? state.unitPrice,
           serviceFee: overview.packFee ?? state.serviceFee,
@@ -48,21 +47,25 @@ class IpsSellCubit extends Cubit<IpsSellState> {
           stockPercent: overview.stockPercent ?? state.stockPercent,
         ),
       );
+      return overview;
     } catch (_) {
       // Pricing is best-effort; the screen will still work with zeros.
+      return null;
     }
   }
 
-  Future<void> _loadSelectedPack() async {
+  Future<void> _loadSelectedPack({PortfolioOverview? overview}) async {
     final PackService? ps = packService;
-    if (ps == null || state.pack != null) return;
+    if (ps == null) return;
 
     try {
       final List<IpsPack> packs = await ps.getPacks();
       if (packs.isNotEmpty) {
-        final IpsPack selected = packs.firstWhere(
-          (IpsPack p) => p.isRecommended == 1,
-          orElse: () => packs.first,
+        final IpsPack selected = _resolveSelectedPack(
+          packs,
+          packCode:
+              _normalizedPackCode(overview?.packDetail?.packCode) ??
+              _normalizedPackCode(state.pack?.packCode),
         );
         emit(state.copyWith(pack: selected));
       }
@@ -171,5 +174,82 @@ class IpsSellCubit extends Cubit<IpsSellState> {
     }
 
     return fallback;
+  }
+
+  IpsPack? _packFromOverview(PortfolioOverview overview) {
+    final PortfolioPackDetail? detail = overview.packDetail;
+    if (detail == null) {
+      return null;
+    }
+
+    final String? packCode = _trimToNull(detail.packCode);
+    final String? name =
+        _trimToNull(detail.name) ?? _trimToNull(detail.name2) ?? packCode;
+    if (packCode == null || name == null) {
+      return null;
+    }
+
+    final double bondPercent = _finitePercent(
+      detail.bondPercent ?? overview.bondPercent,
+    );
+    final double stockPercent = _finitePercent(
+      detail.stockPercent ?? overview.stockPercent,
+    );
+
+    return IpsPack(
+      packCode: packCode,
+      name: name,
+      name2: _trimToNull(detail.name2),
+      packDesc: _trimToNull(detail.packDesc),
+      isRecommended: detail.isRecommended == true ? 1 : 0,
+      bondPercent: bondPercent,
+      stockPercent: stockPercent,
+      assetPercent: _remainingAssetPercent(bondPercent, stockPercent),
+    );
+  }
+
+  IpsPack _resolveSelectedPack(
+    List<IpsPack> packs, {
+    required String? packCode,
+  }) {
+    if (packCode != null) {
+      for (final IpsPack pack in packs) {
+        if (_normalizedPackCode(pack.packCode) == packCode) {
+          return pack;
+        }
+      }
+    }
+
+    for (final IpsPack pack in packs) {
+      if (pack.isRecommended == 1) {
+        return pack;
+      }
+    }
+    return packs.first;
+  }
+
+  String? _normalizedPackCode(String? value) {
+    final String? trimmed = _trimToNull(value);
+    return trimmed?.toUpperCase();
+  }
+
+  String? _trimToNull(String? value) {
+    final String trimmed = value?.trim() ?? '';
+    return trimmed.isEmpty ? null : trimmed;
+  }
+
+  double _finitePercent(double? value) {
+    if (value == null || !value.isFinite) {
+      return 0;
+    }
+    return value;
+  }
+
+  double _remainingAssetPercent(double bondPercent, double stockPercent) {
+    final double assetPercent = 100 - bondPercent - stockPercent;
+    if (!assetPercent.isFinite || assetPercent < 0) {
+      return 0;
+    }
+    return assetPercent;
   }
 }
