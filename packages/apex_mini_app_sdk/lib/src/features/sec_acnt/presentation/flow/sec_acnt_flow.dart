@@ -350,11 +350,6 @@ String? _resolveBootstrapIban(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) {
-  final String? iban = _trimToNull(state?.bootstrapIban);
-  if (iban != null) {
-    return iban;
-  }
-
   return _trimToNull(user?.bank?.accountNumber);
 }
 
