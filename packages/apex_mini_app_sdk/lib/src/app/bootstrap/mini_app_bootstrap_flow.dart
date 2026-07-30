@@ -39,6 +39,11 @@ class MiniAppBootstrapFlow {
       service: bootstrapService,
     ).load();
 
+    await _autoRequestSecAcntIfNeeded(
+      bootstrapState,
+      currentUser: currentUser,
+    );
+
     return MiniAppBootstrapRes(
       bootstrapState: bootstrapState,
       nextRoute: resolveNextRoute(
@@ -46,6 +51,35 @@ class MiniAppBootstrapFlow {
         currentUser: currentUser,
       ),
     );
+  }
+
+  /// Silently sends the securities-account opening request when the
+  /// contract fee is already paid but the backend hasn't registered a
+  /// request yet, so the user isn't forced through onboarding just to
+  /// trigger it.
+  Future<void> _autoRequestSecAcntIfNeeded(
+    AcntBootstrapState bootstrapState, {
+    required UserEntityDto currentUser,
+  }) async {
+    final bool shouldAutoRequest =
+      bootstrapState.hasAcnt == false &&
+      hasPaidSecAcntContract(currentUser) &&
+      hasNotRequestedSecAcnt(currentUser);
+
+    if (!shouldAutoRequest) {
+      return;
+    }
+
+    final SecAcntPersonalInfoData personalInfo = SecAcntFlowDraft.fromBootstrap(
+      bootstrapState,
+      user: currentUser,
+    ).toPersonalInfoData();
+
+    try {
+      await bootstrapService.addSecuritiesAcntReq(personalInfo: personalInfo);
+    } catch (_) {
+      // Best-effort: startup routing must still proceed if this fails.
+    }
   }
 
   Future<UserEntityDto> _ensureCurrentUser() async {
