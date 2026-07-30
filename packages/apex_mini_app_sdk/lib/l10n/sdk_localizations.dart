@@ -98,6 +98,12 @@ abstract class SdkLocalizations {
     Locale('mn'),
   ];
 
+  /// No description provided for @commonCountryMongolia.
+  ///
+  /// In en, this message translates to:
+  /// **'Mongolia'**
+  String get commonCountryMongolia;
+
   /// No description provided for @commonLoading.
   ///
   /// In en, this message translates to:

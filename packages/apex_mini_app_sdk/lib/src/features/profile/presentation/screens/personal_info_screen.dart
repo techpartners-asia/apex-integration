@@ -63,10 +63,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   SecAcntBankOption? _selectedBank;
 
   /// Current citizenship label.
-  String _citizenship = 'Монгол';
+  String _citizenship = '';
 
   /// Current residence country label.
-  String _country = 'Монгол';
+  String _country = '';
 
   /// Last successfully resolved account holder name.
   String? _resolvedAccountHolderName;
@@ -132,8 +132,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       text: user?.bank?.accountName ?? '',
     );
     _selectedBank = _resolveInitialBank(user);
-    _citizenship = user?.region?.name ?? _citizenship;
-    _country = user?.residenceCountry ?? _country;
+    _citizenship = user?.region?.name ?? context.l10n.commonCountryMongolia;
+    _country = user?.residenceCountry ?? context.l10n.commonCountryMongolia;
     _resolvedAccountHolderName = _trimToNull(user?.bank?.accountName);
 
     for (final TextEditingController c in <TextEditingController>[

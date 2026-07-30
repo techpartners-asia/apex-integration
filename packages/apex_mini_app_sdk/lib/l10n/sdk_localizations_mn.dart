@@ -9,6 +9,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   SdkLocalizationsMn([String locale = 'mn']) : super(locale);
 
   @override
+  String get commonCountryMongolia => 'Монгол';
+
+  @override
   String get commonLoading => 'Ачаалж байна';
 
   @override
