@@ -12,6 +12,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get commonCountryMongolia => 'Монгол';
 
   @override
+  String get ipsSellFailureMessage => 'Таны хүсэлт амжилтгүй боллоо.';
+
+  @override
   String get commonLoading => 'Ачаалж байна';
 
   @override
@@ -816,7 +819,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsSellSubmitRequest => 'Хүсэлт илгээх';
 
   @override
-  String get ipsSellSuccessTitle => 'Таны төлбөр амжилттай төлөгдлөө';
+  String get ipsSellSuccessTitle => 'Таны хүсэлт амжилттай боллоо';
 
   @override
   String get ipsSellSuccessBody =>

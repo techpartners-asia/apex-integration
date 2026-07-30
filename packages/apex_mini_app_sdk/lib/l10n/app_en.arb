@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "commonCountryMongolia": "Mongolia",
+  "ipsSellFailureMessage": "Your request was unsuccessful.",
   "commonLoading": "Loading",
   "commonRetry": "Retry",
   "commonContinue": "Continue",
@@ -316,7 +317,7 @@
   "ipsSellTotalFee": "TOTAL FEE",
   "ipsSellPayoutAmount": "Amount to receive",
   "ipsSellSubmitRequest": "Submit request",
-  "ipsSellSuccessTitle": "Your request was submitted successfully",
+  "ipsSellSuccessTitle": "Your request was successful",
   "ipsSellSuccessBody": "Your close pack request has been received. Trading is executed every Tuesday and Thursday. Your total investment refund will be processed within 10 business days and deposited to your bank account.",
   "ipsSellPackLabel": "Pack {number}",
   "@ipsSellPackLabel": {

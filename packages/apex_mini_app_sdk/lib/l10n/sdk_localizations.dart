@@ -104,6 +104,12 @@ abstract class SdkLocalizations {
   /// **'Mongolia'**
   String get commonCountryMongolia;
 
+  /// No description provided for @ipsSellFailureMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request was unsuccessful.'**
+  String get ipsSellFailureMessage;
+
   /// No description provided for @commonLoading.
   ///
   /// In en, this message translates to:
@@ -1571,7 +1577,7 @@ abstract class SdkLocalizations {
   /// No description provided for @ipsSellSuccessTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your request was submitted successfully'**
+  /// **'Your request was successful'**
   String get ipsSellSuccessTitle;
 
   /// No description provided for @ipsSellSuccessBody.

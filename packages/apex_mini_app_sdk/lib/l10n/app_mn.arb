@@ -1,6 +1,7 @@
 {
   "@@locale": "mn",
   "commonCountryMongolia": "Монгол",
+  "ipsSellFailureMessage": "Таны хүсэлт амжилтгүй боллоо.",
   "commonLoading": "Ачаалж байна",
   "commonRetry": "Дахин оролдох",
   "commonContinue": "Үргэлжлүүлэх",
@@ -316,7 +317,7 @@
   "ipsSellTotalFee": "НИЙТ ШИМТГЭЛ",
   "ipsSellPayoutAmount": "Танд орох дүн",
   "ipsSellSubmitRequest": "Хүсэлт илгээх",
-  "ipsSellSuccessTitle": "Таны төлбөр амжилттай төлөгдлөө",
+  "ipsSellSuccessTitle": "Таны хүсэлт амжилттай боллоо",
   "ipsSellSuccessBody": "Таны багцаа хаах хүсэлтийг амжилттай хүлээн авлаа. Багцын арилжаа нь долоо хоног бүрийн Мягмар болон Пүрэв гаригт хийгдэнэ. Таны нийт хөрөнгө оруулалтын буцаалтын гүйлгээ ажлын 10 хоногт багтан хийгдэх бөгөөд таны арилжааны банкны данс руу орох болно.",
   "ipsSellPackLabel": "Багц {number}",
   "@ipsSellPackLabel": {
