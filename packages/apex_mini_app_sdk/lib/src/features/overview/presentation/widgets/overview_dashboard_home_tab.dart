@@ -87,6 +87,7 @@ class OverviewDashboardHomeTab extends StatelessWidget {
               onRecharge: onRecharge,
               onStatements: onStatements,
               onWithdraw: onWithdraw,
+              hasPendingOrder: pendingOrders.isNotEmpty,
             ),
             if (pendingOrders.isNotEmpty) ...<Widget>[
               SizedBox(height: responsive.dp(14)),
