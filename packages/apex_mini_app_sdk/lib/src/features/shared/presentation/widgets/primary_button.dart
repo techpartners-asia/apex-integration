@@ -30,6 +30,9 @@ class PrimaryButton extends StatelessWidget {
   /// Height override.
   final double? height;
 
+  /// Shows a spinner in place of the label/icon while true.
+  final bool isLoading;
+
   /// Creates the main gradient action button used by mini-app flows.
   const PrimaryButton({
     super.key,
@@ -42,6 +45,7 @@ class PrimaryButton extends StatelessWidget {
     this.enabledBoxShadow,
     this.borderRadius,
     this.height,
+    this.isLoading = false,
   });
 
   @override
@@ -69,21 +73,36 @@ class PrimaryButton extends StatelessWidget {
             onTap: onPressed,
             borderRadius: resolvedBorderRadius,
             child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  if (icon != null) ...<Widget>[
-                    Icon(icon, color: foregroundColor, size: responsive.dp(20)),
-                    SizedBox(width: responsive.spacing.inlineSpacing * 0.6),
-                  ],
-                  CustomText(
-                    label,
-                    variant: MiniAppTextVariant.buttonMedium,
-                    color: foregroundColor,
-                  ),
-                ],
-              ),
+              child: isLoading
+                  ? SizedBox(
+                      width: responsive.dp(20),
+                      height: responsive.dp(20),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: foregroundColor,
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        if (icon != null) ...<Widget>[
+                          Icon(
+                            icon,
+                            color: foregroundColor,
+                            size: responsive.dp(20),
+                          ),
+                          SizedBox(
+                            width: responsive.spacing.inlineSpacing * 0.6,
+                          ),
+                        ],
+                        CustomText(
+                          label,
+                          variant: MiniAppTextVariant.buttonMedium,
+                          color: foregroundColor,
+                        ),
+                      ],
+                    ),
             ),
           ),
         ),
