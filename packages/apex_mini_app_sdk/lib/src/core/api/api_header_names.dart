@@ -21,6 +21,9 @@ final class ApiHeaderNames {
   /// NE session header/key.
   static const String neSession = 'NESSESSION';
 
+  /// Runtime UI/backend language header.
+  static const String language = 'LANGUAGE';
+
   /// Internal retry marker used by session refresh interceptor.
   static const String retry = 'x-retry';
 

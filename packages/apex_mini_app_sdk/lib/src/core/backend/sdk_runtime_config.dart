@@ -138,6 +138,7 @@ class SdkRuntimeConfig {
       config: ApiConfig(
         baseUrl: techInvestXUrl,
         credentials: credentials,
+        language: language,
         enableDebugLogs: enableDebugLogs,
         backendLoggerBaseUrl: techInvestXUrl,
       ),
@@ -165,6 +166,7 @@ class SdkRuntimeConfig {
       config: ApiConfig(
         baseUrl: ipsApiBaseUrl,
         credentials: credentials,
+        language: language,
         enableDebugLogs: enableDebugLogs,
         backendLoggerBaseUrl: techInvestXUrl,
       ),
@@ -181,6 +183,7 @@ class SdkRuntimeConfig {
       config: ApiConfig(
         baseUrl: loginSessionBaseUrl,
         credentials: credentials,
+        language: language,
         enableDebugLogs: enableDebugLogs,
         backendLoggerBaseUrl: techInvestXUrl,
       ),

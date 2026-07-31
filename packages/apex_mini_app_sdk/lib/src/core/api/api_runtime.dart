@@ -41,6 +41,7 @@ class ApiRuntime {
       tokenProvider: tokenProvider,
       tokenHeaderName: tokenHeaderName,
       useBearerToken: useBearerToken,
+      language: config.language,
     );
 
     if (onRefreshSession != null) {

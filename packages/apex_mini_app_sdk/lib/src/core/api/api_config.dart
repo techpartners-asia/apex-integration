@@ -8,6 +8,9 @@ class ApiConfig {
   /// App id/secret headers.
   final AppCredentials credentials;
 
+  /// Language code sent with every request via the `LANGUAGE` header.
+  final String language;
+
   /// Connection timeout.
   final Duration connectTimeout;
 
@@ -30,6 +33,7 @@ class ApiConfig {
   const ApiConfig({
     required this.baseUrl,
     required this.credentials,
+    this.language = 'MN',
     this.connectTimeout = ApiTimeouts.connect,
     this.sendTimeout = ApiTimeouts.send,
     this.receiveTimeout = ApiTimeouts.receive,
