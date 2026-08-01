@@ -123,6 +123,13 @@ class ContractCubit extends Cubit<ContractState> {
         ),
       );
     } catch (error) {
+      BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
+        level: 'error',
+        path: 'contract/submit',
+        msg: 'contract_submit_error',
+        info: <String, Object?>{'error': error.toString()},
+      );
+
       emit(
         state.copyWith(
           isSubmitting: false,
