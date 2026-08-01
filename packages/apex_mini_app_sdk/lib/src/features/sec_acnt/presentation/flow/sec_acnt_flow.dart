@@ -43,6 +43,10 @@ bool isShortSecAcntFlow(AcntBootstrapState? state) => state?.hasAcnt == true && 
 /// Whether the current profile says the contract/payment fee is already paid.
 bool hasPaidSecAcntContract(UserEntityDto? user) => user?.account?.hasPaidContract ?? false;
 
+/// Whether the backend hasn't registered a securities-account request yet.
+bool hasNotRequestedSecAcnt(UserEntityDto? user) =>
+    user?.account?.scAcntStatus == 'NOT_REQUESTED';
+
 /// Whether opening-fee payment is complete according to bootstrap and profile.
 ///
 /// Profile [isPaidContract] is checked first because account-list status can lag
@@ -350,11 +354,6 @@ String? _resolveBootstrapIban(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) {
-  final String? iban = _trimToNull(state?.bootstrapIban);
-  if (iban != null) {
-    return iban;
-  }
-
   return _trimToNull(user?.bank?.accountNumber);
 }
 

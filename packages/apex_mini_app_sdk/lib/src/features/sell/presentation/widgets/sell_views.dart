@@ -363,8 +363,8 @@ class SellSuccessView extends StatelessWidget {
   /// Current sell flow state.
   final IpsSellState state;
 
-  /// Refreshes packs and navigates back to pack selection after success.
-  Future<void> _goToPackList(BuildContext context) async {
+  /// Refreshes packs and navigates back to the overview after success.
+  Future<void> _goToOverview(BuildContext context) async {
     final List<IpsPack>? packs = await context
         .read<IpsSellCubit>()
         .refreshPacksAfterSuccess();
@@ -372,11 +372,7 @@ class SellSuccessView extends StatelessWidget {
       return;
     }
 
-    await replaceIpsRoute(
-      context,
-      route: MiniAppRoutes.packs,
-      arguments: packs,
-    );
+    await replaceIpsRoute(context, route: MiniAppRoutes.overview);
   }
 
   @override
@@ -441,8 +437,86 @@ class SellSuccessView extends StatelessWidget {
                     ? l10n.commonLoading
                     : l10n.commonGoHome,
                 onPressed: state.canCompleteSuccessFlow
-                    ? () => _goToPackList(context)
+                    ? () => _goToOverview(context)
                     : null,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Error-state view shown after a sell request submission fails.
+class SellErrorView extends StatelessWidget {
+  /// Creates the sell error view.
+  const SellErrorView({super.key, required this.state});
+
+  /// Current sell flow state.
+  final IpsSellState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final responsive = context.responsive;
+
+    return CustomScaffold(
+      hasAppBar: false,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: responsive.spacing.financialCardSpacing,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: responsive.spacing.sectionSpacing * 3),
+                    Center(
+                      child: Container(
+                        width: responsive.dp(72),
+                        height: responsive.dp(72),
+                        decoration: const BoxDecoration(
+                          color: DesignTokens.danger,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.close_rounded,
+                          color: Colors.white,
+                          size: responsive.dp(40),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: responsive.spacing.sectionSpacing),
+                    CustomText(
+                      l10n.ipsSellFailureMessage,
+                      variant: MiniAppTextVariant.title1,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: responsive.spacing.sectionSpacing * 1.5),
+                    ReminderCard(
+                      title: l10n.errorsGenericTitle,
+                      message: l10n.ipsSellFailureMessage,
+                    ),
+                    SizedBox(height: responsive.spacing.sectionSpacing),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                responsive.spacing.financialCardSpacing,
+                responsive.spacing.inlineSpacing,
+                responsive.spacing.financialCardSpacing,
+                responsive.spacing.inlineSpacing,
+              ),
+              child: PrimaryButton(
+                label: l10n.commonGoHome,
+                onPressed: () =>
+                    replaceIpsRoute(context, route: MiniAppRoutes.overview),
               ),
             ),
           ],

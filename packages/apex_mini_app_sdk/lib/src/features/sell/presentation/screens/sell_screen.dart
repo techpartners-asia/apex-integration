@@ -11,17 +11,10 @@ class SellScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<IpsSellCubit, IpsSellState>(
       listenWhen: (IpsSellState previous, IpsSellState current) {
-        return (previous.message != current.message && (current.message?.trim().isNotEmpty ?? false)) ||
-            (previous.errorMessage != current.errorMessage && (current.errorMessage?.trim().isNotEmpty ?? false)) ||
-            (previous.refreshErrorMessage != current.refreshErrorMessage && (current.refreshErrorMessage?.trim().isNotEmpty ?? false));
+        return (previous.refreshErrorMessage != current.refreshErrorMessage && (current.refreshErrorMessage?.trim().isNotEmpty ?? false)) ||
+            (previous.message != current.message && (current.message?.trim().isNotEmpty ?? false));
       },
       listener: (BuildContext context, IpsSellState state) {
-        final String? errorMessage = state.errorMessage?.trim();
-        if (errorMessage != null && errorMessage.isNotEmpty) {
-          MiniAppToast.showError(context, message: errorMessage);
-          return;
-        }
-
         final String? refreshErrorMessage = state.refreshErrorMessage?.trim();
         if (refreshErrorMessage != null && refreshErrorMessage.isNotEmpty) {
           MiniAppToast.showError(context, message: refreshErrorMessage);
@@ -36,6 +29,9 @@ class SellScreen extends StatelessWidget {
       builder: (BuildContext context, IpsSellState state) {
         if (state.isSuccess) {
           return SellSuccessView(state: state);
+        }
+        if (state.errorMessage != null) {
+          return SellErrorView(state: state);
         }
         return SellRequestView(state: state);
       },

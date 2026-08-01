@@ -207,7 +207,8 @@ class _SecurityDetails extends StatelessWidget {
           SizedBox(height: responsive.dp(10)),
           PortfolioCompactMetricTile(
             label: l10n.ipsPortfolioHoldingQuantity,
-            value: '${(security.qty ?? 0).toStringAsFixed(2)} ш',
+            value:
+                '${(security.qty ?? 0).toStringAsFixed(2)} ${l10n.ipsPaymentRechargeQuantityUnit}',
             showHorizontal: true,
           ),
         ],

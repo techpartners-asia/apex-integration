@@ -48,6 +48,9 @@ class AccountDto {
   /// Securities account code.
   final String? scAcntCode;
 
+  /// Securities account request status (e.g. NOT_REQUESTED, WAITING).
+  final String? scAcntStatus;
+
   /// Signature file identifier used by older profile responses.
   final int? signatureId;
 
@@ -90,6 +93,7 @@ class AccountDto {
     this.profitAmount,
     this.profitPercent,
     this.scAcntCode,
+    this.scAcntStatus,
     this.goal,
     this.signatureId,
     this.streak,
@@ -128,6 +132,7 @@ class AccountDto {
       profitAmount: ApiParser.asNullableDouble(json['profit_amount']),
       profitPercent: ApiParser.asNullableDouble(json['profit_percent']),
       scAcntCode: ApiParser.asNullableString(json['sc_acnt_code']),
+      scAcntStatus: ApiParser.asNullableString(json['sc_acnt_status']),
       signatureId: ApiParser.asNullableInt(json['signature_id']),
       goal: ApiParser.asNullableString(json['goal']),
       streak: ApiParser.asNullableString(json['streak']),
@@ -160,6 +165,7 @@ class AccountDto {
     num? profitAmount,
     num? profitPercent,
     String? scAcntCode,
+    String? scAcntStatus,
     String? goal,
     int? signatureId,
     String? streak,
@@ -184,6 +190,7 @@ class AccountDto {
       profitAmount: profitAmount ?? this.profitAmount,
       profitPercent: profitPercent ?? this.profitPercent,
       scAcntCode: scAcntCode ?? this.scAcntCode,
+      scAcntStatus: scAcntStatus ?? this.scAcntStatus,
       goal: goal ?? this.goal,
       signatureId: signatureId ?? this.signatureId,
       streak: streak ?? this.streak,

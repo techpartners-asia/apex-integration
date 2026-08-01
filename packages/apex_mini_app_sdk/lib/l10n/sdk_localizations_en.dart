@@ -9,6 +9,12 @@ class SdkLocalizationsEn extends SdkLocalizations {
   SdkLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get commonCountryMongolia => 'Mongolia';
+
+  @override
+  String get ipsSellFailureMessage => 'Your request was unsuccessful.';
+
+  @override
   String get commonLoading => 'Loading';
 
   @override
@@ -809,7 +815,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
   String get ipsSellSubmitRequest => 'Submit request';
 
   @override
-  String get ipsSellSuccessTitle => 'Your request was submitted successfully';
+  String get ipsSellSuccessTitle => 'Your request was successful';
 
   @override
   String get ipsSellSuccessBody =>

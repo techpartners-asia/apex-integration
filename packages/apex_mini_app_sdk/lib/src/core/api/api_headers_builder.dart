@@ -14,12 +14,16 @@ class ApiHeadersBuilder {
   /// Whether token value should be prefixed with `Bearer`.
   final bool useBearerToken;
 
+  /// Language code sent with every request via the `LANGUAGE` header.
+  final String language;
+
   /// Creates a backend header builder.
   const ApiHeadersBuilder({
     required this.credentials,
     required this.tokenProvider,
     this.tokenHeaderName = ApiHeaderNames.accessToken,
     this.useBearerToken = false,
+    this.language = 'MN',
   });
 
   /// Builds headers for one request.
@@ -35,6 +39,7 @@ class ApiHeadersBuilder {
       ApiHeaderNames.accept: ApiContentTypes.json,
       ApiHeaderNames.appId: credentials.appId,
       ApiHeaderNames.appSecret: credentials.appSecret,
+      ApiHeaderNames.language: language.toUpperCase(),
       if (rawAccessToken != null)
         tokenHeaderName: useBearerToken
             ? 'Bearer $rawAccessToken'

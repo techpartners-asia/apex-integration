@@ -380,15 +380,6 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       return;
     }
 
-    if (mounted) {
-      final NavigatorState? embeddingNavigator = Navigator.maybeOf(
-        this.context,
-      );
-      if (!identical(embeddingNavigator, contextNavigator) && await _maybePopEmbeddingNavigator(embeddingNavigator)) {
-        return;
-      }
-    }
-
     final NavigatorState? miniAppNavigator = _navigatorKey.currentState;
     if (!identical(miniAppNavigator, contextNavigator) && !identical(miniAppNavigator, contextRootNavigator) && await _maybePopNavigator(miniAppNavigator)) {
       return;
@@ -396,6 +387,19 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
 
     if (!hasCoveringRoute && await _maybePopNavigator(contextNavigator)) {
       return;
+    }
+
+    // Only fall back to popping the host's embedding route once the mini
+    // app's own navigators have nothing left to pop — otherwise a failed
+    // in-app action (e.g. a "not found" error) can kick the user out to the
+    // host app instead of just closing the current mini-app screen/dialog.
+    if (mounted) {
+      final NavigatorState? embeddingNavigator = Navigator.maybeOf(
+        this.context,
+      );
+      if (!identical(embeddingNavigator, contextNavigator) && await _maybePopEmbeddingNavigator(embeddingNavigator)) {
+        return;
+      }
     }
 
     if (!hasCoveringRoute && !identical(contextRootNavigator, contextNavigator)) {

@@ -204,6 +204,7 @@ class RemoteSignupBootstrapRepository implements CurrentUserRepository {
       profitAmount: profile.profitAmount ?? bootstrap.profitAmount,
       profitPercent: profile.profitPercent ?? bootstrap.profitPercent,
       scAcntCode: _firstText(profile.scAcntCode, bootstrap.scAcntCode),
+      scAcntStatus: _firstText(profile.scAcntStatus, bootstrap.scAcntStatus),
       signatureId: profile.signatureId ?? bootstrap.signatureId,
       streak: _firstText(profile.streak, bootstrap.streak),
       targetGoal: profile.targetGoal ?? bootstrap.targetGoal,

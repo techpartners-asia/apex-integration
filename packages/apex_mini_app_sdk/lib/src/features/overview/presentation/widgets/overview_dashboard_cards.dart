@@ -12,11 +12,14 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
   /// Statements action.
   final VoidCallback? onStatements;
 
-  /// Withdraw action, currently disabled in the UI.
+  /// Withdraw action, disabled while a pending order exists.
   final VoidCallback? onWithdraw;
 
   /// Whether total investment and return labels should render.
   final bool showFinancialSummary;
+
+  /// Whether a pending order exists, disabling the withdraw action.
+  final bool hasPendingOrder;
 
   /// Creates the dashboard summary card.
   const OverviewDashboardSummaryCard({
@@ -26,6 +29,7 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
     this.onRecharge,
     this.onStatements,
     this.onWithdraw,
+    this.hasPendingOrder = false,
   });
 
   @override
@@ -115,7 +119,7 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                 label: l10n.ipsOverviewDashboardQuickWithdraw,
                 path: Img.receive,
                 onTap: onWithdraw,
-                disabled: true,
+                disabled: hasPendingOrder,
               ),
             ],
           ),
