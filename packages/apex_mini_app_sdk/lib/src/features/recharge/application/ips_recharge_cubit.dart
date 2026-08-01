@@ -145,6 +145,13 @@ class IpsRechargeCubit extends Cubit<IpsRechargeState> {
         ),
       );
     } catch (error) {
+      BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
+        level: 'error',
+        path: 'recharge/submit',
+        msg: 'recharge_submit_error',
+        info: <String, Object?>{'error': error.toString()},
+      );
+
       emit(
         state.copyWith(
           isSubmitting: false,

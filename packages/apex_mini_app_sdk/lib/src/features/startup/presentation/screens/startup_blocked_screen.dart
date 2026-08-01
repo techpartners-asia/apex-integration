@@ -15,6 +15,7 @@ class StartupBlockedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final SdkLocalizations l10n = context.l10n;
     final responsive = context.responsive;
+    final bool showHero = arguments.responseCode != 1002;
     final String title =
         arguments.responseCode == SignupBusinessCodes.profileNotVerified
         ? l10n.ipsStartupBlockedTitle
@@ -37,7 +38,7 @@ class StartupBlockedScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Spacer(flex: 2),
-              _StartupBlockedHero(title: title),
+              if (showHero) _StartupBlockedHero(title: title),
               if (showMessage) ...<Widget>[
                 SizedBox(height: responsive.dp(32)),
                 _StartupBlockedMessageCard(message: message),

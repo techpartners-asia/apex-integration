@@ -14,6 +14,12 @@ class IpsBackendApi {
   String resolveSrcFiCode(String? candidate) {
     final String resolved = candidate?.trim() ?? backendConfig.runtime.defaultSrcFiCode;
     if (resolved.isEmpty) {
+      BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
+        level: 'error',
+        path: 'ips/resolveSrcFiCode',
+        msg: 'empty_src_fi_code',
+        info: <String, Object?>{'candidate': candidate},
+      );
       throw const ApiIntegrationException('A non-empty srcFiCode is required.');
     }
 

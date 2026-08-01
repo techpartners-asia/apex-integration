@@ -26,9 +26,9 @@ flutter:
   fonts:
     - family: Zona Pro
       fonts:
-        - asset: assets/fonts/Zona-Pro/ZonaPro-Regular.ttf
+        - asset: "assets/fonts/Zona-Pro/INTELLIGENT DESIGN - ZONAPRO-REGULAR.OTF"
           weight: 400
-        - asset: assets/fonts/Zona-Pro/ZonaPro-SemiBold.otf
+        - asset: "assets/fonts/Zona-Pro/INTELLIGENT DESIGN - ZONAPRO-SEMIBOLD.OTF"
           weight: 600
-        - asset: assets/fonts/Zona-Pro/ZonaPro-Bold.otf
+        - asset: "assets/fonts/Zona-Pro/INTELLIGENT DESIGN - ZONAPRO-BOLD.OTF"
           weight: 700

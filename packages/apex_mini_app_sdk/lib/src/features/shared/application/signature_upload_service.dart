@@ -19,12 +19,22 @@ class SignatureUploadService {
     double strokeWidth = 2.6,
     String fileName = 'signature.png',
   }) async {
-    final Uint8List bytes = await renderSignaturePngBytes(
-      points,
-      strokeWidth: strokeWidth,
-    );
+    try {
+      final Uint8List bytes = await renderSignaturePngBytes(
+        points,
+        strokeWidth: strokeWidth,
+      );
 
-    await appApi.updateSignature(bytes: bytes, fileName: fileName);
+      await appApi.updateSignature(bytes: bytes, fileName: fileName);
+    } catch (error) {
+      BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
+        level: 'error',
+        path: 'signature/uploadSignature',
+        msg: 'signature_upload_error',
+        info: <String, Object?>{'error': error.toString()},
+      );
+      rethrow;
+    }
   }
 }
 

@@ -122,6 +122,13 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
 
       return paymentRes;
     } catch (error) {
+      BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
+        level: 'error',
+        path: 'sec_acnt/submitOpeningPayment',
+        msg: 'sec_acnt_opening_payment_error',
+        info: <String, Object?>{'error': error.toString()},
+      );
+
       emit(
         state.copyWith(
           isSubmitting: false,

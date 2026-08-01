@@ -21,6 +21,12 @@ class ApiOrdersService implements OrdersService {
   @override
   Future<ActionRes> cancelOrder(IpsOrder order) async {
     if (order.orderNo <= 0) {
+      BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
+        level: 'error',
+        path: 'orders/cancelOrder',
+        msg: 'invalid_ips_order_number',
+        info: <String, Object?>{'orderId': order.id, 'orderNo': order.orderNo},
+      );
       throw ApiIntegrationException(
         'Invalid IPS order number for order id: ${order.id}',
       );
