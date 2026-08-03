@@ -132,8 +132,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       text: user?.bank?.accountName ?? '',
     );
     _selectedBank = _resolveInitialBank(user);
-    _citizenship = user?.region?.name ?? context.l10n.commonCountryMongolia;
-    _country = user?.residenceCountry ?? context.l10n.commonCountryMongolia;
+    _citizenship = user?.region?.name ?? "Монгол";
+    _country = user?.residenceCountry ?? "Монгол";
     _resolvedAccountHolderName = _trimToNull(user?.bank?.accountName);
 
     for (final TextEditingController c in <TextEditingController>[
