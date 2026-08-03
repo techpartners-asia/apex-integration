@@ -124,7 +124,7 @@
   "ipsOverviewDashboardDetails": "Дэлгэрэнгүй харах",
   "ipsOverviewDashboardReminderTitle": "Санамж",
   "ipsOverviewDashboardReminderBody": "Үнэт цаасны арилжаа долоо хоног бүрийн Даваа, Пүрэв гарагт автоматаар хийгдэнэ. Та дансаа цэнэглэж, захиалгаа өгөхөд хангалттай.",
-  "ipsOverviewDashboardGoalTitle": "Зорилтот зорилго",
+  "ipsOverviewDashboardGoalTitle": "Зорилго",
   "ipsOverviewDashboardGoalProgress": "Биелүүлэлт",
   "ipsOverviewDashboardRewardTitle": "Тасралтгүй {count} дахь сар!",
   "@ipsOverviewDashboardRewardTitle": {

@@ -124,7 +124,7 @@
   "ipsOverviewDashboardDetails": "View details",
   "ipsOverviewDashboardReminderTitle": "Reminder",
   "ipsOverviewDashboardReminderBody": "Securities trading is executed automatically every Monday and Thursday. Simply recharge your account and place your order.",
-  "ipsOverviewDashboardGoalTitle": "Target goal",
+  "ipsOverviewDashboardGoalTitle": "Goal",
   "ipsOverviewDashboardGoalProgress": "Progress",
   "ipsOverviewDashboardRewardTitle": "Month {count} in a row!",
   "@ipsOverviewDashboardRewardTitle": {

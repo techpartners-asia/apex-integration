@@ -331,7 +331,7 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Үнэт цаасны арилжаа долоо хоног бүрийн Даваа, Пүрэв гарагт автоматаар хийгдэнэ. Та дансаа цэнэглэж, захиалгаа өгөхөд хангалттай.';
 
   @override
-  String get ipsOverviewDashboardGoalTitle => 'Зорилтот зорилго';
+  String get ipsOverviewDashboardGoalTitle => 'Зорилго';
 
   @override
   String get ipsOverviewDashboardGoalProgress => 'Биелүүлэлт';

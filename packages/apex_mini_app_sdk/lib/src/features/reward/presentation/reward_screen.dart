@@ -76,11 +76,11 @@ class RewardScreen extends StatelessWidget {
                             : null,
                       ),
                       SizedBox(height: responsive.spacing.cardGap),
-                      _NextGoalCard(
-                        l10n: l10n,
-                        goal: context.read<MiniAppSessionStore>().currentUser?.account?.goal,
-                      ),
-                      SizedBox(height: responsive.spacing.sectionSpacing),
+                      // _NextGoalCard(
+                      //   l10n: l10n,
+                      //   goal: context.read<MiniAppSessionStore>().currentUser?.account?.goal,
+                      // ),
+                      // SizedBox(height: responsive.spacing.sectionSpacing),
                       _MilestonesList(l10n: l10n, items: items),
                       SizedBox(height: responsive.spacing.sectionSpacing * 2),
                     ],

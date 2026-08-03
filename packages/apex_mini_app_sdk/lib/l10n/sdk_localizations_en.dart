@@ -329,7 +329,7 @@ class SdkLocalizationsEn extends SdkLocalizations {
       'Securities trading is executed automatically every Monday and Thursday. Simply recharge your account and place your order.';
 
   @override
-  String get ipsOverviewDashboardGoalTitle => 'Target goal';
+  String get ipsOverviewDashboardGoalTitle => 'Goal';
 
   @override
   String get ipsOverviewDashboardGoalProgress => 'Progress';
