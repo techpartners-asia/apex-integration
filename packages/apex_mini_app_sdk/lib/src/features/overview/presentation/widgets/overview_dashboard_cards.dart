@@ -178,7 +178,7 @@ class OverviewDashboardGoalCard extends StatelessWidget {
                 ),
               ),
               CustomText(
-                '${metrics.stockTotalLabel} / ${metrics.goalTargetLabel}',
+                '${metrics.allocationTotalLabel} / ${metrics.goalTargetLabel}',
                 variant: MiniAppTextVariant.caption1,
                 color: DesignTokens.ink,
               ),
