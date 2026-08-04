@@ -114,7 +114,7 @@ class _SecAcntSignatureScreenState extends State<SecAcntSignatureScreen> {
       showBackButton: header.showBack,
       showCloseButton: header.showClose,
       onBack: () => Navigator.of(context).maybePop(),
-      onDismiss: () => closeMiniAppSafely(context),
+      onDismiss: () => closeMiniAppSafely(context, force: true),
       hasSafeArea: false,
       title: context.l10n.commonDrawSignaturePrompt,
       points: _points,

@@ -395,7 +395,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       showBackButton: header.showBack,
       showCloseButton: header.showClose,
       onBack: () => Navigator.of(context).maybePop(),
-      onDismiss: () => closeMiniAppSafely(context),
+      onDismiss: () => closeMiniAppSafely(context, force: true),
       hasSafeArea: false,
       backgroundColor: DesignTokens.softSurface,
       appBarBackgroundColor: DesignTokens.softSurface,

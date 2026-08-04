@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 const String secAcntPendingOpeningRequestMessage = 'Таны үнэт цаасны данс нээх хүсэлт илгээгдсэн байгаа тул та түр хүлээнэ үү';
 
 /// Closes the securities account flow through the SDK safe-close path.
+///
+/// Uses [force] so closing from any step exits straight to the host instead
+/// of only landing back on the overview screen underneath.
 Future<void> closeSecAcntFlow(BuildContext context) async {
-  await closeMiniAppSafely(context);
+  await closeMiniAppSafely(context, force: true);
 }
 
 /// Routes to overview after the securities account flow completes.

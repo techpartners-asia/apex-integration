@@ -36,7 +36,7 @@ class _IpsOverviewScreenState extends State<IpsOverviewScreen> {
             return CustomScaffold(
               showBackButton: false,
               showCloseButton: true,
-              onDismiss: () => unawaited(closeMiniAppSafely(context)),
+              onDismiss: () => unawaited(closeMiniAppSafely(context, force: true)),
               appBarCenterTitle: false,
               appBarBackgroundColor: DesignTokens.softSurface,
               backgroundColor: DesignTokens.softSurface,
