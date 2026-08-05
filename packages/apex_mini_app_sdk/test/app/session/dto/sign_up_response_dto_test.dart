@@ -27,9 +27,9 @@ void main() {
 
     expect(user.admSession, 'signup-jwt-token');
     expect(user.phone, '88993076');
-    expect(user.registerNo, '');
-    expect(user.firstName, '');
-    expect(user.lastName, '');
+    expect(user.registerNo, isNull);
+    expect(user.firstName, isNull);
+    expect(user.lastName, isNull);
     expect(user.email, isNull);
     expect(user.gender, isNull);
     expect(user.account?.isPaidContract, isTrue);

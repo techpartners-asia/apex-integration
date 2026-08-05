@@ -1,23 +1,34 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/src/features/sec_acnt/presentation/flow/sec_acnt_local_prefs.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUp(() async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    await SecAcntLocalPrefs.reset();
+  });
+
   group('resolveSecAcntFlowSteps', () {
-    test('uses short flow for users with main account and no IPS account', () {
-      expect(
-        resolveSecAcntFlowSteps(
-          _bootstrapState(
-            hasAcnt: true,
-            hasIpsAcnt: false,
-            secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+    test(
+      'uses short flow for users with main account and no IPS account',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: false,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
+            ),
           ),
-        ),
-        const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
-          SecAcntFlowStep.personalInformation,
-        ],
-      );
-    });
+          const <SecAcntFlowStep>[
+            SecAcntFlowStep.consent,
+            SecAcntFlowStep.personalInformation,
+            SecAcntFlowStep.payment,
+          ],
+        );
+      },
+    );
 
     test(
       'uses full flow for users without main account and without IPS account',
@@ -32,33 +43,32 @@ void main() {
             SecAcntFlowStep.secAgreement,
             SecAcntFlowStep.signature,
             SecAcntFlowStep.payment,
-            SecAcntFlowStep.calculation,
           ],
         );
       },
     );
 
-    test('continues flow when account-opening request is already pending', () {
-      expect(
-        resolveSecAcntFlowSteps(
-          _bootstrapState(
-            hasAcnt: true,
-            hasIpsAcnt: true,
-            secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
+    test(
+      'uses IPS short flow when account already has an IPS account',
+      () {
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(
+              hasAcnt: true,
+              hasIpsAcnt: true,
+              secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
+            ),
           ),
-        ),
-        const <SecAcntFlowStep>[
-          SecAcntFlowStep.consent,
-          SecAcntFlowStep.personalInformation,
-          SecAcntFlowStep.secAgreement,
-          SecAcntFlowStep.signature,
-          SecAcntFlowStep.calculation,
-        ],
-      );
-    });
+          const <SecAcntFlowStep>[
+            SecAcntFlowStep.personalInformation,
+            SecAcntFlowStep.payment,
+          ],
+        );
+      },
+    );
 
     test(
-      'returns consent initial step for pending account-opening request',
+      'returns personal information as initial step for pending account-opening request',
       () {
         expect(
           resolveInitialSecAcntFlowStep(
@@ -68,7 +78,7 @@ void main() {
               secAcntStatusCode: 0,
             ),
           ),
-          SecAcntFlowStep.consent,
+          SecAcntFlowStep.personalInformation,
         );
       },
     );
@@ -100,7 +110,6 @@ void main() {
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.signature,
           SecAcntFlowStep.payment,
-          SecAcntFlowStep.calculation,
         ],
       );
     });
@@ -129,44 +138,43 @@ void main() {
         const <SecAcntFlowStep>[
           SecAcntFlowStep.secAgreement,
           SecAcntFlowStep.payment,
-          SecAcntFlowStep.calculation,
         ],
       );
     });
 
-    test('completed invest contract skips only contract agreement', () {
+    test('accepted sec agreement skips only the agreement step', () async {
+      await SecAcntLocalPrefs.markSecAgreementAccepted();
+
       expect(
         resolveSecAcntFlowSteps(
           _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
-          currentUser: _completeUser(
-            account: const AccountDto(isInvestContract: true),
-          ),
+          currentUser: _completeUser(),
         ),
         const <SecAcntFlowStep>[
           SecAcntFlowStep.signature,
           SecAcntFlowStep.payment,
-          SecAcntFlowStep.calculation,
         ],
       );
     });
 
-    test('completed contract and saved signature skip both signed steps', () {
-      expect(
-        resolveSecAcntFlowSteps(
-          _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
-          currentUser: _completeUser(
-            account: const AccountDto(
-              isInvestContract: true,
-              signatureId: 31,
+    test(
+      'accepted sec agreement and saved signature skip both signed steps',
+      () async {
+        await SecAcntLocalPrefs.markSecAgreementAccepted();
+
+        expect(
+          resolveSecAcntFlowSteps(
+            _bootstrapState(hasAcnt: false, hasIpsAcnt: false),
+            currentUser: _completeUser(
+              account: const AccountDto(signatureId: 31),
             ),
           ),
-        ),
-        const <SecAcntFlowStep>[
-          SecAcntFlowStep.payment,
-          SecAcntFlowStep.calculation,
-        ],
-      );
-    });
+          const <SecAcntFlowStep>[
+            SecAcntFlowStep.payment,
+          ],
+        );
+      },
+    );
 
     test('keeps signature flow when saved signature is missing', () {
       expect(
@@ -199,7 +207,6 @@ void main() {
           const <SecAcntFlowStep>[
             SecAcntFlowStep.secAgreement,
             SecAcntFlowStep.signature,
-            SecAcntFlowStep.calculation,
           ],
         );
         expect(state.hasAcnt, isFalse);
@@ -254,7 +261,7 @@ void main() {
       );
     });
 
-    test('completed invest contract skips short-flow service agreement', () {
+    test('paid contract skips short-flow entirely with explicit status', () {
       expect(
         resolveSecAcntFlowSteps(
           _bootstrapState(
@@ -263,7 +270,7 @@ void main() {
             secAcntStatusCode: AcntBootstrapState.secAcntStatusOpen,
           ),
           currentUser: _completeUser(
-            account: const AccountDto(isInvestContract: true),
+            account: const AccountDto(isPaidContract: true),
           ),
         ),
         isEmpty,
@@ -323,7 +330,7 @@ void main() {
     );
 
     test(
-      'status=0 skips payment when backend marks opening fee as paid',
+      'status=0 skips payment when profile marks opening fee as paid',
       () {
         expect(
           resolveSecAcntFlowSteps(
@@ -333,7 +340,7 @@ void main() {
               secAcntStatusCode: AcntBootstrapState.secAcntStatusPending,
             ),
             currentUser: _completeUser(
-              account: const AccountDto(isPaidContract: false),
+              account: const AccountDto(isPaidContract: true),
             ),
           ),
           isNot(contains(SecAcntFlowStep.payment)),

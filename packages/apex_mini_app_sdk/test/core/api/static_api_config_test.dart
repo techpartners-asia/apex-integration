@@ -18,9 +18,12 @@ void main() {
     expect(StaticApiConfig.techInvestXUrl, 'https://api.admin.investx.mn');
     expect(
       StaticApiConfig.loginSessionBaseUrl,
-      'https://customer.mostmoney.mn:9094',
+      'https://api.admin.investx.mn/miniapp-prod-login',
     );
-    expect(StaticApiConfig.ipsApiBaseUrl, 'https://customer.mostmoney.mn:9094');
+    expect(
+      StaticApiConfig.ipsApiBaseUrl,
+      'https://api.admin.investx.mn/miniapp-prod-ips',
+    );
     expect(StaticApiConfig.appId, '114');
     expect(StaticApiConfig.appSecret, 'APEXTINO');
     expect(StaticApiConfig.neSession, 'P0JmbkwsVmQX1nbZ63d0lJnY3YJSp0');
@@ -35,7 +38,7 @@ void main() {
   test('uses legacy development values when devMode is true', () {
     StaticApiConfig.configure(devMode: true);
 
-    expect(StaticApiConfig.techInvestXUrl, 'http://192.168.88.120:7001');
+    expect(StaticApiConfig.techInvestXUrl, 'https://dev.api.admin.investx.mn');
     expect(StaticApiConfig.loginSessionBaseUrl, 'http://202.21.105.150:40654');
     expect(StaticApiConfig.ipsApiBaseUrl, 'http://202.21.105.150:40651');
     expect(StaticApiConfig.appId, '156');

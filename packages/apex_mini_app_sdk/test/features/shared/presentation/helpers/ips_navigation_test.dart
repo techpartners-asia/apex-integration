@@ -428,12 +428,20 @@ void main() {
       WidgetTester tester,
     ) async {
       final TestMiniAppHostController controller = TestMiniAppHostController();
+      final IpsOverviewCubit overviewCubit = IpsOverviewCubit(
+        bootstrapService: _NoopBootstrapService(),
+        l10n: lookupSdkLocalizations(const Locale('en')),
+      );
+      addTearDown(overviewCubit.close);
 
       await tester.pumpWidget(
         buildSdkTestApp(
-          OverviewProfileTab(
-            data: _bootstrapState(hasIpsAcnt: true),
-            user: UserEntityDto(firstName: 'Apex', lastName: 'User'),
+          BlocProvider<IpsOverviewCubit>.value(
+            value: overviewCubit,
+            child: OverviewProfileTab(
+              data: _bootstrapState(hasIpsAcnt: true),
+              user: UserEntityDto(firstName: 'Apex', lastName: 'User'),
+            ),
           ),
           hostController: controller,
         ),
