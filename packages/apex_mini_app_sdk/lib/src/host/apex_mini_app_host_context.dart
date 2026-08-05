@@ -2,7 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
 /// Function used by internals to leave the current mini-app surface safely.
-typedef ApexMiniAppSafeCloseHook = Future<void> Function(BuildContext? context);
+///
+/// When [force] is true, every internal mini-app route is drained before
+/// falling through to the host's embedding route, instead of popping a
+/// single route at a time.
+typedef ApexMiniAppSafeCloseHook = Future<void> Function(BuildContext? context, {bool force});
 
 /// Process-wide bridge from SDK internals back to the active host widget.
 ///
@@ -56,7 +60,10 @@ class ApexMiniAppHostContext {
   }
 
   /// Runs the active safe-close hook, falling back to local navigator pop.
-  static Future<void> requestClose({BuildContext? context}) async {
+  static Future<void> requestClose({
+    BuildContext? context,
+    bool force = false,
+  }) async {
     final ApexMiniAppSafeCloseHook? safeClose = _safeClose;
     if (safeClose == null) {
       if (context != null && context.mounted) {
@@ -65,7 +72,7 @@ class ApexMiniAppHostContext {
       return;
     }
 
-    await safeClose(context);
+    await safeClose(context, force: force);
   }
 
   /// Emits a navigation event to the host.

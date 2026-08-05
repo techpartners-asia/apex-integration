@@ -224,11 +224,13 @@ void main() {
     );
     var closeCallCount = 0;
     BuildContext? closeContext;
+    bool? closeForce;
     ApexMiniAppHostContext.bind(
       nextCallbacks: ApexMiniAppHostCallbacks.empty,
-      safeClose: (BuildContext? context) async {
+      safeClose: (BuildContext? context, {bool force = false}) async {
         closeCallCount += 1;
         closeContext = context;
+        closeForce = force;
       },
     );
     addTearDown(
@@ -243,6 +245,7 @@ void main() {
 
     expect(closeCallCount, 1);
     expect(closeContext, isNotNull);
+    expect(closeForce, isTrue);
   });
 }
 

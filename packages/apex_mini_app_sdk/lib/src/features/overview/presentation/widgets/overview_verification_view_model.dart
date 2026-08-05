@@ -156,9 +156,7 @@ OverviewVerificationViewModel buildOverviewVerificationViewModel(
           ? l10n.ipsAcntOpenAcnt
           : l10n.ipsOverviewFirstPackTitle,
       promoButtonLabel: l10n.commonContinue,
-      onPromoTap: () => contractPaid
-          ? _launchSecAcntFlow(context, state)
-          : null,
+      onPromoTap: null,
     );
   }
 

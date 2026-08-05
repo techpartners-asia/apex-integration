@@ -101,9 +101,9 @@ void main() {
         final IpsPortfolioViewData data = cubit.state.data!;
         expect(data.overview, isA<PortfolioOverview>());
         expect(data.holdings, isA<List<PortfolioHolding>>());
-        // expect(data.holdings.first.code, 'TEST');
-        // expect(data.yieldProfitHoldings.first.profitAmount, 15);
-        // expect(data.stockYieldDetails.first.code, 'DETAIL');
+        expect(data.holdings.first.symbol, 'TEST');
+        expect(data.yieldProfitHoldings.first.profit, 15);
+        expect(data.stockYieldDetails.first.securityCode, 'DETAIL');
       },
     );
   });
@@ -124,14 +124,14 @@ class _FakePortfolioService implements PortfolioService {
     SdkPortfolioContext? context,
   }) async {
     return const <PortfolioHolding>[
-      //   PortfolioHolding(
-      //     code: 'TEST',
-      //     name: 'Test Holding',
-      //     quantity: 10,
-      //     currentValue: 200,
-      //     profitAmount: 15,
-      //     pointLabel: 'Jan',
-      //   ),
+      PortfolioHolding(
+        holdingType: HoldingType.getAcntYieldProfit,
+        securityName: 'Test Holding',
+        symbol: 'TEST',
+        quantity: 10,
+        currentValue: 200,
+        profit: 15,
+      ),
     ];
   }
 
@@ -148,14 +148,13 @@ class _FakePortfolioService implements PortfolioService {
       overview: await getOverview(context: context),
       yieldProfitHoldings: await getHoldings(context: context),
       stockYieldDetails: const <PortfolioHolding>[
-        // PortfolioHolding(
-        //   code: 'DETAIL',
-        //   name: 'Detail Holding',
-        //   quantity: 4,
-        //   currentValue: 120,
-        //   profitAmount: 8,
-        //   pointLabel: 'Feb',
-        // ),
+        PortfolioHolding(
+          holdingType: HoldingType.getStockAcntYieldDtl,
+          securityName: 'Detail Holding',
+          securityCode: 'DETAIL',
+          quantity: 4,
+          currentValue: 120,
+        ),
       ],
     );
   }

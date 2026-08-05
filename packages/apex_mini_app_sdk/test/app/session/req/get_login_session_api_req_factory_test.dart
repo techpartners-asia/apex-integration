@@ -6,7 +6,7 @@ void main() {
     test('uses LoginSessionContract values in contract mode', () {
       final req = GetLoginSessionApiReqFactory.build(
         admSession: 'adm-session',
-        userDataSourceMode: MiniAppUserDataSourceMode.realUser,
+        userDataSourceMode: MiniAppUserDataSourceMode.contract,
       );
 
       expect(req.admSession, 'adm-session');
@@ -44,9 +44,10 @@ void main() {
       expect(req.birthDate, isNull);
     });
 
-    test('throws when realUser mode is missing required fields', () {
-      expect(
-        () => GetLoginSessionApiReqFactory.build(
+    test(
+      'defaults missing required fields to empty string in realUser mode',
+      () {
+        final req = GetLoginSessionApiReqFactory.build(
           admSession: 'adm-session',
           userDataSourceMode: MiniAppUserDataSourceMode.realUser,
           user: UserEntityDto(
@@ -54,9 +55,13 @@ void main() {
             firstName: 'Bold',
             lastName: 'Baatar',
           ),
-        ),
-        throwsA(isA<ApiIntegrationException>()),
-      );
-    });
+        );
+
+        expect(req.registerNo, 'AB12345678');
+        expect(req.firstName, 'Bold');
+        expect(req.lastName, 'Baatar');
+        expect(req.mobile, '');
+      },
+    );
   });
 }

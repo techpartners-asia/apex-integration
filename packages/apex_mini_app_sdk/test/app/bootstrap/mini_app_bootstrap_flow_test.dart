@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('MiniAppBootstrapFlow.resolveNextRoute', () {
-    test('routes ready users directly to overview', () {
+    test('routes ready users through sec account first', () {
       final AcntBootstrapState state = _bootstrapState(
         hasAcnt: true,
         hasIpsAcnt: true,
@@ -15,7 +15,7 @@ void main() {
           state,
           currentUser: _completeUser(),
         ),
-        MiniAppRoutes.overview,
+        MiniAppRoutes.secAcnt,
       );
     });
 
@@ -39,7 +39,7 @@ void main() {
     );
 
     test(
-      'routes short-flow users with complete onboarding to overview',
+      'routes short-flow users with complete onboarding through sec account first',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -57,13 +57,13 @@ void main() {
               ),
             ),
           ),
-          MiniAppRoutes.overview,
+          MiniAppRoutes.secAcnt,
         );
       },
     );
 
     test(
-      'routes short-flow open accounts to overview even when contract is pending',
+      'routes short-flow open accounts through sec account first even when contract is pending',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -76,13 +76,13 @@ void main() {
             state,
             currentUser: _completeUser(),
           ),
-          MiniAppRoutes.overview,
+          MiniAppRoutes.secAcnt,
         );
       },
     );
 
     test(
-      'routes short-flow pending accounts to overview',
+      'routes short-flow pending accounts through sec account first',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -95,7 +95,7 @@ void main() {
             state,
             currentUser: _completeUser(),
           ),
-          MiniAppRoutes.overview,
+          MiniAppRoutes.secAcnt,
         );
       },
     );
@@ -188,7 +188,7 @@ void main() {
     });
 
     test(
-      'routes to overview when paid pending account only has calculation left',
+      'routes through sec account first when paid pending account only has calculation left',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -207,13 +207,13 @@ void main() {
               ),
             ),
           ),
-          MiniAppRoutes.overview,
+          MiniAppRoutes.secAcnt,
         );
       },
     );
 
     test(
-      'routes to overview when API status is unpaid but profile is paid',
+      'routes through sec account first when API status is unpaid but profile is paid',
       () {
         final AcntBootstrapState state = _bootstrapState(
           hasAcnt: true,
@@ -232,7 +232,7 @@ void main() {
               ),
             ),
           ),
-          MiniAppRoutes.overview,
+          MiniAppRoutes.secAcnt,
         );
       },
     );

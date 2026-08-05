@@ -305,7 +305,10 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   }
 
   /// Clears transient UI and pops the current mini-app route when possible.
-  Future<void> _closeMiniAppSafely(BuildContext? context) async {
+  ///
+  /// When [force] is true, every internal mini-app route is drained before
+  /// falling through to the host's embedding route.
+  Future<void> _closeMiniAppSafely(BuildContext? context, {bool force = false}) async {
     if (_isClosingMiniApp) {
       return;
     }
@@ -316,7 +319,7 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       final BuildContext? mountedContext = context != null && context.mounted ? context : null;
       final Set<ScaffoldMessengerState> messengers = _resolveMiniAppScaffoldMessengers(mountedContext);
       _clearMiniAppScaffoldMessengers(messengers);
-      await _popCurrentMiniAppRoute(mountedContext);
+      await _popCurrentMiniAppRoute(mountedContext, force: force);
       _clearMiniAppScaffoldMessengers(messengers);
     } catch (error, stackTrace) {
       debugPrint('Failed to close mini app route: $error');
@@ -366,7 +369,27 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
   }
 
   /// Pops the closest available mini-app navigator route.
-  Future<void> _popCurrentMiniAppRoute(BuildContext? context) async {
+  ///
+  /// When [force] is true, this skips straight to removing the host's
+  /// embedding route instead of draining the mini app's own internal routes
+  /// first — draining them would otherwise flash intermediate mini-app
+  /// screens (e.g. overview) for a frame before the final transition to the
+  /// host. Falls back to draining internal routes only if there's no
+  /// embedding route to pop (e.g. the mini app isn't wrapped in a host route).
+  Future<void> _popCurrentMiniAppRoute(BuildContext? context, {bool force = false}) async {
+    if (force) {
+      if (mounted) {
+        final NavigatorState? embeddingNavigator = Navigator.maybeOf(
+          this.context,
+        );
+        if (await _maybePopEmbeddingNavigator(embeddingNavigator)) {
+          return;
+        }
+      }
+      await _maybePopNavigator(_navigatorKey.currentState, force: true);
+      return;
+    }
+
     final NavigatorState? contextNavigator = context != null && context.mounted ? Navigator.maybeOf(context) : null;
     final ModalRoute<dynamic>? contextRoute = context != null && context.mounted ? ModalRoute.of(context) : null;
     final bool hasCoveringRoute = contextRoute != null && !contextRoute.isCurrent;
@@ -407,8 +430,11 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
     }
   }
 
-  /// Pops [navigator] once when it has an internal route to remove.
-  Future<bool> _maybePopNavigator(NavigatorState? navigator) async {
+  /// Pops [navigator] when it has an internal route to remove.
+  ///
+  /// Pops once by default; when [force] is true, pops repeatedly until the
+  /// navigator can't pop anymore.
+  Future<bool> _maybePopNavigator(NavigatorState? navigator, {bool force = false}) async {
     if (navigator == null || !navigator.mounted) {
       return false;
     }
@@ -417,9 +443,16 @@ class _ApexMiniAppSdkState extends State<ApexMiniAppSdk> {
       return false;
     }
 
-    navigator.pop();
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    return true;
+    bool popped = false;
+    while (navigator.mounted && navigator.canPop()) {
+      navigator.pop();
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      popped = true;
+      if (!force) {
+        break;
+      }
+    }
+    return popped;
   }
 
   /// Pops the host route that contains the SDK without invoking host callbacks.

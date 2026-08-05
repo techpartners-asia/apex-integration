@@ -9,6 +9,13 @@ void main() {
         <String, Object?>{
           'email': 'info@investx.mn',
           'phone': '75107500',
+          'social_links': <Object?>[
+            <String, Object?>{
+              'name': 'InvestX',
+              'link': 'https://facebook.com/investx',
+              'type': 'facebook',
+            },
+          ],
           'locations': <String, Object?>{
             'title': 'Head Office',
             'description': 'Olympic street',
@@ -23,15 +30,6 @@ void main() {
                 'physical_path': 'https://example.com/location.png',
               },
             ],
-            'company': <String, Object?>{
-              'socialLinks': <Object?>[
-                <String, Object?>{
-                  'name': 'InvestX',
-                  'link': 'https://facebook.com/investx',
-                  'type': 'facebook',
-                },
-              ],
-            },
           },
         },
       );
