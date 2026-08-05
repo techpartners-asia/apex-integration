@@ -33,7 +33,7 @@ void main() {
       expect(entity.id, 0);
       expect(entity.title, '');
       expect(entity.description, '');
-      expect(entity.status, FeedbackStatus.pending);
+      expect(entity.status, '');
       expect(entity.createdAt, '');
       expect(entity.updatedAt, '');
       expect(entity.userId, 0);
@@ -53,18 +53,18 @@ void main() {
       expect(entity.status, FeedbackStatus.closed);
     });
 
-    test('parses case-insensitive status', () {
+    test('parses status without normalizing case', () {
       final FeedbackEntity entity = FeedbackEntity.fromJson(
         const <String, Object?>{'status': 'RESOLVED'},
       );
-      expect(entity.status, FeedbackStatus.resolved);
+      expect(entity.status, 'RESOLVED');
     });
 
-    test('treats unknown status as pending', () {
+    test('passes through unrecognized status values as-is', () {
       final FeedbackEntity entity = FeedbackEntity.fromJson(
         const <String, Object?>{'status': 'unknown_value'},
       );
-      expect(entity.status, FeedbackStatus.pending);
+      expect(entity.status, 'unknown_value');
     });
 
     test('parses string id as int', () {

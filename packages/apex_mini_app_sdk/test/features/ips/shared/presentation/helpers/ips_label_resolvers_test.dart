@@ -29,7 +29,7 @@ void main() {
   });
 
   test(
-    'falls back to localized payment copy when no explicit message exists',
+    'returns null when no explicit message exists',
     () {
       final MiniAppPaymentRes result = MiniAppPaymentRes.failed(
         failure: MiniAppFailure(
@@ -46,10 +46,7 @@ void main() {
         ),
       );
 
-      expect(
-        resolvePaymentResultMessage(l10n, result),
-        l10n.ipsPaymentInvoiceCreateFailed,
-      );
+      expect(resolvePaymentResultMessage(l10n, result), isNull);
     },
   );
 }
