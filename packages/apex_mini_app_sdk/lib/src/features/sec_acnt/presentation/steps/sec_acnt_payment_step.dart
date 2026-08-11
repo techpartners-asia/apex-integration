@@ -32,7 +32,7 @@ class SecAcntPaymentStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final responsive = context.responsive;
-    final bool hasBaseAmount = payableAmount.isFinite && payableAmount > 0;
+    final bool hasBaseAmount = payableAmount.isFinite && payableAmount >= 0;
     final bool hasError =
         errorMessage != null && errorMessage!.trim().isNotEmpty;
     final double totalPayableAmount = hasBaseAmount

@@ -79,6 +79,9 @@ abstract interface class MiniAppPaymentsRepository {
   /// Loads the account opening fee added to the sec-acnt payment total.
   Future<double> getAccountFeesAmount();
 
+  /// Checks whether the account-opening commission payment is required.
+  Future<bool> isPaymentActive(double commission);
+
   /// Creates a payment invoice for a mini-app action.
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req);
 
@@ -209,6 +212,10 @@ class RemoteMiniAppApiRepository implements MiniAppApiRepository {
   @override
   Future<double> getAccountFeesAmount() =>
       paymentsRepository.getAccountFeesAmount();
+
+  @override
+  Future<bool> isPaymentActive(double commission) =>
+      paymentsRepository.isPaymentActive(commission);
 
   @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) => paymentsRepository.createInvoice(req);
