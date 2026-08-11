@@ -232,6 +232,11 @@ class _SuccessApi implements MiniAppApiRepository {
   }
 
   @override
+  Future<bool> isPaymentActive(double commission) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
     // TODO: implement createInvoice
     throw UnimplementedError();
@@ -340,6 +345,11 @@ class _FailingApi implements MiniAppApiRepository {
 
   @override
   Future<double> getAccountFeesAmount() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isPaymentActive(double commission) {
     throw UnimplementedError();
   }
 

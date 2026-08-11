@@ -113,6 +113,9 @@ class _FakePaymentsRepository implements MiniAppPaymentsRepository {
   Future<double> getAccountFeesAmount() async => 0;
 
   @override
+  Future<bool> isPaymentActive(double commission) async => true;
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) async {
     return const MiniAppPayment(
       id: 1,

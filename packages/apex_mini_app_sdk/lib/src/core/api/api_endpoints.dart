@@ -44,6 +44,9 @@ class ApiEndpoints {
   /// Securities account opening fee amount added to the payment total.
   static const String accountFeesAmount = '/api/v1/user/payment/account-fees-amount';
 
+  /// Checks whether the account-opening commission payment is required.
+  static const String isPaymentActive = '/api/v1/user/payment/is-payment-active';
+
   /// Backend payment callback endpoint called after wallet success.
   static const String paymentCallback = '/api/v1/webhooks/payment/callback';
 

@@ -45,7 +45,12 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
       if (!mounted) {
         return;
       }
-      context.read<IpsSecAcntCubit>().loadAccountFeesAmount();
+      final IpsSecAcntCubit cubit = context.read<IpsSecAcntCubit>();
+      cubit.loadAccountFeesAmount();
+      final double? commission = _payableCommission;
+      if (commission != null && commission.isFinite && commission >= 0) {
+        cubit.loadIsPaymentActive(commission: commission);
+      }
     });
   }
 
@@ -56,12 +61,14 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
   Future<void> _submitOpeningPayment() async {
     final IpsSecAcntCubit cubit = context.read<IpsSecAcntCubit>();
     final double? amount = _payableCommission;
-    if (amount == null || !amount.isFinite || amount <= 0) {
+    final bool hasValidAmount =
+        amount != null && amount.isFinite && amount >= 0;
+    if (cubit.state.isPaymentActive && !hasValidAmount) {
       return;
     }
 
     final MiniAppPaymentRes? res = await cubit.submitOpeningPayment(
-      payableAmount: amount,
+      payableAmount: hasValidAmount ? amount : 0,
       personalInfo: widget.draft.toPersonalInfoData(),
       bootstrapState: _bootstrapState,
     );
@@ -128,13 +135,15 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
     return BlocBuilder<IpsSecAcntCubit, IpsSecAcntState>(
       builder: (BuildContext context, IpsSecAcntState state) {
         final double? payableCommission = _payableCommission;
+        final bool hasValidAmount =
+            payableCommission != null &&
+            payableCommission.isFinite &&
+            payableCommission >= 0;
         final bool canPay =
             !state.isSubmitting &&
             !state.isLoadingAccountFees &&
             state.hasLoadedAccountFees &&
-            payableCommission != null &&
-            payableCommission.isFinite &&
-            payableCommission > 0 &&
+            (!state.isPaymentActive || hasValidAmount) &&
             (state.errorMessage == null || state.errorMessage!.trim().isEmpty);
 
         return CustomScaffold(

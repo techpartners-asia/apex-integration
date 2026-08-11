@@ -54,10 +54,54 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     }
   }
 
+  /// Checks whether the opening-fee commission payment is currently required.
+  ///
+  /// Called when the payment screen opens (alongside [loadAccountFeesAmount])
+  /// so [submitOpeningPayment] already knows whether to skip invoice/wallet
+  /// before the user taps pay.
+  Future<void> loadIsPaymentActive({required double commission}) async {
+    if (state.isCheckingPaymentActive || state.hasCheckedPaymentActive) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        isCheckingPaymentActive: true,
+        errorMessage: null,
+      ),
+    );
+
+    try {
+      final bool isActive = await paymentsRepository.isPaymentActive(
+        commission,
+      );
+      emit(
+        state.copyWith(
+          isCheckingPaymentActive: false,
+          hasCheckedPaymentActive: true,
+          isPaymentActive: isActive,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          isCheckingPaymentActive: false,
+          errorMessage: formatIpsError(error, l10n),
+        ),
+      );
+    }
+  }
+
   /// Submits account-opening request when needed, then runs opening-fee payment.
   ///
   /// Skips [InvestmentBootstrapService.addSecuritiesAcntReq] when
   /// [bootstrapState.hasAcnt] is already true (short-flow opening fee only).
+  ///
+  /// Uses [loadIsPaymentActive]'s cached result rather than calling
+  /// `isPaymentActive` again — the check runs once when the payment screen
+  /// opens, not on every submit. When the commission payment is not
+  /// currently required, invoice creation and the host wallet handoff are
+  /// skipped entirely and the account-opening request is submitted directly.
   Future<MiniAppPaymentRes?> submitOpeningPayment({
     required double payableAmount,
     SecAcntPersonalInfoData? personalInfo,
@@ -72,15 +116,30 @@ class IpsSecAcntCubit extends Cubit<IpsSecAcntState> {
     );
 
     try {
-      final double invoiceAmount = state.totalPayableAmount(payableAmount);
-      final MiniAppPaymentRes paymentRes = await paymentExecutor.execute(
-        flow: MiniAppPaymentFlow.secAcntOpening,
-        invoiceRequest: CreateInvoiceApiReq(
-          amount: invoiceAmount,
-          note: 'sec_acnt_opening_fee',
-          isTransaction: false,
-        ),
-      );
+      final MiniAppPaymentRes paymentRes;
+      if (state.isPaymentActive) {
+        final double invoiceAmount = state.totalPayableAmount(payableAmount);
+        paymentRes = await paymentExecutor.execute(
+          flow: MiniAppPaymentFlow.secAcntOpening,
+          invoiceRequest: CreateInvoiceApiReq(
+            amount: invoiceAmount,
+            note: 'sec_acnt_opening_fee',
+            isTransaction: false,
+          ),
+        );
+      } else {
+        paymentRes = MiniAppPaymentRes.success(
+          message: 'sec_acnt_opening_payment_not_required',
+          req: MiniAppPaymentReq(
+            flow: MiniAppPaymentFlow.secAcntOpening,
+            invoiceId: '',
+            amount: payableAmount,
+            note: 'sec_acnt_opening_fee_not_required',
+            paymentRecordId: 0,
+            isTransaction: false,
+          ),
+        );
+      }
 
       BackendApiLogger.shared(StaticApiConfig.techInvestXUrl).log(
         level: paymentRes.success ? 'info' : 'warn',

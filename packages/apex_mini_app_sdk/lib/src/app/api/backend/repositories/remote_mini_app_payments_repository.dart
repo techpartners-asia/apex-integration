@@ -35,6 +35,24 @@ class RemoteMiniAppPaymentsRepository implements MiniAppPaymentsRepository {
   }
 
   @override
+  Future<bool> isPaymentActive(double commission) async {
+    try {
+      await _ensureAdminAuthToken(session);
+      final IsPaymentActiveResponseDto response = await api.isPaymentActive(
+        IsPaymentActiveApiReq(commission: commission),
+      );
+      return response.isActive;
+    } catch (error, stackTrace) {
+      logger.onError(
+        'is_payment_active_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) async {
     try {
       await _ensureAdminAuthToken(session);

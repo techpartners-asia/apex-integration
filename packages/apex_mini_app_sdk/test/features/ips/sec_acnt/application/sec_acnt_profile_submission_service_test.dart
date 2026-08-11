@@ -128,6 +128,11 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   }
 
   @override
+  Future<bool> isPaymentActive(double commission) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
     throw UnimplementedError();
   }

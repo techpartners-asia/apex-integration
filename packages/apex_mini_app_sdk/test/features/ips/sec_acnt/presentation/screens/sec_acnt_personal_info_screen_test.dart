@@ -304,6 +304,9 @@ class _FakeMiniAppApiRepository implements MiniAppApiRepository {
   Future<double> getAccountFeesAmount() async => 0;
 
   @override
+  Future<bool> isPaymentActive(double commission) async => true;
+
+  @override
   Future<MiniAppPayment> createInvoice(CreateInvoiceApiReq req) {
     throw UnimplementedError();
   }

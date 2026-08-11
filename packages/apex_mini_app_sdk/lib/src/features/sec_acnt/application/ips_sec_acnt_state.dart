@@ -23,6 +23,19 @@ class IpsSecAcntState {
   /// Whether account fees were loaded at least once for this payment session.
   final bool hasLoadedAccountFees;
 
+  /// Whether the opening-fee commission payment is currently required.
+  ///
+  /// Defaults to `true` (real payment) until the backend check completes, so
+  /// a pending/failed check never silently skips the wallet handoff.
+  final bool isPaymentActive;
+
+  /// Whether the is-payment-active endpoint is loading.
+  final bool isCheckingPaymentActive;
+
+  /// Whether the is-payment-active check completed at least once for this
+  /// payment session.
+  final bool hasCheckedPaymentActive;
+
   /// Creates securities-account opening state.
   const IpsSecAcntState({
     this.isSubmitting = false,
@@ -32,6 +45,9 @@ class IpsSecAcntState {
     this.accountFeesAmount = 0,
     this.isLoadingAccountFees = false,
     this.hasLoadedAccountFees = false,
+    this.isPaymentActive = true,
+    this.isCheckingPaymentActive = false,
+    this.hasCheckedPaymentActive = false,
   });
 
   /// Opening commission plus account fees from [accountFeesAmount].
@@ -50,6 +66,9 @@ class IpsSecAcntState {
     double? accountFeesAmount,
     bool? isLoadingAccountFees,
     bool? hasLoadedAccountFees,
+    bool? isPaymentActive,
+    bool? isCheckingPaymentActive,
+    bool? hasCheckedPaymentActive,
   }) {
     return IpsSecAcntState(
       isSubmitting: isSubmitting ?? this.isSubmitting,
@@ -67,6 +86,11 @@ class IpsSecAcntState {
           isLoadingAccountFees ?? this.isLoadingAccountFees,
       hasLoadedAccountFees:
           hasLoadedAccountFees ?? this.hasLoadedAccountFees,
+      isPaymentActive: isPaymentActive ?? this.isPaymentActive,
+      isCheckingPaymentActive:
+          isCheckingPaymentActive ?? this.isCheckingPaymentActive,
+      hasCheckedPaymentActive:
+          hasCheckedPaymentActive ?? this.hasCheckedPaymentActive,
     );
   }
 }

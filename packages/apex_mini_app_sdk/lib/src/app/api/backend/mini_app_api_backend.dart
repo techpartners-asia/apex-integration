@@ -120,6 +120,20 @@ class MiniAppApiBackend {
     return CreateInvoiceResponseDto.fromJson(json);
   }
 
+  /// Checks whether the account-opening commission payment is required.
+  Future<IsPaymentActiveResponseDto> isPaymentActive(
+    IsPaymentActiveApiReq req,
+  ) async {
+    final ApiExecutor executor = _requireAuthorizedExecutor('isPaymentActive');
+    final Map<String, Object?> json = await executor.postJson(
+      ApiEndpoints.isPaymentActive,
+      body: req.toJson(),
+      context: const ReqContext(operName: 'isPaymentActive'),
+    );
+
+    return IsPaymentActiveResponseDto.fromJson(json);
+  }
+
   /// Updates the user's target goal.
   Future<ApiActionResponseDto> updateTargetGoal(
     UpdateTargetGoalApiReq req,
