@@ -20,6 +20,7 @@ extension IpsBackendBootstrapApi on IpsBackendApi {
     final Map<String, Object?> json = await protectedExecutor.postJson(
       ApiEndpoints.getSecuritiesAcntList,
       body: req.toJson(),
+      // operName is forwarded to backend request logging/analytics — especially do not rename this getSecAcntList.
       context: const ReqContext(operName: 'getSecAcntList'),
     );
 
