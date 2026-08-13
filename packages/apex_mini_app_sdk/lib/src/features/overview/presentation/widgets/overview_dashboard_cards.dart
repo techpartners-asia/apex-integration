@@ -119,7 +119,7 @@ class OverviewDashboardSummaryCard extends StatelessWidget {
                 label: l10n.ipsOverviewDashboardQuickWithdraw,
                 path: Img.receive,
                 onTap: onWithdraw,
-                disabled: hasPendingOrder,
+                disabled: true,
               ),
             ],
           ),
