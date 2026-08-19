@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 
 void main() {
-  final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('en'));
+  final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('mn'));
 
   test('initial packs are shown without immediately calling getPacks', () {
     final _FakePackService service = _FakePackService();

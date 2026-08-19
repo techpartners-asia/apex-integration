@@ -430,7 +430,7 @@ void main() {
       final TestMiniAppHostController controller = TestMiniAppHostController();
       final IpsOverviewCubit overviewCubit = IpsOverviewCubit(
         bootstrapService: _NoopBootstrapService(),
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       );
       addTearDown(overviewCubit.close);
 
@@ -788,7 +788,7 @@ class _TestBootstrapCubit extends MiniAppBootstrapCubit {
   _TestBootstrapCubit()
     : super(
         bootstrapFlow: _NoopBootstrapFlow(),
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       );
 
   void emitSuccess(MiniAppBootstrapRes res) {

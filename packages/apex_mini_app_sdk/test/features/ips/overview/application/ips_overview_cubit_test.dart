@@ -37,7 +37,7 @@ void main() {
       final IpsOverviewCubit cubit = IpsOverviewCubit(
         bootstrapService: const _FakeBootstrapService(),
         portfolioService: portfolioService,
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       );
 
       await cubit.load(
@@ -87,7 +87,7 @@ void main() {
         _TrackableBootstrapService();
     final IpsOverviewCubit cubit = IpsOverviewCubit(
       bootstrapService: bootstrapService,
-      l10n: lookupSdkLocalizations(const Locale('en')),
+      l10n: lookupSdkLocalizations(const Locale('mn')),
     );
 
     await cubit.load(forceRefresh: true);
