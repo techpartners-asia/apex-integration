@@ -838,6 +838,12 @@ abstract class SdkLocalizations {
   /// **'Таны хувийн мэдээлэл бүрэн баталгаажаагүй байна.\nҮргэлжлүүлэхийн тулд ДАН системээр хувийн мэдээллээ баталгаажуулаад дахин нэвтэрнэ үү.'**
   String get ipsStartupBlockedProfileIncompleteMessage;
 
+  /// No description provided for @ipsStartupBlockedAlreadyRegisteredMessage.
+  ///
+  /// In mn, this message translates to:
+  /// **'Та APEX APP-д бүртгэлтэй байна. Та бүртгэлтэй APP-аар нэвтэрнэ үү.'**
+  String get ipsStartupBlockedAlreadyRegisteredMessage;
+
   /// No description provided for @ipsQuestionnaireTitle.
   ///
   /// In mn, this message translates to:

@@ -1,4 +1,5 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/already_registered_signup_exception.dart';
 import 'package:apex_mini_app_sdk/src/app/bootstrap/profile_incomplete_signup_exception.dart';
 import 'package:apex_mini_app_sdk/src/app/bootstrap/signup_bootstrap_exception.dart';
 
@@ -38,6 +39,12 @@ class MiniAppBootstrapFlow {
     final AcntBootstrapState bootstrapState = await BootstrapStateResolver(
       service: bootstrapService,
     ).load();
+
+    if (bootstrapState.hasAcnt && !hasPaidSecAcntContract(currentUser)) {
+      throw const SignupBootstrapException(
+        AlreadyRegisteredSignupException(),
+      );
+    }
 
     await _autoRequestSecAcntIfNeeded(
       bootstrapState,

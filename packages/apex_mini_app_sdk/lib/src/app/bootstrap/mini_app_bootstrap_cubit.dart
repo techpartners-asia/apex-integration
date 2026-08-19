@@ -1,4 +1,5 @@
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
+import 'package:apex_mini_app_sdk/src/app/bootstrap/already_registered_signup_exception.dart';
 import 'package:apex_mini_app_sdk/src/app/bootstrap/profile_incomplete_signup_exception.dart';
 import 'package:apex_mini_app_sdk/src/app/bootstrap/signup_bootstrap_exception.dart';
 import 'package:apex_mini_app_sdk/src/host/apex_mini_app_host_context.dart';
@@ -24,6 +25,10 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
   /// Whether signup succeeded but required profile fields are missing.
   bool failureIsProfileIncomplete = false;
 
+  /// Whether the user already has a securities account opened through the
+  /// standalone APEX APP but hasn't paid the contract fee there.
+  bool failureIsAlreadyRegistered = false;
+
   MiniAppBootstrapCubit({
     required this.bootstrapFlow,
     required this.l10n,
@@ -36,6 +41,7 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
     failureResponseCode = null;
     failureFromSignup = false;
     failureIsProfileIncomplete = false;
+    failureIsAlreadyRegistered = false;
 
     try {
       final MiniAppBootstrapRes resolution = await bootstrapFlow.resolve();
@@ -54,11 +60,14 @@ class MiniAppBootstrapCubit extends Cubit<LoadableState<MiniAppBootstrapRes>> {
       failureFromSignup = error is SignupBootstrapException;
       failureIsProfileIncomplete =
           resolvedError is ProfileIncompleteSignupException;
+      failureIsAlreadyRegistered =
+          resolvedError is AlreadyRegisteredSignupException;
 
       if (resolvedError is ApiUnauthorizedException) {
         ApexMiniAppHostContext.emitTokenExpired();
       }
       if (!failureIsProfileIncomplete &&
+          !failureIsAlreadyRegistered &&
           !_wasHostNotifiedByApiExecutor(resolvedError)) {
         ApexMiniAppHostContext.emitError(resolvedError, stackTrace);
       }

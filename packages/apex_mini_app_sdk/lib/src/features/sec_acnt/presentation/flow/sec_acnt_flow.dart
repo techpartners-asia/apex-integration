@@ -323,30 +323,15 @@ String? _resolveBootstrapBankName(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) {
-  final String? userBankName = _trimToNull(
+  return _trimToNull(
     user?.bank?.bankName ?? user?.bank?.bankId ?? user?.bank?.bankCode,
   );
-  if (userBankName != null) {
-    return userBankName;
-  }
-
-  final String? bankName = _trimToNull(state?.bootstrapBankName);
-  if (bankName != null) {
-    return bankName;
-  }
-
-  return null;
 }
 
 String? _resolveBootstrapAcntName(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) {
-  final String? acntName = _trimToNull(state?.bootstrapAcntName);
-  if (acntName != null) {
-    return acntName;
-  }
-
   return _trimToNull(user?.bank?.accountName);
 }
 

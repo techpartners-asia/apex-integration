@@ -415,6 +415,10 @@ class SdkLocalizationsMn extends SdkLocalizations {
       'Таны хувийн мэдээлэл бүрэн баталгаажаагүй байна.\nҮргэлжлүүлэхийн тулд ДАН системээр хувийн мэдээллээ баталгаажуулаад дахин нэвтэрнэ үү.';
 
   @override
+  String get ipsStartupBlockedAlreadyRegisteredMessage =>
+      'Та APEX APP-д бүртгэлтэй байна. Та бүртгэлтэй APP-аар нэвтэрнэ үү.';
+
+  @override
   String get ipsQuestionnaireTitle => 'Асуумж';
 
   @override

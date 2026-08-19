@@ -187,6 +187,9 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
             if (cubit.failureIsProfileIncomplete) {
               message = l10n.ipsStartupBlockedProfileIncompleteMessage;
               responseCode = SignupBusinessCodes.profileNotVerified;
+            } else if (cubit.failureIsAlreadyRegistered) {
+              message = l10n.ipsStartupBlockedAlreadyRegisteredMessage;
+              responseCode = null;
             } else if (cubit.failureResponseCode ==
                 SignupBusinessCodes.profileNotVerified) {
               message = state.errorMessage ?? l10n.errorsUnexpected;
