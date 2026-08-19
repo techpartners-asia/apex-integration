@@ -304,19 +304,7 @@ String? _resolveBootstrapBankCode(
   AcntBootstrapState? state, {
   UserEntityDto? user,
 }) {
-  final String? userBankCode = _trimToNull(
-    user?.bank?.bankCode ?? user?.bank?.bankId,
-  );
-  if (userBankCode != null) {
-    return userBankCode;
-  }
-
-  final String? bankCode = _trimToNull(state?.bootstrapBankCode);
-  if (bankCode != null) {
-    return bankCode;
-  }
-
-  return null;
+  return _trimToNull(user?.bank?.bankCode ?? user?.bank?.bankId);
 }
 
 String? _resolveBootstrapBankName(

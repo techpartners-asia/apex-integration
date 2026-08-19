@@ -100,47 +100,6 @@ class AcntBootstrapState {
   /// IPS-specific introduction text returned by the bootstrap endpoint.
   String? get introIps => _detail.introIps;
 
-  /// Bank code used to prefill securities-account personal information.
-  String? get bootstrapBankCode {
-    final String? detailBankCode = _trimToNull(
-      _detail.bankCode ?? _securitiesAccount?.bankCode,
-    );
-    if (detailBankCode != null) {
-      return detailBankCode;
-    }
-
-    for (final GetSecAcntSettlementAccountDto account in _response.stlAcnts) {
-      if (account.isDefault) {
-        return _trimToNull(account.bkrFiCode);
-      }
-    }
-
-    return null;
-  }
-
-  /// Bank name used to prefill securities-account personal information.
-  String? get bootstrapBankName {
-    final String? detailBankName = _trimToNull(
-      _detail.bankName ?? _securitiesAccount?.bankName,
-    );
-    if (detailBankName != null) {
-      return detailBankName;
-    }
-
-    for (final GetSecAcntSettlementAccountDto account in _response.stlAcnts) {
-      if (account.isDefault) {
-        return _trimToNull(account.bkrFiName);
-      }
-    }
-
-    return null;
-  }
-
-  /// Account holder name used to prefill securities-account personal info.
-  /// Only uses [toAcntName] from the detail — settlement account [bkrAcntName]
-  /// is intentionally excluded because it holds the broker name, not the account holder.
-  String? get bootstrapAcntName => _trimToNull(_detail.toAcntName);
-
   /// IBAN/account number used to prefill securities-account personal info.
   String? get bootstrapIban {
     final String? detailIban = _trimToNull(_detail.toAcntCode);
