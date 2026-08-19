@@ -45,7 +45,7 @@ void main() {
   );
 
   test(
-    'submit falls back to cached profile values when optional inputs are blank',
+    'submit falls back to cached profile values when bank/account inputs are blank',
     () async {
       final _FakeMiniAppApiRepository api = _FakeMiniAppApiRepository();
       final SecAcntProfileSubmissionService service =
@@ -62,11 +62,7 @@ void main() {
 
       await service.submit(
         UpdateProfileActionType.updateProfile,
-        const SecAcntPersonalInfoData(
-          iban: '12345678',
-          bankCode: 'FI002',
-          bankLabel: 'Fallback Bank',
-        ),
+        const SecAcntPersonalInfoData(bankLabel: 'Fallback Bank'),
       );
 
       expect(api.lastUpdateProfileReq, isNotNull);
@@ -74,6 +70,34 @@ void main() {
       expect(api.lastUpdateProfileReq!.phoneAddition, '88112233');
       expect(api.lastUpdateProfileReq!.email, 'fallback@example.com');
       expect(api.lastUpdateProfileReq!.bank?.accountName, 'Fallback Name');
+    },
+  );
+
+  test(
+    'buildRequest throws instead of using a stale name when lookup finds no '
+    'account holder for the given bank/account number',
+    () async {
+      final _FakeMiniAppApiRepository api = _FakeMiniAppApiRepository();
+      final SecAcntProfileSubmissionService service =
+          SecAcntProfileSubmissionService(
+            appApi: api,
+            bankAccountLookupRepository: const _FakeLookupRepository(),
+            currentUser: UserEntityDto(
+              bank: const BankDto(accountName: 'Fallback Name'),
+            ),
+          );
+
+      expect(
+        () => service.buildRequest(
+          UpdateProfileActionType.updateProfile,
+          const SecAcntPersonalInfoData(
+            iban: '12345678',
+            bankCode: 'FI002',
+            bankLabel: 'Fallback Bank',
+          ),
+        ),
+        throwsA(isA<ApiBusinessException>()),
+      );
     },
   );
 }

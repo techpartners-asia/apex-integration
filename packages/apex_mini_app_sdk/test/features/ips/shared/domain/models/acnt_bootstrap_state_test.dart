@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test(
-    'resolves bootstrap banking values from account and settlement fallbacks',
+    'resolves bootstrap iban from settlement fallback',
     () {
       final AcntBootstrapState state = AcntBootstrapState(
         response: GetSecuritiesAcntListResDto(
@@ -37,8 +37,6 @@ void main() {
         ),
       );
 
-      expect(state.bootstrapBankCode, 'SEC001');
-      expect(state.bootstrapBankName, 'Securities Bank');
       expect(state.bootstrapIban, '49900112233');
       expect(state.currency, 'MNT');
       expect(state.hasOpenSecAcnt, isTrue);

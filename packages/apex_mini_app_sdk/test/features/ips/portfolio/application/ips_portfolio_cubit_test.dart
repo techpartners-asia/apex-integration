@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 
 void main() {
-  final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('en'));
+  final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('mn'));
 
   group('IpsPortfolioCubit', () {
     blocTest<IpsPortfolioCubit, LoadableState<IpsPortfolioViewData>>(

@@ -28,7 +28,7 @@ void main() {
           ),
         ),
       ),
-      l10n: lookupSdkLocalizations(const Locale('en')),
+      l10n: lookupSdkLocalizations(const Locale('mn')),
     );
 
     await cubit.loadPricing();
@@ -88,7 +88,7 @@ void main() {
             ),
           ),
         ),
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       );
 
       await cubit.loadPricing();
@@ -125,7 +125,7 @@ void main() {
           ),
         ),
       ),
-      l10n: lookupSdkLocalizations(const Locale('en')),
+      l10n: lookupSdkLocalizations(const Locale('mn')),
       unitPrice: 150000,
       serviceFee: 2500,
     );

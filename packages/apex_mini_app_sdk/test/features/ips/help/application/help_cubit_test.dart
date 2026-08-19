@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('en'));
+  final SdkLocalizations l10n = lookupSdkLocalizations(const Locale('mn'));
 
   blocTest<HelpCubit, LoadableState<BranchInfoEntity>>(
     'load emits success state when company info is returned',

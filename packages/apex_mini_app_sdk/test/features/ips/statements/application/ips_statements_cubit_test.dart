@@ -27,7 +27,7 @@ void main() {
     );
     final IpsStatementsCubit cubit = IpsStatementsCubit(
       service: service,
-      l10n: lookupSdkLocalizations(const Locale('en')),
+      l10n: lookupSdkLocalizations(const Locale('mn')),
     );
     const SdkPortfolioContext context = SdkPortfolioContext(
       casaAcntId: 10,
@@ -77,7 +77,7 @@ void main() {
       );
       final IpsStatementsCubit cubit = IpsStatementsCubit(
         service: service,
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       );
 
       await cubit.load();
@@ -125,7 +125,7 @@ void main() {
     );
     final IpsStatementsCubit cubit = IpsStatementsCubit(
       service: service,
-      l10n: lookupSdkLocalizations(const Locale('en')),
+      l10n: lookupSdkLocalizations(const Locale('mn')),
     );
 
     await cubit.load();
@@ -162,7 +162,7 @@ void main() {
     );
     final IpsStatementsCubit cubit = IpsStatementsCubit(
       service: service,
-      l10n: lookupSdkLocalizations(const Locale('en')),
+      l10n: lookupSdkLocalizations(const Locale('mn')),
     );
     const SdkPortfolioContext baseContext = SdkPortfolioContext(
       casaAcntId: 10,
@@ -208,7 +208,7 @@ void main() {
     );
     final IpsStatementsCubit cubit = IpsStatementsCubit(
       service: service,
-      l10n: lookupSdkLocalizations(const Locale('en')),
+      l10n: lookupSdkLocalizations(const Locale('mn')),
     );
     const SdkPortfolioContext baseContext = SdkPortfolioContext(
       casaAcntId: 10,
@@ -253,7 +253,7 @@ void main() {
       );
       final IpsStatementsCubit cubit = IpsStatementsCubit(
         service: service,
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       );
 
       await cubit.load();

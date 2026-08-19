@@ -63,11 +63,19 @@ class SecAcntProfileSubmissionService {
             bankCode: bankCode,
             accountNumber: accountNumber,
           );
-      final String? accountHolderName = lookupResult.accountHolderName;
-      final String resolvedName = _trimToEmpty(accountHolderName);
+      final String resolvedName = _trimToEmpty(lookupResult.accountHolderName);
       if (resolvedName.isNotEmpty) {
         return resolvedName;
       }
+
+      // A bank/account number was actually looked up but resolved to no
+      // holder name (e.g. account not found) — never fall through to a
+      // stale/unrelated name here, since it would misrepresent whose name
+      // owns this bank/account pair.
+      throw ApiBusinessException(
+        responseCode: lookupResult.responseCode ?? 0,
+        message: _trimToEmpty(lookupResult.responseDesc),
+      );
     }
 
     final String enteredAccountName = _trimToEmpty(personalInfo.acntName);

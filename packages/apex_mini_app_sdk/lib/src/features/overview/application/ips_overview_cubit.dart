@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apex_mini_app_sdk/apex_mini_app_sdk.dart';
 
@@ -43,6 +45,12 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
     AcntBootstrapState? initial,
     bool forceRefresh = false,
   }) async {
+    // Fire-and-forget: refreshes the cached current user in the session
+    // store, which the overview screen watches reactively. Bootstrap state
+    // alone doesn't carry personal/contract info the sec_acnt flow relies
+    // on, so this needs to run on every load, not just when forceRefresh.
+    unawaited(_refreshCurrentUserProfile());
+
     if (!forceRefresh && initial != null) {
       if (_shouldLoadDashboardData(initial)) {
         emit(
@@ -198,6 +206,20 @@ class IpsOverviewCubit extends Cubit<LoadableState<IpsOverviewViewData>> {
       return await repo.getLoyaltyInfo();
     } catch (_) {
       return null;
+    }
+  }
+
+  Future<void> _refreshCurrentUserProfile() async {
+    final MiniAppProfileRepository? repo = profileRepository;
+    if (repo == null) return;
+    try {
+      await repo.getProfileInfo();
+    } catch (error, stackTrace) {
+      logger.onError(
+        'overview_profile_refresh_failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 

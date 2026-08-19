@@ -63,7 +63,10 @@ Widget buildIpsOverviewPage(
           profileRepository: dependencies.appApi,
           l10n: l10n,
           logger: dependencies.logger,
-        )..load(initial: arguments is AcntBootstrapState ? arguments : null),
+        )..load(
+          initial: arguments is AcntBootstrapState ? arguments : null,
+          forceRefresh: arguments is AcntBootstrapState,
+        ),
         child: const IpsOverviewScreen(),
       ),
     ),

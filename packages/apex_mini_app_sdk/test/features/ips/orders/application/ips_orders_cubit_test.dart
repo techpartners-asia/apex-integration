@@ -43,7 +43,7 @@ void main() {
       final IpsOrdersCubit cubit = IpsOrdersCubit(
         service: ordersService,
         portfolioService: portfolioService,
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       );
 
       await cubit.cancelOrder(pendingOrder);
