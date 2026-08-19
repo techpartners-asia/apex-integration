@@ -274,7 +274,7 @@ class _TestIpsOverviewCubit extends IpsOverviewCubit {
   _TestIpsOverviewCubit(LoadableState<IpsOverviewViewData> initialState)
     : super(
         bootstrapService: const _FakeBootstrapService(),
-        l10n: lookupSdkLocalizations(const Locale('en')),
+        l10n: lookupSdkLocalizations(const Locale('mn')),
       ) {
     emit(initialState);
   }
