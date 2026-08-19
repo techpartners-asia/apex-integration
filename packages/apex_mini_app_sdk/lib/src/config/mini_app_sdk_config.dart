@@ -226,12 +226,15 @@ class MiniAppSdkConfig {
   }
 
   /// Maps Flutter locale into the backend language code expected by Apex APIs.
+  ///
+  /// Only Mongolian is supported by the SDK's localizations, so every locale
+  /// resolves to 'MN'.
   static String? _languageFromLocale(Locale? locale) {
     final String languageCode = locale?.languageCode.trim().toLowerCase() ?? '';
     if (languageCode.isEmpty) {
       return null;
     }
-    return languageCode == 'en' ? 'EN' : 'MN';
+    return 'MN';
   }
 
   /// Returns a trimmed non-empty string or `null`.

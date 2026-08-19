@@ -896,6 +896,9 @@ class SdkLocalizationsMn extends SdkLocalizations {
   String get ipsStatusPending => 'Хүлээгдэж буй';
 
   @override
+  String get ipsStatusNew => 'Хүлээгдэж буй';
+
+  @override
   String get ipsStatusActive => 'Идэвхтэй';
 
   @override

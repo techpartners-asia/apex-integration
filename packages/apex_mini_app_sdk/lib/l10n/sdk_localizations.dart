@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
-import 'sdk_localizations_en.dart';
 import 'sdk_localizations_mn.dart';
 
 // ignore_for_file: type=lint
@@ -93,2829 +92,2832 @@ abstract class SdkLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('en'),
-    Locale('mn'),
-  ];
+  static const List<Locale> supportedLocales = <Locale>[Locale('mn')];
 
   /// No description provided for @commonCountryMongolia.
   ///
-  /// In en, this message translates to:
-  /// **'Mongolia'**
+  /// In mn, this message translates to:
+  /// **'Монгол'**
   String get commonCountryMongolia;
 
   /// No description provided for @ipsSellFailureMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Your request was unsuccessful.'**
+  /// In mn, this message translates to:
+  /// **'Таны хүсэлт амжилтгүй боллоо.'**
   String get ipsSellFailureMessage;
 
   /// No description provided for @commonLoading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading'**
+  /// In mn, this message translates to:
+  /// **'Ачаалж байна'**
   String get commonLoading;
 
   /// No description provided for @commonRetry.
   ///
-  /// In en, this message translates to:
-  /// **'Retry'**
+  /// In mn, this message translates to:
+  /// **'Дахин оролдох'**
   String get commonRetry;
 
   /// No description provided for @commonContinue.
   ///
-  /// In en, this message translates to:
-  /// **'Continue'**
+  /// In mn, this message translates to:
+  /// **'Үргэлжлүүлэх'**
   String get commonContinue;
 
   /// No description provided for @commonSubmit.
   ///
-  /// In en, this message translates to:
-  /// **'Submit'**
+  /// In mn, this message translates to:
+  /// **'Илгээх'**
   String get commonSubmit;
 
   /// No description provided for @commonCancel.
   ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
+  /// In mn, this message translates to:
+  /// **'Цуцлах'**
   String get commonCancel;
 
   /// No description provided for @commonDismiss.
   ///
-  /// In en, this message translates to:
-  /// **'Dismiss'**
+  /// In mn, this message translates to:
+  /// **'Болих'**
   String get commonDismiss;
 
   /// No description provided for @commonClose.
   ///
-  /// In en, this message translates to:
-  /// **'Close'**
+  /// In mn, this message translates to:
+  /// **'Хаах'**
   String get commonClose;
 
   /// No description provided for @commonBack.
   ///
-  /// In en, this message translates to:
-  /// **'Back'**
+  /// In mn, this message translates to:
+  /// **'Буцах'**
   String get commonBack;
 
   /// No description provided for @commonNext.
   ///
-  /// In en, this message translates to:
-  /// **'Next'**
+  /// In mn, this message translates to:
+  /// **'Дараах'**
   String get commonNext;
 
   /// No description provided for @commonPrevious.
   ///
-  /// In en, this message translates to:
-  /// **'Previous'**
+  /// In mn, this message translates to:
+  /// **'Өмнөх'**
   String get commonPrevious;
 
   /// No description provided for @commonDone.
   ///
-  /// In en, this message translates to:
-  /// **'Done'**
+  /// In mn, this message translates to:
+  /// **'Дуусгах'**
   String get commonDone;
 
   /// No description provided for @commonRefresh.
   ///
-  /// In en, this message translates to:
-  /// **'Refresh'**
+  /// In mn, this message translates to:
+  /// **'Шинэчлэх'**
   String get commonRefresh;
 
   /// No description provided for @commonSelect.
   ///
-  /// In en, this message translates to:
-  /// **'Select'**
+  /// In mn, this message translates to:
+  /// **'Сонгох'**
   String get commonSelect;
 
   /// No description provided for @commonOpen.
   ///
-  /// In en, this message translates to:
-  /// **'Open'**
+  /// In mn, this message translates to:
+  /// **'Нээх'**
   String get commonOpen;
 
   /// No description provided for @commonViewDetails.
   ///
-  /// In en, this message translates to:
-  /// **'Details'**
+  /// In mn, this message translates to:
+  /// **'Дэлгэрэнгүй'**
   String get commonViewDetails;
 
   /// No description provided for @commonAmount.
   ///
-  /// In en, this message translates to:
-  /// **'Amount'**
+  /// In mn, this message translates to:
+  /// **'Дүн'**
   String get commonAmount;
 
   /// No description provided for @commonCurrency.
   ///
-  /// In en, this message translates to:
-  /// **'Currency'**
+  /// In mn, this message translates to:
+  /// **'Валют'**
   String get commonCurrency;
 
   /// No description provided for @commonStatus.
   ///
-  /// In en, this message translates to:
-  /// **'Status'**
+  /// In mn, this message translates to:
+  /// **'Төлөв'**
   String get commonStatus;
 
   /// No description provided for @commonMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Message'**
+  /// In mn, this message translates to:
+  /// **'Мессеж'**
   String get commonMessage;
 
   /// No description provided for @commonNoData.
   ///
-  /// In en, this message translates to:
-  /// **'No data available'**
+  /// In mn, this message translates to:
+  /// **'Мэдээлэл алга'**
   String get commonNoData;
 
   /// No description provided for @commonRequired.
   ///
-  /// In en, this message translates to:
-  /// **'Required'**
+  /// In mn, this message translates to:
+  /// **'Шаардлагатай'**
   String get commonRequired;
 
   /// No description provided for @errorsGenericTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Something went wrong'**
+  /// In mn, this message translates to:
+  /// **'Алдаа гарлаа'**
   String get errorsGenericTitle;
 
   /// No description provided for @errorsServiceUnavailable.
   ///
-  /// In en, this message translates to:
-  /// **'Service is currently unavailable.'**
+  /// In mn, this message translates to:
+  /// **'Үйлчилгээ одоогоор боломжгүй байна.'**
   String get errorsServiceUnavailable;
 
   /// No description provided for @errorsUnexpected.
   ///
-  /// In en, this message translates to:
-  /// **'An unexpected error occurred.'**
+  /// In mn, this message translates to:
+  /// **'Алдаа гарлаа.'**
   String get errorsUnexpected;
 
   /// No description provided for @errorsNetwork.
   ///
-  /// In en, this message translates to:
-  /// **'Network connection failed. Please try again.'**
+  /// In mn, this message translates to:
+  /// **'Сүлжээний холболт амжилтгүй боллоо. Дахин оролдоно уу.'**
   String get errorsNetwork;
 
   /// No description provided for @errorsSession.
   ///
-  /// In en, this message translates to:
-  /// **'Your session is invalid. Please reopen the mini app.'**
+  /// In mn, this message translates to:
+  /// **'Таны session хүчингүй байна. Mini app-аа дахин нээнэ үү.'**
   String get errorsSession;
 
   /// No description provided for @errorsConfig.
   ///
-  /// In en, this message translates to:
-  /// **'mini app integration is not configured correctly.'**
+  /// In mn, this message translates to:
+  /// **'mini app integration өгөгдөл алдаатай байна.'**
   String get errorsConfig;
 
   /// No description provided for @errorsSessionExpired.
   ///
-  /// In en, this message translates to:
-  /// **'Session is invalid or has expired.'**
+  /// In mn, this message translates to:
+  /// **'Session хүчингүй болсон эсвэл дууссан байна.'**
   String get errorsSessionExpired;
 
   /// No description provided for @errorsUnauthorized.
   ///
-  /// In en, this message translates to:
-  /// **'You are not authorized to perform this action.'**
+  /// In mn, this message translates to:
+  /// **'Танд энэ үйлдлийг хийх эрх алга.'**
   String get errorsUnauthorized;
 
   /// No description provided for @errorsApiLoadFailed.
   ///
-  /// In en, this message translates to:
-  /// **'Failed to load data from the backend.'**
+  /// In mn, this message translates to:
+  /// **'Backend-ээс өгөгдөл татаж чадсангүй.'**
   String get errorsApiLoadFailed;
 
   /// No description provided for @errorsActionFailed.
   ///
-  /// In en, this message translates to:
-  /// **'The action could not be completed.'**
+  /// In mn, this message translates to:
+  /// **'Үйлдлийг гүйцэтгэж чадсангүй.'**
   String get errorsActionFailed;
 
   /// No description provided for @errorsMissingIntegration.
   ///
-  /// In en, this message translates to:
-  /// **'Required host integration is missing.'**
+  /// In mn, this message translates to:
+  /// **'Шаардлагатай host integration тохируулагдаагүй байна.'**
   String get errorsMissingIntegration;
 
   /// No description provided for @errorsMissingContract.
   ///
-  /// In en, this message translates to:
-  /// **'Exact backend contract is not available yet.'**
+  /// In mn, this message translates to:
+  /// **'Backend-ийн нарийн contract хараахан бэлэн болоогүй байна.'**
   String get errorsMissingContract;
 
   /// No description provided for @errorsUnknownRoute.
   ///
-  /// In en, this message translates to:
-  /// **'The reqed flow route is not registered.'**
+  /// In mn, this message translates to:
+  /// **'Route бүртгэгдээгүй байна.'**
   String get errorsUnknownRoute;
 
   /// No description provided for @validationRequired.
   ///
-  /// In en, this message translates to:
-  /// **'This field is required.'**
+  /// In mn, this message translates to:
+  /// **'Энэ талбарыг заавал бөглөнө.'**
   String get validationRequired;
 
   /// No description provided for @validationFillRequired.
   ///
-  /// In en, this message translates to:
-  /// **'Please fill in the required fields.'**
+  /// In mn, this message translates to:
+  /// **'Талбарыг заавал бөглөнө үү.'**
   String get validationFillRequired;
 
   /// No description provided for @validationSelectionRequired.
   ///
-  /// In en, this message translates to:
-  /// **'Please select a value.'**
+  /// In mn, this message translates to:
+  /// **'Утга сонгоно уу.'**
   String get validationSelectionRequired;
 
   /// No description provided for @validationInvalidEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a valid email address.'**
+  /// In mn, this message translates to:
+  /// **'Имэйл хаягаа зөв оруулна уу.'**
   String get validationInvalidEmail;
 
   /// No description provided for @validationInvalidPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a valid phone number.'**
+  /// In mn, this message translates to:
+  /// **'Утасны дугаараа зөв оруулна уу.'**
   String get validationInvalidPhone;
 
   /// No description provided for @validationInvalidRegisterNo.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a valid register number.'**
+  /// In mn, this message translates to:
+  /// **'Регистрийн дугаараа зөв оруулна уу.'**
   String get validationInvalidRegisterNo;
 
   /// No description provided for @validationInvalidIban.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a valid account number.'**
+  /// In mn, this message translates to:
+  /// **'Дансны дугаараа зөв оруулна уу.'**
   String get validationInvalidIban;
 
   /// No description provided for @validationMinLength.
   ///
-  /// In en, this message translates to:
-  /// **'Enter at least {count} characters.'**
+  /// In mn, this message translates to:
+  /// **'Хамгийн багадаа {count} тэмдэгт оруулна уу.'**
   String validationMinLength(int count);
 
   /// No description provided for @validationMaxLength.
   ///
-  /// In en, this message translates to:
-  /// **'Enter no more than {count} characters.'**
+  /// In mn, this message translates to:
+  /// **'Ихдээ {count} тэмдэгт оруулна уу.'**
   String validationMaxLength(int count);
 
   /// No description provided for @validationMinQuantity.
   ///
-  /// In en, this message translates to:
-  /// **'Quantity must be at least 1.'**
+  /// In mn, this message translates to:
+  /// **'Тоо хэмжээ хамгийн багадаа 1 байна.'**
   String get validationMinQuantity;
 
   /// No description provided for @validationInvalidAmount.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a valid amount.'**
+  /// In mn, this message translates to:
+  /// **'Зөв дүн оруулна уу.'**
   String get validationInvalidAmount;
 
   /// No description provided for @validationMinAmount.
   ///
-  /// In en, this message translates to:
-  /// **'Amount is below the minimum allowed value.'**
+  /// In mn, this message translates to:
+  /// **'Дүн нь зөвшөөрөгдөх доод хэмжээнээс бага байна.'**
   String get validationMinAmount;
 
   /// No description provided for @validationQuestionnaireIncomplete.
   ///
-  /// In en, this message translates to:
-  /// **'Please answer all questions before continuing.'**
+  /// In mn, this message translates to:
+  /// **'Үргэлжлүүлэхийн өмнө бүх асуултад хариулна уу.'**
   String get validationQuestionnaireIncomplete;
 
   /// No description provided for @validationMissingPackSelection.
   ///
-  /// In en, this message translates to:
-  /// **'Please choose a recommended pack first.'**
+  /// In mn, this message translates to:
+  /// **'Эхлээд санал болгосон багцаас сонгоно уу.'**
   String get validationMissingPackSelection;
 
   /// No description provided for @validationMissingSrcFiCode.
   ///
-  /// In en, this message translates to:
-  /// **'A valid srcFiCode is required before retrieving recommended packs.'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон багцыг авахын өмнө хүчинтэй srcFiCode шаардлагатай.'**
   String get validationMissingSrcFiCode;
 
   /// No description provided for @validationMissingOrderId.
   ///
-  /// In en, this message translates to:
-  /// **'Order identifier is required.'**
+  /// In mn, this message translates to:
+  /// **'Захиалгын дугаар шаардлагатай.'**
   String get validationMissingOrderId;
 
   /// No description provided for @validationMissingAcntReference.
   ///
-  /// In en, this message translates to:
-  /// **'Acnt reference is required.'**
+  /// In mn, this message translates to:
+  /// **'Дансны лавлагаа шаардлагатай.'**
   String get validationMissingAcntReference;
 
   /// No description provided for @validationAccountHolderNotFound.
   ///
-  /// In en, this message translates to:
-  /// **'Please verify your account number and re-enter it to save.'**
+  /// In mn, this message translates to:
+  /// **'Та дансны дугаараа шалгаад шинээр оруулж хадгална уу'**
   String get validationAccountHolderNotFound;
 
   /// No description provided for @validationIbanNotAllowed.
   ///
-  /// In en, this message translates to:
-  /// **'Please enter your account number, not your IBAN.'**
+  /// In mn, this message translates to:
+  /// **'IBAN дугаар биш, зөвхөн дансны дугаараа оруулна уу'**
   String get validationIbanNotAllowed;
 
   /// No description provided for @ipsHomeTitle.
   ///
-  /// In en, this message translates to:
-  /// **'IPS Overview'**
+  /// In mn, this message translates to:
+  /// **'IPS тойм'**
   String get ipsHomeTitle;
 
   /// No description provided for @ipsHomeSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Sec acnt bootstrap and IPS eligibility flow.'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ данс баталгаажуулалт'**
   String get ipsHomeSubtitle;
 
   /// No description provided for @ipsHomeOverviewCardTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Current state'**
+  /// In mn, this message translates to:
+  /// **'Одоогийн төлөв'**
   String get ipsHomeOverviewCardTitle;
 
   /// No description provided for @ipsHomeOpenAcntCta.
   ///
-  /// In en, this message translates to:
-  /// **'Acnt flow'**
+  /// In mn, this message translates to:
+  /// **'Данс нээх'**
   String get ipsHomeOpenAcntCta;
 
   /// No description provided for @ipsHomeQuestionnaireCta.
   ///
-  /// In en, this message translates to:
-  /// **'Questionnaire'**
+  /// In mn, this message translates to:
+  /// **'Асуумж'**
   String get ipsHomeQuestionnaireCta;
 
   /// No description provided for @ipsHomeRecommendedPackCta.
   ///
-  /// In en, this message translates to:
-  /// **'Recommended packs'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон багц'**
   String get ipsHomeRecommendedPackCta;
 
   /// No description provided for @ipsHomePortfolioCta.
   ///
-  /// In en, this message translates to:
-  /// **'Portfolio'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын багц'**
   String get ipsHomePortfolioCta;
 
   /// No description provided for @ipsHomeOrdersCta.
   ///
-  /// In en, this message translates to:
-  /// **'Orders'**
+  /// In mn, this message translates to:
+  /// **'Захиалга'**
   String get ipsHomeOrdersCta;
 
   /// No description provided for @ipsHomeNextStepsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Next steps'**
+  /// In mn, this message translates to:
+  /// **'Дараагийн алхам'**
   String get ipsHomeNextStepsTitle;
 
   /// No description provided for @ipsHomeNextStepsSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Open the next IPS flow based on the current customer state.'**
+  /// In mn, this message translates to:
+  /// **'Одоогийн төлөв дээр тулгуурлан IPS-ийн дараагийн алхмыг хийнэ.'**
   String get ipsHomeNextStepsSubtitle;
 
   /// No description provided for @ipsHomeSecAcntLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Sec acnt'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ данс'**
   String get ipsHomeSecAcntLabel;
 
   /// No description provided for @ipsHomeIpsAcntLabel.
   ///
-  /// In en, this message translates to:
-  /// **'IPS acnt'**
+  /// In mn, this message translates to:
+  /// **'IPS данс'**
   String get ipsHomeIpsAcntLabel;
 
   /// No description provided for @ipsHomeAcntStatusLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Acnt status'**
+  /// In mn, this message translates to:
+  /// **'Дансны төлөв'**
   String get ipsHomeAcntStatusLabel;
 
   /// No description provided for @ipsHomeIpsBalanceLabel.
   ///
-  /// In en, this message translates to:
-  /// **'IPS balance'**
+  /// In mn, this message translates to:
+  /// **'IPS үлдэгдэл'**
   String get ipsHomeIpsBalanceLabel;
 
-  /// Greeting shown on the IPS overview screen.
+  /// IPS overview
   ///
-  /// In en, this message translates to:
-  /// **'Hello, {displayName}'**
+  /// In mn, this message translates to:
+  /// **'Сайн байна уу, {displayName}'**
   String ipsHomeGreeting(Object displayName);
 
   /// No description provided for @ipsOverviewVerificationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Verification'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулалт'**
   String get ipsOverviewVerificationTitle;
 
   /// No description provided for @ipsOverviewVerificationSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Complete the steps below to unlock your first pack purchase.'**
+  /// In mn, this message translates to:
+  /// **'Та доорх алхмуудыг гүйцэтгэснээр багц худалдан авах эрх нээгдэнэ.'**
   String get ipsOverviewVerificationSubtitle;
 
   /// No description provided for @ipsOverviewFinalStepLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Final step'**
+  /// In mn, this message translates to:
+  /// **'Сүүлийн алхам'**
   String get ipsOverviewFinalStepLabel;
 
   /// No description provided for @ipsOverviewFirstPackTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Buy your first pack'**
+  /// In mn, this message translates to:
+  /// **'Анхны багцаа худалдан авах'**
   String get ipsOverviewFirstPackTitle;
 
   /// No description provided for @ipsOverviewActionTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Trading'**
+  /// In mn, this message translates to:
+  /// **'Арилжаа'**
   String get ipsOverviewActionTitle;
 
   /// No description provided for @ipsOverviewActionPendingOrderMessage.
   ///
-  /// In en, this message translates to:
-  /// **'You already have an active package order, so you can place a new order once it is confirmed.'**
+  /// In mn, this message translates to:
+  /// **'Танд идэвхтэй багцын захиалга байгаа тул баталгаажсаны дараа дахин захиалга өгөх боломжтой.'**
   String get ipsOverviewActionPendingOrderMessage;
 
   /// No description provided for @ipsOverviewProfileVerified.
   ///
-  /// In en, this message translates to:
-  /// **'Verified'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажсан'**
   String get ipsOverviewProfileVerified;
 
   /// No description provided for @ipsOverviewProfileGuestName.
   ///
-  /// In en, this message translates to:
-  /// **'InvestX user'**
+  /// In mn, this message translates to:
+  /// **'InvestX хэрэглэгч'**
   String get ipsOverviewProfileGuestName;
 
   /// No description provided for @ipsOverviewProfileMenuPersonalInfo.
   ///
-  /// In en, this message translates to:
-  /// **'Personal information'**
+  /// In mn, this message translates to:
+  /// **'Хувийн мэдээлэл'**
   String get ipsOverviewProfileMenuPersonalInfo;
 
   /// No description provided for @ipsOverviewProfilePersonalInfoMissing.
   ///
-  /// In en, this message translates to:
-  /// **'Information missing'**
+  /// In mn, this message translates to:
+  /// **'Мэдээлэл дутуу'**
   String get ipsOverviewProfilePersonalInfoMissing;
 
   /// No description provided for @ipsOverviewProfileMenuLaw.
   ///
-  /// In en, this message translates to:
-  /// **'Legal'**
+  /// In mn, this message translates to:
+  /// **'Хууль'**
   String get ipsOverviewProfileMenuLaw;
 
   /// No description provided for @ipsOverviewProfileMenuPackInfo.
   ///
-  /// In en, this message translates to:
-  /// **'Pack details'**
+  /// In mn, this message translates to:
+  /// **'Багцын мэдээлэл'**
   String get ipsOverviewProfileMenuPackInfo;
 
   /// No description provided for @ipsOverviewProfileMenuAchievements.
   ///
-  /// In en, this message translates to:
-  /// **'Your achievements'**
+  /// In mn, this message translates to:
+  /// **'Таны амжилт'**
   String get ipsOverviewProfileMenuAchievements;
 
   /// No description provided for @ipsOverviewProfileMenuTerms.
   ///
-  /// In en, this message translates to:
-  /// **'Terms of service'**
+  /// In mn, this message translates to:
+  /// **'Үйлчилгээний нөхцөл'**
   String get ipsOverviewProfileMenuTerms;
 
   /// No description provided for @ipsOverviewProfileMenuFeedback.
   ///
-  /// In en, this message translates to:
-  /// **'Complaints and feedback'**
+  /// In mn, this message translates to:
+  /// **'Гомдол, санал хүсэлт'**
   String get ipsOverviewProfileMenuFeedback;
 
   /// No description provided for @ipsOverviewProfileMenuContact.
   ///
-  /// In en, this message translates to:
-  /// **'Contact us'**
+  /// In mn, this message translates to:
+  /// **'Холбоо барих'**
   String get ipsOverviewProfileMenuContact;
 
   /// No description provided for @ipsOverviewDashboardGreetingLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Greetings of the day'**
+  /// In mn, this message translates to:
+  /// **'Таньд энэ өдрийн мэнд'**
   String get ipsOverviewDashboardGreetingLabel;
 
   /// No description provided for @ipsOverviewDashboardProfitMessage.
   ///
-  /// In en, this message translates to:
-  /// **'{amount} in return'**
+  /// In mn, this message translates to:
+  /// **'{amount}-н өгөөжтэй'**
   String ipsOverviewDashboardProfitMessage(Object amount);
 
   /// No description provided for @ipsOverviewDashboardQuickRecharge.
   ///
-  /// In en, this message translates to:
-  /// **'Recharge pack'**
+  /// In mn, this message translates to:
+  /// **'Багц цэнэглэх'**
   String get ipsOverviewDashboardQuickRecharge;
 
   /// No description provided for @ipsOverviewDashboardPendingOrderTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Order pending.'**
+  /// In mn, this message translates to:
+  /// **'Захиалга хүлээгдэж байна.'**
   String get ipsOverviewDashboardPendingOrderTitle;
 
   /// No description provided for @ipsOverviewDashboardQuickWithdraw.
   ///
-  /// In en, this message translates to:
-  /// **'Withdraw money'**
+  /// In mn, this message translates to:
+  /// **'Мөнгө татах'**
   String get ipsOverviewDashboardQuickWithdraw;
 
   /// No description provided for @ipsOverviewDashboardAllocationStocks.
   ///
-  /// In en, this message translates to:
-  /// **'Stocks'**
+  /// In mn, this message translates to:
+  /// **'Хувьцаа'**
   String get ipsOverviewDashboardAllocationStocks;
 
   /// No description provided for @ipsOverviewDashboardAllocationBonds.
   ///
-  /// In en, this message translates to:
-  /// **'Bonds'**
+  /// In mn, this message translates to:
+  /// **'Бонд'**
   String get ipsOverviewDashboardAllocationBonds;
 
   /// No description provided for @ipsOverviewDashboardAllocationCash.
   ///
-  /// In en, this message translates to:
-  /// **'Cash'**
+  /// In mn, this message translates to:
+  /// **'Бэлэн мөнгө'**
   String get ipsOverviewDashboardAllocationCash;
 
   /// No description provided for @ipsOverviewDashboardAllocationTotal.
   ///
-  /// In en, this message translates to:
-  /// **'Total investment'**
+  /// In mn, this message translates to:
+  /// **'Нийт хөрөнгө оруулалт'**
   String get ipsOverviewDashboardAllocationTotal;
 
   /// No description provided for @ipsOverviewDashboardYieldLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Your return'**
+  /// In mn, this message translates to:
+  /// **'Таны өгөөж'**
   String get ipsOverviewDashboardYieldLabel;
 
   /// No description provided for @ipsOverviewDashboardDetails.
   ///
-  /// In en, this message translates to:
-  /// **'View details'**
+  /// In mn, this message translates to:
+  /// **'Дэлгэрэнгүй харах'**
   String get ipsOverviewDashboardDetails;
 
   /// No description provided for @ipsOverviewDashboardReminderTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Reminder'**
+  /// In mn, this message translates to:
+  /// **'Санамж'**
   String get ipsOverviewDashboardReminderTitle;
 
   /// No description provided for @ipsOverviewDashboardReminderBody.
   ///
-  /// In en, this message translates to:
-  /// **'Securities trading is executed automatically every Monday and Thursday. Simply recharge your account and place your order.'**
+  /// In mn, this message translates to:
+  /// **'Үнэт цаасны арилжаа долоо хоног бүрийн Даваа, Пүрэв гарагт автоматаар хийгдэнэ. Та дансаа цэнэглэж, захиалгаа өгөхөд хангалттай.'**
   String get ipsOverviewDashboardReminderBody;
 
   /// No description provided for @ipsOverviewDashboardGoalTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Target goal'**
+  /// In mn, this message translates to:
+  /// **'Зорилго'**
   String get ipsOverviewDashboardGoalTitle;
 
   /// No description provided for @ipsOverviewDashboardGoalProgress.
   ///
-  /// In en, this message translates to:
-  /// **'Progress'**
+  /// In mn, this message translates to:
+  /// **'Биелүүлэлт'**
   String get ipsOverviewDashboardGoalProgress;
 
   /// No description provided for @ipsOverviewDashboardRewardTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Month {count} in a row!'**
+  /// In mn, this message translates to:
+  /// **'Тасралтгүй {count} дахь сар!'**
   String ipsOverviewDashboardRewardTitle(int count);
 
   /// No description provided for @ipsOverviewDashboardRewardBody.
   ///
-  /// In en, this message translates to:
-  /// **'You have invested consistently, so you qualify for a 5000 Tino Coin reward.'**
+  /// In mn, this message translates to:
+  /// **'Та тасралтгүй хөрөнгө оруулалт хийсэнд тань урамшуулан 5000 Tino Coin бэлэглэх болно.'**
   String get ipsOverviewDashboardRewardBody;
 
   /// No description provided for @ipsOverviewDashboardActionRecharge.
   ///
-  /// In en, this message translates to:
-  /// **'Recharge pack'**
+  /// In mn, this message translates to:
+  /// **'Багц цэнэглэх'**
   String get ipsOverviewDashboardActionRecharge;
 
   /// No description provided for @ipsOverviewDashboardActionSell.
   ///
-  /// In en, this message translates to:
-  /// **'Close pack'**
+  /// In mn, this message translates to:
+  /// **'Багц хаах'**
   String get ipsOverviewDashboardActionSell;
 
   /// No description provided for @ipsAcntTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Sec acnt'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ данс'**
   String get ipsAcntTitle;
 
   /// No description provided for @ipsAcntSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Intro, agreement, acnt req, and QR creation.'**
+  /// In mn, this message translates to:
+  /// **'Танилцуулга, зөвшөөрөл, данс нээх хүсэлт, QR үүсгэх.'**
   String get ipsAcntSubtitle;
 
   /// No description provided for @ipsAcntOpenAcnt.
   ///
-  /// In en, this message translates to:
-  /// **'Open sec acnt'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ данс нээх'**
   String get ipsAcntOpenAcnt;
 
   /// No description provided for @ipsAcntVerifyAcnt.
   ///
-  /// In en, this message translates to:
-  /// **'Verify acnt'**
+  /// In mn, this message translates to:
+  /// **'Данс баталгаажуулах'**
   String get ipsAcntVerifyAcnt;
 
   /// No description provided for @ipsAcntGenerateQr.
   ///
-  /// In en, this message translates to:
-  /// **'Generate QR'**
+  /// In mn, this message translates to:
+  /// **'QR үүсгэх'**
   String get ipsAcntGenerateQr;
 
   /// No description provided for @ipsAcntQrValue.
   ///
-  /// In en, this message translates to:
-  /// **'QR value'**
+  /// In mn, this message translates to:
+  /// **'QR утга'**
   String get ipsAcntQrValue;
 
   /// No description provided for @ipsAcntOpeningFee.
   ///
-  /// In en, this message translates to:
-  /// **'Opening fee'**
+  /// In mn, this message translates to:
+  /// **'Нээлтийн шимтгэл'**
   String get ipsAcntOpeningFee;
 
   /// No description provided for @ipsAcntMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Sec acnt integration is not configured.'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ дансны integration тохируулагдаагүй байна.'**
   String get ipsAcntMissingService;
 
   /// No description provided for @ipsAcntHasAcnt.
   ///
-  /// In en, this message translates to:
-  /// **'Sec acnt available'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ данс бүртгэлтэй'**
   String get ipsAcntHasAcnt;
 
   /// No description provided for @ipsAcntNoAcnt.
   ///
-  /// In en, this message translates to:
-  /// **'Sec acnt missing'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ данс бүртгэлгүй'**
   String get ipsAcntNoAcnt;
 
   /// No description provided for @ipsAcntBalance.
   ///
-  /// In en, this message translates to:
-  /// **'Sec balance'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ дансны үлдэгдэл'**
   String get ipsAcntBalance;
 
   /// No description provided for @ipsAcntFlowBody.
   ///
-  /// In en, this message translates to:
-  /// **'Account opening flow'**
+  /// In mn, this message translates to:
+  /// **'Данс нээх.'**
   String get ipsAcntFlowBody;
 
   /// No description provided for @ipsAcntPendingQrMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Generate the QR to continue the sec-acnt opening flow.'**
+  /// In mn, this message translates to:
+  /// **'ҮЦ данс нээх алхмыг үргэлжлүүлэхийн тулд QR үүсгэнэ үү.'**
   String get ipsAcntPendingQrMessage;
 
   /// No description provided for @ipsBootstrapMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Bootstrap service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Bootstrap service тохируулагдаагүй байна.'**
   String get ipsBootstrapMissingService;
 
   /// No description provided for @ipsBootstrapLoading.
   ///
-  /// In en, this message translates to:
-  /// **'Checking acnt bootstrap state.'**
+  /// In mn, this message translates to:
+  /// **'Дансны эхний төлөвийг шалгаж байна.'**
   String get ipsBootstrapLoading;
 
   /// No description provided for @ipsSplashTitle.
   ///
-  /// In en, this message translates to:
-  /// **'InvestX Splash'**
+  /// In mn, this message translates to:
+  /// **'InvestX эхлэл'**
   String get ipsSplashTitle;
 
   /// No description provided for @ipsSplashSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Launch startup flow for the current user, login session, and IPS state.'**
+  /// In mn, this message translates to:
+  /// **'Одоогийн хэрэглэгч, login session болон IPS төлвийн эхлэлийг ажиллуулна.'**
   String get ipsSplashSubtitle;
 
   /// No description provided for @ipsStartupBlockedTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your profile information is incomplete'**
+  /// In mn, this message translates to:
+  /// **'Таны хувийн мэдээлэл дутуу байна'**
   String get ipsStartupBlockedTitle;
 
   /// No description provided for @ipsStartupBlockedProfileIncompleteMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Your personal information has not been fully verified.\nTo continue, please verify your personal information through the DAN system and sign in again.'**
+  /// In mn, this message translates to:
+  /// **'Таны хувийн мэдээлэл бүрэн баталгаажаагүй байна.\nҮргэлжлүүлэхийн тулд ДАН системээр хувийн мэдээллээ баталгаажуулаад дахин нэвтэрнэ үү.'**
   String get ipsStartupBlockedProfileIncompleteMessage;
 
   /// No description provided for @ipsQuestionnaireTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Questionnaire'**
+  /// In mn, this message translates to:
+  /// **'Асуумж'**
   String get ipsQuestionnaireTitle;
 
   /// No description provided for @ipsQuestionnaireSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Question list retrieval and score calculation.'**
+  /// In mn, this message translates to:
+  /// **'Асуумжийн жагсаалт авах болон оноо тооцох.'**
   String get ipsQuestionnaireSubtitle;
 
   /// No description provided for @ipsQuestionnaireCalculateScore.
   ///
-  /// In en, this message translates to:
-  /// **'Calculate score'**
+  /// In mn, this message translates to:
+  /// **'Оноо тооцоолох'**
   String get ipsQuestionnaireCalculateScore;
 
-  /// Label prefix for numbered questionnaire items.
+  /// Дугаартай асуултын угтвар.
   ///
-  /// In en, this message translates to:
-  /// **'Question {index}'**
+  /// In mn, this message translates to:
+  /// **'Асуулт {index}'**
   String ipsQuestionnaireQuestionPrefix(Object index);
 
-  /// Fallback label for numbered questionnaire options.
+  /// Дугаартай асуултын сонголтын орлуулга.
   ///
-  /// In en, this message translates to:
-  /// **'Option {index}'**
+  /// In mn, this message translates to:
+  /// **'Сонголт {index}'**
   String ipsQuestionnaireOptionPrefix(Object index);
 
   /// No description provided for @ipsQuestionnaireResTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Calculated res'**
+  /// In mn, this message translates to:
+  /// **'Тооцсон үр дүн'**
   String get ipsQuestionnaireResTitle;
 
   /// No description provided for @ipsQuestionnaireCustomerCode.
   ///
-  /// In en, this message translates to:
-  /// **'Customer code'**
+  /// In mn, this message translates to:
+  /// **'Харилцагчийн код'**
   String get ipsQuestionnaireCustomerCode;
 
   /// No description provided for @ipsQuestionnaireViewPacks.
   ///
-  /// In en, this message translates to:
-  /// **'View recommended packs'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон багц харах'**
   String get ipsQuestionnaireViewPacks;
 
   /// No description provided for @ipsQuestionnaireMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Questionnaire service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Асуумжийн service тохируулагдаагүй байна.'**
   String get ipsQuestionnaireMissingService;
 
   /// No description provided for @ipsQuestionnaireScore.
   ///
-  /// In en, this message translates to:
-  /// **'Score'**
+  /// In mn, this message translates to:
+  /// **'Оноо'**
   String get ipsQuestionnaireScore;
 
   /// No description provided for @ipsQuestionnaireSummary.
   ///
-  /// In en, this message translates to:
-  /// **'Summary'**
+  /// In mn, this message translates to:
+  /// **'Тайлбар'**
   String get ipsQuestionnaireSummary;
 
   /// No description provided for @ipsQuestionnaireLoading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading questionnaire.'**
+  /// In mn, this message translates to:
+  /// **'Асуумжийг ачаалж байна.'**
   String get ipsQuestionnaireLoading;
 
   /// No description provided for @ipsQuestionnaireRecommendationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your trusted investment guide'**
+  /// In mn, this message translates to:
+  /// **'Таны итгэлт зөвлөх'**
   String get ipsQuestionnaireRecommendationTitle;
 
   /// No description provided for @ipsQuestionnaireRecommendationBody.
   ///
-  /// In en, this message translates to:
-  /// **'Answer a few short questions and we will match you with the most suitable INVESTX pack.'**
+  /// In mn, this message translates to:
+  /// **'Хэдхэн асуултад хариулаад танд хамгийн тохирох INVESTX багцын зөвлөмжийг бэлтгэе.'**
   String get ipsQuestionnaireRecommendationBody;
 
   /// No description provided for @ipsQuestionnaireCalculatingMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Preparing the most suitable pack recommendation for you.'**
+  /// In mn, this message translates to:
+  /// **'Танд хамгийн тохирох багцын зөвлөмжийг бэлтгэж байна.'**
   String get ipsQuestionnaireCalculatingMessage;
 
   /// No description provided for @ipsQuestionnaireStaticQuestionTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Investment amount'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын хэмжээ'**
   String get ipsQuestionnaireStaticQuestionTitle;
 
   /// No description provided for @ipsQuestionnaireStaticOption100k.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'100,000'**
   String get ipsQuestionnaireStaticOption100k;
 
   /// No description provided for @ipsQuestionnaireStaticOption200k.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'200,000'**
   String get ipsQuestionnaireStaticOption200k;
 
   /// No description provided for @ipsQuestionnaireStaticOption500k.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'500,000'**
   String get ipsQuestionnaireStaticOption500k;
 
   /// No description provided for @ipsQuestionnaireStaticOption1000000Plus.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'1,000,000+'**
   String get ipsQuestionnaireStaticOption1000000Plus;
 
   /// No description provided for @ipsQuestionnaireTargetGoalMissing.
   ///
-  /// In en, this message translates to:
-  /// **'Select your investment amount before continuing.'**
+  /// In mn, this message translates to:
+  /// **'Үргэлжлүүлэхийн өмнө хөрөнгө оруулах дүнгээ сонгоно уу.'**
   String get ipsQuestionnaireTargetGoalMissing;
 
   /// No description provided for @ipsSignatureUploading.
   ///
-  /// In en, this message translates to:
-  /// **'Uploading your signature.'**
+  /// In mn, this message translates to:
+  /// **'Гарын үсгийг илгээж байна.'**
   String get ipsSignatureUploading;
 
   /// No description provided for @ipsPackTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Recommended packs'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон багц'**
   String get ipsPackTitle;
 
   /// No description provided for @ipsPackSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Recommended IPS pack retrieval and selection.'**
+  /// In mn, this message translates to:
+  /// **'Багцын санал болон сонголт'**
   String get ipsPackSubtitle;
 
   /// No description provided for @ipsPackRecommendedBadge.
   ///
-  /// In en, this message translates to:
-  /// **'Recommended'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон'**
   String get ipsPackRecommendedBadge;
 
   /// No description provided for @ipsPackChoosePack.
   ///
-  /// In en, this message translates to:
-  /// **'Choose pack'**
+  /// In mn, this message translates to:
+  /// **'Багц сонгох'**
   String get ipsPackChoosePack;
 
   /// No description provided for @ipsPackAllocation.
   ///
-  /// In en, this message translates to:
-  /// **'Allocation'**
+  /// In mn, this message translates to:
+  /// **'Хуваарилалт'**
   String get ipsPackAllocation;
 
   /// No description provided for @ipsPackBondPercent.
   ///
-  /// In en, this message translates to:
-  /// **'Bond'**
+  /// In mn, this message translates to:
+  /// **'Бонд'**
   String get ipsPackBondPercent;
 
   /// No description provided for @ipsPackStockPercent.
   ///
-  /// In en, this message translates to:
-  /// **'Stock'**
+  /// In mn, this message translates to:
+  /// **'Хувьцаа'**
   String get ipsPackStockPercent;
 
   /// No description provided for @ipsPackAssetPercent.
   ///
-  /// In en, this message translates to:
-  /// **'Asset'**
+  /// In mn, this message translates to:
+  /// **'Бусад хөрөнгө'**
   String get ipsPackAssetPercent;
 
   /// No description provided for @ipsPackNoPacks.
   ///
-  /// In en, this message translates to:
-  /// **'No recommended packs were returned.'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон багц ирсэнгүй.'**
   String get ipsPackNoPacks;
 
   /// No description provided for @ipsPackMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Pack service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Багцын service тохируулагдаагүй байна.'**
   String get ipsPackMissingService;
 
   /// No description provided for @ipsPackSrcFiCodeRequired.
   ///
-  /// In en, this message translates to:
-  /// **'Questionnaire res with srcFiCode is required for the official pack API.'**
+  /// In mn, this message translates to:
+  /// **'Official pack API дуудахдаа questionnaire-ийн srcFiCode шаардлагатай.'**
   String get ipsPackSrcFiCodeRequired;
 
   /// No description provided for @ipsPackCode.
   ///
-  /// In en, this message translates to:
-  /// **'Pack code'**
+  /// In mn, this message translates to:
+  /// **'Багцын код'**
   String get ipsPackCode;
 
   /// No description provided for @ipsPackSecondaryName.
   ///
-  /// In en, this message translates to:
-  /// **'Secondary name'**
+  /// In mn, this message translates to:
+  /// **'Нэмэлт нэр'**
   String get ipsPackSecondaryName;
 
   /// No description provided for @ipsPackLoading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading recommended packs.'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон багцыг ачаалж байна.'**
   String get ipsPackLoading;
 
-  /// Allocation breakdown for an IPS pack.
+  /// Багцын хөрөнгийн хуваарилалт.
   ///
-  /// In en, this message translates to:
-  /// **'Bond {bond}%, Stock {stock}%'**
+  /// In mn, this message translates to:
+  /// **'Бонд {bond}%, Хувьцаа {stock}%'**
   String ipsPackAllocationValue(Object bond, Object stock);
 
   /// No description provided for @ipsContractTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Contract'**
+  /// In mn, this message translates to:
+  /// **'Гэрээ'**
   String get ipsContractTitle;
 
   /// No description provided for @ipsContractSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Contract creation and signing acknowledgement.'**
+  /// In mn, this message translates to:
+  /// **'Гэрээ үүсгэх болон гарын үсгийн баталгаажуулалт.'**
   String get ipsContractSubtitle;
 
   /// No description provided for @ipsContractCreate.
   ///
-  /// In en, this message translates to:
-  /// **'Create contract'**
+  /// In mn, this message translates to:
+  /// **'Гэрээ үүсгэх'**
   String get ipsContractCreate;
 
   /// No description provided for @ipsContractTermsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Terms and conditions'**
+  /// In mn, this message translates to:
+  /// **'Үйлчилгээний нөхцөл'**
   String get ipsContractTermsTitle;
 
   /// No description provided for @ipsContractMissingPack.
   ///
-  /// In en, this message translates to:
-  /// **'Pack selection data is missing.'**
+  /// In mn, this message translates to:
+  /// **'Багцын сонголтын мэдээлэл алга.'**
   String get ipsContractMissingPack;
 
   /// No description provided for @ipsContractMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Contract service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Гэрээний service тохируулагдаагүй байна.'**
   String get ipsContractMissingService;
 
   /// No description provided for @ipsContractCreated.
   ///
-  /// In en, this message translates to:
-  /// **'Contract created'**
+  /// In mn, this message translates to:
+  /// **'Гэрээ үүслээ'**
   String get ipsContractCreated;
 
   /// No description provided for @ipsContractOpenPortfolio.
   ///
-  /// In en, this message translates to:
-  /// **'Open portfolio'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын багц нээх'**
   String get ipsContractOpenPortfolio;
 
   /// No description provided for @ipsContractId.
   ///
-  /// In en, this message translates to:
-  /// **'Contract ID'**
+  /// In mn, this message translates to:
+  /// **'Гэрээний дугаар'**
   String get ipsContractId;
 
   /// No description provided for @ipsContractRiskScore.
   ///
-  /// In en, this message translates to:
-  /// **'Risk score'**
+  /// In mn, this message translates to:
+  /// **'Эрсдэлийн оноо'**
   String get ipsContractRiskScore;
 
   /// No description provided for @ipsContractTermsBody.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm the recommended pack, acknowledge the service terms, and create the IPS contract.'**
+  /// In mn, this message translates to:
+  /// **'Санал болгосон багцыг баталгаажуулж, үйлчилгээний нөхцөлийг зөвшөөрөөд IPS гэрээг үүсгэнэ.'**
   String get ipsContractTermsBody;
 
   /// No description provided for @ipsContractPreparingAccounts.
   ///
-  /// In en, this message translates to:
-  /// **'Creating your IPS accounts and loading package details.'**
+  /// In mn, this message translates to:
+  /// **'IPS дансуудыг үүсгэж, багцын мэдээллийг ачаалж байна.'**
   String get ipsContractPreparingAccounts;
 
   /// No description provided for @ipsContractPackQuantityPrompt.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the pack quantity you would like to purchase.'**
+  /// In mn, this message translates to:
+  /// **'Авах ширхэгийн тоог оруулна уу.'**
   String get ipsContractPackQuantityPrompt;
 
   /// No description provided for @ipsContractUnitPrice.
   ///
-  /// In en, this message translates to:
-  /// **'Price per pack'**
+  /// In mn, this message translates to:
+  /// **'Нэгж багцын үнэ'**
   String get ipsContractUnitPrice;
 
   /// No description provided for @ipsContractServiceFee.
   ///
-  /// In en, this message translates to:
-  /// **'Service fee'**
+  /// In mn, this message translates to:
+  /// **'Үйлчилгээний шимтгэл'**
   String get ipsContractServiceFee;
 
   /// No description provided for @ipsContractIpsAccountsMissing.
   ///
-  /// In en, this message translates to:
-  /// **'The required IPS accounts are not ready yet. Please try again.'**
+  /// In mn, this message translates to:
+  /// **'Шаардлагатай IPS дансууд хараахан бэлэн болоогүй байна. Дахин оролдоно уу.'**
   String get ipsContractIpsAccountsMissing;
 
   /// No description provided for @ipsContractPackPricingUnavailable.
   ///
-  /// In en, this message translates to:
-  /// **'The selected package pricing is currently unavailable. Please try again.'**
+  /// In mn, this message translates to:
+  /// **'Сонгосон багцын үнийн мэдээлэл одоогоор байхгүй байна. Дахин оролдоно уу.'**
   String get ipsContractPackPricingUnavailable;
 
   /// No description provided for @ipsContractPreparingPayment.
   ///
-  /// In en, this message translates to:
-  /// **'Preparing your contract, payment request, and wallet checkout.'**
+  /// In mn, this message translates to:
+  /// **'Гэрээ, төлбөрийн хүсэлт, wallet төлбөрийг бэлтгэж байна.'**
   String get ipsContractPreparingPayment;
 
   /// No description provided for @ipsPortfolioTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Portfolio'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын багц'**
   String get ipsPortfolioTitle;
 
   /// No description provided for @ipsPortfolioSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'IPS acnt overview, pack, yield, and profit.'**
+  /// In mn, this message translates to:
+  /// **'IPS дансны багц, өгөөж, ашиг/алдагдал.'**
   String get ipsPortfolioSubtitle;
 
   /// No description provided for @ipsPortfolioAvailableBalance.
   ///
-  /// In en, this message translates to:
-  /// **'Available balance'**
+  /// In mn, this message translates to:
+  /// **'Боломжит үлдэгдэл'**
   String get ipsPortfolioAvailableBalance;
 
   /// No description provided for @ipsPortfolioInvestedBalance.
   ///
-  /// In en, this message translates to:
-  /// **'Invested balance'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулсан үлдэгдэл'**
   String get ipsPortfolioInvestedBalance;
 
   /// No description provided for @ipsPortfolioProfitLoss.
   ///
-  /// In en, this message translates to:
-  /// **'Profit/Loss'**
+  /// In mn, this message translates to:
+  /// **'Ашиг/Алдагдал'**
   String get ipsPortfolioProfitLoss;
 
   /// No description provided for @ipsPortfolioYield.
   ///
-  /// In en, this message translates to:
-  /// **'Yield'**
+  /// In mn, this message translates to:
+  /// **'Өгөөж'**
   String get ipsPortfolioYield;
 
   /// No description provided for @ipsPortfolioHoldings.
   ///
-  /// In en, this message translates to:
-  /// **'Holdings'**
+  /// In mn, this message translates to:
+  /// **'Миний багц'**
   String get ipsPortfolioHoldings;
 
   /// No description provided for @ipsPortfolioNoHoldings.
   ///
-  /// In en, this message translates to:
-  /// **'No data is available.'**
+  /// In mn, this message translates to:
+  /// **'Мэдээлэл алга.'**
   String get ipsPortfolioNoHoldings;
 
   /// No description provided for @ipsPortfolioRecharge.
   ///
-  /// In en, this message translates to:
-  /// **'Recharge'**
+  /// In mn, this message translates to:
+  /// **'Цэнэглэх'**
   String get ipsPortfolioRecharge;
 
   /// No description provided for @ipsPortfolioSellOrder.
   ///
-  /// In en, this message translates to:
-  /// **'Sell order'**
+  /// In mn, this message translates to:
+  /// **'Зарах захиалга'**
   String get ipsPortfolioSellOrder;
 
   /// No description provided for @ipsPortfolioOrderList.
   ///
-  /// In en, this message translates to:
-  /// **'Order list'**
+  /// In mn, this message translates to:
+  /// **'Захиалгын жагсаалт'**
   String get ipsPortfolioOrderList;
 
   /// No description provided for @ipsPortfolioStatements.
   ///
-  /// In en, this message translates to:
-  /// **'Statements'**
+  /// In mn, this message translates to:
+  /// **'Хуулга'**
   String get ipsPortfolioStatements;
 
   /// No description provided for @ipsPortfolioMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Portfolio service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын багцын service тохируулагдаагүй байна.'**
   String get ipsPortfolioMissingService;
 
   /// No description provided for @ipsPortfolioLoading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading portfolio overview.'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын багцын тоймыг ачаалж байна.'**
   String get ipsPortfolioLoading;
 
   /// No description provided for @ipsPortfolioHoldingQuantity.
   ///
-  /// In en, this message translates to:
-  /// **'Quantity'**
+  /// In mn, this message translates to:
+  /// **'Тоо ширхэг'**
   String get ipsPortfolioHoldingQuantity;
 
   /// No description provided for @ipsPortfolioHoldingValueLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Current value'**
+  /// In mn, this message translates to:
+  /// **'Одоогийн үнэлгээ'**
   String get ipsPortfolioHoldingValueLabel;
 
-  /// Summary line for a pack entry.
+  /// Товч мэдээлэл.
   ///
-  /// In en, this message translates to:
-  /// **'Qty {quantity} • Value {value}'**
+  /// In mn, this message translates to:
+  /// **'Тоо ширхэг {quantity} • Үнэлгээ {value}'**
   String ipsPortfolioHoldingValue(Object quantity, Object value);
 
   /// No description provided for @ipsOrdersTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Orders'**
+  /// In mn, this message translates to:
+  /// **'Захиалга'**
   String get ipsOrdersTitle;
 
   /// No description provided for @ipsOrdersSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'IPS order list and cancellation flow.'**
+  /// In mn, this message translates to:
+  /// **'IPS захиалгын жагсаалт болон цуцлах'**
   String get ipsOrdersSubtitle;
 
   /// No description provided for @ipsOrdersNoOrders.
   ///
-  /// In en, this message translates to:
-  /// **'No IPS orders are available.'**
+  /// In mn, this message translates to:
+  /// **'Захиалга байхгүй байна'**
   String get ipsOrdersNoOrders;
 
   /// No description provided for @ipsOrdersCancelOrder.
   ///
-  /// In en, this message translates to:
-  /// **'Cancel order'**
+  /// In mn, this message translates to:
+  /// **'Захиалга цуцлах'**
   String get ipsOrdersCancelOrder;
 
   /// No description provided for @ipsOrdersCreatedAt.
   ///
-  /// In en, this message translates to:
-  /// **'Created'**
+  /// In mn, this message translates to:
+  /// **'Үүсгэсэн огноо'**
   String get ipsOrdersCreatedAt;
 
   /// No description provided for @ipsOrdersOrderId.
   ///
-  /// In en, this message translates to:
-  /// **'Order ID'**
+  /// In mn, this message translates to:
+  /// **'Захиалгын дугаар'**
   String get ipsOrdersOrderId;
 
   /// No description provided for @ipsOrdersMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Orders service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Захиалгын service тохируулагдаагүй байна.'**
   String get ipsOrdersMissingService;
 
   /// No description provided for @ipsOrdersType.
   ///
-  /// In en, this message translates to:
-  /// **'Order type'**
+  /// In mn, this message translates to:
+  /// **'Захиалгын төрөл'**
   String get ipsOrdersType;
 
   /// No description provided for @ipsOrdersTypeBuy.
   ///
-  /// In en, this message translates to:
-  /// **'Buy'**
+  /// In mn, this message translates to:
+  /// **'Авах'**
   String get ipsOrdersTypeBuy;
 
   /// No description provided for @ipsOrdersTypeSell.
   ///
-  /// In en, this message translates to:
-  /// **'Sell'**
+  /// In mn, this message translates to:
+  /// **'Зарах'**
   String get ipsOrdersTypeSell;
 
   /// No description provided for @ipsOrdersTypeRecharge.
   ///
-  /// In en, this message translates to:
-  /// **'Recharge'**
+  /// In mn, this message translates to:
+  /// **'Цэнэглэх'**
   String get ipsOrdersTypeRecharge;
 
   /// No description provided for @ipsOrdersLoading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading order list.'**
+  /// In mn, this message translates to:
+  /// **'Захиалгын жагсаалтыг ачаалж байна.'**
   String get ipsOrdersLoading;
 
-  /// Confirmation prompt shown before cancelling an order.
+  /// Захиалга цуцлахаас өмнө харуулах баталгаажуулах асуулт.
   ///
-  /// In en, this message translates to:
-  /// **'Cancel order {orderId}?'**
+  /// In mn, this message translates to:
+  /// **'{orderId} захиалгыг цуцлах уу?'**
   String ipsOrdersCancelOrderConfirm(Object orderId);
 
-  /// Compact order summary showing type and status.
+  /// Захиалгын төрөл ба төлөвийг нэг мөрөнд харуулна.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'{type} • {status}'**
   String ipsOrdersSummary(Object type, Object status);
 
   /// No description provided for @ipsPaymentRechargeTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Top up package'**
+  /// In mn, this message translates to:
+  /// **'Багц цэнэглэх'**
   String get ipsPaymentRechargeTitle;
 
   /// No description provided for @ipsPaymentRechargeSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Exchange/recharge flow and QR generation.'**
+  /// In mn, this message translates to:
+  /// **'Солилцоо/цэнэглэлт болон QR үүсгэх.'**
   String get ipsPaymentRechargeSubtitle;
 
   /// No description provided for @ipsPaymentRechargeQuantityHint.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the quantity to purchase'**
+  /// In mn, this message translates to:
+  /// **'Авах ширхэгийн тоог оруулна уу'**
   String get ipsPaymentRechargeQuantityHint;
 
   /// No description provided for @ipsPaymentRechargeQuantityUnit.
   ///
-  /// In en, this message translates to:
-  /// **'pcs'**
+  /// In mn, this message translates to:
+  /// **'ш'**
   String get ipsPaymentRechargeQuantityUnit;
 
   /// No description provided for @ipsPaymentRechargeTotalAmount.
   ///
-  /// In en, this message translates to:
-  /// **'Total amount'**
+  /// In mn, this message translates to:
+  /// **'Нийт дүн'**
   String get ipsPaymentRechargeTotalAmount;
 
   /// No description provided for @ipsPaymentCreateQr.
   ///
-  /// In en, this message translates to:
-  /// **'Create QR'**
+  /// In mn, this message translates to:
+  /// **'QR үүсгэх'**
   String get ipsPaymentCreateQr;
 
   /// No description provided for @ipsPaymentQrGenerated.
   ///
-  /// In en, this message translates to:
-  /// **'Payment QR generated'**
+  /// In mn, this message translates to:
+  /// **'Төлбөрийн QR үүслээ'**
   String get ipsPaymentQrGenerated;
 
   /// No description provided for @ipsPaymentPending.
   ///
-  /// In en, this message translates to:
-  /// **'Payment is pending.'**
+  /// In mn, this message translates to:
+  /// **'Төлбөр хүлээгдэж байна.'**
   String get ipsPaymentPending;
 
   /// No description provided for @ipsPaymentMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Recharge/payment service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Цэнэглэлт/төлбөрийн service тохируулагдаагүй байна.'**
   String get ipsPaymentMissingService;
 
   /// No description provided for @ipsPaymentQrValue.
   ///
-  /// In en, this message translates to:
-  /// **'QR value'**
+  /// In mn, this message translates to:
+  /// **'QR утга'**
   String get ipsPaymentQrValue;
 
   /// No description provided for @ipsPaymentAcntFlow.
   ///
-  /// In en, this message translates to:
-  /// **'Acnt flow'**
+  /// In mn, this message translates to:
+  /// **'Данс нээх алхамууд'**
   String get ipsPaymentAcntFlow;
 
   /// No description provided for @ipsPaymentCreateInvoiceAndPay.
   ///
-  /// In en, this message translates to:
-  /// **'Create invoice and pay'**
+  /// In mn, this message translates to:
+  /// **'Нэхэмжлэл үүсгээд төлөх'**
   String get ipsPaymentCreateInvoiceAndPay;
 
   /// No description provided for @ipsPaymentInvoiceId.
   ///
-  /// In en, this message translates to:
-  /// **'Invoice ID'**
+  /// In mn, this message translates to:
+  /// **'Нэхэмжлэлийн дугаар'**
   String get ipsPaymentInvoiceId;
 
   /// No description provided for @ipsPaymentViewOrders.
   ///
-  /// In en, this message translates to:
-  /// **'View orders'**
+  /// In mn, this message translates to:
+  /// **'Захиалга харах'**
   String get ipsPaymentViewOrders;
 
   /// No description provided for @ipsRechargeSuccessGoHome.
   ///
-  /// In en, this message translates to:
-  /// **'Go to home'**
+  /// In mn, this message translates to:
+  /// **'Нүүр хуудасруу очих'**
   String get ipsRechargeSuccessGoHome;
 
   /// No description provided for @ipsRechargeSuccessCardTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your order was created successfully'**
+  /// In mn, this message translates to:
+  /// **'Таны захиалга амжилттай үүслээ'**
   String get ipsRechargeSuccessCardTitle;
 
   /// No description provided for @ipsRechargeSuccessCardMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Securities trading is automatically executed every Tuesday and Thursday. Your payment has been received — please check your portfolio balance after the next trading day.'**
+  /// In mn, this message translates to:
+  /// **'Үнэт цаасны арилжаа долоо хоног бүрийн Даваа, Пүрэв гарагт автоматаар хийгдэнэ. Таны төлбөр төлөгдсөн тул таны арилжаа дээрх өдрийн дараа багцын үлдэгдэлээ шалгаарай.'**
   String get ipsRechargeSuccessCardMessage;
 
   /// No description provided for @ipsPaymentStatusTimedOut.
   ///
-  /// In en, this message translates to:
-  /// **'Timed out'**
+  /// In mn, this message translates to:
+  /// **'Хугацаа хэтэрсэн'**
   String get ipsPaymentStatusTimedOut;
 
   /// No description provided for @ipsPaymentStatusUnsupported.
   ///
-  /// In en, this message translates to:
-  /// **'Unsupported'**
+  /// In mn, this message translates to:
+  /// **'Дэмжигдээгүй'**
   String get ipsPaymentStatusUnsupported;
 
   /// No description provided for @ipsPaymentInvoiceCreateFailed.
   ///
-  /// In en, this message translates to:
-  /// **'The SDK could not create a payment invoice.'**
+  /// In mn, this message translates to:
+  /// **'SDK төлбөрийн нэхэмжлэл үүсгэж чадсангүй.'**
   String get ipsPaymentInvoiceCreateFailed;
 
   /// No description provided for @ipsPaymentInvalidInvoice.
   ///
-  /// In en, this message translates to:
-  /// **'The payment invoice response was missing a usable invoice ID.'**
+  /// In mn, this message translates to:
+  /// **'Төлбөрийн нэхэмжлэлийн хариунд ашиглах invoice ID байгаагүй.'**
   String get ipsPaymentInvalidInvoice;
 
   /// No description provided for @ipsPaymentHostResponseTimedOut.
   ///
-  /// In en, this message translates to:
-  /// **'The host payment response timed out.'**
+  /// In mn, this message translates to:
+  /// **'Host аппын төлбөрийн хариу хүлээлгийн хугацаа дууслаа.'**
   String get ipsPaymentHostResponseTimedOut;
 
   /// No description provided for @ipsPaymentHostCallbackFailed.
   ///
-  /// In en, this message translates to:
-  /// **'The host payment callback failed.'**
+  /// In mn, this message translates to:
+  /// **'Host аппын төлбөрийн callback амжилтгүй боллоо.'**
   String get ipsPaymentHostCallbackFailed;
 
   /// No description provided for @ipsSellTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Sell pack'**
+  /// In mn, this message translates to:
+  /// **'Багц зарах'**
   String get ipsSellTitle;
 
   /// No description provided for @ipsSellCloseTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Close pack'**
+  /// In mn, this message translates to:
+  /// **'Багц хаах'**
   String get ipsSellCloseTitle;
 
   /// No description provided for @ipsSellSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Create an IPS sell order.'**
+  /// In mn, this message translates to:
+  /// **'Багц зарах захиалга үүсгэх'**
   String get ipsSellSubtitle;
 
   /// No description provided for @ipsSellMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Sell-order service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Зарах захиалгын service тохируулагдаагүй байна.'**
   String get ipsSellMissingService;
 
   /// No description provided for @ipsSellCreateOrder.
   ///
-  /// In en, this message translates to:
-  /// **'Create sell order'**
+  /// In mn, this message translates to:
+  /// **'Зарах захиалга үүсгэх'**
   String get ipsSellCreateOrder;
 
   /// No description provided for @ipsSellPendingMessage.
   ///
-  /// In en, this message translates to:
-  /// **'This request will close your package by selling all owned package units.'**
+  /// In mn, this message translates to:
+  /// **'Энэ хүсэлт нь таны эзэмшиж буй бүх багцын нэгжийг зарж багцыг хаах үйлдэл юм.'**
   String get ipsSellPendingMessage;
 
   /// No description provided for @ipsSellReminderBody.
   ///
-  /// In en, this message translates to:
-  /// **'The quantity below is loaded from your current package balance. When you submit this request, the app creates a sell order for all owned package units and the final payout is calculated from your latest holdings value, available cash, and fees.'**
+  /// In mn, this message translates to:
+  /// **'Доорх багцын тоо нь таны одоогийн багцын үлдэгдлээс автоматаар авсан болно. Хүсэлт илгээснээр эзэмшиж буй бүх багцын нэгжид зарах захиалга үүсэж, эцсийн дүн нь тухайн үеийн хөрөнгийн үнэлгээ, мөнгөн үлдэгдэл, шимтгэлээр тооцогдоно.'**
   String get ipsSellReminderBody;
 
   /// No description provided for @ipsSellQuantityClosing.
   ///
-  /// In en, this message translates to:
-  /// **'Packs to close'**
+  /// In mn, this message translates to:
+  /// **'Хааж буй багцын тоо'**
   String get ipsSellQuantityClosing;
 
   /// No description provided for @ipsSellTotalAmount.
   ///
-  /// In en, this message translates to:
-  /// **'TOTAL'**
+  /// In mn, this message translates to:
+  /// **'НИЙТ ДҮН'**
   String get ipsSellTotalAmount;
 
   /// No description provided for @ipsSellProfit.
   ///
-  /// In en, this message translates to:
-  /// **'PROFIT'**
+  /// In mn, this message translates to:
+  /// **'АШИГ'**
   String get ipsSellProfit;
 
   /// No description provided for @ipsSellTotalFee.
   ///
-  /// In en, this message translates to:
-  /// **'TOTAL FEE'**
+  /// In mn, this message translates to:
+  /// **'НИЙТ ШИМТГЭЛ'**
   String get ipsSellTotalFee;
 
   /// No description provided for @ipsSellPayoutAmount.
   ///
-  /// In en, this message translates to:
-  /// **'Amount to receive'**
+  /// In mn, this message translates to:
+  /// **'Танд орох дүн'**
   String get ipsSellPayoutAmount;
 
   /// No description provided for @ipsSellSubmitRequest.
   ///
-  /// In en, this message translates to:
-  /// **'Submit request'**
+  /// In mn, this message translates to:
+  /// **'Хүсэлт илгээх'**
   String get ipsSellSubmitRequest;
 
   /// No description provided for @ipsSellSuccessTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your request was successful'**
+  /// In mn, this message translates to:
+  /// **'Таны хүсэлт амжилттай боллоо'**
   String get ipsSellSuccessTitle;
 
   /// No description provided for @ipsSellSuccessBody.
   ///
-  /// In en, this message translates to:
-  /// **'Your close pack request has been received. Trading is executed every Tuesday and Thursday. Your total investment refund will be processed within 10 business days and deposited to your bank account.'**
+  /// In mn, this message translates to:
+  /// **'Таны багцаа хаах хүсэлтийг амжилттай хүлээн авлаа. Багцын арилжаа нь долоо хоног бүрийн Мягмар болон Пүрэв гаригт хийгдэнэ. Таны нийт хөрөнгө оруулалтын буцаалтын гүйлгээ ажлын 10 хоногт багтан хийгдэх бөгөөд таны арилжааны банкны данс руу орох болно.'**
   String get ipsSellSuccessBody;
 
   /// No description provided for @ipsSellPackLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Pack {number}'**
+  /// In mn, this message translates to:
+  /// **'Багц {number}'**
   String ipsSellPackLabel(int number);
 
   /// No description provided for @ipsSellAllocationLabel.
   ///
-  /// In en, this message translates to:
-  /// **'{bond}% bond, {stock}% stock'**
+  /// In mn, this message translates to:
+  /// **'{bond}% бонд, {stock}% хувьцаа'**
   String ipsSellAllocationLabel(int bond, int stock);
 
   /// No description provided for @ipsStatementTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Statements'**
+  /// In mn, this message translates to:
+  /// **'Хуулга'**
   String get ipsStatementTitle;
 
   /// No description provided for @ipsStatementSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Statement and acnt-summary surface.'**
+  /// In mn, this message translates to:
+  /// **'Хуулга болон дансны товч дүнгийн дэлгэц.'**
   String get ipsStatementSubtitle;
 
   /// No description provided for @ipsStatementSummary.
   ///
-  /// In en, this message translates to:
-  /// **'Statement summary'**
+  /// In mn, this message translates to:
+  /// **'Хуулгын товч дүн'**
   String get ipsStatementSummary;
 
   /// No description provided for @ipsStatementBeginBalance.
   ///
-  /// In en, this message translates to:
-  /// **'Beginning balance'**
+  /// In mn, this message translates to:
+  /// **'Эхний үлдэгдэл'**
   String get ipsStatementBeginBalance;
 
   /// No description provided for @ipsStatementEndBalance.
   ///
-  /// In en, this message translates to:
-  /// **'Ending balance'**
+  /// In mn, this message translates to:
+  /// **'Эцсийн үлдэгдэл'**
   String get ipsStatementEndBalance;
 
   /// No description provided for @ipsStatementEntriesCount.
   ///
-  /// In en, this message translates to:
-  /// **'{count} entries'**
+  /// In mn, this message translates to:
+  /// **'{count} гүйлгээ'**
   String ipsStatementEntriesCount(int count);
 
   /// No description provided for @ipsStatementMissingService.
   ///
-  /// In en, this message translates to:
-  /// **'Statement service is not configured.'**
+  /// In mn, this message translates to:
+  /// **'Хуулгын service тохируулагдаагүй байна.'**
   String get ipsStatementMissingService;
 
   /// No description provided for @ipsStatementsLoading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading statement summary.'**
+  /// In mn, this message translates to:
+  /// **'Хуулгын товч мэдээллийг ачаалж байна.'**
   String get ipsStatementsLoading;
 
   /// No description provided for @ipsYieldTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Yield'**
+  /// In mn, this message translates to:
+  /// **'Өгөөж'**
   String get ipsYieldTitle;
 
   /// No description provided for @ipsYieldSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Portfolio yield breakdown.'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын багцын өгөөжийн задаргаа.'**
   String get ipsYieldSubtitle;
 
   /// No description provided for @ipsYieldDetails.
   ///
-  /// In en, this message translates to:
-  /// **'Yield details'**
+  /// In mn, this message translates to:
+  /// **'Өгөөжийн дэлгэрэнгүй'**
   String get ipsYieldDetails;
 
   /// No description provided for @ipsProfitTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Profit and loss'**
+  /// In mn, this message translates to:
+  /// **'Ашиг алдагдал'**
   String get ipsProfitTitle;
 
   /// No description provided for @ipsProfitSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Profit and loss summary for IPS packs.'**
+  /// In mn, this message translates to:
+  /// **'Багцын ашиг алдагдлын мэдээлэл.'**
   String get ipsProfitSubtitle;
 
   /// No description provided for @ipsProfitSummary.
   ///
-  /// In en, this message translates to:
-  /// **'Profit summary'**
+  /// In mn, this message translates to:
+  /// **'Ашиг алдагдлын тойм'**
   String get ipsProfitSummary;
 
   /// No description provided for @ipsSuccessReqCreated.
   ///
-  /// In en, this message translates to:
-  /// **'Req created successfully.'**
+  /// In mn, this message translates to:
+  /// **'Хүсэлт амжилттай үүслээ.'**
   String get ipsSuccessReqCreated;
 
   /// No description provided for @ipsSuccessOrderCancelled.
   ///
-  /// In en, this message translates to:
-  /// **'Order cancelled successfully.'**
+  /// In mn, this message translates to:
+  /// **'Захиалгыг амжилттай цуцаллаа.'**
   String get ipsSuccessOrderCancelled;
 
   /// No description provided for @ipsSuccessContractCreated.
   ///
-  /// In en, this message translates to:
-  /// **'Contract created successfully.'**
+  /// In mn, this message translates to:
+  /// **'Данс нээх хүсэлт амжилттай'**
   String get ipsSuccessContractCreated;
 
   /// No description provided for @ipsSuccessQrCreated.
   ///
-  /// In en, this message translates to:
-  /// **'QR created successfully.'**
+  /// In mn, this message translates to:
+  /// **'QR амжилттай үүслээ.'**
   String get ipsSuccessQrCreated;
 
   /// No description provided for @ipsStatusPending.
   ///
-  /// In en, this message translates to:
-  /// **'Pending'**
+  /// In mn, this message translates to:
+  /// **'Хүлээгдэж буй'**
   String get ipsStatusPending;
+
+  /// No description provided for @ipsStatusNew.
+  ///
+  /// In mn, this message translates to:
+  /// **'Хүлээгдэж буй'**
+  String get ipsStatusNew;
 
   /// No description provided for @ipsStatusActive.
   ///
-  /// In en, this message translates to:
-  /// **'Active'**
+  /// In mn, this message translates to:
+  /// **'Идэвхтэй'**
   String get ipsStatusActive;
 
   /// No description provided for @ipsStatusConfirmed.
   ///
-  /// In en, this message translates to:
-  /// **'Confirmed'**
+  /// In mn, this message translates to:
+  /// **'Захиалга баталгаажсан'**
   String get ipsStatusConfirmed;
 
   /// No description provided for @ipsStatusCompleted.
   ///
-  /// In en, this message translates to:
-  /// **'Completed'**
+  /// In mn, this message translates to:
+  /// **'Амжилттай'**
   String get ipsStatusCompleted;
 
   /// No description provided for @ipsStatusAllocated.
   ///
-  /// In en, this message translates to:
-  /// **'Allocated'**
+  /// In mn, this message translates to:
+  /// **'Хуваарилагдсан'**
   String get ipsStatusAllocated;
 
   /// No description provided for @ipsStatusCancelled.
   ///
-  /// In en, this message translates to:
-  /// **'Cancelled'**
+  /// In mn, this message translates to:
+  /// **'Цуцлагдсан'**
   String get ipsStatusCancelled;
 
   /// No description provided for @ipsStatusFailed.
   ///
-  /// In en, this message translates to:
-  /// **'Failed'**
+  /// In mn, this message translates to:
+  /// **'Амжилтгүй'**
   String get ipsStatusFailed;
 
   /// No description provided for @ipsUnknownRouteTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Route unavailable'**
+  /// In mn, this message translates to:
+  /// **'Маршрут олдсонгүй'**
   String get ipsUnknownRouteTitle;
 
-  /// Shown when a reqed IPS route is not registered in the module.
+  /// Бүртгэгдээгүй IPS route дуудагдсан үед харуулна.
   ///
-  /// In en, this message translates to:
-  /// **'The IPS route is not registered: {route}'**
+  /// In mn, this message translates to:
+  /// **'IPS дотор {route} маршрут бүртгэгдээгүй байна.'**
   String ipsUnknownRouteMessage(Object route);
 
-  /// Shown when an internal demo module receives an unknown route.
+  /// Internal demo module дотор бүртгэгдээгүй маршрут дуудагдсан үед харуулна.
   ///
-  /// In en, this message translates to:
-  /// **'The route is not registered for : {route}'**
+  /// In mn, this message translates to:
+  /// **' модульд {route} маршрут бүртгэгдээгүй байна.'**
   String internalUnknownRouteMessage(Object, Object route);
 
   /// No description provided for @internalProfileCatalogTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Profile screens'**
+  /// In mn, this message translates to:
+  /// **'Профайл дэлгэцүүд'**
   String get internalProfileCatalogTitle;
 
   /// No description provided for @internalProfileModuleName.
   ///
-  /// In en, this message translates to:
-  /// **'Profile'**
+  /// In mn, this message translates to:
+  /// **'Профайл'**
   String get internalProfileModuleName;
 
   /// No description provided for @internalProfileRouteHomeTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Contact update home'**
+  /// In mn, this message translates to:
+  /// **'Холбоо барих мэдээлэл шинэчлэх'**
   String get internalProfileRouteHomeTitle;
 
   /// No description provided for @internalProfileRouteHomeDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Review the current email and phone details.'**
+  /// In mn, this message translates to:
+  /// **'Одоогийн и-мэйл болон утасны мэдээллийг шалгана.'**
   String get internalProfileRouteHomeDescription;
 
   /// No description provided for @internalProfileRouteUpdateEmailTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Update email'**
+  /// In mn, this message translates to:
+  /// **'И-мэйл шинэчлэх'**
   String get internalProfileRouteUpdateEmailTitle;
 
   /// No description provided for @internalProfileRouteUpdateEmailDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a new email address.'**
+  /// In mn, this message translates to:
+  /// **'Шинэ и-мэйл хаягаа оруулна.'**
   String get internalProfileRouteUpdateEmailDescription;
 
   /// No description provided for @internalProfileRouteVerifyEmailTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Verify email'**
+  /// In mn, this message translates to:
+  /// **'И-мэйл баталгаажуулах'**
   String get internalProfileRouteVerifyEmailTitle;
 
   /// No description provided for @internalProfileRouteVerifyEmailDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the email verification code.'**
+  /// In mn, this message translates to:
+  /// **'И-мэйлээр ирсэн баталгаажуулах кодоо оруулна.'**
   String get internalProfileRouteVerifyEmailDescription;
 
   /// No description provided for @internalProfileRouteEmailVerifiedTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Email verified'**
+  /// In mn, this message translates to:
+  /// **'И-мэйл баталгаажсан'**
   String get internalProfileRouteEmailVerifiedTitle;
 
   /// No description provided for @internalProfileRouteEmailVerifiedDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Email verification success state.'**
+  /// In mn, this message translates to:
+  /// **'И-мэйл баталгаажуулалт амжилттай болсон төлөв.'**
   String get internalProfileRouteEmailVerifiedDescription;
 
   /// No description provided for @internalProfileRouteUpdatePhoneTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Update phone'**
+  /// In mn, this message translates to:
+  /// **'Утас шинэчлэх'**
   String get internalProfileRouteUpdatePhoneTitle;
 
   /// No description provided for @internalProfileRouteUpdatePhoneDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a new phone number.'**
+  /// In mn, this message translates to:
+  /// **'Шинэ утасны дугаараа оруулна.'**
   String get internalProfileRouteUpdatePhoneDescription;
 
   /// No description provided for @internalProfileRouteVerifyPhoneTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Verify phone'**
+  /// In mn, this message translates to:
+  /// **'Утас баталгаажуулах'**
   String get internalProfileRouteVerifyPhoneTitle;
 
   /// No description provided for @internalProfileRouteVerifyPhoneDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the phone verification code.'**
+  /// In mn, this message translates to:
+  /// **'Утсаар ирсэн баталгаажуулах кодоо оруулна.'**
   String get internalProfileRouteVerifyPhoneDescription;
 
   /// No description provided for @internalProfileRoutePhoneVerifiedTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Phone verified'**
+  /// In mn, this message translates to:
+  /// **'Утас баталгаажсан'**
   String get internalProfileRoutePhoneVerifiedTitle;
 
   /// No description provided for @internalProfileRoutePhoneVerifiedDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Phone verification success state.'**
+  /// In mn, this message translates to:
+  /// **'Утас баталгаажуулалт амжилттай болсон төлөв.'**
   String get internalProfileRoutePhoneVerifiedDescription;
 
   /// No description provided for @internalProfileRouteReviewUpdatesTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Review updates'**
+  /// In mn, this message translates to:
+  /// **'Шинэчлэл шалгах'**
   String get internalProfileRouteReviewUpdatesTitle;
 
   /// No description provided for @internalProfileRouteReviewUpdatesDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Check the updated contact details.'**
+  /// In mn, this message translates to:
+  /// **'Шинэчилсэн холбоо барих мэдээллээ шалгана.'**
   String get internalProfileRouteReviewUpdatesDescription;
 
   /// No description provided for @internalProfileRouteConfirmChangesTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm changes'**
+  /// In mn, this message translates to:
+  /// **'Өөрчлөлт батлах'**
   String get internalProfileRouteConfirmChangesTitle;
 
   /// No description provided for @internalProfileRouteConfirmChangesDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm the contact updates before saving.'**
+  /// In mn, this message translates to:
+  /// **'Хадгалахаас өмнө холбоо барих мэдээллийн өөрчлөлтөө батална.'**
   String get internalProfileRouteConfirmChangesDescription;
 
   /// No description provided for @internalProfileRouteUpdateCompleteTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Update complete'**
+  /// In mn, this message translates to:
+  /// **'Шинэчлэл дууссан'**
   String get internalProfileRouteUpdateCompleteTitle;
 
   /// No description provided for @internalProfileRouteUpdateCompleteDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Contact update completion state.'**
+  /// In mn, this message translates to:
+  /// **'Холбоо барих мэдээлэл шинэчилж дууссан төлөв.'**
   String get internalProfileRouteUpdateCompleteDescription;
 
   /// No description provided for @internalProfileProcessing.
   ///
-  /// In en, this message translates to:
-  /// **'Processing...'**
+  /// In mn, this message translates to:
+  /// **'Боловсруулж байна...'**
   String get internalProfileProcessing;
 
   /// No description provided for @internalProfileFlowProgressTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Flow progress'**
+  /// In mn, this message translates to:
+  /// **'Progress'**
   String get internalProfileFlowProgressTitle;
 
-  /// Step indicator for the profile contact update flow.
+  /// Холбоо барих мэдээлэл шинэчлэх алхам
   ///
-  /// In en, this message translates to:
-  /// **'Step {step} of {total}'**
+  /// In mn, this message translates to:
+  /// **'{total} алхмын {step}-р алхам'**
   String internalProfileFlowProgressStep(Object step, Object total);
 
   /// No description provided for @internalProfileSectionDetailsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Profile details'**
+  /// In mn, this message translates to:
+  /// **'Профайлын мэдээлэл'**
   String get internalProfileSectionDetailsTitle;
 
   /// No description provided for @internalProfileFieldFullName.
   ///
-  /// In en, this message translates to:
-  /// **'Full name'**
+  /// In mn, this message translates to:
+  /// **'Овог нэр'**
   String get internalProfileFieldFullName;
 
   /// No description provided for @internalProfileFieldCurrentEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Current email'**
+  /// In mn, this message translates to:
+  /// **'Одоогийн и-мэйл'**
   String get internalProfileFieldCurrentEmail;
 
   /// No description provided for @internalProfileFieldCurrentPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Current phone'**
+  /// In mn, this message translates to:
+  /// **'Одоогийн утас'**
   String get internalProfileFieldCurrentPhone;
 
   /// No description provided for @internalProfileFieldSdkVersion.
   ///
-  /// In en, this message translates to:
-  /// **'SDK version'**
+  /// In mn, this message translates to:
+  /// **'SDK хувилбар'**
   String get internalProfileFieldSdkVersion;
 
   /// No description provided for @internalProfileFieldNewEmail.
   ///
-  /// In en, this message translates to:
-  /// **'New email'**
+  /// In mn, this message translates to:
+  /// **'Шинэ и-мэйл'**
   String get internalProfileFieldNewEmail;
 
   /// No description provided for @internalProfileFieldNewPhone.
   ///
-  /// In en, this message translates to:
-  /// **'New phone number'**
+  /// In mn, this message translates to:
+  /// **'Шинэ утасны дугаар'**
   String get internalProfileFieldNewPhone;
 
   /// No description provided for @internalProfileFieldUpdatedEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Updated email'**
+  /// In mn, this message translates to:
+  /// **'Шинэчилсэн и-мэйл'**
   String get internalProfileFieldUpdatedEmail;
 
   /// No description provided for @internalProfileFieldUpdatedPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Updated phone'**
+  /// In mn, this message translates to:
+  /// **'Шинэчилсэн утас'**
   String get internalProfileFieldUpdatedPhone;
 
   /// No description provided for @internalProfileFieldUpdatedBy.
   ///
-  /// In en, this message translates to:
-  /// **'Updated by'**
+  /// In mn, this message translates to:
+  /// **'Шинэчилсэн хэрэглэгч'**
   String get internalProfileFieldUpdatedBy;
 
   /// No description provided for @internalProfileContactEntryHint.
   ///
-  /// In en, this message translates to:
-  /// **'Make sure the entered value is correct before reqing verification.'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулалт хүсэхээс өмнө оруулсан утга зөв эсэхийг нягтална уу.'**
   String get internalProfileContactEntryHint;
 
   /// No description provided for @internalProfileVerificationInstructions.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the 6-digit code sent to your latest contact channel.'**
+  /// In mn, this message translates to:
+  /// **'Хамгийн сүүлд ашигласан холбоо барих сувгаар ирсэн 6 оронтой кодоо оруулна уу.'**
   String get internalProfileVerificationInstructions;
 
   /// No description provided for @internalProfileVerificationCodeLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Verification code'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулах код'**
   String get internalProfileVerificationCodeLabel;
 
   /// No description provided for @internalProfileInvalidVerificationCode.
   ///
-  /// In en, this message translates to:
-  /// **'The verification code is invalid.'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулах код буруу байна.'**
   String get internalProfileInvalidVerificationCode;
 
   /// No description provided for @internalProfileVerificationSuccess.
   ///
-  /// In en, this message translates to:
-  /// **'Verification completed successfully.'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулалт амжилттай дууслаа.'**
   String get internalProfileVerificationSuccess;
 
   /// No description provided for @internalProfileUpdateSuccess.
   ///
-  /// In en, this message translates to:
-  /// **'Contact details were updated successfully.'**
+  /// In mn, this message translates to:
+  /// **'Холбоо барих мэдээлэл амжилттай шинэчлэгдлээ.'**
   String get internalProfileUpdateSuccess;
 
   /// No description provided for @internalAuthCatalogTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Auth screens'**
+  /// In mn, this message translates to:
+  /// **'Нэвтрэх дэлгэцүүд'**
   String get internalAuthCatalogTitle;
 
   /// No description provided for @internalAuthModuleName.
   ///
-  /// In en, this message translates to:
-  /// **'Auth'**
+  /// In mn, this message translates to:
+  /// **'Нэвтрэх'**
   String get internalAuthModuleName;
 
   /// No description provided for @internalAuthRouteRegistrationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Create acnt'**
+  /// In mn, this message translates to:
+  /// **'Бүртгэл үүсгэх'**
   String get internalAuthRouteRegistrationTitle;
 
   /// No description provided for @internalAuthRouteRegistrationDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Registration flow adapted from the auth design references.'**
+  /// In mn, this message translates to:
+  /// **'Auth дизайны жишээнээс хөрвүүлсэн бүртгэл'**
   String get internalAuthRouteRegistrationDescription;
 
   /// No description provided for @internalAuthRouteRegistrationConfirmationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm registration'**
+  /// In mn, this message translates to:
+  /// **'Бүртгэл батлах'**
   String get internalAuthRouteRegistrationConfirmationTitle;
 
   /// No description provided for @internalAuthRouteRegistrationConfirmationDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Review the terms and complete acnt setup.'**
+  /// In mn, this message translates to:
+  /// **'Нөхцөлөө шалгаж, данс нээх тохиргоогоо дуусгана.'**
   String get internalAuthRouteRegistrationConfirmationDescription;
 
   /// No description provided for @internalAuthContinueRegistration.
   ///
-  /// In en, this message translates to:
-  /// **'Continue registration'**
+  /// In mn, this message translates to:
+  /// **'Бүртгэл үргэлжлүүлэх'**
   String get internalAuthContinueRegistration;
 
   /// No description provided for @internalAuthSectionPersonalInformation.
   ///
-  /// In en, this message translates to:
-  /// **'Personal information'**
+  /// In mn, this message translates to:
+  /// **'Хувийн мэдээлэл'**
   String get internalAuthSectionPersonalInformation;
 
   /// No description provided for @internalAuthFieldFullName.
   ///
-  /// In en, this message translates to:
-  /// **'Full name'**
+  /// In mn, this message translates to:
+  /// **'Овог нэр'**
   String get internalAuthFieldFullName;
 
   /// No description provided for @internalAuthFieldEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Email address'**
+  /// In mn, this message translates to:
+  /// **'И-мэйл хаяг'**
   String get internalAuthFieldEmail;
 
   /// No description provided for @internalAuthFieldPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Phone number'**
+  /// In mn, this message translates to:
+  /// **'Утасны дугаар'**
   String get internalAuthFieldPhone;
 
   /// No description provided for @internalAuthFinishRegistration.
   ///
-  /// In en, this message translates to:
-  /// **'Finish registration'**
+  /// In mn, this message translates to:
+  /// **'Бүртгэл дуусгах'**
   String get internalAuthFinishRegistration;
 
   /// No description provided for @internalAuthSectionVerification.
   ///
-  /// In en, this message translates to:
-  /// **'Verification'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулалт'**
   String get internalAuthSectionVerification;
 
   /// No description provided for @internalAuthIdentityCheck.
   ///
-  /// In en, this message translates to:
-  /// **'Identity check'**
+  /// In mn, this message translates to:
+  /// **'Иргэний баталгаажуулалт'**
   String get internalAuthIdentityCheck;
 
   /// No description provided for @internalAuthPendingReview.
   ///
-  /// In en, this message translates to:
-  /// **'Pending review'**
+  /// In mn, this message translates to:
+  /// **'Шалгаж байна'**
   String get internalAuthPendingReview;
 
   /// No description provided for @internalAuthEmailVerification.
   ///
-  /// In en, this message translates to:
-  /// **'Email verification'**
+  /// In mn, this message translates to:
+  /// **'И-мэйл баталгаажуулалт'**
   String get internalAuthEmailVerification;
 
   /// No description provided for @internalAuthPhoneVerification.
   ///
-  /// In en, this message translates to:
-  /// **'Phone verification'**
+  /// In mn, this message translates to:
+  /// **'Утас баталгаажуулалт'**
   String get internalAuthPhoneVerification;
 
   /// No description provided for @internalAuthVerified.
   ///
-  /// In en, this message translates to:
-  /// **'Verified'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажсан'**
   String get internalAuthVerified;
 
   /// No description provided for @internalAuthSectionConsent.
   ///
-  /// In en, this message translates to:
-  /// **'Consent'**
+  /// In mn, this message translates to:
+  /// **'Зөвшөөрөл'**
   String get internalAuthSectionConsent;
 
   /// No description provided for @internalAuthConsentBody.
   ///
-  /// In en, this message translates to:
-  /// **'I agree to the service terms and privacy policy.'**
+  /// In mn, this message translates to:
+  /// **'Үйлчилгээний нөхцөл болон нууцлалын бодлогыг зөвшөөрч байна.'**
   String get internalAuthConsentBody;
 
   /// No description provided for @internalStatesCatalogTitle.
   ///
-  /// In en, this message translates to:
-  /// **'State screens'**
+  /// In mn, this message translates to:
+  /// **'Төлвийн дэлгэцүүд'**
   String get internalStatesCatalogTitle;
 
   /// No description provided for @internalStatesModuleName.
   ///
-  /// In en, this message translates to:
-  /// **'States'**
+  /// In mn, this message translates to:
+  /// **'Төлвүүд'**
   String get internalStatesModuleName;
 
   /// No description provided for @internalStatesRouteSplashTitle.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'Splash'**
   String get internalStatesRouteSplashTitle;
 
   /// No description provided for @internalStatesRouteSplashDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Initial splash state with brand entry.'**
+  /// In mn, this message translates to:
+  /// **'Брэнд нэвтрэх анхны splash төлөв.'**
   String get internalStatesRouteSplashDescription;
 
   /// No description provided for @internalStatesRouteSplashAlternateTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Splash alternate'**
+  /// In mn, this message translates to:
+  /// **'Splash хувилбар'**
   String get internalStatesRouteSplashAlternateTitle;
 
   /// No description provided for @internalStatesRouteSplashAlternateDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Secondary splash variant.'**
+  /// In mn, this message translates to:
+  /// **'Splash дэлгэцийн хоёрдогч хувилбар.'**
   String get internalStatesRouteSplashAlternateDescription;
 
   /// No description provided for @internalStatesRouteLoadingTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Loading screen'**
+  /// In mn, this message translates to:
+  /// **'Ачаалалтын дэлгэц'**
   String get internalStatesRouteLoadingTitle;
 
   /// No description provided for @internalStatesRouteLoadingDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Loading indicator with contextual message.'**
+  /// In mn, this message translates to:
+  /// **'Нөхцөлт тайлбартай ачаалалтын төлөв.'**
   String get internalStatesRouteLoadingDescription;
 
   /// No description provided for @internalStatesRouteKycOverlayTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Signup KYC overlay'**
+  /// In mn, this message translates to:
+  /// **'KYC overlay'**
   String get internalStatesRouteKycOverlayTitle;
 
   /// No description provided for @internalStatesRouteKycOverlayDescription.
   ///
-  /// In en, this message translates to:
-  /// **'KYC-required overlay with next-step actions.'**
+  /// In mn, this message translates to:
+  /// **'KYC шаардлагатай үед харуулах дараагийн алхмын дэлгэц.'**
   String get internalStatesRouteKycOverlayDescription;
 
   /// No description provided for @internalStatesSplashHeroPrimaryTitle.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **''**
   String get internalStatesSplashHeroPrimaryTitle;
 
   /// No description provided for @internalStatesSplashHeroPrimarySubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Preparing your workspace...'**
+  /// In mn, this message translates to:
+  /// **'Таны ажлын орчныг бэлдэж байна...'**
   String get internalStatesSplashHeroPrimarySubtitle;
 
   /// No description provided for @internalStatesSplashHeroAlternateTitle.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **' Finance'**
   String get internalStatesSplashHeroAlternateTitle;
 
   /// No description provided for @internalStatesSplashHeroAlternateSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Loading your personalized dashboard...'**
+  /// In mn, this message translates to:
+  /// **'Танд зориулсан самбарыг ачаалж байна...'**
   String get internalStatesSplashHeroAlternateSubtitle;
 
   /// No description provided for @internalStatesLoadingMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Fetching acnt details...'**
+  /// In mn, this message translates to:
+  /// **'Дансны мэдээллийг татаж байна...'**
   String get internalStatesLoadingMessage;
 
   /// No description provided for @internalStatesLoadingHint.
   ///
-  /// In en, this message translates to:
-  /// **'Please wait a moment while the mini app prepares this screen.'**
+  /// In mn, this message translates to:
+  /// **'Энэ дэлгэцийг бэлдэх хүртэл түр хүлээнэ үү.'**
   String get internalStatesLoadingHint;
 
   /// No description provided for @internalStatesKycDefaultStatusMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Complete your verification to continue using all wallet features.'**
+  /// In mn, this message translates to:
+  /// **'Бүх wallet боломжийг ашиглахын тулд баталгаажуулалтаа дуусгана уу.'**
   String get internalStatesKycDefaultStatusMessage;
 
   /// No description provided for @internalStatesKycSuccessTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Identity verified'**
+  /// In mn, this message translates to:
+  /// **'Иргэний баталгаажуулалт амжилттай'**
   String get internalStatesKycSuccessTitle;
 
   /// No description provided for @internalStatesKycSuccessSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your profile is now verified.You can access all features.'**
+  /// In mn, this message translates to:
+  /// **'Таны профайл баталгаажсан тул бүх боломжийг ашиглах боломжтой боллоо.'**
   String get internalStatesKycSuccessSubtitle;
 
   /// No description provided for @internalStatesKycRequiredTitle.
   ///
-  /// In en, this message translates to:
-  /// **'KYC required'**
+  /// In mn, this message translates to:
+  /// **'KYC шаардлагатай'**
   String get internalStatesKycRequiredTitle;
 
   /// No description provided for @internalStatesKycRequiredSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Profile verification is required before you continue.'**
+  /// In mn, this message translates to:
+  /// **'Үргэлжлүүлэхийн өмнө профайлын баталгаажуулалт шаардлагатай.'**
   String get internalStatesKycRequiredSubtitle;
 
   /// No description provided for @internalStatesKycStartVerification.
   ///
-  /// In en, this message translates to:
-  /// **'Start verification'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулалт эхлүүлэх'**
   String get internalStatesKycStartVerification;
 
   /// No description provided for @internalStatesKycLater.
   ///
-  /// In en, this message translates to:
-  /// **'Later'**
+  /// In mn, this message translates to:
+  /// **'Дараа'**
   String get internalStatesKycLater;
 
   /// No description provided for @internalStatesKycScanningId.
   ///
-  /// In en, this message translates to:
-  /// **'Scanning ID...'**
+  /// In mn, this message translates to:
+  /// **'Бичиг баримт шалгаж байна...'**
   String get internalStatesKycScanningId;
 
   /// No description provided for @internalStatesKycVerifying.
   ///
-  /// In en, this message translates to:
-  /// **'Verifying...'**
+  /// In mn, this message translates to:
+  /// **'Баталгаажуулж байна...'**
   String get internalStatesKycVerifying;
 
   /// No description provided for @internalStatesKycCapturingBiometric.
   ///
-  /// In en, this message translates to:
-  /// **'Capturing biometric data...'**
+  /// In mn, this message translates to:
+  /// **'Биометрийн мэдээлэл авч байна...'**
   String get internalStatesKycCapturingBiometric;
 
   /// No description provided for @internalStatesKycFailureFaceMatch.
   ///
-  /// In en, this message translates to:
-  /// **'Face match failed.Please try again in better lighting.'**
+  /// In mn, this message translates to:
+  /// **'Нүүр тулгалт амжилтгүй боллоо.Гэрэл сайтай орчинд дахин оролдоно уу.'**
   String get internalStatesKycFailureFaceMatch;
 
   /// No description provided for @reject.
   ///
-  /// In en, this message translates to:
-  /// **'Reject'**
+  /// In mn, this message translates to:
+  /// **'Татгалзах'**
   String get reject;
 
   /// No description provided for @accept.
   ///
-  /// In en, this message translates to:
-  /// **'Continue'**
+  /// In mn, this message translates to:
+  /// **'Зөвшөөрч байна'**
   String get accept;
 
   /// No description provided for @tinoConsent.
   ///
-  /// In en, this message translates to:
-  /// **'Do you consent to the use of the information associated with your Tino app account?'**
+  /// In mn, this message translates to:
+  /// **'Таны Tino апп дээрх бүртгэлтэй байгаа мэдээллийг ашиглахыг зөвшөөрч байна уу'**
   String get tinoConsent;
 
   /// No description provided for @commonSuccess.
   ///
-  /// In en, this message translates to:
-  /// **'Success'**
+  /// In mn, this message translates to:
+  /// **'Амжилттай'**
   String get commonSuccess;
 
   /// No description provided for @commonWarning.
   ///
-  /// In en, this message translates to:
-  /// **'Warning'**
+  /// In mn, this message translates to:
+  /// **'Анхаарах'**
   String get commonWarning;
 
   /// No description provided for @commonPay.
   ///
-  /// In en, this message translates to:
-  /// **'Pay'**
+  /// In mn, this message translates to:
+  /// **'Төлбөр төлөх'**
   String get commonPay;
 
   /// No description provided for @commonGoHome.
   ///
-  /// In en, this message translates to:
-  /// **'Go to home'**
+  /// In mn, this message translates to:
+  /// **'Нүүр хуудас руу очих'**
   String get commonGoHome;
 
   /// No description provided for @commonHome.
   ///
-  /// In en, this message translates to:
-  /// **'Home'**
+  /// In mn, this message translates to:
+  /// **'Нүүр'**
   String get commonHome;
 
   /// No description provided for @commonProfile.
   ///
-  /// In en, this message translates to:
-  /// **'Profile'**
+  /// In mn, this message translates to:
+  /// **'Миний'**
   String get commonProfile;
 
   /// No description provided for @commonBank.
   ///
-  /// In en, this message translates to:
-  /// **'Bank'**
+  /// In mn, this message translates to:
+  /// **'Банк'**
   String get commonBank;
 
   /// No description provided for @commonIban.
   ///
-  /// In en, this message translates to:
-  /// **'IBAN number'**
+  /// In mn, this message translates to:
+  /// **'IBAN дугаар'**
   String get commonIban;
 
   /// No description provided for @commonAccountNumber.
   ///
-  /// In en, this message translates to:
-  /// **'Account number'**
+  /// In mn, this message translates to:
+  /// **'Дансны дугаар'**
   String get commonAccountNumber;
 
   /// No description provided for @commonPackUnit.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'PACK'**
   String get commonPackUnit;
 
   /// No description provided for @commonBrandInvestx.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'investX'**
   String get commonBrandInvestx;
 
   /// No description provided for @commonDrawSignaturePrompt.
   ///
-  /// In en, this message translates to:
-  /// **'Please draw your signature to confirm'**
+  /// In mn, this message translates to:
+  /// **'Та гарын үсгээ зурж баталгаажуулна уу'**
   String get commonDrawSignaturePrompt;
 
   /// No description provided for @commonSignaturePlaceholder.
   ///
-  /// In en, this message translates to:
-  /// **'Draw your signature here'**
+  /// In mn, this message translates to:
+  /// **'Энд гарын үсгээ зурна уу'**
   String get commonSignaturePlaceholder;
 
   /// No description provided for @commonTotalPayable.
   ///
-  /// In en, this message translates to:
-  /// **'Total payable'**
+  /// In mn, this message translates to:
+  /// **'Нийт төлөх дүн'**
   String get commonTotalPayable;
 
-  /// Pack quantity label.
+  /// Багцын тоо хэмжээг харуулах шошго.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'{count} PACK'**
   String commonPackQuantity(Object count);
 
   /// No description provided for @secAcntPersonalInformationSubtitle.
   ///
-  /// In en, this message translates to:
-  /// **'Please enter your personal information.'**
+  /// In mn, this message translates to:
+  /// **'Та өөрийн хувийн мэдээллээ оруулна уу.'**
   String get secAcntPersonalInformationSubtitle;
 
   /// No description provided for @secAcntFieldSecondaryPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Additional phone number'**
+  /// In mn, this message translates to:
+  /// **'Нэмэлт утасны дугаар'**
   String get secAcntFieldSecondaryPhone;
 
   /// No description provided for @secAcntBankSelectionTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Select bank'**
+  /// In mn, this message translates to:
+  /// **'Банк сонгох'**
   String get secAcntBankSelectionTitle;
 
   /// No description provided for @secAcntPaymentSheetTitle.
   ///
-  /// In en, this message translates to:
+  /// In mn, this message translates to:
   /// **'Tino Pay'**
   String get secAcntPaymentSheetTitle;
 
   /// No description provided for @secAcntPaymentOptionTinoBalance.
   ///
-  /// In en, this message translates to:
-  /// **'Tino current balance'**
+  /// In mn, this message translates to:
+  /// **'Tino харилцах үлдэгдэл'**
   String get secAcntPaymentOptionTinoBalance;
 
   /// No description provided for @secAcntPaymentOptionTinoPayLater.
   ///
-  /// In en, this message translates to:
-  /// **'Tino Pay Later limit'**
+  /// In mn, this message translates to:
+  /// **'Tino Pay Later эрх'**
   String get secAcntPaymentOptionTinoPayLater;
 
   /// No description provided for @secAcntSuccessBankDetailsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Bank details'**
+  /// In mn, this message translates to:
+  /// **'Банкны мэдээлэл'**
   String get secAcntSuccessBankDetailsTitle;
 
   /// No description provided for @secAcntAgreementConsent.
   ///
-  /// In en, this message translates to:
-  /// **'I have reviewed and agree to the securities account opening agreement and the service terms.'**
+  /// In mn, this message translates to:
+  /// **'Би ҮЦ-ын данс нээх гэрээ болон үйлчилгээний нөхцөлтэй танилцаж, зөвшөөрч байна.'**
   String get secAcntAgreementConsent;
 
   /// No description provided for @secAcntServiceFeeTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Service fee'**
+  /// In mn, this message translates to:
+  /// **'Үйлчилгээний хураамж'**
   String get secAcntServiceFeeTitle;
 
   /// No description provided for @secAcntPaymentTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Securities account opening fee'**
+  /// In mn, this message translates to:
+  /// **'Үнэт цаасны данс нээх хураамж'**
   String get secAcntPaymentTitle;
 
   /// No description provided for @secAcntPaymentTitleWithAmount.
   ///
-  /// In en, this message translates to:
-  /// **'Securities account opening fee {amount}'**
+  /// In mn, this message translates to:
+  /// **'Үнэт цаасны данс нээх хураамж {amount}'**
   String secAcntPaymentTitleWithAmount(Object amount);
 
   /// No description provided for @secAcntPaymentNoticeMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Opening this account allows you to invest in both domestic and international markets.'**
+  /// In mn, this message translates to:
+  /// **'Энэхүү данс нээгдсэнээр та дотоод болон гадаад зах зээлийн хөрөнгө оруулалт хийх боломжтой болно.'**
   String get secAcntPaymentNoticeMessage;
 
   /// No description provided for @secAcntPaymentAmountUnavailable.
   ///
-  /// In en, this message translates to:
-  /// **'The payable amount is currently unavailable. Please refresh your account information and try again.'**
+  /// In mn, this message translates to:
+  /// **'Төлөх дүнг одоогоор авч чадсангүй. Дансны мэдээллээ шинэчлээд дахин оролдоно уу.'**
   String get secAcntPaymentAmountUnavailable;
 
   /// No description provided for @secAcntPaymentFailedTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Payment failed'**
+  /// In mn, this message translates to:
+  /// **'Төлбөр амжилтгүй'**
   String get secAcntPaymentFailedTitle;
 
   /// No description provided for @secAcntCalculationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your payment was completed successfully'**
+  /// In mn, this message translates to:
+  /// **'Таны төлбөр амжилттай төлөгдлөө'**
   String get secAcntCalculationTitle;
 
   /// No description provided for @secAcntCalculationMessageTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your registration request was created successfully'**
+  /// In mn, this message translates to:
+  /// **'Таны бүртгэлийн хүсэлт амжилттай үүслээ'**
   String get secAcntCalculationMessageTitle;
 
   /// No description provided for @secAcntCalculationPendingMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Your registration request is being reviewed. We will notify you once it is confirmed.'**
+  /// In mn, this message translates to:
+  /// **'Таны бүртгэлийн хүсэлт шалгагдаж байна. Баталгаажмагц танд мэдэгдэх болно.'**
   String get secAcntCalculationPendingMessage;
 
   /// No description provided for @secAcntPendingActivationMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Your securities account registration request has been received.\nWe will notify you once it has been reviewed and confirmed.'**
+  /// In mn, this message translates to:
+  /// **'Таны үнэт цаасны бүртгэлийн хүсэлтийг хүлээн авлаа.\nХүсэлтийг хянаж баталгаажуулсны дараа танд мэдэгдэх болно.'**
   String get secAcntPendingActivationMessage;
 
   /// No description provided for @secAcntBankNotSelected.
   ///
-  /// In en, this message translates to:
-  /// **'No bank selected'**
+  /// In mn, this message translates to:
+  /// **'Банк сонгоогүй'**
   String get secAcntBankNotSelected;
 
   /// No description provided for @secAcntProfileUpdating.
   ///
-  /// In en, this message translates to:
-  /// **'Saving your personal information.'**
+  /// In mn, this message translates to:
+  /// **'Хувийн мэдээллийг хадгалж байна.'**
   String get secAcntProfileUpdating;
 
   /// No description provided for @secAcntInvestxAgreementTitle.
   ///
-  /// In en, this message translates to:
-  /// **'INVESTX service agreement'**
+  /// In mn, this message translates to:
+  /// **'INVESTX үйлчилгээний гэрээ'**
   String get secAcntInvestxAgreementTitle;
 
   /// No description provided for @secAcntSecuritiesAgreementTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Securities account opening agreement'**
+  /// In mn, this message translates to:
+  /// **'Үнэт цаасны данс нээх гэрээ'**
   String get secAcntSecuritiesAgreementTitle;
 
   /// No description provided for @secAcntInvestxAgreementText.
   ///
-  /// In en, this message translates to:
-  /// **'1. This INVESTX service agreement defines the main terms related to starting the investment service, verifying customer information, and account usage.\n\n2. The customer confirms that the submitted information is accurate and agrees to receive service-related notices in the app and through the registered channels.\n\n3. In the next stages of the INVESTX service, the risk questionnaire, pack selection, and purchase actions will be activated in sequence.'**
+  /// In mn, this message translates to:
+  /// **'1. Энэхүү INVESTX үйлчилгээний гэрээ нь хөрөнгө оруулалтын үйлчилгээг эхлүүлэх, хэрэглэгчийн мэдээллийг баталгаажуулах, дансны ашиглалттай холбоотой үндсэн нөхцөлийг тодорхойлно.\n\n2. Хэрэглэгч нь оруулсан мэдээлэл үнэн зөв болохыг баталгаажуулж, үйлчилгээтэй холбоотой мэдэгдлийг апп дотор болон бүртгэлтэй сувгаар хүлээн авна.\n\n3. INVESTX үйлчилгээний дараагийн шатуудад эрсдэлийн асуумж, багцын сонголт, худалдан авалтын үйлдэл дарааллаар идэвхжинэ.'**
   String get secAcntInvestxAgreementText;
 
   /// No description provided for @secAcntSecuritiesAgreementText.
   ///
-  /// In en, this message translates to:
-  /// **'1. When submitting a request to open a securities account, the customer\'s first name, last name, register number, contact details, and bank information will be verified.\n\n2. The customer acknowledges in advance the fee, verification timeline, and service conditions related to account opening.\n\n3. After verification is completed successfully, the next-stage INVESTX service agreement and risk questionnaire will be opened.'**
+  /// In mn, this message translates to:
+  /// **'1. Үнэт цаасны данс нээх хүсэлт гаргах үед хэрэглэгчийн овог, нэр, регистр, холбоо барих мэдээлэл болон банкны мэдээллийг баталгаажуулна.\n\n2. Данс нээхтэй холбоотой шимтгэл, баталгаажуулалтын хугацаа болон үйлчилгээний нөхцөлийг хэрэглэгч урьдчилан зөвшөөрсөн байна.\n\n3. Баталгаажуулалтын явц амжилттай дууссаны дараа дараагийн шатны INVESTX үйлчилгээний гэрээ болон эрсдэлийн асуумж нээгдэнэ.'**
   String get secAcntSecuritiesAgreementText;
 
   /// No description provided for @secAcntTermsText.
   ///
-  /// In en, this message translates to:
-  /// **'1. These service terms define the general rules related to registration, use, and information security for the customer\'s investment account.\n\n2. Requests, signatures, consents, and payment confirmations submitted in the app are considered valid system actions.\n\n3. While the registration request is under review, some actions may be limited, and the customer will be notified once the review is completed successfully.\n\n4. If updated terms are introduced during the service flow, the customer will receive the notice, review it, and provide consent again when required.'**
+  /// In mn, this message translates to:
+  /// **'1. Энэхүү үйлчилгээний нөхцөл нь хэрэглэгчийн хөрөнгө оруулалтын дансны бүртгэл, ашиглалт, мэдээллийн аюулгүй байдалтай холбоотой нийтлэг журмыг тодорхойлно.\n\n2. Апп дотор илгээсэн хүсэлт, гарын үсэг, зөвшөөрөл болон төлбөрийн баталгаажуулалтыг системийн хүчинтэй үйлдэл гэж үзнэ.\n\n3. Бүртгэлийн хүсэлт шалгагдаж байх хугацаанд зарим үйлдэл хязгаарлагдаж болох ба шалгалт амжилттай дуусмагц хэрэглэгчид мэдэгдэнэ.\n\n4. Хэрэглэгч үйлчилгээний явцад шинэчилсэн нөхцөл гарсан тохиолдолд мэдэгдлийг хүлээн авч танилцан, шаардлагатай тохиолдолд дахин зөвшөөрөл өгнө.'**
   String get secAcntTermsText;
 
   /// No description provided for @ipsPackBenefitStableYield.
   ///
-  /// In en, this message translates to:
-  /// **'Targets stable yield'**
+  /// In mn, this message translates to:
+  /// **'Тогтвортой өгөөжийг зорьдог'**
   String get ipsPackBenefitStableYield;
 
   /// No description provided for @ipsPackBenefitLowVolatility.
   ///
-  /// In en, this message translates to:
-  /// **'Low volatility'**
+  /// In mn, this message translates to:
+  /// **'Хэлбэлзэл бага'**
   String get ipsPackBenefitLowVolatility;
 
   /// No description provided for @ipsPackBenefitMinRisk.
   ///
-  /// In en, this message translates to:
-  /// **'Minimal risk'**
+  /// In mn, this message translates to:
+  /// **'Эрсдэл хамгийн бага'**
   String get ipsPackBenefitMinRisk;
 
   /// No description provided for @ipsPackBenefitStockGrowth.
   ///
-  /// In en, this message translates to:
-  /// **'Has growth-oriented stock exposure'**
+  /// In mn, this message translates to:
+  /// **'Өсөлтийн боломжтой хувьцааны жинтэй'**
   String get ipsPackBenefitStockGrowth;
 
   /// No description provided for @ipsPackBenefitBalancedStructure.
   ///
-  /// In en, this message translates to:
-  /// **'Balanced pack structure'**
+  /// In mn, this message translates to:
+  /// **'Тэнцвэртэй бүтэцтэй багц'**
   String get ipsPackBenefitBalancedStructure;
 
   /// No description provided for @ipsPackBenefitGrowthFocused.
   ///
-  /// In en, this message translates to:
-  /// **'More growth-focused allocation'**
+  /// In mn, this message translates to:
+  /// **'Илүү өсөлт чиглэсэн бүтэцтэй'**
   String get ipsPackBenefitGrowthFocused;
 
   /// No description provided for @ipsOverviewPackPrompt.
   ///
-  /// In en, this message translates to:
-  /// **'Choose a package that suits you'**
+  /// In mn, this message translates to:
+  /// **'Та өөрт тохирсон багцаа сонгоно уу'**
   String get ipsOverviewPackPrompt;
 
   /// No description provided for @ipsPackPerfectFit.
   ///
-  /// In en, this message translates to:
-  /// **'Perfect fit for you'**
+  /// In mn, this message translates to:
+  /// **'Танд төгс тохирох'**
   String get ipsPackPerfectFit;
 
   /// No description provided for @advice.
   ///
-  /// In en, this message translates to:
-  /// **'Advice'**
+  /// In mn, this message translates to:
+  /// **'Зөвлөмж'**
   String get advice;
 
   /// No description provided for @investmentFund.
   ///
-  /// In en, this message translates to:
-  /// **'Investment fund'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалтын сан'**
   String get investmentFund;
 
   /// No description provided for @ipsHelpTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Support'**
+  /// In mn, this message translates to:
+  /// **'Тусламж'**
   String get ipsHelpTitle;
 
   /// No description provided for @ipsHelpContactTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Contact us'**
+  /// In mn, this message translates to:
+  /// **'Холбоо барих'**
   String get ipsHelpContactTitle;
 
   /// No description provided for @ipsHelpEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Email'**
+  /// In mn, this message translates to:
+  /// **'И-Мэйл'**
   String get ipsHelpEmail;
 
   /// No description provided for @ipsHelpPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Phone'**
+  /// In mn, this message translates to:
+  /// **'Дугаар'**
   String get ipsHelpPhone;
 
   /// No description provided for @ipsHelpLocationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Office location'**
+  /// In mn, this message translates to:
+  /// **'Хаяг байршил'**
   String get ipsHelpLocationTitle;
 
   /// No description provided for @ipsHelpLocationWorkingHours.
   ///
-  /// In en, this message translates to:
-  /// **'Mon - Fri 09:00 - 18:00'**
+  /// In mn, this message translates to:
+  /// **'Даваа - Баасан 09:00 - 18:00'**
   String get ipsHelpLocationWorkingHours;
 
   /// No description provided for @ipsFeedbackTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Feedback'**
+  /// In mn, this message translates to:
+  /// **'Санал хүсэлт'**
   String get ipsFeedbackTitle;
 
   /// No description provided for @ipsFeedbackEmptyTitle.
   ///
-  /// In en, this message translates to:
-  /// **'No feedback yet'**
+  /// In mn, this message translates to:
+  /// **'Одоогоор та санал гомдол өгөөгүй байна'**
   String get ipsFeedbackEmptyTitle;
 
   /// No description provided for @ipsFeedbackEmptyBody.
   ///
-  /// In en, this message translates to:
-  /// **'Press the button below to submit your feedback.'**
+  /// In mn, this message translates to:
+  /// **'Та санал гомдол өгөх товч дээр дарж санал гомдлоо өгнө үү'**
   String get ipsFeedbackEmptyBody;
 
   /// No description provided for @ipsFeedbackCreateButton.
   ///
-  /// In en, this message translates to:
-  /// **'Submit feedback'**
+  /// In mn, this message translates to:
+  /// **'Санал гомдол өгөх'**
   String get ipsFeedbackCreateButton;
 
   /// No description provided for @ipsFeedbackCreateTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Title'**
+  /// In mn, this message translates to:
+  /// **'Гарчиг'**
   String get ipsFeedbackCreateTitle;
 
   /// No description provided for @ipsFeedbackCreateTitleHint.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a title'**
+  /// In mn, this message translates to:
+  /// **'Утга оруулна уу'**
   String get ipsFeedbackCreateTitleHint;
 
   /// No description provided for @ipsFeedbackCreateBody.
   ///
-  /// In en, this message translates to:
-  /// **'Description'**
+  /// In mn, this message translates to:
+  /// **'Тайлбар'**
   String get ipsFeedbackCreateBody;
 
   /// No description provided for @ipsFeedbackCreateBodyHint.
   ///
-  /// In en, this message translates to:
-  /// **'Enter a detailed description'**
+  /// In mn, this message translates to:
+  /// **'Дэлгэрэнгүй тайлбар оруулна уу'**
   String get ipsFeedbackCreateBodyHint;
 
   /// No description provided for @ipsFeedbackStatusReviewing.
   ///
-  /// In en, this message translates to:
-  /// **'Reviewing'**
+  /// In mn, this message translates to:
+  /// **'Илгээгдсэн'**
   String get ipsFeedbackStatusReviewing;
 
   /// No description provided for @ipsFeedbackStatusResolved.
   ///
-  /// In en, this message translates to:
-  /// **'Resolved'**
+  /// In mn, this message translates to:
+  /// **'Шийдвэрлэсэн'**
   String get ipsFeedbackStatusResolved;
 
   /// No description provided for @ipsFeedbackStatusClosed.
   ///
-  /// In en, this message translates to:
-  /// **'Closed'**
+  /// In mn, this message translates to:
+  /// **'Хаагдсан'**
   String get ipsFeedbackStatusClosed;
 
   /// No description provided for @ipsRewardTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Your achievements'**
+  /// In mn, this message translates to:
+  /// **'Таны амжилт'**
   String get ipsRewardTitle;
 
   /// No description provided for @ipsRewardGoalTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Target goal'**
+  /// In mn, this message translates to:
+  /// **'Зорилтот зорилго'**
   String get ipsRewardGoalTitle;
 
   /// No description provided for @ipsRewardGoalProgress.
   ///
-  /// In en, this message translates to:
-  /// **'Progress'**
+  /// In mn, this message translates to:
+  /// **'Биелүүлэлт'**
   String get ipsRewardGoalProgress;
 
   /// No description provided for @ipsRewardStreakTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Continuous investment'**
+  /// In mn, this message translates to:
+  /// **'Тасралтгүй хөрөнгө оруулалт'**
   String get ipsRewardStreakTitle;
 
   /// No description provided for @ipsRewardStreakMonths.
   ///
-  /// In en, this message translates to:
-  /// **'{current} / {total} months'**
+  /// In mn, this message translates to:
+  /// **'{current} / {total} сар'**
   String ipsRewardStreakMonths(int current, int total);
 
   /// No description provided for @ipsRewardStreakNextRewardLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Next reward:'**
+  /// In mn, this message translates to:
+  /// **'Дараагийн урамшуулал:'**
   String get ipsRewardStreakNextRewardLabel;
 
   /// No description provided for @ipsRewardStreakNextReward.
   ///
-  /// In en, this message translates to:
-  /// **'Next reward: +{reward}'**
+  /// In mn, this message translates to:
+  /// **'Дараагийн урамшуулал: +{reward}'**
   String ipsRewardStreakNextReward(Object reward);
 
   /// No description provided for @ipsRewardNextGoalTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Next goal'**
+  /// In mn, this message translates to:
+  /// **'Дараагийн зорилго'**
   String get ipsRewardNextGoalTitle;
 
   /// No description provided for @ipsRewardNextGoalBody.
   ///
-  /// In en, this message translates to:
-  /// **'After 6 months, your interest rate increases by 2%, plus VIP benefits.'**
+  /// In mn, this message translates to:
+  /// **'6 сар хүрэхэд таны хүү 2% нэмэгдэж, VIP боломжууд нээгдэнэ'**
   String get ipsRewardNextGoalBody;
 
   /// No description provided for @ipsRewardBonusCupon.
   ///
-  /// In en, this message translates to:
-  /// **'Coupon'**
+  /// In mn, this message translates to:
+  /// **'Купон'**
   String get ipsRewardBonusCupon;
 
   /// No description provided for @ipsRewardBonusInterest.
   ///
-  /// In en, this message translates to:
-  /// **'Interest'**
+  /// In mn, this message translates to:
+  /// **'Хүү'**
   String get ipsRewardBonusInterest;
 
   /// No description provided for @ipsRewardMilestoneMonths.
   ///
-  /// In en, this message translates to:
-  /// **'{count} Months'**
+  /// In mn, this message translates to:
+  /// **'{count} Сар'**
   String ipsRewardMilestoneMonths(int count);
 
   /// No description provided for @ipsStatementFilterTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Filter statements'**
+  /// In mn, this message translates to:
+  /// **'Хуулга шүүх'**
   String get ipsStatementFilterTitle;
 
   /// No description provided for @ipsStatementFilterAmountTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Transaction amount'**
+  /// In mn, this message translates to:
+  /// **'Хуулганы унийн дүн'**
   String get ipsStatementFilterAmountTitle;
 
   /// No description provided for @ipsStatementFilterDateTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Date'**
+  /// In mn, this message translates to:
+  /// **'Огноо'**
   String get ipsStatementFilterDateTitle;
 
   /// No description provided for @ipsStatementFilterToday.
   ///
-  /// In en, this message translates to:
-  /// **'Today'**
+  /// In mn, this message translates to:
+  /// **'Өчигдөр'**
   String get ipsStatementFilterToday;
 
   /// No description provided for @ipsStatementFilterWeek.
   ///
-  /// In en, this message translates to:
-  /// **'7 days'**
+  /// In mn, this message translates to:
+  /// **'7 хоног'**
   String get ipsStatementFilterWeek;
 
   /// No description provided for @ipsStatementFilterMonth.
   ///
-  /// In en, this message translates to:
-  /// **'1 month'**
+  /// In mn, this message translates to:
+  /// **'1 сар'**
   String get ipsStatementFilterMonth;
 
   /// No description provided for @ipsStatementFilter3Months.
   ///
-  /// In en, this message translates to:
-  /// **'3 months'**
+  /// In mn, this message translates to:
+  /// **'3 сар'**
   String get ipsStatementFilter3Months;
 
   /// No description provided for @ipsStatementFilterClear.
   ///
-  /// In en, this message translates to:
-  /// **'Clear'**
+  /// In mn, this message translates to:
+  /// **'Цэвэрлэх'**
   String get ipsStatementFilterClear;
 
   /// No description provided for @ipsStatementFilterSearch.
   ///
-  /// In en, this message translates to:
-  /// **'Search ({count})'**
+  /// In mn, this message translates to:
+  /// **'Хайх ({count})'**
   String ipsStatementFilterSearch(int count);
 
   /// No description provided for @ipsStatementTypeIncome.
   ///
-  /// In en, this message translates to:
-  /// **'Income'**
+  /// In mn, this message translates to:
+  /// **'Орлого'**
   String get ipsStatementTypeIncome;
 
   /// No description provided for @ipsStatementTypeExpense.
   ///
-  /// In en, this message translates to:
-  /// **'Expense'**
+  /// In mn, this message translates to:
+  /// **'Зарлага'**
   String get ipsStatementTypeExpense;
 
   /// No description provided for @ipsStatementInvestment.
   ///
-  /// In en, this message translates to:
-  /// **'Investment deposit'**
+  /// In mn, this message translates to:
+  /// **'Хөрөнгө оруулалт'**
   String get ipsStatementInvestment;
 
   /// No description provided for @commonSave.
   ///
-  /// In en, this message translates to:
-  /// **'Save'**
+  /// In mn, this message translates to:
+  /// **'Хадгалах'**
   String get commonSave;
 
   /// No description provided for @commonSearch.
   ///
-  /// In en, this message translates to:
-  /// **'Search'**
+  /// In mn, this message translates to:
+  /// **'Хайх'**
   String get commonSearch;
 
   /// No description provided for @commonAll.
   ///
-  /// In en, this message translates to:
-  /// **'All'**
+  /// In mn, this message translates to:
+  /// **'Бүгд'**
   String get commonAll;
 
   /// No description provided for @ipsPortfolioFilterAll.
   ///
-  /// In en, this message translates to:
-  /// **'All'**
+  /// In mn, this message translates to:
+  /// **'Бүгд'**
   String get ipsPortfolioFilterAll;
 
   /// No description provided for @ipsPortfolioFilterBonds.
   ///
-  /// In en, this message translates to:
-  /// **'Bonds'**
+  /// In mn, this message translates to:
+  /// **'Бонд'**
   String get ipsPortfolioFilterBonds;
 
   /// No description provided for @ipsPortfolioFilterStocks.
   ///
-  /// In en, this message translates to:
-  /// **'Stocks'**
+  /// In mn, this message translates to:
+  /// **'Хувьцаа'**
   String get ipsPortfolioFilterStocks;
 
   /// No description provided for @closedPrice.
   ///
-  /// In en, this message translates to:
-  /// **'Closing price'**
+  /// In mn, this message translates to:
+  /// **'Хаалтын ханш'**
   String get closedPrice;
 
   /// No description provided for @closedDate.
   ///
-  /// In en, this message translates to:
-  /// **'Date'**
+  /// In mn, this message translates to:
+  /// **'Огноо'**
   String get closedDate;
 
   /// No description provided for @ipsAcntServiceAgreement.
   ///
-  /// In en, this message translates to:
-  /// **'INVESTX Service Agreement'**
+  /// In mn, this message translates to:
+  /// **'INVESTX үйлчилгээний гэрээ'**
   String get ipsAcntServiceAgreement;
 
   /// No description provided for @ipsQuestionnaireProfileTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Determine risk profile'**
+  /// In mn, this message translates to:
+  /// **'Зан төлөв тодорхойлох'**
   String get ipsQuestionnaireProfileTitle;
 }
 
@@ -2930,7 +2932,7 @@ class _SdkLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'mn'].contains(locale.languageCode);
+      <String>['mn'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_SdkLocalizationsDelegate old) => false;
@@ -2939,8 +2941,6 @@ class _SdkLocalizationsDelegate
 SdkLocalizations lookupSdkLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return SdkLocalizationsEn();
     case 'mn':
       return SdkLocalizationsMn();
   }

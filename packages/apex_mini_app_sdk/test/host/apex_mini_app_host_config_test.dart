@@ -181,7 +181,7 @@ void main() {
           },
         );
 
-        expect(sdkConfig.language, 'EN');
+        expect(sdkConfig.language, 'MN');
       },
     );
 
