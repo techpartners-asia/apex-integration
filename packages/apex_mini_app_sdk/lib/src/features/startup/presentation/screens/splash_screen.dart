@@ -81,6 +81,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
   Future<void> _redirectToStartupBlocked({
     String? message,
     int? responseCode,
+    bool hideHero = false,
   }) async {
     if (startupBlockedHandled ||
         redirectToStartupBlockedInFlight ||
@@ -97,6 +98,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
         arguments: StartupBlockedArguments(
           message: message,
           responseCode: responseCode,
+          hideHero: hideHero,
         ),
       );
       startupBlockedHandled = true;
@@ -203,6 +205,7 @@ class IpsSplashScreenState extends State<IpsSplashScreen> {
               _redirectToStartupBlocked(
                 message: message,
                 responseCode: responseCode,
+                hideHero: cubit.failureIsAlreadyRegistered,
               ),
             );
             return;

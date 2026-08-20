@@ -4,6 +4,7 @@ class StartupBlockedArguments {
   const StartupBlockedArguments({
     this.message,
     this.responseCode,
+    this.hideHero = false,
   });
 
   /// Optional user-facing error message from the backend.
@@ -11,4 +12,8 @@ class StartupBlockedArguments {
 
   /// Signup/bootstrap business response code used to pick the page title.
   final int? responseCode;
+
+  /// Hides the error hero/title, e.g. for client-side gates that aren't
+  /// really "errors" and should only show the message card.
+  final bool hideHero;
 }
