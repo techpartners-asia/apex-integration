@@ -385,8 +385,6 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       SecAcntFlowStep.personalInformation,
     );
 
-    final bool canContinue = _canContinue(context);
-
     return CustomScaffold(
       appBarTitle: header.title,
       appBarCenterTitle: header.centerTitle,
@@ -405,7 +403,7 @@ class _SecAcntPersonalInfoScreenState extends State<SecAcntPersonalInfoScreen> {
       bottomNavigationBar: SecAcntWizardFooter(
         buttonLabel: context.l10n.commonContinue,
         onPressed: _submitAndOpenNextStep,
-        enabled: canContinue && !_isSubmittingProfile,
+        enabled: !_isSubmittingProfile,
       ),
     );
   }
