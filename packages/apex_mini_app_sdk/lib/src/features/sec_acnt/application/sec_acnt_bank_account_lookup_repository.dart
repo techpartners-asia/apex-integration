@@ -77,6 +77,7 @@ class ApiSecAcntBankAccountLookupRepository
         srcAcntId: 0,
         dstFiCode: normalizedBankCode,
         dstAcntCode: normalizedAccountNumber,
+        camCheckFiCode: int.parse(StaticApiConfig.defaultFiCode),
       ),
     );
 

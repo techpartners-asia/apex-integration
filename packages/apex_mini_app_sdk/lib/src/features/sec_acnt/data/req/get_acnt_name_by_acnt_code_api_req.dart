@@ -9,11 +9,15 @@ class CheckAcntNameByAcntCodeApiReq {
   /// Destination account number/code.
   final String dstAcntCode;
 
+  /// CAM financial institution code required by the account-name check.
+  final int camCheckFiCode;
+
   /// Creates an account-name lookup request.
   const CheckAcntNameByAcntCodeApiReq({
     this.srcAcntId = 0,
     required this.dstFiCode,
     required this.dstAcntCode,
+    required this.camCheckFiCode,
   });
 
   /// Converts this request to backend JSON with trimmed strings.
@@ -22,6 +26,7 @@ class CheckAcntNameByAcntCodeApiReq {
       'srcAcntId': srcAcntId,
       'dstFiCode': dstFiCode.trim(),
       'dstAcntCode': dstAcntCode.trim(),
+      'camCheckFiCode': camCheckFiCode,
     };
   }
 }

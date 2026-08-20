@@ -141,6 +141,7 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
             payableCommission >= 0;
         final bool canPay =
             !state.isSubmitting &&
+            !_isRefreshingBootstrap &&
             !state.isLoadingAccountFees &&
             state.hasLoadedAccountFees &&
             (!state.isPaymentActive || hasValidAmount) &&
@@ -193,7 +194,7 @@ class _SecAcntPaymentScreenState extends State<SecAcntPaymentScreen> {
             ],
           ),
           bottomNavigationBar: SecAcntWizardFooter(
-            buttonLabel: state.isSubmitting
+            buttonLabel: state.isSubmitting || _isRefreshingBootstrap
                 ? context.l10n.commonLoading
                 : context.l10n.commonPay,
             onPressed: _submitOpeningPayment,
