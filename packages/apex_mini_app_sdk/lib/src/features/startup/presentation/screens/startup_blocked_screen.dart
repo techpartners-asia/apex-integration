@@ -15,7 +15,7 @@ class StartupBlockedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final SdkLocalizations l10n = context.l10n;
     final responsive = context.responsive;
-    final bool showHero = arguments.responseCode != 1002;
+    final bool showHero = !arguments.hideHero && arguments.responseCode != 1002;
     final String title =
         arguments.responseCode == SignupBusinessCodes.profileNotVerified
         ? l10n.ipsStartupBlockedTitle
